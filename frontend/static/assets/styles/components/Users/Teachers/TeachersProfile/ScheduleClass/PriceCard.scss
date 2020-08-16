@@ -1,0 +1,26 @@
+.price-card {
+  @media only screen and (max-width: 480px) {
+    .card {
+      height: 100% !important;
+    }
+  }
+
+  a:hover {
+    text-decoration: none !important;
+    background-color: transparent !important;
+  }
+
+  .img-card {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  .badge.cursor-pointer:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  }
+  @media only screen and (min-width: 582px) {
+    .img-card {
+      width: 100px !important;
+      height: 100px !important;
+    }
+  }
+}

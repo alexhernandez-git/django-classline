@@ -1,0 +1,19 @@
+.tab-menu {
+    .nav-link.active {
+        border-bottom: 2px solid #56b389;
+        color: #56b389 !important;
+    }
+    .nav-link {
+        padding: 0rem;
+        margin-left: 15px;
+    }
+    .nav > .nav-item:first-child > .nav-link {
+        margin-left: 0;
+    }
+    @media only screen and (min-width: 768px) {
+        .nav-link {
+            padding: 0.2rem;
+            margin-left: 20px;
+        }
+    }
+}

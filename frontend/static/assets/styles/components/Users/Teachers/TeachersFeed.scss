@@ -1,0 +1,78 @@
+.profe-feed {
+  overflow: hidden;
+
+  .img-card {
+    height: 100px !important;
+    width: 100px !important;
+  }
+  .profe-card-content {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    grid-template-rows: 90px 1fr;
+    margin: 0;
+  }
+  .profe-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+
+  .profe-score div:first-child {
+    margin: 20px 0 0 0 !important;
+  }
+  .profe-score small {
+    margin: 0 !important;
+  }
+  .punctuation {
+    display: block;
+  }
+
+  @media only screen and (min-width: 340px) {
+    .profe-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 5;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+    }
+  }
+  @media only screen and (min-width: 1024px) {
+    .profe-score div:first-child {
+      margin: 0px 20px 5px 20px !important;
+    }
+    .punctuation {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .punctuation div {
+      align-self: start;
+      margin-top: 0;
+    }
+    .img-card {
+      height: 125px !important;
+      width: 125px !important;
+    }
+    .profe-card-content {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      grid-template-rows: 130px 1fr;
+    }
+    .profe-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+    }
+  }
+  @media only screen and (min-width: 1200px) {
+    .profe-card-content {
+      display: grid;
+      grid-template-columns: 140px 410px 150px;
+    }
+  }
+}

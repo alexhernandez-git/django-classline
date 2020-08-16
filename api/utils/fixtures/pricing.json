@@ -1,0 +1,72 @@
+[
+    {
+        "pk": 0,
+        "model": "programs.PricingAccount",
+        "fields": {
+            "price": 0,
+            "accounts": 5,
+            "level": 1,
+            "currency": "eur"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "programs.PricingAccount",
+        "fields": {
+            "price": 19.99,
+            "accounts": 20,
+            "level": 2,
+            "currency": "eur"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "programs.PricingAccount",
+        "fields": {
+            "price": 39.99,
+            "accounts": 40,
+            "level": 3,
+            "currency": "eur"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "programs.PricingAccount",
+        "fields": {
+            "price": 59.99,
+            "accounts": 60,
+            "level": 4,
+            "currency": "eur"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "programs.PricingAccount",
+        "fields": {
+            "price": 79.99,
+            "accounts": 80,
+            "level": 5,
+            "currency": "eur"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "programs.PricingAccount",
+        "fields": {
+            "price": 99.99,
+            "accounts": 100,
+            "level": 6,
+            "currency": "eur"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "programs.PricingAccount",
+        "fields": {
+            "price": 149.99,
+            "accounts": 150,
+            "level": 7,
+            "currency": "eur"
+        }
+    }
+]

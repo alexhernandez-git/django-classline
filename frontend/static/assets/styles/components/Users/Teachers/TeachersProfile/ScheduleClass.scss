@@ -1,0 +1,86 @@
+.schedule-class {
+  .nav-link:focus {
+    outline: none !important;
+    box-shadow: none;
+  }
+  .nav-link:hover {
+    color: #3c6754;
+  }
+  .nav-link.active {
+    background: linear-gradient(45deg, #56b389, #2e6a89);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  }
+  .nav-link.active:hover {
+    color: #fff;
+  }
+  .form-control:focus {
+    box-shadow: none;
+  }
+  .div-img {
+    overflow: hidden;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+  }
+  .img-student {
+    height: 150px;
+    width: 150px;
+  }
+  .filter-carousel {
+    display: flex;
+  }
+  .filter-carousel div {
+    padding: 5px;
+    color: rgba($color: #000000, $alpha: 0.5);
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+      box-shadow 0.15s ease-in-out;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+  .filter-carousel div:hover,
+  .filter-carousel div.active {
+    color: black;
+    border-bottom: 1px solid black;
+  }
+  .filter-carousel .card {
+    padding-top: 10px;
+    opacity: 1;
+    width: 300px;
+    color: white;
+  }
+
+  .card-title {
+    color: #262626;
+    display: block;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 0 !important;
+  }
+
+  .category-card img {
+    display: block;
+    margin: auto;
+    width: 250px;
+    height: 250px;
+  }
+  .slick-dots li button:before {
+    font-family: "slick" !important;
+    font-size: 50px !important;
+    line-height: 0 !important;
+  }
+  .nav-item {
+    width: max-content;
+  }
+  .slick-dots {
+    bottom: 0;
+  }
+  @media only screen and (max-width: 300px) {
+    .nav {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}

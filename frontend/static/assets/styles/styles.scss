@@ -1,0 +1,356 @@
+// Colors
+/* General */
+
+$theme-colors: (
+  "primary": #3c6754,
+  // "primary": #66bcf2,
+    "secondary": #56b389,
+  // "secondary": #459489,
+    // "success": #9cbf78,
+    "success": #28526d,
+  "danger": #684e73,
+  "warning": #e5c07b,
+  "info": #757575,
+  "light": #f8f9fa,
+  "dark": #323840,
+);
+
+.bg-red {
+  background-color: rgb(221, 51, 51) !important;
+  color: white !important;
+}
+.text-red {
+  color: rgb(221, 51, 51) !important;
+}
+
+// Custom bootstrap
+.text-break {
+  word-break: break-all !important;
+}
+@media only screen and (max-width: 992px) {
+  .btn-md-block {
+    width: 100%;
+    margin: 5px;
+  }
+}
+@media only screen and (max-width: 576px) {
+  .btn-sm-block {
+    width: 100%;
+    margin: 5px;
+  }
+}
+.disable-default-a {
+  text-decoration: none !important;
+  background-color: transparent !important;
+}
+a {
+  text-decoration: none !important;
+}
+img {
+  pointer-events: none;
+}
+// * {
+//   -webkit-user-select: none;
+//   -moz-user-select: none;
+//   -khtml-user-select: none;
+//   -ms-user-select: none;
+//   // color: #323840;
+// }
+.modal-content {
+  border: none !important;
+}
+.nav-link:focus {
+  outline: none !important;
+  box-shadow: none;
+}
+video:focus {
+  outline: none !important;
+  box-shadow: none;
+}
+.new-line {
+  white-space: pre-line;
+}
+// Utils
+
+@media only screen and (min-width: 768px) {
+  .w-sm-50 {
+    width: 50%;
+  }
+}
+
+@keyframes beat {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.beat {
+  cursor: pointer;
+  animation: beat linear 1.5s infinite alternate;
+}
+
+button:focus {
+  outline: none !important;
+}
+.btn-outline-green,
+.btn.btn-outline-green {
+  border-radius: 50rem !important;
+  background-color: none;
+  border: 1px solid #56b389 !important;
+  color: #56b389 !important;
+}
+.btn-outline-green:hover,
+.btn.btn-outline-green:hover,
+.btn.btn-outline-green:focus {
+  // background: linear-gradient(45deg, #56b389, #2e6a89);
+  // border: 1px solid white !important;
+  color: #56b389 !important;
+  outline: none !important;
+}
+.btn-outline-success {
+  border: none !important;
+}
+.btn-gradient-green {
+  padding: 7px 15px !important;
+}
+.btn.btn-outline-cancel,
+.btn-outline-cancel {
+  border-radius: 50rem !important;
+  background-color: none;
+  border: 1px solid #757575 !important;
+  color: #757575 !important;
+}
+.btn.btn-outline-cancel:hover,
+.btn.btn-outline-cancel:focus,
+.btn-outline-cancel:hover,
+.btn-outline-cancel:focus {
+  // background: linear-gradient(45deg, #56b389, #2e6a89);
+  // border: 1px solid white !important;
+  color: #757575 !important;
+  outline: none !important;
+}
+
+// gradients
+.bg-gradient-light-blue {
+  background: linear-gradient(#64c8e6, #9198e5);
+}
+.bg-gradient-green {
+  background: linear-gradient(45deg, #2e6a89, #56b389);
+}
+.text-shadow {
+  text-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.cursor-no-pointer {
+  cursor: inherit !important;
+}
+.box-shadow {
+  box-shadow: 0 0 20px black;
+}
+
+.text-grey {
+  color: #757575 !important;
+}
+
+/* btn */
+
+.btn:focus {
+  box-shadow: none !important;
+}
+.btn-dark:focus {
+  box-shadow: none !important;
+}
+.btn:hover {
+  color: #fff !important;
+}
+.btn-outline-light:hover {
+  color: #000 !important;
+}
+.btn-green {
+  background: linear-gradient(45deg, #2e6a89, #56b389);
+  border: none !important;
+  border-radius: 50rem !important;
+}
+.btn-green-disabled {
+  background: linear-gradient(45deg, #2e6a89, #56b389);
+  border: none !important;
+  opacity: 0.5;
+  cursor: inherit;
+}
+.btn-red {
+  background: linear-gradient(45deg, #661e1e, #dd3333) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 50rem !important;
+}
+/* Forms */
+input.form-control,
+textarea.form-control,
+input.custom-control-input {
+  box-shadow: none !important;
+}
+input.form-control:focus,
+textarea.form-control:focus,
+input.custom-control-input:focus {
+  box-shadow: none !important;
+}
+
+// My Zone
+.div-icon-rol {
+  border: 3px solid #f1ce70 !important;
+
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 44px;
+  width: 44px;
+}
+@media only screen and (min-width: 768px) {
+  .my-zone {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 70px);
+    width: calc(100% - 100px);
+    position: absolute;
+    left: 100px;
+    right: 0;
+    top: 70px;
+    padding: 0 0 30px;
+  }
+  .content-zone {
+    width: calc(100% - 100px);
+    position: relative;
+    left: 100px;
+    right: 0;
+    padding: 0 0 150px;
+  }
+}
+@media only screen and (max-width: 992px) {
+  .div-margin-bottom {
+    margin-bottom: 10px;
+  }
+}
+.swal2-title {
+  font-size: 1.5rem;
+}
+// Sweet alert
+.swal2-styled.swal2-confirm {
+  background: linear-gradient(45deg, #2e6a89, #56b389) !important;
+  border: none !important;
+  border-radius: 50rem !important;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+.swal2-styled.swal2-confirm:focus {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+.swal2-cancel.swal2-styled {
+  border: none !important;
+  border-radius: 50rem !important;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+.swal2-cancel.swal2-styled:focus {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+/* Customize the label (the container) */
+.container-check {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container-check input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 5px;
+}
+
+/* On mouse-over, add a grey background color */
+.container-check:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container-check input:checked ~ .checkmark {
+  background: linear-gradient(45deg, #2e6a89, #56b389);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container-check input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container-check .checkmark:after {
+  left: 6px;
+  top: 3px;
+  width: 13px;
+  height: 13px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+@import "../../../../node_modules/bootstrap/scss/bootstrap";
+
+button:disabled {
+  opacity: 0.5;
+}
+
+.stripe_error {
+  color: brown;
+}
+
+.payment_method_card {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  .button_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@import "~@fullcalendar/core/main.css";
+@import "~@fullcalendar/daygrid/main.css";
+@import "~@fullcalendar/timegrid/main.css";
+@import "react-h5-audio-player/src/styles.scss";

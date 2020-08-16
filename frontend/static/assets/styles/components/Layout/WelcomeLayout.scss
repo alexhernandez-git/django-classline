@@ -1,0 +1,29 @@
+.div-welcome {
+  display: flex;
+  align-items: center;
+  min-height: 500px;
+}
+@media only screen and (min-width: 1000px) {
+  .div-welcome {
+    height: calc(100vh - 320px);
+  }
+}
+@media only screen and (max-width: 768px) {
+  .info-pill {
+    margin: 10px 0;
+  }
+  .div-welcome {
+    display: flex;
+    align-items: center;
+    min-height: 600px;
+  }
+  .container-info-pill > .row {
+    margin: 0;
+  }
+  .container-info-pill > .row > div {
+    margin: 10px 0;
+  }
+}
+.slick-element {
+  outline: none !important;
+}
