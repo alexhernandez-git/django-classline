@@ -581,8 +581,8 @@ class AccountVerificationSerializer(serializers.Serializer):
         """Update user's verified status."""
         payload = self.context['payload']
         user = User.objects.get(username=payload['user'])
-        # if user.is_verified:
-        #     raise serializers.ValidationError('Tu cuenta ya esta validada')
+        if user.is_verified:
+            raise serializers.ValidationError('Tu cuenta ya esta validada')
 
         user.is_verified = True
         user.save()
