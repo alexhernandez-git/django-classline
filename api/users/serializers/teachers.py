@@ -6,7 +6,8 @@ from rest_framework import serializers
 # Models
 from api.users.models import (
     Teacher,
-    User
+    User,
+
 )
 from api.programs.models import Program, Rating, Student
 
@@ -20,6 +21,7 @@ class TeacherModelSerializer(serializers.ModelSerializer):
     ratings = serializers.SerializerMethodField()
     students = serializers.SerializerMethodField()
     academies = serializers.SerializerMethodField()
+    discount = serializers.SerializerMethodField()
 
     class Meta:
         """Meta class."""
@@ -30,8 +32,8 @@ class TeacherModelSerializer(serializers.ModelSerializer):
             'rating',
             'ratings',
             'students',
-            'academies'
-
+            'academies',
+            'discount'
         )
 
     def get_programs(self, obj):
@@ -53,7 +55,13 @@ class TeacherModelSerializer(serializers.ModelSerializer):
             user=User.objects.get(teacher=obj)).count()
         return academies
 
-        return super(TeacherModelSerializer, self).update(instance, validated_data)
+    def get_discount(self, obj):
+        from api.users.serializers import CouponModelSerializer
+
+        if obj.discount:
+            return CouponModelSerializer(obj.discount, many=False).data
+        else:
+            return None
 
 
 class TeacherProgramsCountModelSerializer(serializers.ModelSerializer):

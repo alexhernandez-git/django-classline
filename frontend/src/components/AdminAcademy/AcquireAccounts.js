@@ -40,8 +40,8 @@ const AcquireAccounts = (props) => {
   };
   const [showPro, setShowPro] = useState(false);
   const [pricingPro, setPricingPro] = useState({
-    id: "prod_HnaDlYpZiAuc5Y",
-    price_id: "price_1HDz2vIgGIa3w9CpszZ9HhOr",
+    id: "prod_HqaU1ykblf4gX6",
+    price_id: "price_1HGtJaIgGIa3w9Cpd7Q2ObG4",
     level: 0,
     accounts: level_pro ? current_accounts : 51,
     description: "Accounts Volume Pricing",
@@ -63,54 +63,46 @@ const AcquireAccounts = (props) => {
     console.log("price 1.75", parseInt(pricingPro.accounts) * 1.75);
     if (
       parseInt(pricingPro.accounts) > 50 &&
-      parseInt(pricingPro.accounts) <= 100
+      parseInt(pricingPro.accounts) <= 99
     ) {
       setPricingPro({
         ...pricingPro,
         price: coupon
           ? parseInt(pricingPro.accounts) * 1.75 -
-            parseInt(pricingPro.accounts) *
-              1.75 *
-              (coupon.percentage_discount / 100)
+            parseInt(pricingPro.accounts) * 1.75 * (coupon.percent_off / 100)
           : parseInt(pricingPro.accounts) * 1.75,
       });
       setAccountPrice("1.75€ por cuenta");
     } else if (
-      parseInt(pricingPro.accounts) > 100 &&
-      parseInt(pricingPro.accounts) <= 150
+      parseInt(pricingPro.accounts) > 99 &&
+      parseInt(pricingPro.accounts) <= 1
     ) {
       setPricingPro({
         ...pricingPro,
         price: coupon
           ? parseInt(pricingPro.accounts) * 1.5 -
-            parseInt(pricingPro.accounts) *
-              1.5 *
-              (coupon.percentage_discount / 100)
+            parseInt(pricingPro.accounts) * 1.5 * (coupon.percent_off / 100)
           : parseInt(pricingPro.accounts) * 1.5,
       });
       setAccountPrice("1.50€ por cuenta");
     } else if (
-      parseInt(pricingPro.accounts) > 150 &&
-      parseInt(pricingPro.accounts) <= 200
+      parseInt(pricingPro.accounts) > 149 &&
+      parseInt(pricingPro.accounts) <= 199
     ) {
       setPricingPro({
         ...pricingPro,
         price: coupon
           ? parseInt(pricingPro.accounts) * 1.25 -
-            parseInt(pricingPro.accounts) *
-              1.25 *
-              (coupon.percentage_discount / 100)
+            parseInt(pricingPro.accounts) * 1.25 * (coupon.percent_off / 100)
           : parseInt(pricingPro.accounts) * 1.25,
       });
       setAccountPrice("1.25€ por cuenta");
-    } else if (parseInt(pricingPro.accounts) > 200) {
+    } else if (parseInt(pricingPro.accounts) > 199) {
       setPricingPro({
         ...pricingPro,
         price: coupon
           ? parseInt(pricingPro.accounts) * 1.0 -
-            parseInt(pricingPro.accounts) *
-              1.0 *
-              (coupon.percentage_discount / 100)
+            parseInt(pricingPro.accounts) * 1.0 * (coupon.percent_off / 100)
           : parseInt(pricingPro.accounts) * 1.0,
       });
 
@@ -119,7 +111,15 @@ const AcquireAccounts = (props) => {
   };
 
   useEffect(() => {
-    calcPricePro(promoCode);
+    if (authReducer.user.teacher.discount) {
+      setPromoCode(authReducer.user.teacher.discount);
+      calcPricePro(authReducer.user.teacher.discount);
+      setDiscount(
+        `Aplicado un descuento del ${authReducer.user.teacher.discount.percent_off}%`
+      );
+    } else {
+      calcPricePro(promoCode);
+    }
   }, [pricingPro.accounts]);
 
   const [numErrors, setNumErrors] = useState({
@@ -252,7 +252,7 @@ const AcquireAccounts = (props) => {
       id: "promo_1HEyiqIgGIa3w9Cpdjwxt6V1",
       promotion_code: "ACCOUNTS50OFF",
       coupon: "50_OFF",
-      percentage_discount: 50,
+      percent_off: 50,
     },
   ]);
   const [couponText, setCouponText] = useState("");
@@ -270,7 +270,7 @@ const AcquireAccounts = (props) => {
         calcPricePro(result);
       }
 
-      setDiscount(`Aplicado un descuento del ${result.percentage_discount}%`);
+      setDiscount(`Aplicado un descuento del ${result.percent_off}%`);
     } else {
       console.log("El cupon no existe");
       setDiscount(false);
@@ -530,7 +530,7 @@ const AcquireAccounts = (props) => {
                     (promoCode
                       ? (
                           pricingSelected.price *
-                          (promoCode.percentage_discount / 100)
+                          (promoCode.percent_off / 100)
                         ).toFixed(2)
                       : pricingSelected.price.toFixed(2))}
                   €/mes
@@ -637,15 +637,23 @@ const AcquireAccounts = (props) => {
                 >
                   Añadir cupón
                 </label>
-                <input
-                  className="text-center"
-                  id="cupon-code-pro"
-                  type="text"
-                  placeholder="Añadir cupón"
-                  value={couponText}
-                  onChange={(e) => handleChangeCoupon(e)}
-                  onKeyUp={(e) => handleChangeCoupon(e)}
-                />
+                {authReducer.user.teacher.discount ? (
+                  <small style={{ color: "green" }}>
+                    No puedes poner cupones porque eres un miembro VIP con un
+                    descuento permanente del{" "}
+                    {authReducer.user.teacher.discount.percent_off}%
+                  </small>
+                ) : (
+                  <input
+                    className="text-center"
+                    id="cupon-code-pro"
+                    type="text"
+                    placeholder="Añadir cupón"
+                    value={couponText}
+                    onChange={(e) => handleChangeCoupon(e)}
+                    onKeyUp={(e) => handleChangeCoupon(e)}
+                  />
+                )}
               </CouponDiv>
             </Modal.Footer>
           </form>
@@ -792,6 +800,7 @@ const AcquireAccounts = (props) => {
                   </>
                 )}
             </Modal.Body>
+
             <Modal.Footer className="d-flex justify-content-center">
               <CouponDiv className="w-100">
                 <label
@@ -800,15 +809,23 @@ const AcquireAccounts = (props) => {
                 >
                   Añadir cupón
                 </label>
-                <input
-                  className="text-center"
-                  id="cupon-code-pro"
-                  type="text"
-                  placeholder="Añadir cupón"
-                  value={couponText}
-                  onChange={(e) => handleChangeCoupon(e, true)}
-                  onKeyUp={(e) => handleChangeCoupon(e, true)}
-                />
+                {authReducer.user.teacher.discount ? (
+                  <small style={{ color: "green" }}>
+                    No puedes poner cupones porque eres un miembro VIP con un
+                    descuento permanente del{" "}
+                    {authReducer.user.teacher.discount.percent_off}%
+                  </small>
+                ) : (
+                  <input
+                    className="text-center"
+                    id="cupon-code-pro"
+                    type="text"
+                    placeholder="Añadir cupón"
+                    value={couponText}
+                    onChange={(e) => handleChangeCoupon(e)}
+                    onKeyUp={(e) => handleChangeCoupon(e)}
+                  />
+                )}
               </CouponDiv>
             </Modal.Footer>
           </form>
