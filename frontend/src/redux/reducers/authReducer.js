@@ -18,6 +18,8 @@ import {
   CREATE_RATING_SUCCESS,
   CREATE_RATING_FAIL,
   SET_STRIPE_CUSTOMER_DATA,
+  SET_TEACHER_DISCOUNT,
+  REMOVE_TEACHER_DISCOUNT,
 } from "../types";
 const initialState = {
   auth_token: localStorage.getItem("auth_token"),
@@ -161,6 +163,28 @@ export default function (state = initialState, action) {
             ...state.user.profile,
             stripe_customer_id: action.payload.customer_id,
             payment_methods: action.payload.payment_methods,
+          },
+        },
+      };
+    case SET_TEACHER_DISCOUNT:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          teacher: {
+            ...state.user.teacher,
+            discount: action.payload,
+          },
+        },
+      };
+    case REMOVE_TEACHER_DISCOUNT:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          teacher: {
+            ...state.user.teacher,
+            discount: null,
           },
         },
       };

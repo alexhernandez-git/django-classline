@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 # Models
-from api.users.models import User, Profile, Teacher, Subscription
+from api.users.models import User, Profile, Teacher, Subscription, Coupon
 
 
 class CustomUserAdmin(UserAdmin):
@@ -31,14 +31,20 @@ class ProfileAdmin(admin.ModelAdmin):
 class ProfileAdmin(admin.ModelAdmin):
     """Profile model admin."""
 
-    list_display = ('user',)
-    search_fields = ('user__username', 'user__email',
-                     'user__first_name', 'user__last_name')
+    # list_display = ('user',)
+    # search_fields = ('user__username', 'user__email',
+    #                  'user__first_name', 'user__last_name')
     # list_filter = ('reputation',)
 
 
 @admin.register(Subscription)
 class Program(admin.ModelAdmin):
+    """Profile model admin."""
+    list_display = ('id',)
+
+
+@admin.register(Coupon)
+class Coupon(admin.ModelAdmin):
     """Profile model admin."""
     list_display = ('id',)
 

@@ -17,9 +17,9 @@ class Teacher(CLineModel):
     user = models.OneToOneField('users.User', on_delete=models.CASCADE)
     rating = models.FloatField(default=0)
     discount = models.OneToOneField(
-        'users.Coupon', related_name='teacher_coupons', on_delete=models.CASCADE, null=True, blank=True)
+        'users.Coupon', related_name='teacher_coupons', on_delete=models.SET_NULL, null=True, blank=True)
     subscriptions = models.ManyToManyField(
-        'users.Subscription', related_name='instructor_subscriptions')
+        'users.Subscription', related_name='instructor_subscriptions', blank=True)
 
     def __str__(self):
         """Return price."""

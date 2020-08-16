@@ -35,6 +35,8 @@ import {
   CANECEL_ACCOUNTS_SUCCESS,
   CANECEL_ACCOUNTS_FAIL,
   SET_STRIPE_CUSTOMER_DATA,
+  SET_TEACHER_DISCOUNT,
+  REMOVE_TEACHER_DISCOUNT,
 } from "../types";
 
 import { tokenConfig } from "./auth";
@@ -291,13 +293,19 @@ export const addAcquireAccounts = (
       tokenConfig(getState)
     )
     .then((res) => {
-      console.log(res);
+      const { discount, customer_id, payment_methods, program } = res.data;
 
       dispatch({
         type: ACQUIRE_ACCOUNTS_SUCCESS,
-        payload: res.data.program,
+        payload: program,
       });
-      if (res.data.customer_id && res.data.payment_methods) {
+      if (discount) {
+        dispatch({
+          type: SET_TEACHER_DISCOUNT,
+          payload: discount,
+        });
+      }
+      if (customer_id && payment_methods) {
         dispatch({
           type: SET_STRIPE_CUSTOMER_DATA,
           payload: res.data,
@@ -328,14 +336,17 @@ export const cancelAcquireAccounts = () => (dispatch, getState) => {
       tokenConfig(getState)
     )
     .then((res) => {
+      dispatch({
+        type: CANECEL_ACCOUNTS_SUCCESS,
+        payload: res.data,
+      });
+      dispatch({
+        type: REMOVE_TEACHER_DISCOUNT,
+      });
       Swal.fire({
         title: "Cuentas canceladas",
         icon: "success",
         confirmButtonText: "Ok",
-      });
-      dispatch({
-        type: CANECEL_ACCOUNTS_SUCCESS,
-        payload: res.data,
       });
     })
     .catch((err) => {

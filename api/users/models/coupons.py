@@ -14,4 +14,4 @@ class Coupon(CLineModel):
 
     def __str__(self):
         """Return user's str representation."""
-        return str(self.user)
+        return str(self.coupon_id)

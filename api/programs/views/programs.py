@@ -44,7 +44,8 @@ from api.users.serializers import (
     ProfileModelSerializer,
     UserWithoutTeacherModelSerializer,
     AccountsSubscriptionSignUpSerializer,
-    AccountsSubscriptionModelSerializer
+    AccountsSubscriptionModelSerializer,
+    CouponModelSerializer
 )
 
 
@@ -607,7 +608,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
 
                     if request.data['accounts_acquired']['level_pro']:
 
-                        if teacher.discount or Teacher.subscriptions.through.objects.filter(active=True).count() <= 10:
+                        if teacher.discount or Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 10:
 
                             if not teacher.discount:
                                 discount = {
@@ -652,7 +653,8 @@ class ProgramViewSet(mixins.CreateModelMixin,
                                 ],
                             )
                     else:
-                        if teacher.discount or Teacher.subscriptions.through.objects.filter(active=True).count() <= 10:
+
+                        if teacher.discount or Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 10:
 
                             if not teacher.discount:
                                 discount = {
@@ -732,6 +734,9 @@ class ProgramViewSet(mixins.CreateModelMixin,
                 'customer_id': customer_id,
                 'payment_methods': payment_methods.data
             }
+            if teacher.discount:
+                response_data['discount'] = CouponModelSerializer(
+                    teacher.discount, many=False).data
         else:
             response_data = {
                 'program': data,
@@ -759,6 +764,8 @@ class ProgramViewSet(mixins.CreateModelMixin,
             context={'program': program},
             partial=partial
         )
+        if teacher.discount:
+            teacher.discount.delete()
         serializer.is_valid(raise_exception=True)
         if teacher.subscriptions.filter(user=program.user.code, program=program.code, active=True).exists():
             try:

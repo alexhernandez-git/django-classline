@@ -60,7 +60,6 @@ const AcquireAccounts = (props) => {
   const calcPricePro = (coupon = false) => {
     console.log(pricingPro);
     console.log("coupon", coupon);
-    console.log("price 1.75", parseInt(pricingPro.accounts) * 1.75);
     if (
       parseInt(pricingPro.accounts) > 50 &&
       parseInt(pricingPro.accounts) <= 99
@@ -72,10 +71,12 @@ const AcquireAccounts = (props) => {
             parseInt(pricingPro.accounts) * 1.75 * (coupon.percent_off / 100)
           : parseInt(pricingPro.accounts) * 1.75,
       });
-      setAccountPrice("1.75€ por cuenta");
+      setAccountPrice(
+        ((1.75 * coupon.percent_off) / 100).toFixed(2) + "€ por cuenta"
+      );
     } else if (
       parseInt(pricingPro.accounts) > 99 &&
-      parseInt(pricingPro.accounts) <= 1
+      parseInt(pricingPro.accounts) <= 149
     ) {
       setPricingPro({
         ...pricingPro,
@@ -84,7 +85,9 @@ const AcquireAccounts = (props) => {
             parseInt(pricingPro.accounts) * 1.5 * (coupon.percent_off / 100)
           : parseInt(pricingPro.accounts) * 1.5,
       });
-      setAccountPrice("1.50€ por cuenta");
+      setAccountPrice(
+        ((1.5 * coupon.percent_off) / 100).toFixed(2) + "€ por cuenta"
+      );
     } else if (
       parseInt(pricingPro.accounts) > 149 &&
       parseInt(pricingPro.accounts) <= 199
@@ -96,7 +99,9 @@ const AcquireAccounts = (props) => {
             parseInt(pricingPro.accounts) * 1.25 * (coupon.percent_off / 100)
           : parseInt(pricingPro.accounts) * 1.25,
       });
-      setAccountPrice("1.25€ por cuenta");
+      setAccountPrice(
+        ((1.25 * coupon.percent_off) / 100).toFixed(2) + "€ por cuenta"
+      );
     } else if (parseInt(pricingPro.accounts) > 199) {
       setPricingPro({
         ...pricingPro,
@@ -106,9 +111,30 @@ const AcquireAccounts = (props) => {
           : parseInt(pricingPro.accounts) * 1.0,
       });
 
-      setAccountPrice("1.00€ por cuenta");
+      setAccountPri(
+        ce((1 * coupon.percent_off) / 100).toFixed(2) + "€ por cuenta"
+      );
     }
   };
+
+  useEffect(() => {
+    console.log("discount", authReducer.user.teacher.discount);
+    if (authReducer.user.teacher.discount) {
+      setPromoCode(authReducer.user.teacher.discount);
+
+      calcPricePro(authReducer.user.teacher.discount);
+
+      setDiscount(
+        `Aplicado un descuento del ${authReducer.user.teacher.discount.percent_off}%`
+      );
+    } else {
+      setPromoCode(null);
+
+      calcPricePro();
+
+      setDiscount(false);
+    }
+  }, [authReducer.user.teacher.discount]);
 
   useEffect(() => {
     if (authReducer.user.teacher.discount) {
@@ -638,10 +664,8 @@ const AcquireAccounts = (props) => {
                   Añadir cupón
                 </label>
                 {authReducer.user.teacher.discount ? (
-                  <small style={{ color: "green" }}>
-                    No puedes poner cupones porque eres un miembro VIP con un
-                    descuento permanente del{" "}
-                    {authReducer.user.teacher.discount.percent_off}%
+                  <small style={{ color: "green", alignSelf: "center" }}>
+                    Ya se te esta aplicando el descuento máximo
                   </small>
                 ) : (
                   <input
@@ -810,10 +834,8 @@ const AcquireAccounts = (props) => {
                   Añadir cupón
                 </label>
                 {authReducer.user.teacher.discount ? (
-                  <small style={{ color: "green" }}>
-                    No puedes poner cupones porque eres un miembro VIP con un
-                    descuento permanente del{" "}
-                    {authReducer.user.teacher.discount.percent_off}%
+                  <small style={{ color: "green", alignSelf: "center" }}>
+                    Ya se te esta aplicando el descuento máximo
                   </small>
                 ) : (
                   <input
