@@ -8,4 +8,4 @@ class Command(BaseCommand):
 
         if not User.objects.filter(username="alexadmin").exists():
             User.objects.create_superuser(
-                "alexadmin", "vlexhndz@gmail.com", "admin321")
+                "alexadmin", "alexhernandez@gmail.com", "admin321")
