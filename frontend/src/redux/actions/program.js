@@ -284,10 +284,12 @@ export const addAcquireAccounts = (
     payment_method_id: paymentMethodId,
   };
   console.log("promcode", promotion_code);
-  if (promotion_code.is_discount) {
-    data.discount = promotion_code;
-  } else {
-    data.promotion_code = promotion_code;
+  if (promotion_code) {
+    if (promotion_code.is_discount) {
+      data.discount = promotion_code;
+    } else {
+      data.promotion_code = promotion_code;
+    }
   }
   console.log("data", data);
   dispatch({ type: ACQUIRE_ACCOUNTS, payload: accounts_acquired });

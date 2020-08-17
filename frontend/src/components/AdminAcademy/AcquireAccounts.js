@@ -157,8 +157,13 @@ const AcquireAccounts = (props) => {
 
       calcPricePro(areDiscount);
       setDiscount(`Aplicado un descuento del ${areDiscount.percent_off}%`);
+    } else {
+      setPromoCode(false);
+
+      calcPricePro(false);
+      setDiscount(false);
     }
-  }, [areDiscount]);
+  }, [areDiscount, fetchDiscount]);
   useEffect(() => {
     if (authReducer.user.teacher.discount) {
       setPromoCode(authReducer.user.teacher.discount);
@@ -368,7 +373,7 @@ const AcquireAccounts = (props) => {
                   <ButtonCustomError
                     className="w-100"
                     onClick={() => {
-                      setDiscount(false);
+                      fetchDiscount();
                       handleCancelAcquireAccounts();
                     }}
                   >
@@ -381,7 +386,7 @@ const AcquireAccounts = (props) => {
                 className="w-100"
                 onClick={() => handleAddAcquireAccounts(pricing)}
               >
-                {pricing.price == 0 ? "Gratis" : pricing.price + "€/mes"}
+                <>{pricing.price == 0 ? "Gratis" : pricing.price + "€/mes"}</>
               </ButtonCustom>
             ) : (
               <ButtonCustom
@@ -502,7 +507,7 @@ const AcquireAccounts = (props) => {
                       <ButtonCustomError
                         className="w-100"
                         onClick={() => {
-                          setDiscount(false);
+                          fetchDiscount();
                           handleCancelAcquireAccounts();
                         }}
                       >
@@ -705,7 +710,7 @@ const AcquireAccounts = (props) => {
                 >
                   Añadir cupón
                 </label>
-                {authReducer.user.teacher.discount || discount ? (
+                {authReducer.user.teacher.discount || areDiscount ? (
                   <small style={{ color: "green", alignSelf: "center" }}>
                     Ya se te esta aplicando el descuento
                   </small>
@@ -875,7 +880,7 @@ const AcquireAccounts = (props) => {
                 >
                   Añadir cupón
                 </label>
-                {authReducer.user.teacher.discount || discount ? (
+                {authReducer.user.teacher.discount || areDiscount ? (
                   <small style={{ color: "green", alignSelf: "center" }}>
                     Ya se te esta aplicando el descuento
                   </small>
