@@ -438,7 +438,6 @@ class ProgramViewSet(mixins.CreateModelMixin,
         # End validation
         if not product['level'] == 1:
             try:
-
                 if discount and not teacher.discount:
                     discount = {
                         'coupon_id': "50_OFF",
@@ -448,6 +447,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                     teacher.discount = Coupon.objects.create(
                         **discount)
                     teacher.save()
+
                 # payment_method = stripe.PaymentMethod.retrieve(
                 # request.data['payment_method_id'],
                 # )
@@ -603,6 +603,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                     teacher.save()
 
                 else:
+
                     # Create the subscription
 
                     if request.data['accounts_acquired']['level_pro']:
@@ -782,7 +783,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
         if Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 10:
             return Response(
                 {
-                    "message": "50% de descuento en cuentas para tus alumnos para siempre",
+                    "message": "50% de descuento en cuentas para tus alumnos para siempre en nuestros 10 primeros clientes",
                     "info": "Cuando la cuenta de instructor adquiera cualquier plan apartir del nivel 2 se le asignará un descuento de por vida, el usuario podrá cambiar de plan pero si cancela el plan se le quitará el descuento",
                     "percent_off": 50,
                     "is_discount": True,

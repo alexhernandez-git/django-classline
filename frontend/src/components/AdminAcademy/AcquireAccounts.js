@@ -153,9 +153,9 @@ const AcquireAccounts = (props) => {
   }, [authReducer.user.teacher.discount]);
   useEffect(() => {
     if (areDiscount) {
-      setPromoCode({ percent_off: areDiscount.percent_off });
+      setPromoCode(areDiscount);
 
-      calcPricePro({ percent_off: areDiscount.percent_off });
+      calcPricePro(areDiscount);
       setDiscount(`Aplicado un descuento del ${areDiscount.percent_off}%`);
     }
   }, [areDiscount]);
@@ -167,9 +167,9 @@ const AcquireAccounts = (props) => {
         `Aplicado un descuento del ${authReducer.user.teacher.discount.percent_off}%`
       );
     } else if (areDiscount) {
-      setPromoCode({ percent_off: areDiscount.percent_off });
+      setPromoCode(areDiscount);
 
-      calcPricePro({ percent_off: areDiscount.percent_off });
+      calcPricePro(areDiscount);
       setDiscount(`Aplicado un descuento del ${areDiscount.percent_off}%`);
     } else {
       calcPricePro(promoCode);
