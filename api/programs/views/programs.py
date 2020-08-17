@@ -299,6 +299,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                 "destination": serialised_program.get('instructor').get('profile').get('stripe_account_id'),
             },
         )
+
         new_subscription = Subscription(
             subscription_id=subscription.id,
             user=user.code,
