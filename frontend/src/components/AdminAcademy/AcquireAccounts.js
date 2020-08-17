@@ -23,6 +23,7 @@ import {
 import { AdminForm } from "../ui/AdminForm";
 import { useDispatch, useSelector } from "react-redux";
 import { addAcquireAccounts } from "../../redux/actions/program";
+import axios from "axios";
 
 const AcquireAccounts = (props) => {
   const authReducer = useSelector((state) => state.authReducer);
@@ -298,39 +299,43 @@ const AcquireAccounts = (props) => {
   ]);
   const [promoCode, setPromoCode] = useState(null);
 
-  const [promoCodes, setPromoCodes] = useState([
-    {
-      id: "promo_1HEyiqIgGIa3w9Cpdjwxt6V1",
-      promotion_code: "ACCOUNTS50OFF",
-      coupon: "50_OFF",
-      percent_off: 50,
-    },
-  ]);
-  const [couponText, setCouponText] = useState("");
+  const [couponText, setCouponText] = useState({
+    text: "",
+    pro: false,
+  });
+  useEffect(() => {
+    if (couponText != "") {
+      const timeoutId = setTimeout(() => {
+        axios
+          .get(`/api/promotion-code/${couponText.text}`)
+          .then((result) => {
+            console.log(result.data);
+            setPromoCode(result.data);
+            if (couponText.pro) {
+              calcPricePro(result.data);
+            }
+
+            setDiscount(
+              `Aplicado un descuento del ${result.data.percent_off}%`
+            );
+          })
+          .catch((err) => {
+            console.log("El cupon no existe");
+            setDiscount(false);
+            setPromoCode(null);
+
+            if (couponText.pro) {
+              calcPricePro();
+            }
+          });
+      }, 500);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [couponText]);
   const handleChangeCoupon = (e, pro = false) => {
     e.preventDefault();
     const text = e.target.value;
-    setCouponText(text);
-    const result = promoCodes.find(
-      (promoCode) => promoCode.promotion_code == text
-    );
-    console.log(result);
-    if (result) {
-      setPromoCode(result);
-      if (pro) {
-        calcPricePro(result);
-      }
-
-      setDiscount(`Aplicado un descuento del ${result.percent_off}%`);
-    } else {
-      console.log("El cupon no existe");
-      setDiscount(false);
-      setPromoCode(null);
-
-      if (pro) {
-        calcPricePro();
-      }
-    }
+    setCouponText({ text: text, pro: pro });
   };
   const sliders = (pricing) => {
     return pricing.map((pricing) => (
@@ -717,7 +722,7 @@ const AcquireAccounts = (props) => {
                     id="cupon-code-pro"
                     type="text"
                     placeholder="Añadir cupón"
-                    value={couponText}
+                    value={couponText.text}
                     onChange={(e) => handleChangeCoupon(e)}
                     onKeyUp={(e) => handleChangeCoupon(e)}
                   />
@@ -887,7 +892,7 @@ const AcquireAccounts = (props) => {
                     id="cupon-code-pro"
                     type="text"
                     placeholder="Añadir cupón"
-                    value={couponText}
+                    value={couponText.text}
                     onChange={(e) => handleChangeCoupon(e)}
                     onKeyUp={(e) => handleChangeCoupon(e)}
                   />

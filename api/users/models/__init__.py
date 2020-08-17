@@ -3,3 +3,4 @@ from .profiles import Profile
 from .teachers import Teacher
 from .subscriptions import Subscription
 from .coupons import Coupon
+from .promotion_codes import PromotionCode

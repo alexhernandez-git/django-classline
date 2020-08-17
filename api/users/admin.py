@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 # Models
-from api.users.models import User, Profile, Teacher, Subscription, Coupon
+from api.users.models import User, Profile, Teacher, Subscription, Coupon, PromotionCode
 
 
 class CustomUserAdmin(UserAdmin):
@@ -46,7 +46,13 @@ class Program(admin.ModelAdmin):
 @admin.register(Coupon)
 class Coupon(admin.ModelAdmin):
     """Profile model admin."""
-    list_display = ('id',)
+    list_display = ('coupon_id',)
+
+
+@admin.register(PromotionCode)
+class PromotionCode(admin.ModelAdmin):
+    """Profile model admin."""
+    list_display = ('code', 'coupon_id', 'promotion_code_id')
 
 
 admin.site.register(User, CustomUserAdmin)
