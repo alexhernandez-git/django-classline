@@ -372,10 +372,15 @@ const AcquireAccounts = (props) => {
                 {promoCode
                   ? (pricing.price * (promoCode.percent_off / 100)).toFixed(2)
                   : pricing.price.toFixed(2)}
-                €/mes{" "}
-                <small>
-                  <s>{pricing.price + "€/mes"}</s>
-                </small>
+                €/mes
+                {promoCode && (
+                  <>
+                    {" "}
+                    <small>
+                      <s>{pricing.price + "€/mes"}</s>
+                    </small>
+                  </>
+                )}
               </ButtonCustom>
             )}
           </>
