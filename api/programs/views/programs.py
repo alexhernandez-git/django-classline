@@ -285,6 +285,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                     "default_payment_method": request.data.get('payment_method')
                 },
             )
+
         subscription = stripe.Subscription.create(
             customer=customer_id,
             items=[
@@ -293,7 +294,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                 },
             ],
             expand=["latest_invoice.payment_intent"],
-            application_fee_percent=25,
+            application_fee_percent=program.user.teacher.application_fee_percent,
             transfer_data={
                 "destination": serialised_program.get('instructor').get('profile').get('stripe_account_id'),
             },
