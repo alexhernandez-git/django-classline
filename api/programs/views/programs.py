@@ -424,9 +424,6 @@ class ProgramViewSet(mixins.CreateModelMixin,
         stripe.api_key = "sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo"
         customer_id = ''
         # Validation
-        if not program.level_adquired == None:
-            if product['level'] == 1 and (program.level_adquired > 1 or program.level_adquired == 0):
-                return Response({'message': 'Ya has superado el nivel 1'}, status=status.HTTP_400_BAD_REQUEST)
 
         if product == None:
             return Response({'message': 'No hay ningun pricing'}, status=status.HTTP_400_BAD_REQUEST)
@@ -436,261 +433,261 @@ class ProgramViewSet(mixins.CreateModelMixin,
         if accounts_already_created > int(product['accounts']):
             return Response({'message': 'Tienes más de {} cuentas creadas'.format(product['accounts'])}, status=status.HTTP_400_BAD_REQUEST)
         # End validation
-        if not product['level'] == 1:
-            try:
-                if discount and not teacher.discount:
-                    discount = {
-                        'coupon_id': "50_OFF",
-                        'percent_off': 50,
-                        'duration': "forever"
+
+        try:
+            if discount and not teacher.discount:
+                discount = {
+                    'coupon_id': "50_OFF",
+                    'percent_off': 50,
+                    'duration': "forever"
+                }
+                teacher.discount = Coupon.objects.create(
+                    **discount)
+                teacher.save()
+
+            # payment_method = stripe.PaymentMethod.retrieve(
+            # request.data['payment_method_id'],
+            # )
+            if profile.stripe_customer_id == None or profile.stripe_customer_id == '':
+                newCustomer = stripe.Customer.create(
+                    description="claCustomer_"+user.first_name+'_'+user.last_name,
+                    name=user.first_name+' '+user.last_name,
+                    email=user.email,
+                    payment_method=request.data.get('payment_method_id'),
+                    invoice_settings={
+                        "default_payment_method": request.data.get('payment_method_id')
                     }
-                    teacher.discount = Coupon.objects.create(
-                        **discount)
-                    teacher.save()
 
-                # payment_method = stripe.PaymentMethod.retrieve(
-                # request.data['payment_method_id'],
+                )
+                # if User.objects.filter(profile__stripe_customer_id=, subscription_type="accounts-subscription", ).exists():
+
+                #     pass
+                stripe.PaymentMethod.attach(
+                    request.data.get('payment_method_id'),
+                    customer=newCustomer.id,
+                )
+                customer_id = newCustomer.id
+                profile.stripe_customer_id = customer_id
+                serializer = ProfileModelSerializer(
+                    profile,
+                    data=request.data,
+                )
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+            else:
+                customer_id = profile.stripe_customer_id
+                stripe.PaymentMethod.attach(
+                    request.data.get('payment_method_id'),
+                    customer=customer_id,
+                )
+                stripe.Customer.modify(
+                    customer_id,
+                    invoice_settings={
+                        "default_payment_method": request.data.get('payment_method_id')
+                    },
+                )
+
+            if teacher.subscriptions.filter(user=program.user.code, program=program.code, active=True).exists():
+                accounts_subscription = teacher.subscriptions.filter(
+                    user=program.user.code, program=program.code, active=True)[0]
+                subscription = stripe.Subscription.retrieve(
+                    accounts_subscription.subscription_id)
+                # upcoming_invoice = stripe.Invoice.upcoming(customer=customer_id)
+                # import pdb; pdb.set_trace()
+                # stripe.InvoiceItem.delete(
+                #     upcoming_invoice['lines']['data'][0].invoice_item,
                 # )
-                if profile.stripe_customer_id == None or profile.stripe_customer_id == '':
-                    newCustomer = stripe.Customer.create(
-                        description="claCustomer_"+user.first_name+'_'+user.last_name,
-                        name=user.first_name+' '+user.last_name,
-                        email=user.email,
-                        payment_method=request.data.get('payment_method_id'),
-                        invoice_settings={
-                            "default_payment_method": request.data.get('payment_method_id')
-                        }
 
-                    )
-                    # if User.objects.filter(profile__stripe_customer_id=, subscription_type="accounts-subscription", ).exists():
+                subscription_to_modify = stripe.Subscription.retrieve(
+                    subscription.id)
+                if subscription_to_modify['discount']:
+                    stripe.Subscription.delete_discount(subscription.id)
 
-                    #     pass
-                    stripe.PaymentMethod.attach(
-                        request.data.get('payment_method_id'),
-                        customer=newCustomer.id,
-                    )
-                    customer_id = newCustomer.id
-                    profile.stripe_customer_id = customer_id
-                    serializer = ProfileModelSerializer(
-                        profile,
-                        data=request.data,
-                    )
-                    serializer.is_valid(raise_exception=True)
-                    serializer.save()
-                else:
-                    customer_id = profile.stripe_customer_id
-                    stripe.PaymentMethod.attach(
-                        request.data.get('payment_method_id'),
-                        customer=customer_id,
-                    )
-                    stripe.Customer.modify(
-                        customer_id,
-                        invoice_settings={
-                            "default_payment_method": request.data.get('payment_method_id')
-                        },
-                    )
-
-                if teacher.subscriptions.filter(user=program.user.code, program=program.code, active=True).exists():
-                    accounts_subscription = teacher.subscriptions.filter(
-                        user=program.user.code, program=program.code, active=True)[0]
-                    subscription = stripe.Subscription.retrieve(
-                        accounts_subscription.subscription_id)
-                    # upcoming_invoice = stripe.Invoice.upcoming(customer=customer_id)
-                    # import pdb; pdb.set_trace()
-                    # stripe.InvoiceItem.delete(
-                    #     upcoming_invoice['lines']['data'][0].invoice_item,
-                    # )
-
-                    subscription_to_modify = stripe.Subscription.retrieve(
-                        subscription.id)
-                    if subscription_to_modify['discount']:
-                        stripe.Subscription.delete_discount(subscription.id)
-
-                    if request.data['accounts_acquired']['level_pro']:
-                        if teacher.discount:
-                            subscription_modified = stripe.Subscription.modify(
-                                subscription.id,
-                                cancel_at_period_end=False,
-                                prorate=False,
-                                items=[
-                                    {
-                                        'id': subscription['items']['data'][0].id,
-                                        "price": request.data['accounts_acquired']['price_id'],
-                                        "quantity":request.data['accounts_acquired']['accounts']
-                                    },
-                                ],
-                                coupon=teacher.discount.coupon_id
-                            )
-                        elif promotion_code:
-                            subscription_modified = stripe.Subscription.modify(
-                                subscription.id,
-                                cancel_at_period_end=False,
-                                prorate=False,
-                                items=[
-                                    {
-                                        'id': subscription['items']['data'][0].id,
-                                        "price": request.data['accounts_acquired']['price_id'],
-                                        "quantity":request.data['accounts_acquired']['accounts']
-                                    },
-                                ],
-                                promotion_code=promotion_code['id']
-                            )
-                        else:
-                            subscription_modified = stripe.Subscription.modify(
-                                subscription.id,
-                                cancel_at_period_end=False,
-                                prorate=False,
-                                items=[
-                                    {
-                                        'id': subscription['items']['data'][0].id,
-                                        "price": request.data['accounts_acquired']['price_id'],
-                                        "quantity":request.data['accounts_acquired']['accounts']
-                                    },
-                                ],
-                                promotion_code=None
-                            )
+                if request.data['accounts_acquired']['level_pro']:
+                    if teacher.discount:
+                        subscription_modified = stripe.Subscription.modify(
+                            subscription.id,
+                            cancel_at_period_end=False,
+                            prorate=False,
+                            items=[
+                                {
+                                    'id': subscription['items']['data'][0].id,
+                                    "price": request.data['accounts_acquired']['price_id'],
+                                    "quantity":request.data['accounts_acquired']['accounts']
+                                },
+                            ],
+                            coupon=teacher.discount.coupon_id
+                        )
+                    elif promotion_code:
+                        subscription_modified = stripe.Subscription.modify(
+                            subscription.id,
+                            cancel_at_period_end=False,
+                            prorate=False,
+                            items=[
+                                {
+                                    'id': subscription['items']['data'][0].id,
+                                    "price": request.data['accounts_acquired']['price_id'],
+                                    "quantity":request.data['accounts_acquired']['accounts']
+                                },
+                            ],
+                            promotion_code=promotion_code['id']
+                        )
                     else:
-                        if teacher.discount:
+                        subscription_modified = stripe.Subscription.modify(
+                            subscription.id,
+                            cancel_at_period_end=False,
+                            prorate=False,
+                            items=[
+                                {
+                                    'id': subscription['items']['data'][0].id,
+                                    "price": request.data['accounts_acquired']['price_id'],
+                                    "quantity":request.data['accounts_acquired']['accounts']
+                                },
+                            ],
+                            promotion_code=None
+                        )
+                else:
+                    if teacher.discount:
 
-                            subscription_modified = stripe.Subscription.modify(
-                                subscription.id,
-                                cancel_at_period_end=False,
-                                prorate=False,
-                                items=[
-                                    {
-                                        'id': subscription['items']['data'][0].id,
-                                        'price':  request.data['accounts_acquired']['price_id'],
-                                    }
-                                ],
-                                coupon=teacher.discount.coupon_id
-                            )
-                        elif promotion_code:
-                            subscription_modified = stripe.Subscription.modify(
-                                subscription.id,
-                                cancel_at_period_end=False,
-                                prorate=False,
-                                items=[
-                                    {
-                                        'id': subscription['items']['data'][0].id,
-                                        'price':  request.data['accounts_acquired']['price_id'],
-                                    }
-                                ],
-                                promotion_code=promotion_code['id']
+                        subscription_modified = stripe.Subscription.modify(
+                            subscription.id,
+                            cancel_at_period_end=False,
+                            prorate=False,
+                            items=[
+                                {
+                                    'id': subscription['items']['data'][0].id,
+                                    'price':  request.data['accounts_acquired']['price_id'],
+                                }
+                            ],
+                            coupon=teacher.discount.coupon_id
+                        )
+                    elif promotion_code:
+                        subscription_modified = stripe.Subscription.modify(
+                            subscription.id,
+                            cancel_at_period_end=False,
+                            prorate=False,
+                            items=[
+                                {
+                                    'id': subscription['items']['data'][0].id,
+                                    'price':  request.data['accounts_acquired']['price_id'],
+                                }
+                            ],
+                            promotion_code=promotion_code['id']
 
-                            )
-                        else:
-                            subscription_modified = stripe.Subscription.modify(
-                                subscription.id,
-                                cancel_at_period_end=False,
-                                prorate=False,
-                                items=[
-                                    {
-                                        'id': subscription['items']['data'][0].id,
-                                        'price':  request.data['accounts_acquired']['price_id'],
-                                    }
-                                ],
-                            )
-                    teacher_subscription = Subscription.objects.get(
-                        subscription_id=subscription.id, active=True)
-                    teacher_subscription.subscription_id = subscription.id
-                    teacher_subscription.user = user.code
-                    teacher_subscription.program = program.code
-                    teacher_subscription.product = product['id']
-                    teacher_subscription.to_be_cancelled = False
-                    teacher_subscription.payment_issue = False
-                    teacher_subscription.current_period_end = subscription.current_period_end
-                    teacher_subscription.save()
-                    teacher.save()
+                        )
+                    else:
+                        subscription_modified = stripe.Subscription.modify(
+                            subscription.id,
+                            cancel_at_period_end=False,
+                            prorate=False,
+                            items=[
+                                {
+                                    'id': subscription['items']['data'][0].id,
+                                    'price':  request.data['accounts_acquired']['price_id'],
+                                }
+                            ],
+                        )
+                teacher_subscription = Subscription.objects.get(
+                    subscription_id=subscription.id, active=True)
+                teacher_subscription.subscription_id = subscription.id
+                teacher_subscription.user = user.code
+                teacher_subscription.program = program.code
+                teacher_subscription.product = product['id']
+                teacher_subscription.to_be_cancelled = False
+                teacher_subscription.payment_issue = False
+                teacher_subscription.current_period_end = subscription.current_period_end
+                teacher_subscription.save()
+                teacher.save()
 
+            else:
+
+                # Create the subscription
+
+                if request.data['accounts_acquired']['level_pro']:
+
+                    if teacher.discount:
+
+                        subscription = stripe.Subscription.create(
+                            customer=customer_id,
+                            items=[
+                                {
+                                    "price": request.data['accounts_acquired']['price_id'],
+                                    "quantity":request.data['accounts_acquired']['accounts']
+                                },
+                            ],
+                            coupon=teacher.discount.coupon_id
+                        )
+
+                    elif promotion_code:
+                        subscription = stripe.Subscription.create(
+                            customer=customer_id,
+                            items=[
+                                {
+                                    "price": request.data['accounts_acquired']['price_id'],
+                                    "quantity":request.data['accounts_acquired']['accounts']
+                                },
+                            ],
+                            promotion_code=promotion_code['id']
+                        )
+                    else:
+                        subscription = stripe.Subscription.create(
+                            customer=customer_id,
+                            items=[
+                                {
+                                    "price": request.data['accounts_acquired']['price_id'],
+                                    "quantity":request.data['accounts_acquired']['accounts']
+                                },
+                            ],
+                        )
                 else:
 
-                    # Create the subscription
+                    if teacher.discount:
 
-                    if request.data['accounts_acquired']['level_pro']:
-
-                        if teacher.discount:
-
-                            subscription = stripe.Subscription.create(
-                                customer=customer_id,
-                                items=[
-                                    {
-                                        "price": request.data['accounts_acquired']['price_id'],
-                                        "quantity":request.data['accounts_acquired']['accounts']
-                                    },
-                                ],
-                                coupon=teacher.discount.coupon_id
-                            )
-
-                        elif promotion_code:
-                            subscription = stripe.Subscription.create(
-                                customer=customer_id,
-                                items=[
-                                    {
-                                        "price": request.data['accounts_acquired']['price_id'],
-                                        "quantity":request.data['accounts_acquired']['accounts']
-                                    },
-                                ],
-                                promotion_code=promotion_code['id']
-                            )
-                        else:
-                            subscription = stripe.Subscription.create(
-                                customer=customer_id,
-                                items=[
-                                    {
-                                        "price": request.data['accounts_acquired']['price_id'],
-                                        "quantity":request.data['accounts_acquired']['accounts']
-                                    },
-                                ],
-                            )
+                        subscription = stripe.Subscription.create(
+                            customer=customer_id,
+                            items=[
+                                {
+                                    "price": request.data['accounts_acquired']['price_id'],
+                                },
+                            ],
+                            coupon=teacher.discount.coupon_id
+                        )
+                    elif promotion_code:
+                        subscription = stripe.Subscription.create(
+                            customer=customer_id,
+                            items=[
+                                {
+                                    "price": request.data['accounts_acquired']['price_id'],
+                                },
+                            ],
+                            promotion_code=promotion_code['id']
+                        )
                     else:
+                        subscription = stripe.Subscription.create(
+                            customer=customer_id,
+                            items=[
+                                {
+                                    "price": request.data['accounts_acquired']['price_id'],
+                                },
+                            ],
+                        )
 
-                        if teacher.discount:
+                sub = Subscription.objects.create(
+                    subscription_id=subscription.id,
+                    user=user.code,
+                    program=program.code,
+                    product=product['id'],
+                    to_be_cancelled=False,
+                    cancelled=False,
+                    payment_issue=False,
+                    current_period_end=subscription.current_period_end
+                )
+                teacher.subscriptions.add(sub)
+                teacher.save()
 
-                            subscription = stripe.Subscription.create(
-                                customer=customer_id,
-                                items=[
-                                    {
-                                        "price": request.data['accounts_acquired']['price_id'],
-                                    },
-                                ],
-                                coupon=teacher.discount.coupon_id
-                            )
-                        elif promotion_code:
-                            subscription = stripe.Subscription.create(
-                                customer=customer_id,
-                                items=[
-                                    {
-                                        "price": request.data['accounts_acquired']['price_id'],
-                                    },
-                                ],
-                                promotion_code=promotion_code['id']
-                            )
-                        else:
-                            subscription = stripe.Subscription.create(
-                                customer=customer_id,
-                                items=[
-                                    {
-                                        "price": request.data['accounts_acquired']['price_id'],
-                                    },
-                                ],
-                            )
-
-                    sub = Subscription.objects.create(
-                        subscription_id=subscription.id,
-                        user=user.code,
-                        program=program.code,
-                        product=product['id'],
-                        to_be_cancelled=False,
-                        cancelled=False,
-                        payment_issue=False,
-                        current_period_end=subscription.current_period_end
-                    )
-                    teacher.subscriptions.add(sub)
-                    teacher.save()
-
-            except Exception as e:
-                print(str(e))
-                return Response({'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(str(e))
+            return Response({'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer_class = self.get_serializer_class()
         partial = request.method == 'PATCH'
@@ -705,24 +702,19 @@ class ProgramViewSet(mixins.CreateModelMixin,
         serializer.is_valid(raise_exception=True)
         program = serializer.save()
         data = ProgramModifyModelSerializer(program, many=False).data
-        if not product['level'] == 1:
-            payment_methods = stripe.PaymentMethod.list(
-                customer=customer_id,
-                type="card"
-            )
-            response_data = {
-                'program': data,
-                'customer_id': customer_id,
-                'payment_methods': payment_methods.data
-            }
-            if teacher.discount:
-                response_data['discount'] = CouponModelSerializer(
-                    teacher.discount, many=False).data
-        else:
-            response_data = {
-                'program': data,
+        payment_methods = stripe.PaymentMethod.list(
+            customer=customer_id,
+            type="card"
+        )
+        response_data = {
+            'program': data,
+            'customer_id': customer_id,
+            'payment_methods': payment_methods.data
+        }
+        if teacher.discount:
+            response_data['discount'] = CouponModelSerializer(
+                teacher.discount, many=False).data
 
-            }
         return Response(response_data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['patch'])

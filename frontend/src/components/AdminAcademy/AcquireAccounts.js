@@ -266,17 +266,9 @@ const AcquireAccounts = (props) => {
   const [newCard, setNewCard] = useState(false);
   const [pricingEur, setPricingEur] = useState([
     {
-      id: 0,
-      level: 1,
-      accounts: 3,
-      price: 0,
-      currency: "EUR",
-      level_pro: false,
-    },
-    {
       id: "prod_Hnqeyg8C1Hkm3Y",
       price_id: "price_1HEExYIgGIa3w9CpBr95tWVw",
-      level: 2,
+      level: 1,
       accounts: 10,
       description: "10 Academy Accounts",
       level_pro: false,
@@ -286,7 +278,7 @@ const AcquireAccounts = (props) => {
     {
       id: "prod_HnqfHXug8RREYk",
       price_id: "price_1HEEy6IgGIa3w9Cp6yeAcr2U",
-      level: 3,
+      level: 2,
       accounts: 25,
       description: "20 Academy Accounts",
       level_pro: false,
@@ -296,7 +288,7 @@ const AcquireAccounts = (props) => {
     {
       id: "prod_HnqfsKiER0pxnT",
       price_id: "price_1HEEyXIgGIa3w9CpjhkDustj",
-      level: 4,
+      level: 3,
       accounts: 50,
       level_pro: false,
       description: "50 Academy Accounts",
@@ -343,10 +335,7 @@ const AcquireAccounts = (props) => {
   const sliders = (pricing) => {
     return pricing.map((pricing) => (
       <div className="p-2" key={pricing.id}>
-        <PricingCard
-          className="bg-white shadow-sm"
-          opacity={pricing.level > 1 && true}
-        >
+        <PricingCard className="bg-white shadow-sm">
           <span className="mt-4">Nivel {pricing.level}</span>
 
           <IconContext.Provider
@@ -360,40 +349,33 @@ const AcquireAccounts = (props) => {
           <span className="title mb-4">{pricing.accounts} Cuentas</span>
           <>
             {level_adquired == pricing.level ? (
-              pricing.level == 1 ? (
-                <ButtonCustom className="w-100 cursor-no-pointer">
+              <>
+                <ButtonCustom className="w-100 mb-2 cursor-no-pointer">
                   Adquiridas
                 </ButtonCustom>
-              ) : (
-                <>
-                  <ButtonCustom className="w-100 mb-2 cursor-no-pointer">
-                    Adquiridas
-                  </ButtonCustom>
 
-                  <ButtonCustomError
-                    className="w-100"
-                    onClick={() => {
-                      fetchDiscount();
-                      handleCancelAcquireAccounts();
-                    }}
-                  >
-                    Cancelar
-                  </ButtonCustomError>
-                </>
-              )
-            ) : pricing.level == 1 ? (
-              <ButtonCustom
-                className="w-100"
-                onClick={() => handleAddAcquireAccounts(pricing)}
-              >
-                <>{pricing.price == 0 ? "Gratis" : pricing.price + "€/mes"}</>
-              </ButtonCustom>
+                <ButtonCustomError
+                  className="w-100"
+                  onClick={() => {
+                    fetchDiscount();
+                    handleCancelAcquireAccounts();
+                  }}
+                >
+                  Cancelar
+                </ButtonCustomError>
+              </>
             ) : (
               <ButtonCustom
                 className="w-100"
                 onClick={() => handleShow(pricing)}
               >
-                {pricing.price + "€/mes"}
+                {promoCode
+                  ? (pricing.price * (promoCode.percent_off / 100)).toFixed(2)
+                  : pricing.price.toFixed(2)}
+                €/mes{" "}
+                <small>
+                  <s>{pricing.price + "€/mes"}</s>
+                </small>
               </ButtonCustom>
             )}
           </>
@@ -404,8 +386,8 @@ const AcquireAccounts = (props) => {
   const settings = {
     className: "center",
     infinite: false,
-    slidesToShow: 5,
-    slidesToScroll: 5,
+    slidesToShow: 4,
+    slidesToScroll: 1,
 
     speed: 700,
     draggable: false,
@@ -413,8 +395,8 @@ const AcquireAccounts = (props) => {
       {
         breakpoint: 1200,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
+          slidesToShow: 3,
+          slidesToScroll: 1,
         },
       },
 
@@ -422,7 +404,7 @@ const AcquireAccounts = (props) => {
         breakpoint: 998,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 2,
+          slidesToScroll: 1,
         },
       },
       {
@@ -473,6 +455,16 @@ const AcquireAccounts = (props) => {
               <span className="text-info">Cuentas</span>
             </>
           )}
+        </div>
+        <div
+          style={{
+            background: "yellowgreen",
+            color: "white",
+            padding: "1rem",
+            borderRadius: ".7rem 1rem",
+          }}
+        >
+          14 dias de prueba grátis
         </div>
       </div>
       <div className="my-5 mb-4">
