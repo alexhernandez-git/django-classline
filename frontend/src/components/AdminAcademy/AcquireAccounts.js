@@ -266,8 +266,8 @@ const AcquireAccounts = (props) => {
   const [newCard, setNewCard] = useState(false);
   const [pricingEur, setPricingEur] = useState([
     {
-      id: "prod_Hnqeyg8C1Hkm3Y",
-      price_id: "price_1HEExYIgGIa3w9CpBr95tWVw",
+      id: "prod_HqrMoS5S5j3Eab",
+      price_id: "price_1HH9eAIgGIa3w9CpaGCfCDTF",
       level: 1,
       accounts: 10,
       description: "10 Academy Accounts",
@@ -276,8 +276,8 @@ const AcquireAccounts = (props) => {
       currency: "EUR",
     },
     {
-      id: "prod_HnqfHXug8RREYk",
-      price_id: "price_1HEEy6IgGIa3w9Cp6yeAcr2U",
+      id: "prod_HqrNx2F5IFtxc4",
+      price_id: "price_1HH9f6IgGIa3w9Cpfn5kT24j",
       level: 2,
       accounts: 25,
       description: "20 Academy Accounts",
@@ -286,8 +286,8 @@ const AcquireAccounts = (props) => {
       currency: "EUR",
     },
     {
-      id: "prod_HnqfsKiER0pxnT",
-      price_id: "price_1HEEyXIgGIa3w9CpjhkDustj",
+      id: "prod_HqrPff8wCoJawR",
+      price_id: "price_1HH9gHIgGIa3w9CpFxKr6Ix5",
       level: 3,
       accounts: 50,
       level_pro: false,
@@ -469,7 +469,7 @@ const AcquireAccounts = (props) => {
             borderRadius: ".7rem 1rem",
           }}
         >
-          14 dias de prueba grátis
+          14 dias de prueba gratis
         </div>
       </div>
       <div className="my-5 mb-4">

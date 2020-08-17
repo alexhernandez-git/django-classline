@@ -516,6 +516,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                                     "quantity":request.data['accounts_acquired']['accounts']
                                 },
                             ],
+
                             coupon=teacher.discount.coupon_id
                         )
                     elif promotion_code:
@@ -544,6 +545,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                                     "quantity":request.data['accounts_acquired']['accounts']
                                 },
                             ],
+
                             promotion_code=None
                         )
                 else:
@@ -615,7 +617,9 @@ class ProgramViewSet(mixins.CreateModelMixin,
                                     "quantity":request.data['accounts_acquired']['accounts']
                                 },
                             ],
-                            coupon=teacher.discount.coupon_id
+                            coupon=teacher.discount.coupon_id,
+                            trial_period_days="14",
+
                         )
 
                     elif promotion_code:
@@ -627,7 +631,9 @@ class ProgramViewSet(mixins.CreateModelMixin,
                                     "quantity":request.data['accounts_acquired']['accounts']
                                 },
                             ],
-                            promotion_code=promotion_code['id']
+                            promotion_code=promotion_code['id'],
+                            trial_period_days="14",
+
                         )
                     else:
                         subscription = stripe.Subscription.create(
@@ -638,6 +644,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                                     "quantity":request.data['accounts_acquired']['accounts']
                                 },
                             ],
+                            trial_period_days="14",
                         )
                 else:
 
