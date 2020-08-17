@@ -756,20 +756,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                     accounts_subscription.subscription_id)
                 accounts_subscription.active = False
                 accounts_subscription.save()
-                invoice = stripe.Invoice.retrieve(
-                    subscription_deleted['latest_invoice'])
-                if invoice['amount_paid'] >= 1:
-                    stripe.CreditNote.create(
-                        invoice=invoice.id,
-                        lines=[
-                            {
-                                "type": "invoice_line_item",
-                                "invoice_line_item": invoice['lines']['data'][0]['id'],
-                                "quantity":  invoice['lines']['data'][0]['quantity']
-                            }
-                        ],
-                        refund_amount=str(invoice['amount_paid'])
-                    )
+
             except Exception as e:
                 return Response({'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 

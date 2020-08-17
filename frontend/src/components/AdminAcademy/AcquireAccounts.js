@@ -41,10 +41,10 @@ const AcquireAccounts = (props) => {
   };
   const [showPro, setShowPro] = useState(false);
   const [pricingPro, setPricingPro] = useState({
-    id: "prod_HqaU1ykblf4gX6",
-    price_id: "price_1HGtJaIgGIa3w9Cpd7Q2ObG4",
+    id: "prod_Hqn2cauE8T3A4F",
+    price_id: "price_1HH5S6IgGIa3w9Cp4uf4EPCa",
     level: 0,
-    accounts: level_pro ? current_accounts : 51,
+    accounts: level_pro ? current_accounts : 75,
     description: "Accounts Volume Pricing",
     level_pro: true,
     price: null,
@@ -62,7 +62,7 @@ const AcquireAccounts = (props) => {
     console.log(pricingPro);
     console.log("coupon", coupon);
     if (
-      parseInt(pricingPro.accounts) > 50 &&
+      parseInt(pricingPro.accounts) >= 75 &&
       parseInt(pricingPro.accounts) <= 99
     ) {
       setPricingPro({
@@ -188,7 +188,7 @@ const AcquireAccounts = (props) => {
   const handleChangeNumAccounts = (e) => {
     e.preventDefault();
 
-    if (e.target.value > 50)
+    if (e.target.value >= 75)
       setNumErrors({
         ...numErrors,
         maxAccount: null,
@@ -196,7 +196,7 @@ const AcquireAccounts = (props) => {
     else {
       setNumErrors({
         ...numErrors,
-        maxAccount: "Puedes escojer por encima de 50 cuentas",
+        maxAccount: "Puedes escojer por encima de 75 cuentas",
       });
     }
 
@@ -495,7 +495,7 @@ const AcquireAccounts = (props) => {
                   >
                     <IoIosPeople />
                   </IconContext.Provider>
-                  <span className="title mb-4">+50 cuentas</span>
+                  <span className="title mb-4">+75 cuentas</span>
                   {level_pro ? (
                     <>
                       <ButtonCustom
