@@ -238,7 +238,7 @@ const AcquireAccounts = (props) => {
       console.log("[pricingSelected]", pricingSelected);
       console.log("[pricingPro]", pricingPro);
       const paymentMethodId = paymentMethod.id;
-      setCouponText({ text: "", pro: false });
+      setCouponText("");
 
       if (pricingSelected.level_pro) {
         dispatch(addAcquireAccounts(pricingPro, paymentMethodId, promoCode));
@@ -257,12 +257,12 @@ const AcquireAccounts = (props) => {
       console.log("[error]", numErrors.maxAccount);
     } else if (pricingSelected.level_pro) {
       console.log("promocode pro", promoCode);
-      setCouponText({ text: "", pro: false });
+      setCouponText("");
 
       dispatch(addAcquireAccounts(pricingPro, paymentMethodId, promoCode));
       handleClosePro();
     } else {
-      setCouponText({ text: "", pro: false });
+      setCouponText("");
 
       console.log("promocode normal", promoCode);
       dispatch(addAcquireAccounts(pricingSelected, paymentMethodId, promoCode));
@@ -304,21 +304,16 @@ const AcquireAccounts = (props) => {
   ]);
   const [promoCode, setPromoCode] = useState(null);
 
-  const [couponText, setCouponText] = useState({
-    text: "",
-    pro: false,
-  });
+  const [couponText, setCouponText] = useState("");
   useEffect(() => {
     if (couponText != "") {
       const timeoutId = setTimeout(() => {
         axios
-          .get(`/api/promotion-code/${couponText.text}`)
+          .get(`/api/promotion-code/${couponText}`)
           .then((result) => {
             console.log(result.data);
             setPromoCode(result.data);
-            if (couponText.pro) {
-              calcPricePro(result.data);
-            }
+            calcPricePro(result.data);
 
             setDiscount(
               `Aplicado un descuento del ${result.data.percent_off}%`
@@ -328,18 +323,16 @@ const AcquireAccounts = (props) => {
             console.log("El cupon no existe");
             setDiscount(false);
             setPromoCode(null);
-            if (couponText.pro) {
-              calcPricePro();
-            }
+            calcPricePro();
           });
       }, 500);
       return () => clearTimeout(timeoutId);
     }
   }, [couponText]);
-  const handleChangeCoupon = (e, pro = false) => {
+  const handleChangeCoupon = (e) => {
     e.preventDefault();
     const text = e.target.value;
-    setCouponText({ text: text, pro: pro });
+    setCouponText(text);
   };
   const sliders = (pricing) => {
     return pricing.map((pricing) => (
@@ -478,7 +471,7 @@ const AcquireAccounts = (props) => {
             borderRadius: ".7rem 1rem",
           }}
         >
-          14 dias de prueba gratis
+          14 dias de prueba gratuita
         </div>
       </div>
       <div className="my-5 mb-4">
@@ -726,7 +719,7 @@ const AcquireAccounts = (props) => {
                     id="cupon-code-pro"
                     type="text"
                     placeholder="Añadir cupón"
-                    value={couponText.text}
+                    value={couponText}
                     onChange={(e) => handleChangeCoupon(e)}
                     onKeyUp={(e) => handleChangeCoupon(e)}
                   />
@@ -896,7 +889,7 @@ const AcquireAccounts = (props) => {
                     id="cupon-code-pro"
                     type="text"
                     placeholder="Añadir cupón"
-                    value={couponText.text}
+                    value={couponText}
                     onChange={(e) => handleChangeCoupon(e)}
                     onKeyUp={(e) => handleChangeCoupon(e)}
                   />

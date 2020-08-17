@@ -49,7 +49,7 @@ const Students = () => {
       title: "Estas seguro?",
       text: authReducer.user.teacher.discount
         ? "Tu descuento permanente se te eliminará"
-        : "",
+        : null,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -74,7 +74,10 @@ const Students = () => {
             </div>
           )}
           <div className="content">
-            <span>{areDiscount.message}</span>
+            <div>
+              <span className="d-block">{areDiscount.title}</span>
+              <span>{areDiscount.message}</span>
+            </div>
             <IconContext.Provider
               value={{ color: "white", className: "cursor-pointer", size: 25 }}
             >

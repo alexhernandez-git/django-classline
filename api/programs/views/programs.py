@@ -769,6 +769,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
         if Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 10:
             return Response(
                 {
+                    "title": "¡Oferta irrepetible!",
                     "message": "50% de descuento en cuentas para tus alumnos para siempre en nuestros 10 primeros clientes",
                     "info": "Cuando la cuenta de instructor adquiera cualquier plan apartir del nivel 2 se le asignará un descuento de por vida, el usuario podrá cambiar de plan pero si cancela el plan se le quitará el descuento",
                     "percent_off": 50,
