@@ -24,6 +24,7 @@ const Students = () => {
   const dispatch = useDispatch();
   const [key, setKey] = useState(0);
   const programReducer = useSelector((state) => state.programReducer);
+  const authReducer = useSelector((state) => state.authReducer);
   const [infoOpen, setInfoOpen] = useState(false);
   const handleToggleInfoOpen = () => {
     setInfoOpen(!infoOpen);
@@ -63,7 +64,7 @@ const Students = () => {
   };
   return (
     <Main padding ref={main}>
-      {areDiscount && (
+      {areDiscount && authReducer.user && !authReducer.user.teacher.discount && (
         <Promotion>
           {infoOpen && (
             <div className="info">
@@ -162,6 +163,9 @@ const Promotion = styled.div`
   @media only screen and (max-width: 576px) {
     width: calc(100% - 20px);
     left: 10px;
+    .content {
+      font-size: 1.6rem;
+    }
   }
 `;
 const ContainerTabs = styled.div`

@@ -356,14 +356,25 @@ const AcquireAccounts = (props) => {
           <>
             {level_adquired == pricing.level ? (
               pricing.level == 1 ? (
-                <ButtonCustom className="w-100">Obtenido</ButtonCustom>
+                <ButtonCustom className="w-100 cursor-no-pointer">
+                  Adquiridas
+                </ButtonCustom>
               ) : (
-                <ButtonCustomError
-                  className="w-100"
-                  onClick={handleCancelAcquireAccounts}
-                >
-                  Cancelar
-                </ButtonCustomError>
+                <>
+                  <ButtonCustom className="w-100 mb-2 cursor-no-pointer">
+                    Adquiridas
+                  </ButtonCustom>
+
+                  <ButtonCustomError
+                    className="w-100"
+                    onClick={() => {
+                      setDiscount(false);
+                      handleCancelAcquireAccounts();
+                    }}
+                  >
+                    Cancelar
+                  </ButtonCustomError>
+                </>
               )
             ) : pricing.level == 1 ? (
               <ButtonCustom
@@ -490,7 +501,10 @@ const AcquireAccounts = (props) => {
                       </ButtonCustom>
                       <ButtonCustomError
                         className="w-100"
-                        onClick={handleCancelAcquireAccounts}
+                        onClick={() => {
+                          setDiscount(false);
+                          handleCancelAcquireAccounts();
+                        }}
                       >
                         Cancelar
                       </ButtonCustomError>
@@ -691,7 +705,7 @@ const AcquireAccounts = (props) => {
                 >
                   Añadir cupón
                 </label>
-                {authReducer.user.teacher.discount || areDiscount ? (
+                {authReducer.user.teacher.discount || discount ? (
                   <small style={{ color: "green", alignSelf: "center" }}>
                     Ya se te esta aplicando el descuento
                   </small>
@@ -861,7 +875,7 @@ const AcquireAccounts = (props) => {
                 >
                   Añadir cupón
                 </label>
-                {authReducer.user.teacher.discount || areDiscount ? (
+                {authReducer.user.teacher.discount || discount ? (
                   <small style={{ color: "green", alignSelf: "center" }}>
                     Ya se te esta aplicando el descuento
                   </small>
