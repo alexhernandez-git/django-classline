@@ -531,7 +531,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                                     "quantity":request.data['accounts_acquired']['accounts']
                                 },
                             ],
-                            promotion_code=promotion_code['code']
+                            promotion_code=promotion_code["promotion_code_id"]
                         )
                     else:
                         subscription_modified = stripe.Subscription.modify(
@@ -574,7 +574,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                                     'price':  request.data['accounts_acquired']['price_id'],
                                 }
                             ],
-                            promotion_code=promotion_code['code']
+                            promotion_code=promotion_code["promotion_code_id"]
 
                         )
                     else:
@@ -631,7 +631,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                                     "quantity":request.data['accounts_acquired']['accounts']
                                 },
                             ],
-                            promotion_code=promotion_code['code'],
+                            promotion_code=promotion_code["promotion_code_id"],
                             trial_period_days="14",
 
                         )
@@ -667,7 +667,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                                     "price": request.data['accounts_acquired']['price_id'],
                                 },
                             ],
-                            promotion_code=promotion_code['code']
+                            promotion_code=promotion_code["promotion_code_id"]
                         )
                     else:
                         subscription = stripe.Subscription.create(

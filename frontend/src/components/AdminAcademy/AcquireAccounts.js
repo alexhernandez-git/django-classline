@@ -238,6 +238,8 @@ const AcquireAccounts = (props) => {
       console.log("[pricingSelected]", pricingSelected);
       console.log("[pricingPro]", pricingPro);
       const paymentMethodId = paymentMethod.id;
+      setCouponText({ text: "", pro: false });
+
       if (pricingSelected.level_pro) {
         dispatch(addAcquireAccounts(pricingPro, paymentMethodId, promoCode));
         handleClosePro();
@@ -255,10 +257,13 @@ const AcquireAccounts = (props) => {
       console.log("[error]", numErrors.maxAccount);
     } else if (pricingSelected.level_pro) {
       console.log("promocode pro", promoCode);
+      setCouponText({ text: "", pro: false });
 
       dispatch(addAcquireAccounts(pricingPro, paymentMethodId, promoCode));
       handleClosePro();
     } else {
+      setCouponText({ text: "", pro: false });
+
       console.log("promocode normal", promoCode);
       dispatch(addAcquireAccounts(pricingSelected, paymentMethodId, promoCode));
       handleClose();
@@ -323,7 +328,6 @@ const AcquireAccounts = (props) => {
             console.log("El cupon no existe");
             setDiscount(false);
             setPromoCode(null);
-
             if (couponText.pro) {
               calcPricePro();
             }
