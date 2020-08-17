@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 
 export const Main = styled.div`
   grid-area: content;
+  position: relative;
   background: #f9f9f9;
   overflow-y: auto;
   overflow-x: hidden;

@@ -29,6 +29,7 @@ const AcquireAccounts = (props) => {
 
   const programReducer = useSelector((state) => state.programReducer);
   const { level_adquired, current_accounts, level_pro } = props.program;
+  const { areDiscount, fetchDiscount } = props.useCheckAreDiscount;
   const { handleAddAcquireAccounts, handleCancelAcquireAccounts } = props;
   const dispatch = useDispatch();
   const [pricingSelected, setPricingSelected] = useState(null);
@@ -71,9 +72,13 @@ const AcquireAccounts = (props) => {
             parseInt(pricingPro.accounts) * 1.75 * (coupon.percent_off / 100)
           : parseInt(pricingPro.accounts) * 1.75,
       });
-      setAccountPrice(
-        ((1.75 * coupon.percent_off) / 100).toFixed(2) + "€ por cuenta"
-      );
+      if (coupon) {
+        setAccountPrice(
+          ((1.75 * coupon.percent_off) / 100).toFixed(2) + "€ por cuenta"
+        );
+      } else {
+        setAccountPrice("1.75€ por cuenta");
+      }
     } else if (
       parseInt(pricingPro.accounts) > 99 &&
       parseInt(pricingPro.accounts) <= 149
@@ -85,9 +90,13 @@ const AcquireAccounts = (props) => {
             parseInt(pricingPro.accounts) * 1.5 * (coupon.percent_off / 100)
           : parseInt(pricingPro.accounts) * 1.5,
       });
-      setAccountPrice(
-        ((1.5 * coupon.percent_off) / 100).toFixed(2) + "€ por cuenta"
-      );
+      if (coupon) {
+        setAccountPrice(
+          ((1.5 * coupon.percent_off) / 100).toFixed(2) + "€ por cuenta"
+        );
+      } else {
+        setAccountPrice("1.50€ por cuenta");
+      }
     } else if (
       parseInt(pricingPro.accounts) > 149 &&
       parseInt(pricingPro.accounts) <= 199
@@ -99,9 +108,13 @@ const AcquireAccounts = (props) => {
             parseInt(pricingPro.accounts) * 1.25 * (coupon.percent_off / 100)
           : parseInt(pricingPro.accounts) * 1.25,
       });
-      setAccountPrice(
-        ((1.25 * coupon.percent_off) / 100).toFixed(2) + "€ por cuenta"
-      );
+      if (coupon) {
+        setAccountPrice(
+          ((1.25 * coupon.percent_off) / 100).toFixed(2) + "€ por cuenta"
+        );
+      } else {
+        setAccountPrice("1.25€ por cuenta");
+      }
     } else if (parseInt(pricingPro.accounts) > 199) {
       setPricingPro({
         ...pricingPro,
@@ -110,10 +123,13 @@ const AcquireAccounts = (props) => {
             parseInt(pricingPro.accounts) * 1.0 * (coupon.percent_off / 100)
           : parseInt(pricingPro.accounts) * 1.0,
       });
-
-      setAccountPri(
-        ce((1 * coupon.percent_off) / 100).toFixed(2) + "€ por cuenta"
-      );
+      if (coupon) {
+        setAccountPrice(
+          ((1 * coupon.percent_off) / 100).toFixed(2) + "€ por cuenta"
+        );
+      } else {
+        setAccountPrice("1.00€ por cuenta");
+      }
     }
   };
 
@@ -135,7 +151,14 @@ const AcquireAccounts = (props) => {
       setDiscount(false);
     }
   }, [authReducer.user.teacher.discount]);
+  useEffect(() => {
+    if (areDiscount) {
+      setPromoCode({ percent_off: areDiscount.percent_off });
 
+      calcPricePro({ percent_off: areDiscount.percent_off });
+      setDiscount(`Aplicado un descuento del ${areDiscount.percent_off}%`);
+    }
+  }, [areDiscount]);
   useEffect(() => {
     if (authReducer.user.teacher.discount) {
       setPromoCode(authReducer.user.teacher.discount);
@@ -143,6 +166,11 @@ const AcquireAccounts = (props) => {
       setDiscount(
         `Aplicado un descuento del ${authReducer.user.teacher.discount.percent_off}%`
       );
+    } else if (areDiscount) {
+      setPromoCode({ percent_off: areDiscount.percent_off });
+
+      calcPricePro({ percent_off: areDiscount.percent_off });
+      setDiscount(`Aplicado un descuento del ${areDiscount.percent_off}%`);
     } else {
       calcPricePro(promoCode);
     }
@@ -663,9 +691,9 @@ const AcquireAccounts = (props) => {
                 >
                   Añadir cupón
                 </label>
-                {authReducer.user.teacher.discount ? (
+                {authReducer.user.teacher.discount || areDiscount ? (
                   <small style={{ color: "green", alignSelf: "center" }}>
-                    Ya se te esta aplicando el descuento máximo
+                    Ya se te esta aplicando el descuento
                   </small>
                 ) : (
                   <input
@@ -833,9 +861,9 @@ const AcquireAccounts = (props) => {
                 >
                   Añadir cupón
                 </label>
-                {authReducer.user.teacher.discount ? (
+                {authReducer.user.teacher.discount || areDiscount ? (
                   <small style={{ color: "green", alignSelf: "center" }}>
-                    Ya se te esta aplicando el descuento máximo
+                    Ya se te esta aplicando el descuento
                   </small>
                 ) : (
                   <input

@@ -282,8 +282,13 @@ export const addAcquireAccounts = (
   const data = {
     accounts_acquired: accounts_acquired,
     payment_method_id: paymentMethodId,
-    promotion_code: promotion_code,
   };
+  if (promotion_code.isDiscount) {
+    data.discount = promotion_code;
+  } else {
+    data.promotion_code = promotion_code;
+  }
+
   dispatch({ type: ACQUIRE_ACCOUNTS, payload: accounts_acquired });
 
   axios

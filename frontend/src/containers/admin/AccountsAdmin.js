@@ -14,14 +14,23 @@ import {
 } from "src/redux/actions/program";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { IoIosInformationCircleOutline } from "react-icons/io";
+import { IconContext } from "react-icons";
+import useCheckAreDiscount from "src/hooks/useCheckAreDiscount";
 const Students = () => {
   const MySwal = withReactContent(Swal);
-
+  const [areDiscount, fetchDiscount] = useCheckAreDiscount();
   const main = useRef();
   const dispatch = useDispatch();
   const [key, setKey] = useState(0);
   const programReducer = useSelector((state) => state.programReducer);
-
+  const [infoOpen, setInfoOpen] = useState(false);
+  const handleToggleInfoOpen = () => {
+    setInfoOpen(!infoOpen);
+  };
+  useEffect(() => {
+    console.log(areDiscount);
+  }, [areDiscount]);
   // useEffect(() => {
   //   if (!programReducer.isLoading) {
   //     const dispatchFetchPricing = () => dispatch(fetchPricing());
@@ -54,6 +63,25 @@ const Students = () => {
   };
   return (
     <Main padding ref={main}>
+      {areDiscount && (
+        <Promotion>
+          {infoOpen && (
+            <div className="info">
+              <small>{areDiscount.info}</small>
+            </div>
+          )}
+          <div className="content">
+            <span>{areDiscount.message}</span>
+            <IconContext.Provider
+              value={{ color: "white", className: "cursor-pointer", size: 25 }}
+            >
+              <div>
+                <IoIosInformationCircleOutline onClick={handleToggleInfoOpen} />
+              </div>
+            </IconContext.Provider>
+          </div>
+        </Promotion>
+      )}
       <Filters title="Alumnos" />
       <ContainerTabs className="container">
         <Tab.Container
@@ -102,6 +130,7 @@ const Students = () => {
                       // pricing={pricingReducer.pricing}
                       handleAddAcquireAccounts={handleAddAcquireAccounts}
                       handleCancelAcquireAccounts={handleCancelAcquireAccounts}
+                      useCheckAreDiscount={{ areDiscount, fetchDiscount }}
                     />
                   )}
                 </Tab.Pane>
@@ -113,6 +142,28 @@ const Students = () => {
     </Main>
   );
 };
+const Promotion = styled.div`
+  position: fixed;
+  bottom: 40px;
+  left: 130px;
+  width: calc(100% - 170px);
+  text-align: center;
+  .content {
+    margin: 10px 0;
+    padding: 1rem;
+    font-size: 2rem;
+    color: white;
+    border-radius: 1rem;
+    background: linear-gradient(45deg, #2e6a89, #56b389);
+    display: grid;
+    grid-template-columns: 1fr 40px;
+    align-items: center;
+  }
+  @media only screen and (max-width: 576px) {
+    width: calc(100% - 20px);
+    left: 10px;
+  }
+`;
 const ContainerTabs = styled.div`
   .nav-link.active {
     border-bottom: 1px solid #212529;

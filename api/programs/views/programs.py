@@ -413,7 +413,13 @@ class ProgramViewSet(mixins.CreateModelMixin,
         profile = user.profile
         teacher = user.teacher
         product = request.data['accounts_acquired']
-        promotion_code = request.data['promotion_code']
+        promotion_code = None
+        if "promotion_code" in request.data:
+            promotion_code = request.data['promotion_code']
+
+        discount = None
+        if "discount" in request.data:
+            discount = request.data['discount']
         serialised_program = ProgramModelSerializer(program, many=False).data
         stripe.api_key = "sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo"
         customer_id = ''
@@ -432,6 +438,16 @@ class ProgramViewSet(mixins.CreateModelMixin,
         # End validation
         if not product['level'] == 1:
             try:
+
+                if discount and not teacher.discount:
+                    discount = {
+                        'coupon_id': "50_OFF",
+                        'percent_off': 50,
+                        'duration': "forever"
+                    }
+                    teacher.discount = Coupon.objects.create(
+                        **discount)
+                    teacher.save()
                 # payment_method = stripe.PaymentMethod.retrieve(
                 # request.data['payment_method_id'],
                 # )
@@ -491,16 +507,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                         stripe.Subscription.delete_discount(subscription.id)
 
                     if request.data['accounts_acquired']['level_pro']:
-                        if teacher.discount or Teacher.subscriptions.through.objects.all().count() <= 10:
-                            if not teacher.discount:
-                                discount = {
-                                    'coupon_id': "50_OFF",
-                                    'percent_off': 50,
-                                    'duration': "forever"
-                                }
-                                teacher.discount = Coupon.objects.create(
-                                    **discount)
-                                teacher.save()
+                        if teacher.discount:
                             subscription_modified = stripe.Subscription.modify(
                                 subscription.id,
                                 cancel_at_period_end=False,
@@ -543,16 +550,8 @@ class ProgramViewSet(mixins.CreateModelMixin,
                                 promotion_code=None
                             )
                     else:
-                        if teacher.discount or Teacher.subscriptions.through.objects.all().count() <= 10:
-                            if not teacher.discount:
-                                discount = {
-                                    'coupon_id': "50_OFF",
-                                    'percent_off': 50,
-                                    'duration': "forever"
-                                }
-                                teacher.discount = Coupon.objects.create(
-                                    **discount)
-                                teacher.save()
+                        if teacher.discount:
+
                             subscription_modified = stripe.Subscription.modify(
                                 subscription.id,
                                 cancel_at_period_end=False,
@@ -608,17 +607,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
 
                     if request.data['accounts_acquired']['level_pro']:
 
-                        if teacher.discount or Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 10:
-
-                            if not teacher.discount:
-                                discount = {
-                                    'coupon_id': "50_OFF",
-                                    'percent_off': 50,
-                                    'duration': "forever"
-                                }
-                                teacher.discount = Coupon.objects.create(
-                                    **discount)
-                                teacher.save()
+                        if teacher.discount:
 
                             subscription = stripe.Subscription.create(
                                 customer=customer_id,
@@ -654,17 +643,8 @@ class ProgramViewSet(mixins.CreateModelMixin,
                             )
                     else:
 
-                        if teacher.discount or Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 10:
+                        if teacher.discount:
 
-                            if not teacher.discount:
-                                discount = {
-                                    'coupon_id': "50_OFF",
-                                    'percent_off': 50,
-                                    'duration': "forever"
-                                }
-                                teacher.discount = Coupon.objects.create(
-                                    **discount)
-                                teacher.save()
                             subscription = stripe.Subscription.create(
                                 customer=customer_id,
                                 items=[
@@ -796,6 +776,19 @@ class ProgramViewSet(mixins.CreateModelMixin,
         data = ProgramModifyModelSerializer(program, many=False).data
 
         return Response(data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'])
+    def are_discount(self, request, *args, **kwargs):
+        if Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 10:
+            return Response(
+                {
+                    "message": "50% de descuento en cuentas para tus alumnos para siempre",
+                    "info": "Cuando la cuenta de instructor adquiera cualquier plan apartir del nivel 2 se le asignará un descuento de por vida, el usuario podrá cambiar de plan pero si cancela el plan se le quitará el descuento",
+                    "percent_off": 50,
+                    "is_discount": True,
+                }, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         program = self.get_object()
