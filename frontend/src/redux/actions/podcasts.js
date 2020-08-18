@@ -103,7 +103,7 @@ export const editPodcast = (podcast) => (dispatch, getState) => {
     fd.append("picture", podcast.picture, podcast.picture.name);
   }
   if (podcast.audio && podcast.audio.name !== undefined) {
-    fd.append("audio", audio.audio, podcast.audio.name);
+    fd.append("audio", podcast.audio, podcast.audio.name);
   }
   axios
     .patch(

@@ -191,6 +191,7 @@ const Podcasts = () => {
           validationSchema={PodcastSchema}
           onSubmit={(values) => {
             if (podcastsReducer.podcast_edit) {
+              console.log(values);
               const dispatchEditPodcast = (values) =>
                 dispatch(editPodcast(values));
               dispatchEditPodcast(values);

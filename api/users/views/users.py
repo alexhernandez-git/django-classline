@@ -122,11 +122,11 @@ class UserViewSet(mixins.RetrieveModelMixin,
             data['user']['profile']['payment_methods'] = payment_methods.data
         else:
             data['user']['profile']['payment_methods'] = None
-        subscriptions = Profile.objects.filter(
-            subscriptions__user=data['user']['code'])
-        serialized_subscriptions = SubscriptionModelSerializer(
-            subscriptions, many=True)
-        data['user']['subscriptions'] = serialized_subscriptions.data
+        # subscriptions = user.profile.subscriptions
+
+        # serialized_subscriptions = SubscriptionModelSerializer(
+        #     subscriptions, many=True)
+        # data['user']['subscriptions'] = serialized_subscriptions.data
         return Response(data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=['post'])
