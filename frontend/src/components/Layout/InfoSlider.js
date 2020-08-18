@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
+import "static/assets/styles/components/Layout/InfoSlider.scss";
 
 const InfoSlider = () => {
   const [actived, setActived] = useState(false);
@@ -11,7 +12,7 @@ const InfoSlider = () => {
   const settings = {
     initialSlide: 0,
     infinite: false,
-    speed: 1000,
+    speed: 200,
     arrows: false,
     dots: false,
     slidesToShow: 1,
@@ -38,16 +39,6 @@ const InfoSlider = () => {
             <div className="container text-center d-flex justify-content-center align-items-center">
               {slideIndex == 0 ? (
                 <>
-                  <span>
-                    <IconContext.Provider
-                      value={{
-                        color: "grey",
-                        className: "h3 mr-2 mb-0 cursor-pointer",
-                      }}
-                    >
-                      <IoIosArrowDropleft />
-                    </IconContext.Provider>
-                  </span>
                   <span className="h4 m-0 p-2 cursor-pointer">Alumno</span>
                   <span
                     className="h4 m-0 p-2 cursor-pointer font-weight-lighter"
@@ -58,37 +49,9 @@ const InfoSlider = () => {
                   >
                     Instructor
                   </span>
-                  <span>
-                    <IconContext.Provider
-                      value={{
-                        color: "white",
-                        className: "h3 ml-2 mb-0 cursor-pointer",
-                      }}
-                    >
-                      <IoIosArrowDropright
-                        onClick={() => {
-                          slider.current.slickGoTo(1);
-                        }}
-                      />
-                    </IconContext.Provider>
-                  </span>
                 </>
               ) : (
                 <>
-                  <span>
-                    <IconContext.Provider
-                      value={{
-                        color: "white",
-                        className: "h3 mr-2 mb-0 cursor-pointer",
-                      }}
-                    >
-                      <IoIosArrowDropleft
-                        onClick={() => {
-                          slider.current.slickGoTo(0);
-                        }}
-                      />
-                    </IconContext.Provider>
-                  </span>
                   <span
                     className="h4 m-0 p-2 cursor-pointer font-weight-lighter"
                     style={{ opacity: 0.8 }}
@@ -100,54 +63,112 @@ const InfoSlider = () => {
                   </span>
 
                   <span className="h4 m-0 p-2 cursor-pointer">Instructor</span>
-                  <span>
-                    <IconContext.Provider
-                      value={{
-                        color: "grey",
-                        className: "h3 ml-2 mb-0 cursor-pointer",
-                      }}
-                    >
-                      <IoIosArrowDropright />
-                    </IconContext.Provider>
-                  </span>
                 </>
               )}
             </div>
           </div>
-          <div className="container container-info-pill">
+          <div className="container">
             <Slider {...settings} ref={slider}>
-              <div className="slick-element text-center p-4 d-sm-flex justify-content-around font-weight-normal">
-                {/* <div className="info-pill col-md-3 d-flex flex-column align-items-center justify-content-center p-2 bg-gradient-green rounded-pill shadow">
-                  <span className="font-weight-bold d-block">Tu eliges</span>
-                  tu academia online
+              <div className="info-slider slick-element text-center p-4 font-weight-normal">
+                <div className="row w-100 align-items-center mb-5">
+                  <div className="col-lg-5">
+                    <span className="h5 text-dark d-block">
+                      Forma parte de tu academia de siempre ahora completamente
+                      digital
+                    </span>
+                    <span className="text-grey">
+                      El mundo esta cambiando, no dejes pasar esta oportunidad
+                    </span>
+                  </div>
+                  <div className="d-block d-lg-none m-2"></div>
+                  <div className="col-lg-7">
+                    <img src="https://via.placeholder.com/450x252" alt="" />
+                  </div>
                 </div>
-                <div className="info-pill col-md-3 d-flex flex-column align-items-center justify-content-center p-2 bg-gradient-green rounded-pill shadow">
-                  <span className="font-weight-bold d-block">
-                    Sin compromiso
-                  </span>
-                  en tus subscripciones
+                <div className="row w-100 align-items-center mb-5">
+                  <div className="col-lg-7">
+                    <img src="https://via.placeholder.com/450x252" alt="" />
+                  </div>
+                  <div className="d-block d-lg-none m-2"></div>
+                  <div className="col-lg-5">
+                    <span className="h5 text-dark d-block">
+                      Comprometida con los tiempos que corren
+                    </span>
+                    <span className="text-grey">
+                      Con nuestras academias no correras riesgo de contagiarte
+                      ni de contagiar a tus seres queridos
+                    </span>
+                  </div>
                 </div>
-                <div className="info-pill col-md-3 d-flex flex-column align-items-center justify-content-center p-2 bg-gradient-green rounded-pill shadow">
-                  <span className="font-weight-bold d-block">Acceso a</span>
-                  todo el contenido
-                </div> */}
+                <div className="row w-100 align-items-center mb-5">
+                  <div className="col-lg-5">
+                    <span className="h5 text-dark d-block">
+                      Donde podrás acceder a classes online, videos, listas de
+                      reproducción y podcasts
+                    </span>
+                    <span className="text-grey">
+                      Te vamos a demostrar que con nuestras academias puedes
+                      seguir aprendiendo y divirtiendote desde cualquier lugar
+                      del mundo
+                    </span>
+                  </div>
+                  <div className="d-block d-lg-none m-2"></div>
+                  <div className="col-lg-7">
+                    <img src="https://via.placeholder.com/450x252" alt="" />
+                  </div>
+                </div>
+                <div className="row w-100 align-items-center">
+                  <div className="col-lg-7">
+                    <img src="https://via.placeholder.com/450x252" alt="" />
+                  </div>
+                  <div className="d-block d-lg-none m-2"></div>
+                  <div className="col-lg-5">
+                    <span className="h5 text-dark d-block">
+                      I si lo pruebas y no te convence
+                    </span>
+                    <span className="text-grey">
+                      Tienes garantizada la devolución del último pago de por
+                      vida, siempre que sea la primera vez que te apuntas a esa
+                      academia
+                    </span>
+                  </div>
+                </div>
               </div>
-
-              <div className="slick-element text-center p-4 d-sm-flex justify-content-around font-weight-normal">
-                {/* <div className="info-pill col-md-3 d-flex flex-column align-items-center justify-content-center p-2 bg-gradient-green rounded-pill shadow">
-                  <span className="font-weight-bold d-block">Crea gratis</span>
-                  tu academia online
+              <div className="info-slider slick-element text-center p-4 font-weight-normal">
+                <div className="row w-100 align-items-center mb-5">
+                  <div className="d-block d-lg-none m-2"></div>
+                  <div className="col-lg-7">
+                    <img src="https://via.placeholder.com/450x252" alt="" />
+                  </div>
+                  <div className="col-lg-5">
+                    <span className="h5 text-dark">
+                      Forma parte de tu academia completamente digital
+                    </span>
+                  </div>
                 </div>
-                <div className="info-pill col-md-3 d-flex flex-column align-items-center justify-content-center p-2 bg-gradient-green rounded-pill shadow">
-                  <span className="font-weight-bold d-block">Gana dinero</span>
-                  las subscripciones
+                <div className="row w-100 align-items-center mb-5">
+                  <div className="col-lg-5">
+                    <span className="h5 text-dark">
+                      Comprometida con los tiempos que corren
+                    </span>
+                  </div>
+                  <div className="col-lg-7">
+                    <img src="https://via.placeholder.com/450x252" alt="" />
+                  </div>
+                  <div className="d-block d-lg-none m-2"></div>
                 </div>
-                <div className="info-pill col-md-3 d-flex flex-column align-items-center justify-content-center p-2 bg-gradient-green rounded-pill shadow">
-                  <span className="font-weight-bold d-block">
-                    Asinga cuentas
-                  </span>
-                  para tus alumnos
-                </div> */}
+                <div className="row w-100 align-items-center mb-5">
+                  <div className="col-lg-7">
+                    <img src="https://via.placeholder.com/450x252" alt="" />
+                  </div>
+                  <div className="col-lg-5">
+                    <span className="h5 text-dark">
+                      Donde podrás acceder a classes online, videos, listas de
+                      reproducción y podcasts
+                    </span>
+                  </div>
+                  <div className="d-block d-lg-none m-2"></div>
+                </div>
               </div>
             </Slider>
           </div>

@@ -109,7 +109,7 @@ const Sidebar = (props) => {
               >
                 <FaVideo />
               </IconContext.Provider>{" "}
-              Videoconferencias
+              Clases online
             </SecctionLink>
           </Link>
 
@@ -212,7 +212,7 @@ const Sidebar = (props) => {
                 >
                   <FaVideo />
                 </IconContext.Provider>{" "}
-                Videoconferencias
+                Clases online
               </SecctionLink>
             </Link>
           )}

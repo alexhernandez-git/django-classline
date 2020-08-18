@@ -145,11 +145,23 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
         serializer.is_valid(raise_exception=True)
         user, token = serializer.save()
+        user_data = UserModelSerializer(user, many=False).data
+        stripe_customer_id = user_data.get(
+            'profile').get('stripe_customer_id')
+
+        if stripe_customer_id != None and stripe_customer_id != '':
+            payment_methods = stripe.PaymentMethod.list(
+                customer=stripe_customer_id,
+                type="card"
+            )
+            user_data['profile']['payment_methods'] = payment_methods.data
+        else:
+            user_data['profile']['payment_methods'] = None
         try:
             rating = Rating.objects.get(
                 rated_program=program, rating_user=user)
             data = {
-                'user': UserModelSerializer(user, many=False).data,
+                'user': user_data,
                 'access_token': token,
                 'rating': RatingModelSerializer(rating, many=False).data
             }
