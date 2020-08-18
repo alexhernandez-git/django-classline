@@ -231,6 +231,16 @@ const WelcomeLayout = () => {
         </div>
       </div>
       <InfoSlider />
+      <div className="d-sm-flex justify-content-center bg-gradient-green p-3">
+        {/* <Link to="/courses" className="text-center d-block bg-white cursor-pointer rounded-pill text-grey px-3 py-2 m-0 h5 font-weight-normal text-secondary shadow m-2">Cursos en directo</Link> */}
+        <Link
+          to="/programs"
+          className="text-center d-block bg-white cursor-pointer rounded-pill text-grey px-3 py-2 m-0 h5 font-weight-normal text-secondary shadow m-2"
+        >
+          Ver academias online
+        </Link>
+        {/* <Link to="/teachers" className="text-center d-block bg-white cursor-pointer rounded-pill text-grey px-3 py-2 m-0 h5 font-weight-normal text-secondary shadow m-2">Clases particulares</Link> */}
+      </div>
       {actived && (
         <div
           style={{

@@ -83,17 +83,48 @@ const FavouriteVideos = () => {
 
 const SlickSlider = styled.div`
   .slick-prev {
-    left: -10px !important;
+    left: 0px !important;
+
+    right: 0px !important;
+    background: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    display: flex !important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    &::before {
+      color: #232323 !important;
+
+      height: 50px;
+      width: 50px;
+      font-size: 3.5rem;
+      line-height: 45px;
+      content: "‹";
+    }
     z-index: 100 !important;
   }
   .slick-next {
-    right: 10px !important;
+    right: 0px !important;
+    background: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    display: flex !important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    &::before {
+      color: #232323 !important;
+      height: 50px;
+      width: 50px;
+      font-size: 3.5rem;
+      line-height: 45px;
+      content: "›";
+    }
   }
-  .slick-next:before,
-  .slick-prev:before {
-    color: #000;
-    font-size: 4rem;
-  }
+
   .slick-slide div:focus {
     outline: none !important;
   }

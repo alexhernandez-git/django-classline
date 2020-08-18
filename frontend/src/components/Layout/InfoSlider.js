@@ -15,6 +15,7 @@ const InfoSlider = () => {
     speed: 200,
     arrows: false,
     dots: false,
+    draggable: false,
     slidesToShow: 1,
     slidesToScroll: 1,
     beforeChange: (current, next) => setSlideIndex(next),
@@ -142,22 +143,24 @@ const InfoSlider = () => {
                   <div className="d-block d-lg-none m-2 order-2"></div>
                   <div className="col-lg-5 order-1">
                     <span className="h5 text-dark d-block">
-                      Forma parte de tu academia de siempre ahora completamente
-                      digital
+                      Puedes llevar a tu actual academia al siguiente nivel o
+                      puedes empezar desde cero
                     </span>
                     <span className="text-grey">
-                      El mundo esta cambiando, no dejes pasar esta oportunidad
+                      Todo lo que tengas que enseñar es bienvenido en Classline
+                      Academy
                     </span>
                   </div>
                 </div>
                 <div className="row w-100 align-items-center mb-5">
                   <div className="col-lg-5">
                     <span className="h5 text-dark d-block">
-                      Comprometida con los tiempos que corren
+                      Si ya tienes una academia puedes ofrecer tu plataforma a
+                      tus actuales alumnos adquiriendo cuentas de usuario
                     </span>
                     <span className="text-grey">
-                      Con nuestras academias no correras riesgo de contagiarte
-                      ni de contagiar a tus seres queridos
+                      De esta forma multiplicarás el valor que aportas a tus
+                      actuales alumnos, y tienes un periodo de prueba de 14 dias
                     </span>
                   </div>
                   <div className="d-block d-lg-none m-2"></div>
@@ -172,26 +175,27 @@ const InfoSlider = () => {
                   <div className="d-block d-lg-none m-2 order-2"></div>
                   <div className="col-lg-5 order-1">
                     <span className="h5 text-dark d-block">
-                      Donde podrás acceder a classes online, videos, listas de
-                      reproducción y podcasts
+                      Si no tienes una academia no te preocupes de nada
                     </span>
                     <span className="text-grey">
-                      Te vamos a demostrar que con nuestras academias puedes
-                      seguir aprendiendo y divirtiendote desde cualquier lugar
-                      del mundo
+                      Empieza a crear tu academia online, nosotros te llevamos
+                      el tema de los pagos y todo el marketing
                     </span>
                   </div>
                 </div>
                 <div className="row w-100 align-items-center">
                   <div className="col-lg-5">
                     <span className="h5 text-dark d-block">
-                      I si lo pruebas y no te convence
+                      ¡Conviertete en instructor ya!
                     </span>
-                    <span className="text-grey">
-                      Tienes garantizada la devolución del último pago de por
-                      vida, siempre que sea la primera vez que te apuntas a esa
-                      academia
-                    </span>
+                    <span className="text-grey"> Te esperamos</span>
+                    <div className=" mt-3">
+                      <Link to="/myzone/instructor">
+                        <span className="btn-green py-2 px-3 text-white h5">
+                          Ir a instructor
+                        </span>
+                      </Link>
+                    </div>
                   </div>
                   <div className="d-block d-lg-none m-2"></div>
                   <div className="col-lg-7">
@@ -200,16 +204,6 @@ const InfoSlider = () => {
                 </div>
               </div>
             </Slider>
-          </div>
-          <div className="d-sm-flex justify-content-center bg-gradient-green p-3">
-            {/* <Link to="/courses" className="text-center d-block bg-white cursor-pointer rounded-pill text-grey px-3 py-2 m-0 h5 font-weight-normal text-secondary shadow m-2">Cursos en directo</Link> */}
-            <Link
-              to="/programs"
-              className="text-center d-block bg-white cursor-pointer rounded-pill text-grey px-3 py-2 m-0 h5 font-weight-normal text-secondary shadow m-2"
-            >
-              Ver academias online
-            </Link>
-            {/* <Link to="/teachers" className="text-center d-block bg-white cursor-pointer rounded-pill text-grey px-3 py-2 m-0 h5 font-weight-normal text-secondary shadow m-2">Clases particulares</Link> */}
           </div>
         </div>
       </div>

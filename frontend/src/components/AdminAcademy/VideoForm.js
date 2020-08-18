@@ -42,22 +42,27 @@ const VideoForm = (props) => {
       setSrcImage(reader.result);
       console.log(reader.result);
     };
+    console.log(files[0].size / 1024 / 1024);
+
     reader.readAsDataURL(files[0]);
   };
   const cropImage = () => {
     if (typeof cropper.current.getCroppedCanvas() === "undefined") {
       return;
     }
-    setCropResult(cropper.current.getCroppedCanvas().toDataURL("image/jpeg",0.7));
+    setCropResult(
+      cropper.current.getCroppedCanvas().toDataURL("image/jpeg", 0.7)
+    );
 
     var file = dataURLtoFile(
-      cropper.current.getCroppedCanvas().toDataURL(),
+      cropper.current.getCroppedCanvas().toDataURL("image/jpeg", 0.7),
       Math.random().toString(36) + fileName
     );
-    if (file.size < 2000000) {
+    console.log(file.size / 1024 / 1024);
+    if (file.size / 1024 / 1024 < 5) {
       setFieldValue("picture", file);
     } else {
-      alert("Esta imágen no puede ser mayor a 2MB");
+      alert("Esta imágen no puede ser mayor a 5MB");
     }
 
     handleClose();

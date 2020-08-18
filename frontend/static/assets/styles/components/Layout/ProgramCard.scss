@@ -1,26 +1,25 @@
 @media (min-width: 992px) {
-    .title-div {
-        width: 200px !important;
-    }
+  .title-div {
+    width: 200px !important;
+  }
 }
-.link-admin-panel{
-    transition: .5s ease;
-    width: 0;
-    overflow: hidden;
+.link-admin-panel {
+  transition: 0.5s ease;
+  width: 0;
+  overflow: hidden;
+  color: #fff;
+  width: 150px;
+
+  &:hover {
     color: #fff;
-    &:hover{
-        
-    color: #fff;
+  }
 }
+.my-program-card {
+  transition: 0.5s ease;
 }
-.my-program-card{
-    transition: .5s ease;
-}
-.my-program-card:hover .link-admin-panel{
-    width: 150px;
-}
+
 @media (max-width: 768px) {
-    .link-admin-panel{
-        width: 150px;
-    }
+  .link-admin-panel {
+    width: 150px;
+  }
 }
