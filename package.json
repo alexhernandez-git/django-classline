@@ -1,5 +1,5 @@
 {
-  "name": "django-rest-framework-classline",
+  "name": "django-classline",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alexhernandez-git/django-rest-framework-classline.git"
+    "url": "git+https://github.com/alexhernandez-git/django-classline.git"
   },
   "author": "Alex Hernandez",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/alexhernandez-git/django-rest-framework-classline/issues"
+    "url": "https://github.com/alexhernandez-git/django-classline/issues"
   },
-  "homepage": "https://github.com/alexhernandez-git/django-rest-framework-classline#readme",
+  "homepage": "https://github.com/alexhernandez-git/django-classline#readme",
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/plugin-transform-runtime": "^7.9.0",
