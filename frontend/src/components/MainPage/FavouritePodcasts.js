@@ -6,6 +6,7 @@ import { useHistory, Link, useParams, useLocation } from "react-router-dom";
 import Podcast from "src/components/ui/Podcast";
 import { useDispatch, useSelector } from "react-redux";
 import { playPodcast } from "src/redux/actions/podcasts";
+import { SlickSlider } from "../ui/SlickSlider";
 
 const FavouritePodcasts = () => {
   const { pathname } = useLocation();
@@ -67,23 +68,5 @@ const FavouritePodcasts = () => {
     </>
   );
 };
-
-const SlickSlider = styled.div`
-  .slick-prev {
-    left: -10px !important;
-    z-index: 100 !important;
-  }
-  .slick-next {
-    right: 10px !important;
-  }
-  .slick-next:before,
-  .slick-prev:before {
-    color: #000;
-    font-size: 4rem;
-  }
-  .slick-slide div:focus {
-    outline: none !important;
-  }
-`;
 
 export default FavouritePodcasts;

@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import { Link, useParams, useLocation } from "react-router-dom";
 import Playlist from "src/components/ui/Playlist";
 import { useSelector } from "react-redux";
+import { SlickSlider } from "../ui/SlickSlider";
 
 const MainPlaylists = () => {
   const { pathname } = useLocation();
@@ -76,23 +77,5 @@ const MainPlaylists = () => {
     </>
   );
 };
-
-const SlickSlider = styled.div`
-  .slick-prev {
-    left: -10px !important;
-    z-index: 100 !important;
-  }
-  .slick-next {
-    right: 10px !important;
-  }
-  .slick-next:before,
-  .slick-prev:before {
-    color: #000;
-    font-size: 4rem;
-  }
-  .slick-slide div:focus {
-    outline: none !important;
-  }
-`;
 
 export default MainPlaylists;

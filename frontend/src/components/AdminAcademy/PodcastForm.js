@@ -51,18 +51,18 @@ const PodcastForm = (props) => {
     if (typeof cropper.current.getCroppedCanvas() === "undefined") {
       return;
     }
-    setCropResult(cropper.current.getCroppedCanvas().toDataURL("image/jpeg",0.7));
+    setCropResult(
+      cropper.current.getCroppedCanvas().toDataURL("image/jpeg", 0.7)
+    );
 
     var file = dataURLtoFile(
-      cropper.current.getCroppedCanvas().toDataURL(),
+      cropper.current.getCroppedCanvas().toDataURL("image/jpeg", 0.7),
       Math.random().toString(36) + fileName
     );
-    if (file.size < 2000000) {
-      // const dispatchUploadPicture = () => dispatch(uploadPicture())
-      // dispatchUploadPicture()
+    if (file.size / 1024 / 1024 < 5) {
       setFieldValue("picture", file);
     } else {
-      alert("Esta imágen no puede ser mayor a 2MB");
+      alert("Esta imágen no puede ser mayor a 5MB");
     }
 
     handleClose();
@@ -228,7 +228,7 @@ const PodcastForm = (props) => {
           // Cropper.js options
           src={srcImage}
           viewMode={1}
-          aspectRatio={1/1}
+          aspectRatio={1 / 1}
           guides={false}
         />
         <Modal.Footer>
