@@ -74,7 +74,7 @@ const Program = (props) => {
                               {programContext.programState.program.benefits
                                 .length > 0 &&
                               programContext.programState.program.benefits[0]
-                                .subject_value != "" ? (
+                                .name != "" ? (
                                 <ProgramBenefits
                                   program={programContext.programState.program}
                                 />

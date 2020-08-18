@@ -328,8 +328,8 @@ const index = () => {
             {!programReducer.isLoading &&
               programReducer.program.description && <ProgramDescription />}
             {!programReducer.isLoading &&
-              programReducer.program.benefits.lenght > 0 &&
-              programReducer.program.benefits[0].subject_value != "" && (
+              programReducer.program.benefits.length > 0 &&
+              programReducer.program.benefits[0].name != "" && (
                 <ProgramBenefits />
               )}
 
