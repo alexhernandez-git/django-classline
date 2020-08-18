@@ -21,12 +21,13 @@ const StudentsPrograms = () => {
   const handleUnsubscribeWarning = (program) => {
     MySwal.fire({
       title:
-        "Su suscripción se cancelará y ya no tendrás acceso a esta academia también se te será devuelto el dinero del último pago en los próximos dias. <br>¿Estás seguro de que deseas cancelar la suscripción?",
+        "Su suscripción se cancelará y ya no tendrás acceso a esta academia",
+      text: "¿Estás seguro de que deseas cancelar la suscripción?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Anular suscripción",
+      confirmButtonText: "Cancelar suscripción",
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
@@ -198,7 +199,7 @@ const StudentsPrograms = () => {
                                       variant="info"
                                       id="dropdown-basic"
                                     ></Dropdown.Toggle>
-                                  {console.log(getSubscribeOptions(program))}
+                                    {console.log(getSubscribeOptions(program))}
                                     <Dropdown.Menu>
                                       {getSubscribeOptions(program) != null &&
                                         !getSubscribeOptions(program)

@@ -84,7 +84,7 @@ const Sidebar = (props) => {
               >
                 <FaListUl />
               </IconContext.Provider>{" "}
-              Lista de Reproducción
+              Listas de Reproducción
             </SecctionLink>
           </Link>
           <Link to={`/academy/${program}/admin/podcasts`}>
@@ -176,7 +176,7 @@ const Sidebar = (props) => {
                 >
                   <FaListUl />
                 </IconContext.Provider>{" "}
-                Lista de Reproducción
+                Listas de Reproducción
               </SecctionLink>
             </Link>
           )}
