@@ -6,6 +6,7 @@ import { IconContext } from "react-icons";
 import { FaRegPlayCircle, FaCircle } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import InfoSlider from "./InfoSlider";
+import useCheckAreDiscount from "../../hooks/useCheckAreDiscount";
 
 const WelcomeLayout = () => {
   const videoPresentation = useRef();
@@ -53,162 +54,164 @@ const WelcomeLayout = () => {
       videoPresentation.current.removeEventListener("ended", handleEndVideo);
     };
   });
+  const [areDiscount, fetchDiscount] = useCheckAreDiscount();
   return (
     <>
-      <div className="div-welcome bg-gradient-green shadow">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6 align-self-center">
-              <span className="mt-3 text-light h4 font-weight-light text-shadow">
-                Bienvenido a <h2 className="h2 mb-4">ClassLine Academy</h2>
-              </span>
-              <Form onSubmit={handleSubmit}>
-                <Form.Control
-                  className="mb-2"
-                  type="text"
-                  placeholder="¿Que estas buscando?"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-                {send > 0 && (
-                  <Redirect
-                    to={{
-                      pathname: "/programs/" + search,
-                    }}
+      <div className=" bg-gradient-green shadow">
+        <div className="div-welcome">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-6 align-self-center">
+                <span className="mt-3 text-light h4 font-weight-light text-shadow">
+                  Bienvenido a <h2 className="h2 mb-4">ClassLine Academy</h2>
+                </span>
+                <Form onSubmit={handleSubmit}>
+                  <Form.Control
+                    className="mb-2"
+                    type="text"
+                    placeholder="¿Que estas buscando?"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
-                )}
-              </Form>
-
-              <span className="mt-3 text-light h4 font-weight-light text-shadow">
-                Academias online
-              </span>
-            </div>
-            <div className="col-md-6 p-5">
-              <span className="d-block d-md-none m-3"></span>
-              <div
-                className="position-relative  cursor-pointer"
-                onClick={handleOpenVideo}
-              >
-                <img
-                  className="w-100"
-                  src="../../../static/assets/img/snapshotlaptop.png"
-                  alt="screenshot"
-                />
-                <div className="card-img-container text-white">
-                  <IconContext.Provider
-                    value={{
-                      className: "position-absolute h1",
-                      style: {
-                        left: "0",
-                        right: "0",
-                        top: "0",
-                        bottom: "0",
-                        margin: "auto",
-                        fontSize: "4rem",
-                        zIndex: "100",
-                      },
-                    }}
-                  >
-                    <div>
-                      <FaRegPlayCircle />
-                    </div>
-                  </IconContext.Provider>
-                  <IconContext.Provider
-                    value={{
-                      className: "position-absolute h1 text-dark",
-                      style: {
-                        left: "0",
-                        right: "0",
-                        top: "0",
-                        bottom: "0",
-                        margin: "auto",
-                        fontSize: "3.8rem",
-                        opacity: "0.8",
-                      },
-                    }}
-                  >
-                    <div>
-                      <FaCircle />
-                    </div>
-                  </IconContext.Provider>
-                </div>
-              </div>{" "}
-              <div
-                className="position-fixed"
-                style={{
-                  webkitTransition: "all 0.25s linear",
-                  oTransition: "all 0.25s linear",
-                  transition: "all 0.25s linear",
-                  zIndex: 1000000,
-                  width: "100%",
-                  maxWidth: "1200px",
-                  maxHeight: "300px",
-                  transform: actived ? "scale(1)" : "scale(0)",
-                  opacity: actived ? 1 : 0,
-                  margin:
-                    "5% auto" /* Will not center vertically and won't work in IE6/7. */,
-                  left: 0,
-                  right: 0,
-                  padding: "5%",
-                  top: 0,
-                }}
-              >
-                <div className="position-relative">
-                  <IconContext.Provider
-                    value={{
-                      className: "cursor-pointer",
-                      color: "#fff",
-                      size: "30px",
-                    }}
-                  >
-                    <MdClose
-                      onClick={handleCloseVideo}
-                      style={{
-                        zIndex: 510,
-                        position: "absolute",
-                        top: "-30px",
-                        right: 0,
+                  {send > 0 && (
+                    <Redirect
+                      to={{
+                        pathname: "/programs/" + search,
                       }}
                     />
-                  </IconContext.Provider>
-                  <div
-                    style={{
-                      position: "absolute",
-                      zIndex: 100000,
-                      background: "#000",
-                      width: "77%",
-                      height: "80%",
-                      margin: "auto",
-                      left: 0,
-                      top: "5%",
-                      right: 0,
-                    }}
-                  ></div>
-                  <video
-                    ref={videoPresentation}
-                    style={{
-                      position: "absolute",
-                      zIndex: 1000000,
-                      width: "77%",
+                  )}
+                </Form>
 
-                      height: "80%",
-                      margin: "auto",
-                      left: 0,
-                      top: "5%",
-                      right: 0,
-                    }}
-                    controls
-                    controlsList="nodownload"
-                    src="../../../static/assets/videos/screencastweb2.mp4"
-                  ></video>
+                <span className="mt-3 text-light h4 font-weight-light text-shadow">
+                  Academias online
+                </span>
+              </div>
+              <div className="col-md-6 p-5">
+                <span className="d-block d-md-none m-3"></span>
+                <div
+                  className="position-relative  cursor-pointer"
+                  onClick={handleOpenVideo}
+                >
                   <img
                     className="w-100"
-                    src="../../../static/assets/img/screenshotvideos.png"
+                    src="../../../static/assets/img/snapshotlaptop.png"
                     alt="screenshot"
                   />
+                  <div className="card-img-container text-white">
+                    <IconContext.Provider
+                      value={{
+                        className: "position-absolute h1",
+                        style: {
+                          left: "0",
+                          right: "0",
+                          top: "0",
+                          bottom: "0",
+                          margin: "auto",
+                          fontSize: "4rem",
+                          zIndex: "100",
+                        },
+                      }}
+                    >
+                      <div>
+                        <FaRegPlayCircle />
+                      </div>
+                    </IconContext.Provider>
+                    <IconContext.Provider
+                      value={{
+                        className: "position-absolute h1 text-dark",
+                        style: {
+                          left: "0",
+                          right: "0",
+                          top: "0",
+                          bottom: "0",
+                          margin: "auto",
+                          fontSize: "3.8rem",
+                          opacity: "0.8",
+                        },
+                      }}
+                    >
+                      <div>
+                        <FaCircle />
+                      </div>
+                    </IconContext.Provider>
+                  </div>
+                </div>{" "}
+                <div
+                  className="position-fixed"
+                  style={{
+                    webkitTransition: "all 0.25s linear",
+                    oTransition: "all 0.25s linear",
+                    transition: "all 0.25s linear",
+                    zIndex: 1000000,
+                    width: "100%",
+                    maxWidth: "1200px",
+                    maxHeight: "300px",
+                    transform: actived ? "scale(1)" : "scale(0)",
+                    opacity: actived ? 1 : 0,
+                    margin:
+                      "5% auto" /* Will not center vertically and won't work in IE6/7. */,
+                    left: 0,
+                    right: 0,
+                    padding: "5%",
+                    top: 0,
+                  }}
+                >
+                  <div className="position-relative">
+                    <IconContext.Provider
+                      value={{
+                        className: "cursor-pointer",
+                        color: "#fff",
+                        size: "30px",
+                      }}
+                    >
+                      <MdClose
+                        onClick={handleCloseVideo}
+                        style={{
+                          zIndex: 510,
+                          position: "absolute",
+                          top: "-30px",
+                          right: 0,
+                        }}
+                      />
+                    </IconContext.Provider>
+                    <div
+                      style={{
+                        position: "absolute",
+                        zIndex: 100000,
+                        background: "#000",
+                        width: "77%",
+                        height: "80%",
+                        margin: "auto",
+                        left: 0,
+                        top: "5%",
+                        right: 0,
+                      }}
+                    ></div>
+                    <video
+                      ref={videoPresentation}
+                      style={{
+                        position: "absolute",
+                        zIndex: 1000000,
+                        width: "77%",
+
+                        height: "80%",
+                        margin: "auto",
+                        left: 0,
+                        top: "5%",
+                        right: 0,
+                      }}
+                      controls
+                      controlsList="nodownload"
+                      src="../../../static/assets/videos/screencastweb2.mp4"
+                    ></video>
+                    <img
+                      className="w-100"
+                      src="../../../static/assets/img/screenshotvideos.png"
+                      alt="screenshot"
+                    />
+                  </div>
                 </div>
-              </div>
-              {/* <Slider {...settings2}>
+                {/* <Slider {...settings2}>
                 <img
                   className="w-100"
                   src="../../../static/assets/img/screenshotvideos.png"
@@ -225,13 +228,23 @@ const WelcomeLayout = () => {
                   alt="screenshot"
                 />
               </Slider> */}
-              {/* <Blackboard /> */}
+                {/* <Blackboard /> */}
+              </div>
             </div>
           </div>
         </div>
+
+        {areDiscount && (
+          <div className="offer-discount bg-warning text-white p-2 text-center">
+            {console.log(areDiscount)}
+            <span className="d-block title h4 mb-0">{areDiscount.title}</span>
+            <span className="d-block h5 mb-0 font-weight-normal">
+              {areDiscount.message}
+            </span>
+          </div>
+        )}
       </div>
       <InfoSlider />
-
       {actived && (
         <div
           style={{

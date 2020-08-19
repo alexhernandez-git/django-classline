@@ -157,8 +157,7 @@ const InfoSlider = () => {
                       <img
                         src="static/assets/img/main-page-pictures/tablet.PNG"
                         alt=""
-                        className="rounded shadow"
-                        className="d-none d-sm-block"
+                        className="rounded shadow d-none d-sm-block"
                         style={{ height: "252px", width: "auto" }}
                       />
                     </div>

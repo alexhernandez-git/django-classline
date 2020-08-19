@@ -190,6 +190,46 @@ button:focus {
   border: none !important;
   border-radius: 50rem !important;
 }
+
+@keyframes bounce {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+    width: 100%;
+  }
+
+  30% {
+    transform: translateY(0);
+    padding-bottom: 5px;
+  }
+  // 30% {
+  //   transform: translateY(-50%);
+  // }
+  // 40% {
+  //   transform: translateY(0%);
+  // }
+  55% {
+    transform: translateY(-30%);
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+// Offer discount
+.offer-discount {
+  -webkit-animation: bounce 1.5s ease-in-out; /* Safari 4+ */
+  -moz-animation: bounce 1.5s ease-in-out; /* Fx 5+ */
+  -o-animation: bounce 1.5s ease-in-out; /* Opera 12+ */
+  animation: bounce 1.5s ease-in-out; /* IE 10+, Fx 29+ */
+  @media only screen and (max-width: 992px) {
+    span {
+      font-size: 100%;
+    }
+  }
+}
+
 /* Forms */
 input.form-control,
 textarea.form-control,

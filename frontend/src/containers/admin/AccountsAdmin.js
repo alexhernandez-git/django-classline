@@ -75,7 +75,7 @@ const Students = () => {
           )}
           <div className="content">
             <div>
-              <span className="d-block">{areDiscount.title}</span>
+              <span className="d-block title">{areDiscount.title}</span>
               <span>{areDiscount.message}</span>
             </div>
             <IconContext.Provider
@@ -151,19 +151,31 @@ const Students = () => {
 const Promotion = styled.div`
   position: fixed;
   bottom: 40px;
-  left: 130px;
-  width: calc(100% - 170px);
+  left: 90px;
+  margin: auto;
+  flex-direction: column;
+  width: 100%;
+  display: flex;
+  justify-self: center;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
   text-align: center;
   .content {
     margin: 10px 0;
     padding: 1rem;
-    font-size: 2rem;
     color: white;
     border-radius: 1rem;
     background: linear-gradient(45deg, #2e6a89, #56b389);
     display: grid;
     grid-template-columns: 1fr 40px;
     align-items: center;
+  }
+  span {
+    font-size: 1.8rem;
+  }
+  .title {
+    font-weight: bold;
   }
   @media only screen and (max-width: 576px) {
     width: calc(100% - 20px);

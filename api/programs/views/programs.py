@@ -771,9 +771,9 @@ class ProgramViewSet(mixins.CreateModelMixin,
         if Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 10:
             return Response(
                 {
-                    "title": "¡Oferta limitada lanzamiento de la plataforma!",
+                    "title": "¡Oferta limitada para academias por el lanzamiento de la plataforma!",
                     "message": "50% de descuento para siempre al adquirir cualquier plan de cuentas de usuario",
-                    "info": "Cuando la cuenta de instructor adquiera cualquier plan apartir del nivel 2 se le asignará un descuento de por vida, el usuario podrá cambiar de plan pero si cancela el plan se le quitará el descuento",
+                    "info": "Cuando la cuenta de instructor adquiera cualquier plan se le asignará el descuento de por vida, el usuario podrá cambiar de plan pero si cancela el plan se le quitará el descuento",
                     "percent_off": 50,
                     "is_discount": True,
                 }, status=status.HTTP_200_OK
