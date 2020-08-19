@@ -4,25 +4,46 @@ import "../../../static/assets/styles/components/Layout/Footer.scss";
 const Footer = () => {
   return (
     <footer className="bg-success text-white m-0">
-      {/* <div className="container">
+      <div className="container">
+        <section className="mas-info">
+          <p>
+            Para contactar con nosotros{" "}
+            <a
+              href="mailto:support@classlineacademy.com"
+              style={{ fontWeight: "bold" }}
+            >
+              support@classlineacademy.com
+            </a>
+          </p>
 
-                <section className="mas-info">
-                    <p>Para contactar con nosotros <a href="tel:68903457">llame al 689403457</a></p>
-
-                    <p>Copyright &copy; 2020 ClassLine Academy. Todos los derechos reservados.</p>
-                    <nav className="nav-footer">
-                        <ul>
-                            <li><a href="#">Política de privacidad</a></li>
-                            <li><a href="#">Uso de cookies</a></li>
-                            <li><a href="#">Condiciones de uso</a></li>
-                            <li><a href="#">Ventas y reembolsos</a></li>
-                            <li><a href="#">Avisos legales</a></li>
-                            <li><a href="#">Mapa del sitio</a></li>
-                        </ul>
-
-                    </nav>
-                </section>
-            </div> */}
+          <p>
+            Copyright &copy; 2020 ClassLine Academy. Todos los derechos
+            reservados.
+          </p>
+          <nav className="nav-footer">
+            <ul>
+              <li>
+                <a href="#">Política de privacidad</a>
+              </li>
+              <li>
+                <a href="#">Uso de cookies</a>
+              </li>
+              <li>
+                <a href="#">Condiciones de uso</a>
+              </li>
+              <li>
+                <a href="#">Ventas y reembolsos</a>
+              </li>
+              <li>
+                <a href="#">Avisos legales</a>
+              </li>
+              <li>
+                <a href="#">Mapa del sitio</a>
+              </li>
+            </ul>
+          </nav>
+        </section>
+      </div>
     </footer>
   );
 };

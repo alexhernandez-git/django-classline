@@ -173,7 +173,7 @@ const InfoSlider = () => {
                     <div className=" mt-3">
                       <Link to="/programs">
                         <span className="btn-green py-2 px-3 text-white h5">
-                          Ver las academias online
+                          Ver academias
                         </span>
                       </Link>
                     </div>
