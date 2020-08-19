@@ -235,12 +235,14 @@ const WelcomeLayout = () => {
         </div>
 
         {areDiscount && (
-          <div className="offer-discount bg-warning text-white p-2 text-center">
-            {console.log(areDiscount)}
-            <span className="d-block title h4 mb-0">{areDiscount.title}</span>
-            <span className="d-block h5 mb-0 font-weight-normal">
-              {areDiscount.message}
-            </span>
+          <div className="div-offer-discount">
+            <div className="offer-discount bg-warning text-white p-2 text-center">
+              {console.log(areDiscount)}
+              <span className="d-block title h4 mb-0">{areDiscount.title}</span>
+              <span className="d-block h5 mb-0 font-weight-normal">
+                {areDiscount.message}
+              </span>
+            </div>
           </div>
         )}
       </div>
