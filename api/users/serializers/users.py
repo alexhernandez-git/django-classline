@@ -51,7 +51,7 @@ def send_confirmation_email(user_pk):
 
     user = User.objects.get(pk=user_pk)
     verification_token = gen_verification_token(user)
-    subject = 'Welcome @{}! Verify your account to start using Classline Academy'.format(
+    subject = 'Bienvenido @{}! Verifica tu cuenta para empezar a usar Classline Academy'.format(
         user.username)
     from_email = 'Classline Academy <noreply@classlineacademy.com>'
     content = render_to_string(
