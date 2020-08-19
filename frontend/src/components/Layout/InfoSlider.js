@@ -83,12 +83,19 @@ const InfoSlider = () => {
                   </div>
                   <div className="d-block d-lg-none m-2"></div>
                   <div className="col-lg-7">
-                    <img src="https://via.placeholder.com/450x252" alt="" />
+                    <img
+                      className="rounded shadow"
+                      src="static/assets/img/main-page-pictures/main-page-platform.png"
+                      alt=""
+                    />
                   </div>
                 </div>
-                <div className="row w-100 align-items-center mb-5">
+                {/* <div className="row w-100 align-items-center mb-5">
                   <div className="col-lg-7 order-3">
-                    <img src="https://via.placeholder.com/450x252" alt="" />
+                    <img
+                      src="static/assets/img/main-page-pictures/main-page.png"
+                      alt=""
+                    />
                   </div>
                   <div className="d-block d-lg-none m-2 order-2"></div>
                   <div className="col-lg-5 order-1">
@@ -100,9 +107,17 @@ const InfoSlider = () => {
                       ni de contagiar a tus seres queridos
                     </span>
                   </div>
-                </div>
+                </div> */}
                 <div className="row w-100 align-items-center mb-5">
-                  <div className="col-lg-5">
+                  <div className="col-lg-7 order-3">
+                    <img
+                      className="rounded shadow"
+                      src="static/assets/img/main-page-pictures/main-page.png"
+                      alt=""
+                    />
+                  </div>
+                  <div className="d-block d-lg-none m-2 order-2"></div>
+                  <div className="col-lg-5 order-1">
                     <span className="h5 text-dark d-block">
                       Donde podrás acceder a classes online, videos, listas de
                       reproducción y podcasts
@@ -113,32 +128,66 @@ const InfoSlider = () => {
                       del mundo
                     </span>
                   </div>
-                  <div className="d-block d-lg-none m-2"></div>
-                  <div className="col-lg-7">
-                    <img src="https://via.placeholder.com/450x252" alt="" />
-                  </div>
                 </div>
-                <div className="row w-100 align-items-center">
-                  <div className="col-lg-7 order-3">
-                    <img src="https://via.placeholder.com/450x252" alt="" />
-                  </div>
-                  <div className="d-block d-lg-none m-2 order-2"></div>
+                <div className="row w-100 align-items-center mb-5">
                   <div className="col-lg-5 order-1">
                     <span className="h5 text-dark d-block">
-                      I si lo pruebas y no te convence
+                      Con nuestra propia aplicación móvil para android
                     </span>
                     <span className="text-grey">
-                      Tienes garantizada la devolución del último pago de por
-                      vida, siempre que sea la primera vez que te apuntas a esa
-                      academia
+                      Mira el contenido cuando y donde quieras con la
+                      flexibilidad que te aportará nuestra aplicación para
+                      android <br />
+                      (ios próximamente)
                     </span>
+                  </div>
+                  <div className="d-block d-lg-none m-2 order-2"></div>
+                  <div className="col-lg-7 order-3">
+                    <div className="d-flex justify-content-between">
+                      <img
+                        src="static/assets/img/main-page-pictures/movil.PNG"
+                        alt=""
+                        className="shadow"
+                        style={{
+                          height: "252px",
+                          width: "auto",
+                          borderRadius: "1rem",
+                        }}
+                      />
+                      <img
+                        src="static/assets/img/main-page-pictures/tablet.PNG"
+                        alt=""
+                        className="rounded shadow"
+                        className="d-none d-sm-block"
+                        style={{ height: "252px", width: "auto" }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="w-100 align-items-center mb-3">
+                  <div className="col">
+                    <span className="h5 text-dark d-block">
+                      ¡Mira nuestras academias!
+                    </span>
+                    <span className="text-grey"> Te esperamos</span>
+                    <div className=" mt-3">
+                      <Link to="/programs">
+                        <span className="btn-green py-2 px-3 text-white h5">
+                          Ver las academias online
+                        </span>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="info-slider slick-element text-center p-4 font-weight-normal">
                 <div className="row w-100 align-items-center mb-5">
                   <div className="col-lg-7 order-3">
-                    <img src="https://via.placeholder.com/450x252" alt="" />
+                    <img
+                      className="rounded shadow"
+                      src="static/assets/img/main-page-pictures/admin-panel.png"
+                      alt=""
+                    />
                   </div>
                   <div className="d-block d-lg-none m-2 order-2"></div>
                   <div className="col-lg-5 order-1">
@@ -165,12 +214,20 @@ const InfoSlider = () => {
                   </div>
                   <div className="d-block d-lg-none m-2"></div>
                   <div className="col-lg-7">
-                    <img src="https://via.placeholder.com/450x252" alt="" />
+                    <img
+                      className="rounded shadow"
+                      src="static/assets/img/main-page-pictures/pricing.png"
+                      alt=""
+                    />
                   </div>
                 </div>
                 <div className="row w-100 align-items-center mb-5">
                   <div className="col-lg-7 order-3">
-                    <img src="https://via.placeholder.com/450x252" alt="" />
+                    <img
+                      className="rounded shadow"
+                      src="static/assets/img/main-page-pictures/create-playlist.png"
+                      alt=""
+                    />
                   </div>
                   <div className="d-block d-lg-none m-2 order-2"></div>
                   <div className="col-lg-5 order-1">
@@ -184,7 +241,7 @@ const InfoSlider = () => {
                   </div>
                 </div>
                 <div className="row w-100 align-items-center">
-                  <div className="col-lg-5">
+                  <div className="col">
                     <span className="h5 text-dark d-block">
                       ¡Conviertete en instructor ya!
                     </span>
@@ -196,10 +253,6 @@ const InfoSlider = () => {
                         </span>
                       </Link>
                     </div>
-                  </div>
-                  <div className="d-block d-lg-none m-2"></div>
-                  <div className="col-lg-7">
-                    <img src="https://via.placeholder.com/450x252" alt="" />
                   </div>
                 </div>
               </div>
