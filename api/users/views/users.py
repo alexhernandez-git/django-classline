@@ -341,7 +341,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         if event.type == 'customer.subscription.deleted':
             subscription = event.data.object  # contains a stripe.Subscription
             subscription_data = Subscription.objects.get(
-                subscription_id=subscription.id, subscription_type="program-subscription", active=True)
+                subscription_id=subscription.id, active=True)
             student = User.objects.get(code=subscription_data.user)
             program = Program.objects.get(code=subscription_data.program)
             program.students.remove(student)
