@@ -42,8 +42,8 @@ const AcquireAccounts = (props) => {
   };
   const [showPro, setShowPro] = useState(false);
   const [pricingPro, setPricingPro] = useState({
-    id: "prod_Hqn2cauE8T3A4F",
-    price_id: "price_1HH5S6IgGIa3w9Cp4uf4EPCa",
+    id: "prod_Hs4SzrmKsWWX1y",
+    price_id: "price_1HIKJQIgGIa3w9CpFZZl6nJm",
     level: 0,
     accounts: level_pro ? current_accounts : 75,
     description: "Accounts Volume Pricing",
@@ -270,10 +270,42 @@ const AcquireAccounts = (props) => {
     }
   };
   const [newCard, setNewCard] = useState(false);
+  // const [pricingEur, setPricingEur] = useState([
+  //   {
+  //     id: "prod_HqrMoS5S5j3Eab",
+  //     price_id: "price_1HH9eAIgGIa3w9CpaGCfCDTF",
+  //     level: 1,
+  //     accounts: 10,
+  //     description: "10 Academy Accounts",
+  //     level_pro: false,
+  //     price: 19.99,
+  //     currency: "EUR",
+  //   },
+  //   {
+  //     id: "prod_HqrNx2F5IFtxc4",
+  //     price_id: "price_1HH9f6IgGIa3w9Cpfn5kT24j",
+  //     level: 2,
+  //     accounts: 25,
+  //     description: "20 Academy Accounts",
+  //     level_pro: false,
+  //     price: 49.99,
+  //     currency: "EUR",
+  //   },
+  //   {
+  //     id: "prod_HqrPff8wCoJawR",
+  //     price_id: "price_1HH9gHIgGIa3w9CpFxKr6Ix5",
+  //     level: 3,
+  //     accounts: 50,
+  //     level_pro: false,
+  //     description: "50 Academy Accounts",
+  //     price: 99.99,
+  //     currency: "EUR",
+  //   },
+  // ]);
   const [pricingEur, setPricingEur] = useState([
     {
-      id: "prod_HqrMoS5S5j3Eab",
-      price_id: "price_1HH9eAIgGIa3w9CpaGCfCDTF",
+      id: "prod_Hs4Rx29VRZNKDX",
+      price_id: "price_1HIKJ5IgGIa3w9Cpjm1QHRGU",
       level: 1,
       accounts: 10,
       description: "10 Academy Accounts",
@@ -282,8 +314,8 @@ const AcquireAccounts = (props) => {
       currency: "EUR",
     },
     {
-      id: "prod_HqrNx2F5IFtxc4",
-      price_id: "price_1HH9f6IgGIa3w9Cpfn5kT24j",
+      id: "prod_Hs4Ry1Jg0W4obe",
+      price_id: "price_1HIKJ1IgGIa3w9CpfenoV54Y",
       level: 2,
       accounts: 25,
       description: "20 Academy Accounts",
@@ -292,8 +324,8 @@ const AcquireAccounts = (props) => {
       currency: "EUR",
     },
     {
-      id: "prod_HqrPff8wCoJawR",
-      price_id: "price_1HH9gHIgGIa3w9CpFxKr6Ix5",
+      id: "prod_Hs4Ulgt6V6c433",
+      price_id: "price_1HIKLkIgGIa3w9CpBmOw7sSD",
       level: 3,
       accounts: 50,
       level_pro: false,
