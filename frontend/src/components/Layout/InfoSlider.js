@@ -74,7 +74,7 @@ const InfoSlider = () => {
                 <div className="row w-100 align-items-center mb-5">
                   <div className="col-lg-5">
                     <span className="h5 text-dark d-block">
-                      Forma parte de tu academia de siempre ahora completamente
+                      Forma parte de tu academia de siempre, ahora completamente
                       digital
                     </span>
                     <span className="text-grey">
@@ -124,7 +124,7 @@ const InfoSlider = () => {
                     </span>
                     <span className="text-grey">
                       Te vamos a demostrar que con nuestras academias puedes
-                      seguir aprendiendo y divirtiendote desde cualquier lugar
+                      seguir aprendiendo y divirtiéndote desde cualquier lugar
                       del mundo
                     </span>
                   </div>
