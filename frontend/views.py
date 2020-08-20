@@ -6,6 +6,10 @@ from django.views import View
 from django.views.decorators.clickjacking import xframe_options_exempt
 
 
-# @xframe_options_exempt
+@xframe_options_exempt
 def index(request):
+    return render(request, 'index.html')
+
+
+def academy(request):
     return render(request, 'index.html')

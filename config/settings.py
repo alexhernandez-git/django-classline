@@ -26,7 +26,7 @@ SECRET_KEY = 'c8jdhs)2-=c46n)i-9h8-8f#ko8x*dt@=e4eh65*5(@n#d&gw%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['classlineacademy.com', '192.168.1.10']
 
 # Users & Authentication
 AUTH_USER_MODEL = 'users.User'

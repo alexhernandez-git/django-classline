@@ -4,6 +4,7 @@ from .views import *
 
 
 urlpatterns = [
+
     re_path(r'^$', index, name='index'),
     re_path(r'^(?:.*)/?$', index)
 ]
