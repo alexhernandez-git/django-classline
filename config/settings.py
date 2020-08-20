@@ -213,7 +213,7 @@ TEMPLATES = [
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
 SECURE_BROWSER_XSS_FILTER = True
-X_FRAME_OPTIONS = 'Allow'
+X_FRAME_OPTIONS = 'DENY'
 
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
