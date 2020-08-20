@@ -31,6 +31,7 @@ from api.users.serializers import PromotionCodeModelSerializer
 from api.users.models import PromotionCode
 
 import stripe
+import os
 
 
 class PromotionCodeViewSet(
