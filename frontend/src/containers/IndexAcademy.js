@@ -246,7 +246,7 @@ const index = () => {
                                   <div className="flip-card-back d-flex flex-column justify-content-between">
                                     <div className="d-flex justify-content-end">
                                       <div className="d-flex justify-content-between w-100">
-                                        <Link to="/">
+                                        <a href="/" target="_blank">
                                           <img
                                             alt=""
                                             src={
@@ -256,7 +256,7 @@ const index = () => {
                                             width="109.33"
                                             className="d-inline-block align-top"
                                           />
-                                        </Link>
+                                        </a>
                                         <IconContext.Provider
                                           value={{
                                             size: 16,
@@ -276,12 +276,13 @@ const index = () => {
                                         programReducer.program.program_price
                                           .label}
                                     </small>
-                                    <Link
-                                      to={`/program/${program}`}
+                                    <a
+                                      href={`/program/${program}`}
                                       className="my-button shadow"
+                                      target="_blank"
                                     >
                                       Obtener
-                                    </Link>
+                                    </a>
                                   </div>
                                 )}
                             </div>
