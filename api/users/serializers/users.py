@@ -411,7 +411,9 @@ class UserLoginSerializer(serializers.Serializer):
                     'Con esta cuenta no puedes acceder a classlineacademy.com')
 
         if not user.is_verified:
-            raise serializers.ValidationError('Esta cuenta no esta verificada')
+            raise serializers.ValidationError(
+                'Esta cuenta no esta verificada, para verificar mira el correo y verifica la cuenta')
+
         self.context['user'] = user
         return data
 
@@ -500,7 +502,7 @@ class UserLoginAppSerializer(serializers.Serializer):
 
         if not user.is_verified:
             raise serializers.ValidationError(
-                'Esta cuenta no esta verificada')
+                'Esta cuenta no esta verificada, para verificar mira el correo y verifica la cuenta')
 
         if not Student.objects.filter(user=user).exists():
             raise serializers.ValidationError(

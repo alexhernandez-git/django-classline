@@ -21,8 +21,7 @@ const Sidebar = (props) => {
           </p>
           <small className="text-info">
             Los pagos son 100% seguros, y con garantia de devolución del último
-            pago de por vida si es la primera vez que te subscribes a esa
-            academia
+            pago, si es la primera vez que te subscribes a esa academia
           </small>
         </div>
       </div>

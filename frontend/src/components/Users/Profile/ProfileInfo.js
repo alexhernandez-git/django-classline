@@ -32,14 +32,14 @@ const TeachersProfileInfo = () => {
   };
   return (
     <div className="bg-white shadow p-3 rounded my-4">
-      <span className="d-none d-md-block">Biografia</span>
+      <span className="d-none d-md-block">Biografía</span>
       <Form onSubmit={handleSave}>
         <Row>
           <Col
             lg={{ span: 4 }}
             className="mb-3 text-center d-lg-flex justify-content-end align-items-center"
           >
-            <span className="h5 m-0 font-weight-normal">Biografia</span>
+            <span className="h5 m-0 font-weight-normal">Biografía</span>
           </Col>
 
           <Col lg={{ offset: 1, span: 6 }}>
@@ -52,7 +52,7 @@ const TeachersProfileInfo = () => {
                   setIsEditing(true);
                 }}
                 type="date"
-                placeholder="Biografia"
+                placeholder="Biografía"
                 rows="10"
               />
               {infoErrors.biography &&
