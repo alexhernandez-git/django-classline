@@ -48,7 +48,11 @@ class PromotionCodeViewSet(
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         promotion_code = serializer.data
-        stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
         try:
             stripe_promotion_code = stripe.PromotionCode.retrieve(
                 promotion_code['promotion_code_id'],
