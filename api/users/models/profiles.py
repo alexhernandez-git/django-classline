@@ -46,7 +46,7 @@ class Profile(CLineModel):
     stripe_customer = models.BooleanField(default=False)
 
     subscriptions = models.ManyToManyField(
-        'users.Subscription', related_name='student_subscriptions')
+        'users.Subscription', related_name='student_subscriptions', blank=True)
 
     def __str__(self):
         """Return user's str representation."""
