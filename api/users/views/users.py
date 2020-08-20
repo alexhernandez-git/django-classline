@@ -49,6 +49,8 @@ from api.users.serializers.subscriptions import(
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
+import os
+
 
 class UserViewSet(mixins.RetrieveModelMixin,
                   mixins.ListModelMixin,
@@ -103,7 +105,11 @@ class UserViewSet(mixins.RetrieveModelMixin,
             'user': UserModelSerializer(user).data,
             'access_token': token,
         }
-        stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
         stripe_account_id = data.get('user').get(
             'profile').get('stripe_account_id')
         stripe_customer_id = data.get('user').get(
@@ -266,8 +272,10 @@ class UserViewSet(mixins.RetrieveModelMixin,
     def remove_card(self, request, *args, **kwargs):
         """Remove payment method"""
         user = request.user
-        profile = user.profile
-        stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
 
         remove = stripe.PaymentMethod.detach(
             request.data.get('payment_method').get('id'),
@@ -282,7 +290,11 @@ class UserViewSet(mixins.RetrieveModelMixin,
         code = request.data.get("code")
 
         if profile.stripe_account_id == None or profile.stripe_account_id == '':
-            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+            if 'STRIPE_API_KEY' in os.environ:
+                stripe.api_key = os.environ['STRIPE_API_KEY']
+            else:
+                stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
             response = stripe.OAuth.token(
                 grant_type='authorization_code',
                 code=code,
@@ -327,7 +339,10 @@ class UserViewSet(mixins.RetrieveModelMixin,
         """Process stripe webhook notification for subscription cancellation"""
         payload = request.body
         event = None
-        stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
 
         try:
             event = stripe.Event.construct_from(
@@ -363,7 +378,11 @@ class UserViewSet(mixins.RetrieveModelMixin,
             'user': UserModelSerializer(request.user, many=False).data,
 
         }
-        stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
         stripe_account_id = data.get('user').get(
             'profile').get('stripe_account_id')
         stripe_customer_id = data.get('user').get(
@@ -411,7 +430,11 @@ class UserViewSet(mixins.RetrieveModelMixin,
                 'rating': None
             }
 
-        stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
         stripe_account_id = data.get('user').get(
             'profile').get('stripe_account_id')
         stripe_customer_id = data.get('user').get(

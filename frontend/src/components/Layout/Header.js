@@ -104,8 +104,8 @@ export default function Header() {
         last_name: "",
       });
       Swal.fire({
-        title: "Registrado satisfactoriamente",
-        text: "Te hemos enviado un correo para que verifiques tu cuenta",
+        title: "Te hemos enviado un correo para que verifiques tu cuenta",
+        text: "Registrado satisfactoriamente",
         icon: "success",
         confirmButtonText: "Ok",
       });

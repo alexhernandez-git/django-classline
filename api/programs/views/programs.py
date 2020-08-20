@@ -50,6 +50,7 @@ from api.users.serializers import (
 
 
 import stripe
+import os
 
 
 class ProgramViewSet(mixins.CreateModelMixin,
@@ -230,7 +231,11 @@ class ProgramViewSet(mixins.CreateModelMixin,
         program = self.get_object()
         user = request.user
         profile = user.profile
-        stripe.api_key = "sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo"
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
         customer_id = ''
         if Program.objects.filter(
             students=user
@@ -337,7 +342,11 @@ class ProgramViewSet(mixins.CreateModelMixin,
         profile = user.profile
 
         # user = User.objects.get(pk=self.kwargs['pk'])
-        stripe.api_key = "sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo"
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
         # try:
         #     cancel_subscription = Subscription.objects.get(user=request.user.code, program=program.code)
         #     if cancel_subscription:
@@ -392,7 +401,11 @@ class ProgramViewSet(mixins.CreateModelMixin,
         profile = user.profile
 
         # user = User.objects.get(pk=self.kwargs['pk'])
-        stripe.api_key = "sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo"
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
         try:
             cancel_subscription = Profile.objects.filter(
                 user=request.user.code, program=program.code, active=True)[0]
@@ -423,7 +436,11 @@ class ProgramViewSet(mixins.CreateModelMixin,
         if "discount" in request.data:
             discount = request.data['discount']
         serialised_program = ProgramModelSerializer(program, many=False).data
-        stripe.api_key = "sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo"
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
         customer_id = ''
         # Validation
 
@@ -659,7 +676,9 @@ class ProgramViewSet(mixins.CreateModelMixin,
                                     "price": request.data['accounts_acquired']['price_id'],
                                 },
                             ],
-                            coupon=teacher.discount.coupon_id
+                            coupon=teacher.discount.coupon_id,
+                            trial_period_days="14",
+
                         )
                     elif promotion_code:
                         subscription = stripe.Subscription.create(
@@ -669,7 +688,9 @@ class ProgramViewSet(mixins.CreateModelMixin,
                                     "price": request.data['accounts_acquired']['price_id'],
                                 },
                             ],
-                            promotion_code=promotion_code["promotion_code_id"]
+                            promotion_code=promotion_code["promotion_code_id"],
+                            trial_period_days="14",
+
                         )
                     else:
                         subscription = stripe.Subscription.create(
@@ -679,6 +700,8 @@ class ProgramViewSet(mixins.CreateModelMixin,
                                     "price": request.data['accounts_acquired']['price_id'],
                                 },
                             ],
+                            trial_period_days="14",
+
                         )
 
                 sub = Subscription.objects.create(
@@ -736,7 +759,10 @@ class ProgramViewSet(mixins.CreateModelMixin,
         if program.created_accounts.count() > 0:
             return Response({'message': 'Borra tus cuentas creadas para cancelar'}, status=status.HTTP_400_BAD_REQUEST)
         serializer_class = self.get_serializer_class()
-        stripe.api_key = "sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo"
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
 
         partial = request.method == 'PATCH'
 

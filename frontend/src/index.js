@@ -13,8 +13,12 @@ import { Elements } from "@stripe/react-stripe-js";
 import { Helmet } from "react-helmet";
 
 const stripePromise = loadStripe(
-  "pk_test_51HCsUHIgGIa3w9CpcKf0B6mwtGasJjOMo2DIu6oZ3Yawa7LdnAroU8USCk23lya8Q7CLpOwTsTjfKzlnflcbAPUG00ZQPMEjrE"
+  "pk_live_51HCsUHIgGIa3w9Cpq4qrchGYGZkc6W7SNIz6016DUM7NQ3QQeyVZBObydxCjbhiQPTZDkY3jz0s8vk3hvXDlbvrf00rHuKQduT"
 );
+//prod
+// "pk_live_51HCsUHIgGIa3w9Cpq4qrchGYGZkc6W7SNIz6016DUM7NQ3QQeyVZBObydxCjbhiQPTZDkY3jz0s8vk3hvXDlbvrf00rHuKQduT"
+//dev
+// "pk_test_51HCsUHIgGIa3w9CpcKf0B6mwtGasJjOMo2DIu6oZ3Yawa7LdnAroU8USCk23lya8Q7CLpOwTsTjfKzlnflcbAPUG00ZQPMEjrE"
 
 ReactDOM.render(
   <Provider store={store}>
