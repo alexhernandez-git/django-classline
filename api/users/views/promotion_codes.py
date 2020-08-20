@@ -41,7 +41,7 @@ class PromotionCodeViewSet(
 
     Handle sign up, login and account verification.
     """
-    queryset = PromotionCode.objects.all()
+    queryset = PromotionCode.objects.filter(active=True)
     serializer_class = PromotionCodeModelSerializer
     lookup_field = 'code'
 
