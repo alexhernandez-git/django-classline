@@ -200,7 +200,7 @@ const InformationCourse = () => {
                     <FaChalkboardTeacher />
                   </IconContext.Provider>
                   <span className="m-0 text-center text-primary font-weight-normal">
-                    Videoconferencias
+                    Clases online
                   </span>
                 </div>
                 <div className="col-sm-6 col-lg-6">
