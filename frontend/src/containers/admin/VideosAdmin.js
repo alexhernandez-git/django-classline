@@ -96,6 +96,7 @@ const videos = () => {
       dispatch(fetchVideosPagination(url));
     dispatchFetchVideosPagination(url);
   };
+
   return (
     <>
       <Main padding ref={main}>
@@ -107,8 +108,10 @@ const videos = () => {
             onSubmit={handleSubmitSearch}
           />
         </form>
-        <div className="d-flex justify-content-between">
-          <div>{videosReducer.video_creating && "Subiendo video"}</div>
+        <div className="d-flex justify-content-between mb-3">
+          <div>
+            {videosReducer.video_creating && <span>Subiendo video...</span>}
+          </div>
           <ButtonCustom onClick={() => handleShow()}>Nuevo Video</ButtonCustom>
         </div>
 
