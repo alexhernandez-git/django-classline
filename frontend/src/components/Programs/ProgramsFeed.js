@@ -136,7 +136,7 @@ export default function ProfessorFeed(props) {
               <div className="row">
                 <div className="col-12">
                   <small className="font-weight-bold text-info mb-2">
-                    Videoconferencias por setmana: {program.events}
+                    Clases online por setmana: {program.events}
                   </small>
                 </div>
               </div>
