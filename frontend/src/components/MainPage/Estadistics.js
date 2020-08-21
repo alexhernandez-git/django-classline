@@ -13,7 +13,7 @@ const Caracteristics = () => {
         <div className="col-md-4">
           {programReducer.program.are_meetups && (
             <div className="position-relative">
-              Videconferencias
+              Clases online
               <IconContext.Provider
                 value={{
                   style: {
@@ -61,7 +61,7 @@ const Caracteristics = () => {
           )}
           {programReducer.program.are_playlists && (
             <div className="position-relative">
-              Playlists
+              Cursos
               <IconContext.Provider
                 value={{
                   style: {
@@ -79,7 +79,7 @@ const Caracteristics = () => {
         <div className="col-md-4">
           {programReducer.program.are_meetups && (
             <div className="position-relative">
-              Videconferencias: {programReducer.program.events}
+              Clases online: {programReducer.program.events}
             </div>
           )}
           {programReducer.program.are_videos && (
@@ -94,7 +94,7 @@ const Caracteristics = () => {
           )}
           {programReducer.program.are_playlists && (
             <div className="position-relative">
-              Playlists: {programReducer.program.playlists}
+              Cursos: {programReducer.program.playlists}
             </div>
           )}
           <div className="position-relative">

@@ -49,7 +49,7 @@ const MainPlaylists = () => {
     <>
       <SlickSlider>
         <div className="d-flex justify-content-between">
-          <span>Listas de Reproducción</span>
+          <span>Cursos</span>
           <Link
             to={
               !/\/demo\//.test(pathname)
@@ -71,7 +71,7 @@ const MainPlaylists = () => {
         </Slider>
         {popularPlaylistsReducer.isLoading && <span>Cargando...</span>}
         {popularPlaylistsReducer.playlists.length == 0 && (
-          <span className="text-grey">No hay listas de reproducción</span>
+          <span className="text-grey">No hay cursos</span>
         )}
       </SlickSlider>
     </>

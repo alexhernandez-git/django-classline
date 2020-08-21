@@ -78,7 +78,7 @@ const playlists = () => {
   return (
     <Main padding ref={main}>
       <Filters
-        title="Listas de reproducción"
+        title="Cursos"
         placeholder="Buscar lista"
         search={{ search: search, setSearch: setSearch }}
         onSubmit={handleSubmitSearch}
@@ -86,7 +86,7 @@ const playlists = () => {
       <div className="d-flex justify-content-end mb-3">
         <Link to={`/academy/${program}/admin/playlist/form`}>
           <ButtonCustom onClick={handleDeleteEditPlaylist}>
-            Nueva lista de reproducción
+            Nuevo Curso
           </ButtonCustom>
         </Link>
       </div>

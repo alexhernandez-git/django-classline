@@ -110,9 +110,7 @@ const ProgramConfiguration = (props) => {
             lg={{ span: 4 }}
             className="text-center d-lg-flex justify-content-end align-items-center"
           >
-            <span className="m-0 font-weight-normal">
-              Lista de Reproducción
-            </span>
+            <span className="m-0 font-weight-normal">Cursos</span>
           </Col>
 
           <Col
@@ -142,7 +140,7 @@ const ProgramConfiguration = (props) => {
             lg={{ span: 4 }}
             className="text-center d-lg-flex justify-content-end align-items-center"
           >
-            <span className="m-0 font-weight-normal">Videoconferencias</span>
+            <span className="m-0 font-weight-normal">Clases online</span>
           </Col>
 
           <Col
