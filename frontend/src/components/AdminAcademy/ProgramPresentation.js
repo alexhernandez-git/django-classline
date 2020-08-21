@@ -57,14 +57,16 @@ const ProgramPresentation = (props) => {
     if (typeof cropper.current.getCroppedCanvas() === "undefined") {
       return;
     }
-    setCropResult(cropper.current.getCroppedCanvas().toDataURL("image/jpeg",0.7));
+    setCropResult(
+      cropper.current.getCroppedCanvas().toDataURL("image/jpeg", 0.7)
+    );
 
     var file = dataURLtoFile(
       cropper.current.getCroppedCanvas().toDataURL(),
       Math.random().toString(36) + fileName
     );
-    var FileSize = file.size / 1024 / 1024
-    console.log(FileSize)
+    var FileSize = file.size / 1024 / 1024;
+    console.log(FileSize);
     if (FileSize < 5) {
       const dispatchUploadPicture = (file) => dispatch(uploadPicture(file));
       dispatchUploadPicture(file);
@@ -168,9 +170,14 @@ const ProgramPresentation = (props) => {
           lg={{ span: 4 }}
           className="text-center d-lg-flex justify-content-end align-items-center"
         >
-          <span className="font-weight-normal">Video de presentación</span>
+          <span className="font-weight-normal d-block">
+            Video de presentación
+          </span>
         </Col>
         <Col lg={{ offset: 1, span: 6 }}>
+          {programReducer.video_uploading && (
+            <span className="d-block text-center">Subiendo video</span>
+          )}
           <label htmlFor="video-upload" className="cursor-pointer w-100">
             {videoSrc ? (
               <video
@@ -201,6 +208,7 @@ const ProgramPresentation = (props) => {
           <label htmlFor="video-upload" css={ButtonStyle} className="w-100">
             Subir video
           </label>
+
           <input
             type="file"
             id="video-upload"
