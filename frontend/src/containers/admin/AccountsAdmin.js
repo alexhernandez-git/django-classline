@@ -47,9 +47,6 @@ const Students = () => {
   const handleCancelAcquireAccounts = () => {
     MySwal.fire({
       title: "Estas seguro?",
-      text: authReducer.user.teacher.discount
-        ? "Tu descuento permanente se te eliminará"
-        : null,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

@@ -772,8 +772,8 @@ class ProgramViewSet(mixins.CreateModelMixin,
             context={'program': program},
             partial=partial
         )
-        if teacher.discount:
-            teacher.discount.delete()
+        # if teacher.discount:
+        #     teacher.discount.delete()
         serializer.is_valid(raise_exception=True)
         if teacher.subscriptions.filter(user=program.user.code, program=program.code, active=True).exists():
             try:
@@ -794,12 +794,12 @@ class ProgramViewSet(mixins.CreateModelMixin,
 
     @action(detail=False, methods=['get'])
     def are_discount(self, request, *args, **kwargs):
-        if Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 10:
+        if Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 50:
             return Response(
                 {
                     "title": "¡Oferta limitada para academias por el lanzamiento de la plataforma!",
                     "message": "50% de descuento para siempre al adquirir cualquier plan de cuentas de usuario",
-                    "info": "Cuando la cuenta de instructor adquiera cualquier plan se le asignará el descuento de por vida, el usuario podrá cambiar de plan pero si cancela el plan se le quitará el descuento",
+                    "info": "Cuando la cuenta de instructor adquiera cualquier plan se le asignará el descuento de por vida",
                     "percent_off": 50,
                     "is_discount": True,
                 }, status=status.HTTP_200_OK
