@@ -144,24 +144,28 @@ const AcquireAccounts = (props) => {
       setDiscount(
         `Aplicado un descuento del ${authReducer.user.teacher.discount.percent_off}%`
       );
-    } else {
-      setPromoCode(null);
-
-      calcPricePro();
-
-      setDiscount(false);
     }
   }, [authReducer.user.teacher.discount]);
+
   useEffect(() => {
     if (areDiscount) {
       setPromoCode(areDiscount);
 
       calcPricePro(areDiscount);
       setDiscount(`Aplicado un descuento del ${areDiscount.percent_off}%`);
-    } else {
-      setPromoCode(false);
+    } else if (authReducer.user.teacher.discount) {
+      setPromoCode(authReducer.user.teacher.discount);
 
-      calcPricePro(false);
+      calcPricePro(authReducer.user.teacher.discount);
+
+      setDiscount(
+        `Aplicado un descuento del ${authReducer.user.teacher.discount.percent_off}%`
+      );
+    } else {
+      setPromoCode(null);
+
+      calcPricePro();
+
       setDiscount(false);
     }
   }, [areDiscount, fetchDiscount]);
@@ -338,28 +342,24 @@ const AcquireAccounts = (props) => {
 
   const [couponText, setCouponText] = useState("");
   useEffect(() => {
-    if (couponText != "") {
-      const timeoutId = setTimeout(() => {
-        axios
-          .get(`/api/promotion-code/${couponText}`)
-          .then((result) => {
-            console.log(result.data);
-            setPromoCode(result.data);
-            calcPricePro(result.data);
+    const timeoutId = setTimeout(() => {
+      axios
+        .get(`/api/promotion-code/${couponText}`)
+        .then((result) => {
+          console.log(result.data);
+          setPromoCode(result.data);
+          calcPricePro(result.data);
 
-            setDiscount(
-              `Aplicado un descuento del ${result.data.percent_off}%`
-            );
-          })
-          .catch((err) => {
-            console.log("El cupon no existe");
-            setDiscount(false);
-            setPromoCode(null);
-            calcPricePro();
-          });
-      }, 500);
-      return () => clearTimeout(timeoutId);
-    }
+          setDiscount(`Aplicado un descuento del ${result.data.percent_off}%`);
+        })
+        .catch((err) => {
+          console.log("El cupon no existe");
+          setDiscount(false);
+          setPromoCode(null);
+          calcPricePro();
+        });
+    }, 500);
+    return () => clearTimeout(timeoutId);
   }, [couponText]);
   const handleChangeCoupon = (e) => {
     e.preventDefault();
