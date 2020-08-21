@@ -107,7 +107,8 @@ const videos = () => {
             onSubmit={handleSubmitSearch}
           />
         </form>
-        <div className="d-flex justify-content-end mb-3">
+        <div className="d-flex justify-content-between">
+          <div>{videosReducer.video_creating && "Subiendo video"}</div>
           <ButtonCustom onClick={() => handleShow()}>Nuevo Video</ButtonCustom>
         </div>
 
