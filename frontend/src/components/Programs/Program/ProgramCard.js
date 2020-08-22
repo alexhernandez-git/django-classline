@@ -47,7 +47,8 @@ const CourseCard = (props) => {
                           }
                         />
                       </div>
-                    ) : (
+                    ) : programContext.programState.program
+                        .video_presentation ? (
                       <div
                         className="card-img-container cursor-pointer"
                         onClick={() => setActive(true)}
@@ -94,6 +95,15 @@ const CourseCard = (props) => {
                             <FaCircle />
                           </div>
                         </IconContext.Provider>
+                      </div>
+                    ) : (
+                      <div className="card-img-container">
+                        <img
+                          className="img-card"
+                          controls
+                          variant="top"
+                          src={programContext.programState.program.picture}
+                        />
                       </div>
                     )}
 
