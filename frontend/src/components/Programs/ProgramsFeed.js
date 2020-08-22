@@ -112,34 +112,42 @@ export default function ProfessorFeed(props) {
                   </small>
                 </div>
               </div>
-              <div className="row">
-                <div className="col-12">
-                  <small className="font-weight-bold text-info mb-2">
-                    Videos: {program.videos}
-                  </small>
+              {program.are_videos && (
+                <div className="row">
+                  <div className="col-12">
+                    <small className="font-weight-bold text-info mb-2">
+                      Videos: {program.videos}
+                    </small>
+                  </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-12">
-                  <small className="font-weight-bold text-info mb-2">
-                    Cursos: {program.playlists}
-                  </small>
+              )}
+              {program.are_playlists && (
+                <div className="row">
+                  <div className="col-12">
+                    <small className="font-weight-bold text-info mb-2">
+                      Cursos: {program.playlists}
+                    </small>
+                  </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-12">
-                  <small className="font-weight-bold text-info mb-2">
-                    Podcasts: {program.podcasts}
-                  </small>
+              )}
+              {program.are_podcasts && (
+                <div className="row">
+                  <div className="col-12">
+                    <small className="font-weight-bold text-info mb-2">
+                      Podcasts: {program.podcasts}
+                    </small>
+                  </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-12">
-                  <small className="font-weight-bold text-info mb-2">
-                    Clases online por setmana: {program.events}
-                  </small>
+              )}
+              {program.are_meetups && (
+                <div className="row">
+                  <div className="col-12">
+                    <small className="font-weight-bold text-info mb-2">
+                      Clases online por setmana: {program.events}
+                    </small>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </Card.Body>
