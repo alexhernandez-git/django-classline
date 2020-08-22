@@ -794,7 +794,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
 
     @action(detail=False, methods=['get'])
     def are_discount(self, request, *args, **kwargs):
-        if Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 25:
+        if Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 10:
             return Response(
                 {
                     "title": "¡Oferta limitada para academias por el lanzamiento de la plataforma!",
