@@ -106,7 +106,16 @@ const Podcasts = () => {
           search={{ search: search, setSearch: setSearch }}
           onSubmit={handleSubmitSearch}
         />
-        <div className="d-flex justify-content-end mb-3">
+
+        <div className="d-flex justify-content-between mb-3">
+          <div>
+            {podcastsReducer.podcast_creating && (
+              <span>Subiendo podcast...</span>
+            )}
+            {podcastsReducer.podcast_editing && (
+              <span>Editando podcast...</span>
+            )}
+          </div>
           <ButtonCustom onClick={() => handleShow()}>
             Nuevo Podcast
           </ButtonCustom>
