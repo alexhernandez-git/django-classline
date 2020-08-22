@@ -6,7 +6,7 @@ export default function useCheckAreDiscount(props) {
     return await axios
       .get(`/api/programs/are_discount/`)
       .then((res) => {
-        setDiscount(false);
+        setDiscount(res.data);
       })
       .catch((err) => {
         setDiscount(false);
