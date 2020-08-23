@@ -97,11 +97,6 @@ const TeacherProfileEdit = (props) => {
                         </span>
                       </Nav.Link>
                     </Nav.Item>
-                    <Nav.Item>
-                      <Nav.Link eventKey={1} className="text-grey">
-                        <span className="font-weight-bold">PRICING</span>
-                      </Nav.Link>
-                    </Nav.Item>
                   </Nav>
                 </Col>
               </Row>
