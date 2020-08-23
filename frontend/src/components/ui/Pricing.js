@@ -354,11 +354,6 @@ const Pricing = (props) => {
   };
   return (
     <div>
-      <div className="text-center">
-        Este es el pricing de las cuentas por si quereis darle acceso a vuestros
-        actuales alumnos
-      </div>
-      <hr />
       <div className="d-flex justify-content-center mb-4">
         <div
           style={{
@@ -595,7 +590,7 @@ const CouponDiv = styled.div`
   align-items: center;
 `;
 const Price = styled.div`
-  font-size: 2rem;
+  font-size: 20px;
   background: black;
   padding: 5px 10px;
   color: white;
@@ -604,7 +599,7 @@ const Price = styled.div`
 
 export const SlickSliderAdmin = styled.div`
   .slick-track {
-    height: 30rem !important;
+    height: 300px !important;
   }
   .slick-prev {
     left: -10px !important;
@@ -616,7 +611,7 @@ export const SlickSliderAdmin = styled.div`
   .slick-next:before,
   .slick-prev:before {
     color: #000;
-    font-size: 4rem;
+    font-size: 40px;
   }
   .slick-slide div:focus {
     outline: none !important;

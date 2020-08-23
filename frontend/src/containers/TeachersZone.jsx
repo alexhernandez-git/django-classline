@@ -10,6 +10,7 @@ import TeachersPrograms from "src/components/Users/Teachers/TeachersZone/Teacher
 import ProgramsCreate from "src/components/Users/Teachers/TeachersZone/TeachersPrograms/ProgramsCreate";
 
 import { AppContext } from "src/context/AppContext";
+import TeachersPricing from "../components/Users/Teachers/TeachersZone/TeachersPricing";
 export default function TeachersZone() {
   const appContext = useContext(AppContext);
   return appContext.userProfile.loading ? (
@@ -46,7 +47,11 @@ export default function TeachersZone() {
                 path="/myzone/instructor"
                 component={TeachersProfileEdit}
               />
-
+              <Route
+                exact
+                path="/myzone/instructor/pricing"
+                component={TeachersPricing}
+              />
               <Route
                 exact
                 path="/myzone/instructor/programs"
