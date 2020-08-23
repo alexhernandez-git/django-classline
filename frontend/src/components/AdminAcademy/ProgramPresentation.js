@@ -33,7 +33,7 @@ const ProgramPresentation = (props) => {
     if (programReducer.program && programReducer.program.picture) {
       setCropResult(programReducer.program.picture);
     }
-  }, [programReducer.program]);
+  }, []);
   const handleUploadImage = (e) => {
     e.preventDefault();
     handleShow();
@@ -136,21 +136,16 @@ const ProgramPresentation = (props) => {
         </Col>
         <Col lg={{ offset: 1, span: 6 }}>
           <label htmlFor="img-upload" className="cursor-pointer w-100">
-            {programReducer.program &&
-            programReducer.program.picture_uploading ? (
-              "Subiendo..."
-            ) : (
-              <img
-                controls
-                style={{
-                  width: "100%",
-                  padding: "5px",
-                }}
-                src={cropResult}
-                alt=""
-                className="my-3 border rounded"
-              />
-            )}
+            <img
+              controls
+              style={{
+                width: "100%",
+                padding: "5px",
+              }}
+              src={cropResult}
+              alt=""
+              className="my-3 border rounded"
+            />
           </label>
           <label htmlFor="img-upload" css={ButtonStyle} className="w-100">
             Subir imágen

@@ -13,9 +13,13 @@ import { AppContext } from "src/context/AppContext";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Link } from "react-router-dom";
+import Pricing from "../../../../ui/Pricing";
+import useCheckAreDiscount from "src/hooks/useCheckAreDiscount";
+
 const TeacherProfileEdit = (props) => {
   const MySwal = withReactContent(Swal);
   const [key, setKey] = useState(0);
+  const [areDiscount, fetchDiscount] = useCheckAreDiscount();
   const appContext = useContext(AppContext);
   const handleActivateTeacher = async () => {
     const result = await appContext.handleActivateTeacher();
@@ -96,6 +100,11 @@ const TeacherProfileEdit = (props) => {
                         </span>
                       </Nav.Link>
                     </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link eventKey={1} className="text-grey">
+                        <span className="font-weight-bold">PRICING</span>
+                      </Nav.Link>
+                    </Nav.Item>
                   </Nav>
                 </Col>
               </Row>
@@ -118,6 +127,11 @@ const TeacherProfileEdit = (props) => {
                           Cerrar sesión
                         </span>
                       </div>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey={1} className="text-grey">
+                      <Pricing
+                        useCheckAreDiscount={{ areDiscount, fetchDiscount }}
+                      />
                     </Tab.Pane>
                   </Tab.Content>
                 </Col>
