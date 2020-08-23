@@ -235,7 +235,9 @@ const InfoSlider = () => {
                     </span>
                     <span className="text-grey">
                       Empieza a crear tu academia online, nosotros te llevamos
-                      el tema de los pagos y todo el marketing
+                      el tema de los pagos, todo el marketing, y por supuesto la
+                      academia digital, por eso hemos asignado una comissión del
+                      25% por cada alumno suscrito
                     </span>
                   </div>
                 </div>
