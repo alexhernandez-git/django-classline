@@ -290,7 +290,6 @@ const Pricing = (props) => {
       <div className="p-2" key={pricing.id}>
         <PricingCard className="bg-white shadow-sm">
           <span className="mt-4">Nivel {pricing.level}</span>
-
           <IconContext.Provider
             value={{
               size: 100,
@@ -300,7 +299,6 @@ const Pricing = (props) => {
             <IoIosPeople />
           </IconContext.Provider>
           <span className="title mb-4">{pricing.accounts} Cuentas</span>
-
           <ButtonCustom className="w-100" onClick={() => handleShow(pricing)}>
             {promoCode
               ? (pricing.price * (promoCode.percent_off / 100)).toFixed(2)
@@ -315,6 +313,12 @@ const Pricing = (props) => {
               </>
             )}
           </ButtonCustom>
+          <ul class="price">
+            <li>Videos ilimitados</li>
+            <li>Cursos ilimitados</li>
+            <li>Podcasts ilimitados</li>
+            <li>Clases online ilimitadas</li>
+          </ul>
         </PricingCard>
       </div>
     ));
@@ -391,6 +395,12 @@ const Pricing = (props) => {
               >
                 Seleccionar cuentas
               </ButtonCustom>
+              <ul class="price">
+                <li>Videos ilimitados</li>
+                <li>Cursos ilimitados</li>
+                <li>Podcasts ilimitados</li>
+                <li>Clases online ilimitadas</li>
+              </ul>
               <div className="extended-card  shadow-sm">
                 Descuento por volumen!
               </div>
@@ -583,6 +593,50 @@ const PricingCard = styled.div`
     border-radius: 0 0 10px 10px;
     color: white;
   }
+
+  /* Style the list */
+  .price {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+    width: 100%;
+  }
+
+  /* Pricing header */
+  .price .header {
+    background-color: #111;
+    color: white;
+    font-size: 25px;
+  }
+
+  /* List items */
+  .price li {
+    border-bottom: 1px solid #eee;
+    padding: 20px;
+    text-align: center;
+  }
+  .price li:last-child {
+    border-bottom: none;
+  }
+
+  /* Grey list item */
+  .price .grey {
+    background-color: #eee;
+    font-size: 20px;
+  }
+
+  /* The "Sign Up" button */
+  .button {
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+  }
 `;
 const CouponDiv = styled.div`
   display: grid;
@@ -599,7 +653,7 @@ const Price = styled.div`
 
 export const SlickSliderAdmin = styled.div`
   .slick-track {
-    height: 300px !important;
+    height: 550px;
   }
   .slick-prev {
     left: -10px !important;
