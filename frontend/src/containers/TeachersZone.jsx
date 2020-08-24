@@ -11,6 +11,7 @@ import ProgramsCreate from "src/components/Users/Teachers/TeachersZone/TeachersP
 
 import { AppContext } from "src/context/AppContext";
 import TeachersPricing from "../components/Users/Teachers/TeachersZone/TeachersPricing";
+
 export default function TeachersZone() {
   const appContext = useContext(AppContext);
   return (
@@ -43,11 +44,9 @@ export default function TeachersZone() {
                 exact
                 path="/myzone/instructor"
                 component={
-                  !appContext.userProfile.is_authenticated ? (
-                    <Redirect to="/" />
-                  ) : (
-                    TeachersProfileEdit
-                  )
+                  !appContext.userProfile.is_authenticated
+                    ? () => <Redirect to="/" />
+                    : TeachersProfileEdit
                 }
               />
               <Route
