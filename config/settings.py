@@ -283,7 +283,7 @@ ADMIN_URL = '/classline-admin'
 
 if 'SENDGRID_API_KEY' in os.environ:
     # Email
-    DEFAULT_FROM_EMAIL = 'Classline Academy <noreply@classlineacademy.com>'
+    DEFAULT_FROM_EMAIL = 'Classline Academy <no-reply@classlineacademy.com>'
     SERVER_EMAIL = DEFAULT_FROM_EMAIL
     EMAIL_SUBJECT_PREFIX = 'DJANGO_EMAIL_SUBJECT_PREFIX'
 
