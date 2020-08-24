@@ -13,11 +13,7 @@ import { AppContext } from "src/context/AppContext";
 import TeachersPricing from "../components/Users/Teachers/TeachersZone/TeachersPricing";
 export default function TeachersZone() {
   const appContext = useContext(AppContext);
-  return appContext.userProfile.loading ? (
-    "Cargando..."
-  ) : !appContext.userProfile.is_authenticated ? (
-    <Redirect to="/" />
-  ) : (
+  return (
     <AppContext.Consumer>
       {(appContext) => (
         <>
@@ -30,7 +26,8 @@ export default function TeachersZone() {
                   Instructor
                 </div>
               </div>
-              {!appContext.userProfile.user.profile.is_teacher ? (
+              {appContext.userProfile.is_authenticated &&
+              !appContext.userProfile.user.profile.is_teacher ? (
                 <>
                   <div>
                     <div className="bg-danger border-0 text-white text-center cursor-no-ponter py-2 px-4 w-100">
@@ -45,7 +42,13 @@ export default function TeachersZone() {
               <Route
                 exact
                 path="/myzone/instructor"
-                component={TeachersProfileEdit}
+                component={
+                  !appContext.userProfile.is_authenticated ? (
+                    <Redirect to="/" />
+                  ) : (
+                    TeachersProfileEdit
+                  )
+                }
               />
               <Route
                 exact
@@ -56,18 +59,26 @@ export default function TeachersZone() {
                 exact
                 path="/myzone/instructor/programs"
                 component={
-                  appContext.userProfile.user.profile.is_teacher
-                    ? TeachersPrograms
-                    : () => <Redirect to="/myzone/instructor" />
+                  !appContext.userProfile.is_authenticated ? (
+                    <Redirect to="/" />
+                  ) : appContext.userProfile.user.profile.is_teacher ? (
+                    TeachersPrograms
+                  ) : (
+                    () => <Redirect to="/myzone/instructor" />
+                  )
                 }
               />
               <Route
                 exact
                 path="/myzone/instructor/new/program/"
                 component={
-                  appContext.userProfile.user.profile.is_teacher
-                    ? ProgramsCreate
-                    : () => <Redirect to="/myzone/instructor" />
+                  !appContext.userProfile.is_authenticated ? (
+                    <Redirect to="/" />
+                  ) : appContext.userProfile.user.profile.is_teacher ? (
+                    ProgramsCreate
+                  ) : (
+                    () => <Redirect to="/myzone/instructor" />
+                  )
                 }
               />
             </div>

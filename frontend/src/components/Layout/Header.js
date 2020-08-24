@@ -201,37 +201,21 @@ export default function Header() {
             )}
             <Navbar.Collapse id="basic-navbar-nav" ref={navbar}>
               <Nav className="ml-auto mr-3">
-                {appContext.userProfile.is_authenticated ? (
-                  <Link
-                    to="/myzone/instructor/pricing"
-                    className="d-flex align-self-center text-grey text-center header-btn font-weight-light p-2"
+                <Link
+                  to="/myzone/instructor/pricing"
+                  className="d-flex align-self-center text-grey text-center header-btn font-weight-light p-2"
+                >
+                  <IconContext.Provider
+                    value={{
+                      className: "global-class-name mr-2",
+                      size: "20px",
+                    }}
                   >
-                    <IconContext.Provider
-                      value={{
-                        className: "global-class-name mr-2",
-                        size: "20px",
-                      }}
-                    >
-                      <IoMdPricetag />
-                    </IconContext.Provider>
-                    Precios
-                  </Link>
-                ) : (
-                  <span
-                    className="d-flex cursor-pointer align-self-center text-grey text-center header-btn font-weight-light p-2"
-                    onClick={handleShowRegister}
-                  >
-                    <IconContext.Provider
-                      value={{
-                        className: "global-class-name mr-2",
-                        size: "20px",
-                      }}
-                    >
-                      <IoMdPricetag />
-                    </IconContext.Provider>
-                    Precios
-                  </span>
-                )}
+                    <IoMdPricetag />
+                  </IconContext.Provider>
+                  Precios
+                </Link>
+
                 {appContext.userProfile.is_authenticated ? (
                   <Link
                     to="/myzone/instructor"

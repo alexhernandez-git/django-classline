@@ -18,29 +18,31 @@ export default function TeachersMenu() {
       {(appContext) => (
         <>
           <div className="teachers-menu zone-sidebar shadow bg-gradient-green">
-            <Link to="/myzone/instructor">
-              <div className="m-2 d-none d-md-block"></div>
-              <div className="seccion">
-                <div
-                  className={
-                    /^\/myzone\/instructor\/?$/.test(location.pathname)
-                      ? "div-icon-rol bg-white rounded-circle"
-                      : "div-icon bg-white rounded-circle"
-                  }
-                >
-                  <IconContext.Provider
-                    value={{
-                      className: "global-class-name text-primary",
-                      size: "20px",
-                    }}
+            {appContext.userProfile.is_authenticated && (
+              <Link to="/myzone/instructor">
+                <div className="m-2 d-none d-md-block"></div>
+                <div className="seccion">
+                  <div
+                    className={
+                      /^\/myzone\/instructor\/?$/.test(location.pathname)
+                        ? "div-icon-rol bg-white rounded-circle"
+                        : "div-icon bg-white rounded-circle"
+                    }
                   >
-                    <FaUserEdit />
-                  </IconContext.Provider>
-                </div>
+                    <IconContext.Provider
+                      value={{
+                        className: "global-class-name text-primary",
+                        size: "20px",
+                      }}
+                    >
+                      <FaUserEdit />
+                    </IconContext.Provider>
+                  </div>
 
-                <small className="text-white">Perfil</small>
-              </div>
-            </Link>
+                  <small className="text-white">Perfil</small>
+                </div>
+              </Link>
+            )}
             <Link to="/myzone/instructor/pricing">
               <div className="m-2 d-none d-md-block"></div>
               <div className="seccion">
@@ -66,6 +68,7 @@ export default function TeachersMenu() {
             </Link>
             {
               // appContext.userProfile.user.profile.is_teacher ?
+              appContext.userProfile.is_authenticated &&
               appContext.userProfile.user.profile.is_teacher ? (
                 <>
                   <Link to="/myzone/instructor/programs">
