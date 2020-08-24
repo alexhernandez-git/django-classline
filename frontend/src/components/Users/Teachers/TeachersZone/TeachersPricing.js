@@ -43,7 +43,7 @@ const TeachersPricing = () => {
         <div className="container teacher-my-course pt-5 text-grey">
           <div className="d-sm-flex justify-content-start">
             <div>
-              <span className="h3 d-block mb-0 text-dark">Pricing</span>
+              <span className="h3 d-block mb-0 text-dark">Precios</span>
               <span>Dale a tus alumnos acceso a la academia</span>
             </div>
           </div>
