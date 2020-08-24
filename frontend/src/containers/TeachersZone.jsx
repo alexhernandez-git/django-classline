@@ -14,7 +14,9 @@ import TeachersPricing from "../components/Users/Teachers/TeachersZone/TeachersP
 
 export default function TeachersZone() {
   const appContext = useContext(AppContext);
-  return (
+  return appContext.userProfile.loading ? (
+    "Cargando..."
+  ) : (
     <AppContext.Consumer>
       {(appContext) => (
         <>

@@ -27,7 +27,7 @@ const StripeConnect = () => {
                 ) : (
                   <>
                     <span className="h5 m-0 font-weight-normal">
-                      Cuenta de Stripe conectada
+                      Panel de control de pagos
                     </span>
                   </>
                 )}
@@ -46,7 +46,7 @@ const StripeConnect = () => {
                       {/* ca_HmRkLTjyLDqt32B5GRlzOhlqeH4ry79e */}
                       {/* dev */}
                       {/* ca_HmRky5LBHShFfC92Xzjsz0Mj82piwIiy */}
-                      <span>Connect with Stripe</span>
+                      <span>Conecta con Stripe</span>
                     </a>
                   </>
                 ) : (
