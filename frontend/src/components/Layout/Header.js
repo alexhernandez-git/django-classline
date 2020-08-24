@@ -2,6 +2,8 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import { Navbar, Nav, Form, FormControl, Modal, Button } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 import { FaChalkboardTeacher } from "react-icons/fa";
+import { IoMdPricetag } from "react-icons/io";
+
 import { IconContext } from "react-icons";
 import { Link, Redirect, useLocation } from "react-router-dom";
 import "static/assets/styles/components/Layout/Header.scss";
@@ -199,6 +201,37 @@ export default function Header() {
             )}
             <Navbar.Collapse id="basic-navbar-nav" ref={navbar}>
               <Nav className="ml-auto mr-3">
+                {appContext.userProfile.is_authenticated ? (
+                  <Link
+                    to="/myzone/instructor/pricing"
+                    className="d-flex align-self-center text-grey text-center header-btn font-weight-light p-2"
+                  >
+                    <IconContext.Provider
+                      value={{
+                        className: "global-class-name mr-2",
+                        size: "20px",
+                      }}
+                    >
+                      <IoMdPricetag />
+                    </IconContext.Provider>
+                    Precios
+                  </Link>
+                ) : (
+                  <span
+                    className="d-flex cursor-pointer align-self-center text-grey text-center header-btn font-weight-light p-2"
+                    onClick={handleShowRegister}
+                  >
+                    <IconContext.Provider
+                      value={{
+                        className: "global-class-name mr-2",
+                        size: "20px",
+                      }}
+                    >
+                      <IoMdPricetag />
+                    </IconContext.Provider>
+                    Precios
+                  </span>
+                )}
                 {appContext.userProfile.is_authenticated ? (
                   <Link
                     to="/myzone/instructor"

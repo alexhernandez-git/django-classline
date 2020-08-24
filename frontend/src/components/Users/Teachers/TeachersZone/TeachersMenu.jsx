@@ -61,7 +61,7 @@ export default function TeachersMenu() {
                   </IconContext.Provider>
                 </div>
 
-                <small className="text-white">Pricing</small>
+                <small className="text-white">Precios</small>
               </div>
             </Link>
             {
