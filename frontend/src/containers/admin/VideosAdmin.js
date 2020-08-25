@@ -111,10 +111,10 @@ const videos = () => {
         <div className="d-flex justify-content-between mb-3">
           <div>
             {videosReducer.video_creating && (
-              <span>Subiendo video, porfavor espera...</span>
+              <span>Subiendo video, por favor espera...</span>
             )}
             {videosReducer.video_editing && (
-              <span>Editando video, porfavor espera...</span>
+              <span>Editando video, por favor espera...</span>
             )}
           </div>
           <ButtonCustom onClick={() => handleShow()}>Nuevo Video</ButtonCustom>
