@@ -107,7 +107,7 @@ const index = () => {
         `}
       />
 
-      <Header className="p-3 shadow">
+      {/* <Header className="p-3 shadow">
         <ContainerLogo className="cursor-pointer d-flex align-items-center">
           <Logo>
             <img
@@ -124,7 +124,7 @@ const index = () => {
             {!programReducer.isLoading && programReducer.program.title}
           </span>
         </ContainerLogo>
-      </Header>
+      </Header> */}
 
       <Section className="py-5">
         <div className="container">
