@@ -171,7 +171,9 @@ const ProgramPresentation = (props) => {
         </Col>
         <Col lg={{ offset: 1, span: 6 }}>
           {programReducer.video_uploading && (
-            <span className="d-block text-center">Subiendo video...</span>
+            <span className="d-block text-center">
+              Subiendo video, porfavor espera...
+            </span>
           )}
           <label htmlFor="video-upload" className="cursor-pointer w-100">
             {videoSrc ? (

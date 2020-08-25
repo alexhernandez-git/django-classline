@@ -110,10 +110,10 @@ const Podcasts = () => {
         <div className="d-flex justify-content-between mb-3">
           <div>
             {podcastsReducer.podcast_creating && (
-              <span>Subiendo podcast...</span>
+              <span>Subiendo podcast, porfavor espera...</span>
             )}
             {podcastsReducer.podcast_editing && (
-              <span>Editando podcast...</span>
+              <span>Editando podcast, porfavor espera...</span>
             )}
           </div>
           <ButtonCustom onClick={() => handleShow()}>
