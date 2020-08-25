@@ -63,7 +63,7 @@ const WelcomeLayout = () => {
             <div className="row">
               <div className="col-md-6 align-self-center">
                 <span className="mt-3 text-light h4 font-weight-light text-shadow">
-                  Bienvenido a <h2 className="h2 mb-4">ClassLine Academy</h2>
+                  Bienvenido a <h2 className="h2 mb-4">Classline Academy</h2>
                 </span>
                 <Form onSubmit={handleSubmit}>
                   <Form.Control
