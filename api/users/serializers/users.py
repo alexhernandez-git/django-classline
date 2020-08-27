@@ -53,12 +53,27 @@ def send_confirmation_email(user_pk):
     verification_token = gen_verification_token(user)
     subject = 'Bienvenido @{}! Verifica tu cuenta para empezar a usar Classline Academy'.format(
         user.username)
-    from_email = 'Classline Academy <noreply@classlineacademy.com>'
+    from_email = 'Classline Academy <no-reply@classlineacademy.com>'
     content = render_to_string(
         'emails/users/account_verification.html',
         {'token': verification_token, 'user': user}
     )
     msg = EmailMultiAlternatives(subject, content, from_email, [user.email])
+    msg.attach_alternative(content, "text/html")
+    msg.send()
+
+
+def send_change_email(user, email):
+    """Send account verification link to given user."""
+
+    subject = 'Cambia el email de tu cuenta'.format(
+        user.username)
+    from_email = 'Classline Academy <no-reply@classlineacademy.com>'
+    content = render_to_string(
+        'emails/users/change_email.html',
+        {'email': email, 'user': user}
+    )
+    msg = EmailMultiAlternatives(subject, content, from_email, [email])
     msg.attach_alternative(content, "text/html")
     msg.send()
 
@@ -300,12 +315,13 @@ class UserSignUpSerializer(serializers.Serializer):
 
     Handle sign up data validation and user/profile creation.
     """
+
     email = serializers.CharField(
         validators=[
             UniqueValidator(queryset=User.objects.filter(
-                created_account=False))
+                created_account=False).exclude(email=""))
         ],
-        required=False
+        required=False,
     )
     username = serializers.CharField(
         min_length=4,
@@ -334,6 +350,7 @@ class UserSignUpSerializer(serializers.Serializer):
 
     def validate(self, data):
         """Verify passwords match."""
+
         passwd = data['password']
         passwd_conf = data['password_confirmation']
         if passwd != passwd_conf:
@@ -349,6 +366,7 @@ class UserSignUpSerializer(serializers.Serializer):
         """Handle user and profile creation."""
 
         data.pop('password_confirmation')
+
         if self.context['are_program']:
             user = User.objects.create_user(
                 **data, is_verified=True, is_client=True)
@@ -451,8 +469,7 @@ class UserLoginPlatformSerializer(serializers.Serializer):
         user = authenticate(username=email, password=password)
         # import pdb; pdb.set_trace()
         program = self.context['program']
-        print(user)
-        print(program.user)
+
         if not user:
             raise serializers.ValidationError('Credenciales invalidas')
 
@@ -588,3 +605,44 @@ class AccountVerificationSerializer(serializers.Serializer):
 
         user.is_verified = True
         user.save()
+
+
+class ChangeEmailSerializer(serializers.Serializer):
+    """Acount verification serializer."""
+
+    email = serializers.CharField()
+
+    def validate(self, data):
+        """Update user's verified status."""
+
+        email = data['email']
+
+        if User.objects.filter(email=email).exists():
+            raise serializers.ValidationError('Este email ya esta en uso')
+
+        user = self.context['user']
+
+        send_change_email(user, email)
+        return {'email': email, 'user': user}
+
+
+class ValidateChangeEmail(serializers.Serializer):
+    """Acount verification serializer."""
+
+    email = serializers.CharField()
+
+    def validate_email(self, data):
+
+        email = data
+        if User.objects.filter(email=email).exists():
+            raise serializers.ValidationError('Este email ya esta en uso')
+        self.context['email'] = email
+        return data
+
+    def save(self):
+        """Update user's verified status."""
+        user = self.context['user']
+        email = self.context['email']
+        user.email = email
+        user.save()
+        return user

@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import axios from "axios";
+import ChangeEmail from "../../../Profile/ChangeEmail";
 const TeacherProfileEdit = () => {
   const appContext = useContext(AppContext);
   const [key, setKey] = useState(0);
@@ -116,6 +117,7 @@ const TeacherProfileEdit = () => {
                 <Tab.Pane eventKey={0} className="text-grey">
                   <TeachersProfileImage />
                   <TeachersUserInfo />
+                  <ChangeEmail />
                   <ChangePassword />
                   {/* <TeachersProfileInfo /> */}
                   <div className="d-flex justify-content-end">
@@ -136,7 +138,9 @@ const TeacherProfileEdit = () => {
                           <>
                             <div className="courses-card-instructor text-grey bg-white py-2 px-3 shadown payment_method_card">
                               <div>
-                                <span className="h4 d-block">{getCardBrand(payment_method)}</span>
+                                <span className="h4 d-block">
+                                  {getCardBrand(payment_method)}
+                                </span>
                                 <span>
                                   xxxx-xxxx-xxxx-{payment_method.card.last4}
                                 </span>

@@ -9,7 +9,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 
 const Home = () => {
-  const { token } = useParams();
+  const { token, email } = useParams();
   const { push } = useHistory();
   const appContext = useContext(AppContext);
   useEffect(() => {
@@ -21,6 +21,15 @@ const Home = () => {
     };
     verify(token);
   }, [token]);
+  useEffect(() => {
+    const validateChangeEmail = async (email) => {
+      if (email) {
+        await appContext.validateChangeEmail(email);
+        push("/");
+      }
+    };
+    validateChangeEmail(email);
+  }, [email]);
   return (
     <div className="text-grey">
       <WelcomeLayout />

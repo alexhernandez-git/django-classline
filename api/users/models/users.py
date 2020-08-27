@@ -22,9 +22,9 @@ class User(CLineModel, AbstractUser):
         'email address',
         unique=True,
         error_messages={
-            'unique': 'A user with that email already exists.'
+            'unique': 'Ya existe un usuario con este email.'
         },
-        blank=True
+        blank=True,
     )
     username = models.CharField(
         max_length=150,

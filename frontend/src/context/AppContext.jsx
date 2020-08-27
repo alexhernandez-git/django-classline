@@ -34,6 +34,47 @@ export const AppProvider = ({ children }) => {
         return false;
       });
   };
+  const changeEmail = async (email) => {
+    return await axios
+      .post(
+        "/api/users/change_email/",
+        { email: email },
+        tokenConfig(userProfile)
+      )
+      .then((res) => {
+        Swal.fire({
+          title: "Email enviado!",
+          text: "Ve a tu correo y verifica el email",
+          icon: "success",
+          confirmButtonText: "Ok",
+        });
+
+        return res;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  };
+  const validateChangeEmail = async (email) => {
+    return await axios
+      .post(
+        "/api/users/validate_change_email/",
+        { email: email },
+        tokenConfig(userProfile)
+      )
+      .then((res) => {
+        Swal.fire({
+          title: "Email cambiado!",
+          icon: "success",
+          confirmButtonText: "Ok",
+        });
+
+        return true;
+      })
+      .catch((err) => {
+        return false;
+      });
+  };
   const loadUser = async () => {
     // User Loading
 
@@ -387,6 +428,8 @@ export const AppProvider = ({ children }) => {
       value={{
         tokenConfig,
         verifyAccount,
+        changeEmail,
+        validateChangeEmail,
         login,
         logout,
         register,

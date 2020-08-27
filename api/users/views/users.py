@@ -17,7 +17,9 @@ from api.users.serializers import (
     UserTeacherModelSerializer,
     UserLoginPlatformSerializer,
     ChangePasswordSerializer,
-    UserLoginAppSerializer
+    UserLoginAppSerializer,
+    ChangeEmailSerializer,
+    ValidateChangeEmail
 )
 from django.core.exceptions import ObjectDoesNotExist
 from api.programs.serializers import AccountCreatedModelSerializer, ProgramModifyModelSerializer
@@ -71,8 +73,8 @@ class UserViewSet(mixins.RetrieveModelMixin,
         """Assign permissions based on action."""
         if self.action in ['signup', 'login', 'login_from_platform', 'verify', 'list', 'retrieve', 'stripe_webhook_subscription_cancelled', 'login_from_app']:
             permissions = [AllowAny]
-        elif self.action in ['update', 'delete', 'partial_update', 'change_password']:
-            permissions = [IsAccountOwner]
+        elif self.action in ['update', 'delete', 'partial_update', 'change_password', 'change_email', 'validate_change_email']:
+            permissions = [IsAccountOwner, IsAuthenticated]
         else:
             permissions = [IsAuthenticated]
         return [p() for p in permissions]
@@ -211,11 +213,20 @@ class UserViewSet(mixins.RetrieveModelMixin,
         return Response(status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'])
+    def change_email(self, request):
+        """Account verification."""
+
+        serializer = ChangeEmailSerializer(
+            data=request.data, context={'user': request.user})
+        serializer.is_valid(raise_exception=True)
+        return Response(status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['post'])
     def signup(self, request):
         """User sign up."""
         request.data['created_account'] = False
 
-        request.data['username'] = request.data['email']
+        # request.data['username'] = request.data['email']
 
         serializer = UserSignUpSerializer(
             data=request.data, context={'are_program': False})
@@ -251,6 +262,16 @@ class UserViewSet(mixins.RetrieveModelMixin,
         serializer.is_valid(raise_exception=True)
         serializer.save()
         data = {'message': 'Cuenta verificada!'}
+        return Response(data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['post'])
+    def validate_change_email(self, request):
+        """Account verification."""
+        serializer = ValidateChangeEmail(
+            data=request.data, context={'user': request.user})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        data = {'message': 'Email cambiado!'}
         return Response(data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['put', 'patch'])

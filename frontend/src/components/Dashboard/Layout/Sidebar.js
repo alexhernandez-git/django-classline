@@ -9,6 +9,7 @@ import {
   FaArrowLeft,
   FaListUl,
   FaVideo,
+  FaMoneyBill,
 } from "react-icons/fa";
 import { BsFillCollectionPlayFill, BsFillChatDotsFill } from "react-icons/bs";
 import { IconContext } from "react-icons";
@@ -24,7 +25,7 @@ const Sidebar = (props) => {
   return (
     <ContainerSidebar sidebarActive={sidebarActive}>
       <>
-        <Link
+        {/* <Link
           to={`${
             /\/demo\/?/.test(pathname) ? "/demo" : ""
           }/academy/${program}/home`}
@@ -39,8 +40,23 @@ const Sidebar = (props) => {
             </IconContext.Provider>{" "}
             Pagina Principal
           </SecctionLink>
+        </Link> */}
+        <Link
+          to={`${
+            /\/demo\/?/.test(pathname) ? "/demo" : ""
+          }/academy/${program}/playlists`}
+        >
+          <SecctionLink active={/\/playlists\/?$/.test(pathname) && true}>
+            <IconContext.Provider
+              value={{
+                className: "sidebar-icon",
+              }}
+            >
+              <FaUsers />
+            </IconContext.Provider>{" "}
+            Lista de comerciales
+          </SecctionLink>
         </Link>
-
         <Link
           to={`${
             /\/demo\/?/.test(pathname) ? "/demo" : ""
@@ -55,6 +71,22 @@ const Sidebar = (props) => {
               <FaListUl />
             </IconContext.Provider>{" "}
             Lista de clientes
+          </SecctionLink>
+        </Link>
+        <Link
+          to={`${
+            /\/demo\/?/.test(pathname) ? "/demo" : ""
+          }/academy/${program}/playlists`}
+        >
+          <SecctionLink active={/\/playlists\/?$/.test(pathname) && true}>
+            <IconContext.Provider
+              value={{
+                className: "sidebar-icon",
+              }}
+            >
+              <FaMoneyBill />
+            </IconContext.Provider>{" "}
+            Ultimos pagos
           </SecctionLink>
         </Link>
       </>
