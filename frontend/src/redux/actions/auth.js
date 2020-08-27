@@ -16,6 +16,9 @@ import {
   CHANGE_PASSWORD,
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD_FAIL,
+  STRIPE_CONNECTED,
+  STRIPE_CONNECTED_SUCCESS,
+  STRIPE_CONNECTED_FAIL,
 } from "../types";
 
 // SET TOKEN
@@ -91,7 +94,7 @@ export const updateProfile = (profile) => (dispatch, getState) => {
     });
 };
 export const updateUser = (user) => (dispatch, getState) => {
-  console.log('user',user);
+  console.log("user", user);
   dispatch({ type: UPDATE_USER });
   axios
     .patch(
@@ -138,6 +141,33 @@ export const changePassword = (data) => (dispatch, getState) => {
       });
     });
 };
+
+export const connectStripe = (authCode) => (dispatch, getState) => {
+  console.log(data);
+  dispatch({
+    type: STRIPE_CONNECTED,
+  });
+  axios
+    .post(
+      "/api/users/stripe_connect/",
+      { code: authCode },
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log(res.data);
+      dispatch({
+        type: STRIPE_CONNECTED_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: STRIPE_CONNECTED_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
 // Setup config with token - helper function
 export const tokenConfig = (getState) => {
   // Get token from state

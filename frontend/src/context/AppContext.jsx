@@ -298,37 +298,29 @@ export const AppProvider = ({ children }) => {
     });
   };
   const handleActivateTeacher = async () => {
-    if (userProfile.user.profile.stripe_account_id !== null) {
-      let response;
-      response = await axios
-        .patch(
-          `/api/users/profile/`,
-          { is_teacher: true },
-          tokenConfig(userProfile)
-        )
-        .then((res) => {
-          dispatchUser({
-            type: "ACTIVATE_TEACHER",
-          });
-          return {
-            result: true,
-            message: "Cuenta de instructor activada correctamente",
-          };
-        })
-        .catch((err) => {
-          return {
-            result: true,
-            message: "La cuenta de instructor se ha activado correctamente",
-          };
+    let response;
+    response = await axios
+      .patch(
+        `/api/users/profile/`,
+        { is_teacher: true },
+        tokenConfig(userProfile)
+      )
+      .then((res) => {
+        dispatchUser({
+          type: "ACTIVATE_TEACHER",
         });
-      return response;
-    } else {
-      return {
-        result: false,
-        message:
-          "Para activar tu cuenta de instructor necesitas conectar con stripe",
-      };
-    }
+        return {
+          result: true,
+          message: "Cuenta de instructor activada correctamente",
+        };
+      })
+      .catch((err) => {
+        return {
+          result: true,
+          message: "La cuenta de instructor se ha activado correctamente",
+        };
+      });
+    return response;
   };
 
   const [search, setSearch] = useState("");

@@ -20,6 +20,9 @@ import {
   SET_STRIPE_CUSTOMER_DATA,
   SET_TEACHER_DISCOUNT,
   REMOVE_TEACHER_DISCOUNT,
+  STRIPE_CONNECTED,
+  STRIPE_CONNECTED_SUCCESS,
+  STRIPE_CONNECTED_FAIL,
 } from "../types";
 const initialState = {
   auth_token: localStorage.getItem("auth_token"),
@@ -36,6 +39,8 @@ const initialState = {
   rating: null,
   rating_creating: false,
   rating_create_error: null,
+  stripe_connecting: false,
+  stripe_connecting_error: null,
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -187,6 +192,30 @@ export default function (state = initialState, action) {
             discount: null,
           },
         },
+      };
+    case STRIPE_CONNECTED:
+      return {
+        ...state,
+        stripe_connecting: true,
+      };
+    case STRIPE_CONNECTED_SUCCESS:
+      return {
+        ...state,
+        stripe_connecting: false,
+        user: {
+          ...state.user,
+          profile: {
+            ...state.user.profile,
+            stripe_account_id: action.payload.profile.stripe_account_id,
+            stripe_dashboard_url: action.payload.profile.stripe_dashboard_url,
+          },
+        },
+      };
+    case STRIPE_CONNECTED_FAIL:
+      return {
+        ...state,
+        stripe_connecting: false,
+        stripe_connecting_error: action.payload,
       };
     default:
       return state;

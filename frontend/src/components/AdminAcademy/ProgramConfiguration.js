@@ -26,6 +26,7 @@ const ProgramConfiguration = (props) => {
 
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
+  const authReducer = useSelector((state) => state.authReducer);
   const handleActiveProgram = () => {
     const dispatchActiveProgram = () => dispatch(activeProgram());
     dispatchActiveProgram();
@@ -160,6 +161,60 @@ const ProgramConfiguration = (props) => {
 
                     </Col>
                 </Row> */}
+      </div>
+      <div className="bg-white border p-3 rounded my-2 mb-4">
+        <span className="d-none d-md-block">Conectar con stripe</span>
+
+        <Row className="mb-4">
+          <Col
+            sm={{ span: 4 }}
+            className="text-center d-sm-flex justify-content-end align-items-center"
+          >
+            {authReducer.user.profile.stripe_account_id == null ||
+            authReducer.user.profile.stripe_account_id == undefined ? (
+              <>
+                <span className="m-0 font-weight-normal">
+                  Conectar con Stripe
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="m-0 font-weight-normal">
+                  Panel de control de pagos
+                </span>
+              </>
+            )}
+          </Col>
+
+          <Col sm={{ offset: 1, span: 6 }}>
+            {authReducer.user.profile.stripe_account_id == null ||
+            authReducer.user.profile.stripe_account_id == undefined ? (
+              <>
+                <a
+                  href={`https://connect.stripe.com/express/oauth/authorize?response_type=code&amp;client_id=ca_HmRky5LBHShFfC92Xzjsz0Mj82piwIiy&amp;scope=read_write&amp;redirect_uri=http://192.168.1.10:8000/academy/${programReducer.program.code}/admin`}
+                  className="connect-button"
+                >
+                  {/* prod */}
+                  {/* ca_HmRkLTjyLDqt32B5GRlzOhlqeH4ry79e */}
+                  {/* dev */}
+                  {/* ca_HmRky5LBHShFfC92Xzjsz0Mj82piwIiy */}
+                  <span>Conecta con Stripe</span>
+                </a>
+              </>
+            ) : (
+              <>
+                {" "}
+                <a
+                  href={authReducer.user.profile.stripe_dashboard_url}
+                  target="_blank"
+                  className="btn-gradient-green bg-gradient-green text-white rounded-pill px-3 py-2"
+                >
+                  <span>Ver Panel de Control</span>
+                </a>
+              </>
+            )}
+          </Col>
+        </Row>
       </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Acciones</span>

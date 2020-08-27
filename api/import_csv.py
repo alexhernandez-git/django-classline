@@ -1,6 +1,6 @@
 import csv
 
-from cride.utils.models import Circle
+from api.utils.models import Circle
 
 
 def import_csv(csv_filename):

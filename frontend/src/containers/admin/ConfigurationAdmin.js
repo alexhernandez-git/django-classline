@@ -68,7 +68,10 @@ const index = () => {
       });
     }
   }, [program]);
-
+  if (new URLSearchParams(props.location.search).get("code") != null) {
+    const authCode = new URLSearchParams(props.location.search).get("code");
+    // appContext.connectStripe(authCode);
+  }
   return (
     <Main padding>
       <Filters title="Academia" />

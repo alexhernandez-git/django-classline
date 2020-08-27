@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { Helmet } from "react-helmet";
+import Dashboard from "./routes/Dashboard";
 
 const stripePromise = loadStripe(
   "pk_test_51HCsUHIgGIa3w9CpcKf0B6mwtGasJjOMo2DIu6oZ3Yawa7LdnAroU8USCk23lya8Q7CLpOwTsTjfKzlnflcbAPUG00ZQPMEjrE"
@@ -26,6 +27,7 @@ ReactDOM.render(
       <Elements stripe={stripePromise} options={{ locale: "es" }}>
         <BrowserRouter>
           <Switch>
+            <Route path="/dashboard" component={Dashboard} />
             <Route path="/academy/:program" component={Academy} />
             <Route path="/demo/academy/:program" component={DemoAcademy} />
             <Route path="/" component={App} />
