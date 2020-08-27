@@ -200,7 +200,9 @@ const ProgramConfiguration = (props) => {
                   {/* ca_HmRkLTjyLDqt32B5GRlzOhlqeH4ry79e */}
                   {/* dev */}
                   {/* ca_HmRky5LBHShFfC92Xzjsz0Mj82piwIiy */}
-                  <span>Conecta con Stripe</span>
+                  <ButtonCustom type="button">
+                    Ve a la configuración de instructor
+                  </ButtonCustom>
                 </Link>
               </>
             ) : (
@@ -209,9 +211,10 @@ const ProgramConfiguration = (props) => {
                 <a
                   href={authReducer.user.profile.stripe_dashboard_url}
                   target="_blank"
-                  className="btn-gradient-green bg-gradient-green text-white rounded-pill px-3 py-2"
                 >
-                  <span>Ver Panel de Control</span>
+                  <ButtonCustom type="button">
+                    Ver Panel de Control
+                  </ButtonCustom>
                 </a>
               </>
             )}
