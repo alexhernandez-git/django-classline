@@ -24,7 +24,7 @@ class Profile(CLineModel):
     )
     biography = models.TextField(max_length=1000, blank=True)
 
-    is_teacher = models.BooleanField(default=False)
+    is_teacher = models.BooleanField(default=True)
 
     language = models.CharField(max_length=20, blank=True, null=True)
 

@@ -21,6 +21,7 @@ import {
 } from "src/redux/actions/program";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { Link } from "react-router-dom";
 const ProgramConfiguration = (props) => {
   const MySwal = withReactContent(Swal);
 
@@ -190,8 +191,9 @@ const ProgramConfiguration = (props) => {
             {authReducer.user.profile.stripe_account_id == null ||
             authReducer.user.profile.stripe_account_id == undefined ? (
               <>
-                <a
-                  href={`https://connect.stripe.com/express/oauth/authorize?response_type=code&amp;client_id=ca_HmRkLTjyLDqt32B5GRlzOhlqeH4ry79e&amp;scope=read_write&amp;`}
+                <Link
+                  to={`/myzone/instructor`}
+                  target="_blank"
                   className="connect-button"
                 >
                   {/* prod */}
@@ -199,7 +201,7 @@ const ProgramConfiguration = (props) => {
                   {/* dev */}
                   {/* ca_HmRky5LBHShFfC92Xzjsz0Mj82piwIiy */}
                   <span>Conecta con Stripe</span>
-                </a>
+                </Link>
               </>
             ) : (
               <>
