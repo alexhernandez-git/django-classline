@@ -476,6 +476,7 @@ class PublishProgramSerializer(serializers.Serializer):
 
     def validate(self, data):
         program = self.instance
+
         try:
             program.programprice
         except ObjectDoesNotExist:
@@ -486,6 +487,9 @@ class PublishProgramSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 'La academia no tiene una imágen')
 
+        if not program.user.profile.stripe_account_id:
+            raise serializers.ValidationError(
+                'Necesitas conectarte con stripe para poder recibir pagos')
         if len(program.title) == 0:
             raise serializers.ValidationError('Se requiere un titulo')
 

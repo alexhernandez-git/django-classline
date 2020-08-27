@@ -16,8 +16,9 @@ import { useParams } from "react-router-dom";
 import { fetchProgram, saveProgram } from "src/redux/actions/program";
 
 import { Formik, Form } from "formik";
+import { connectStripe } from "../../redux/actions/auth";
 
-const index = () => {
+const index = (props) => {
   const [key, setKey] = useState(0);
   const dispatch = useDispatch();
   const program = useSelector((state) => state.programReducer.program);
@@ -68,10 +69,6 @@ const index = () => {
       });
     }
   }, [program]);
-  if (new URLSearchParams(props.location.search).get("code") != null) {
-    const authCode = new URLSearchParams(props.location.search).get("code");
-    // appContext.connectStripe(authCode);
-  }
   return (
     <Main padding>
       <Filters title="Academia" />

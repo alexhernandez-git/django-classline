@@ -191,7 +191,7 @@ const ProgramConfiguration = (props) => {
             authReducer.user.profile.stripe_account_id == undefined ? (
               <>
                 <a
-                  href={`https://connect.stripe.com/express/oauth/authorize?response_type=code&amp;client_id=ca_HmRky5LBHShFfC92Xzjsz0Mj82piwIiy&amp;scope=read_write&amp;redirect_uri=http://192.168.1.10:8000/academy/${programReducer.program.code}/admin`}
+                  href={`https://connect.stripe.com/express/oauth/authorize?response_type=code&amp;client_id=ca_HmRkLTjyLDqt32B5GRlzOhlqeH4ry79e&amp;scope=read_write&amp;`}
                   className="connect-button"
                 >
                   {/* prod */}
