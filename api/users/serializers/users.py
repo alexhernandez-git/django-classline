@@ -78,6 +78,21 @@ def send_change_email(user, email):
     msg.send()
 
 
+def send_reset_password(user, token):
+    """Send account verification link to given user."""
+
+    subject = 'Bienvenido @{}! Verifica tu cuenta para empezar a usar Classline Academy'.format(
+        user.username)
+    from_email = 'Classline Academy <no-reply@classlineacademy.com>'
+    content = render_to_string(
+        'emails/users/reset_password.html',
+        {'token': token, 'user': user}
+    )
+    msg = EmailMultiAlternatives(subject, content, from_email, [user.email])
+    msg.attach_alternative(content, "text/html")
+    msg.send()
+
+
 class UserModelSerializer(serializers.ModelSerializer):
     """User model serializer."""
 
@@ -551,7 +566,7 @@ class ChangePasswordSerializer(serializers.Serializer):
         new_password = self.context['new_password']
         repeat_password = self.context['repeat_password']
         email = data['email']
-        password = password = data['password']
+        password = data['password']
         regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
         # for custom mails use: '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
 
@@ -646,3 +661,23 @@ class ValidateChangeEmail(serializers.Serializer):
         user.email = email
         user.save()
         return user
+
+
+class ForgetPasswordSerializer(serializers.Serializer):
+    """Acount verification serializer."""
+
+    email = serializers.CharField()
+
+    def validate(self, data):
+        """Update user's verified status."""
+
+        email = data['email']
+
+        if not User.objects.filter(email=email).exists():
+            raise serializers.ValidationError('Este email no existe')
+
+        user = User.objects.filter(email=email).first()
+        token = Token.objects.get_or_create(user=user)
+
+        send_reset_password(user, token[0].key)
+        return {'email': email, 'user': user}

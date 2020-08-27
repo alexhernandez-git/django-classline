@@ -15,6 +15,13 @@ export default function Header() {
   const MySwal = withReactContent(Swal);
   const appContext = useContext(AppContext);
   const [showLogin, setShowLogin] = useState(false);
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const handleCloseResetPassword = () => setShowResetPassword(false);
+  const handleShowResetPassword = () => setShowResetPassword(true);
+  const handleChangeToResetPassword = () => {
+    setShowLogin(false);
+    setShowResetPassword(true);
+  };
   const [search, setSearch] = useState("");
   useEffect(() => {
     if (appContext.search != undefined) {
@@ -293,7 +300,7 @@ export default function Header() {
             show={showLogin}
             onHide={handleCloseLogin}
             animation={true}
-            size="sm"
+            size="md"
             className="text-grey"
           >
             <Modal.Header closeButton>
@@ -351,13 +358,20 @@ export default function Header() {
                 >
                   Iniciar sesión
                 </button>
-
-                <div className="d-flex justify-content-end">
+                <div className="d-flex justify-content-end mb-2">
                   <span
                     onClick={handleChangeToRegister}
                     className="cursor-pointer"
                   >
                     O registrate
+                  </span>
+                </div>
+                <div className="">
+                  <span
+                    className="cursor-pointer"
+                    onClick={handleChangeToResetPassword}
+                  >
+                    Has olvidado tu contraseña?
                   </span>
                 </div>
               </Form>
@@ -367,7 +381,7 @@ export default function Header() {
             show={showRegister}
             onHide={handleCloseRegister}
             animation={true}
-            size="sm"
+            size="md"
             className="text-grey"
           >
             <Modal.Header closeButton>
@@ -464,6 +478,43 @@ export default function Header() {
                     O inicia sesión
                   </span>
                 </div>
+              </Form>
+            </Modal.Body>
+          </Modal>
+          <Modal
+            show={showResetPassword}
+            onHide={handleCloseResetPassword}
+            animation={true}
+            size="md"
+            className="text-grey"
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Restablece la contraseña</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="bg-white rounded-bottom">
+              <Form onSubmit={handleSubmitRegister}>
+                <Form.Group>
+                  <Form.Control
+                    type="email"
+                    placeholder="Email"
+                    value={userData.email}
+                    onChange={(e) =>
+                      setUserData({ ...userData, email: e.target.value })
+                    }
+                  />
+                  {signupErrors.email &&
+                    signupErrors.email.map((error) => (
+                      <small className="d-block text-red">{error}</small>
+                    ))}
+                </Form.Group>
+
+                <button
+                  type="submit"
+                  className="btn btn-sm btn-green text-white header-btn w-100"
+                  onClick={handleShowResetPassword}
+                >
+                  Restablecer contraseña
+                </button>
               </Form>
             </Modal.Body>
           </Modal>

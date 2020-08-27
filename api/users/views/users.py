@@ -19,7 +19,8 @@ from api.users.serializers import (
     ChangePasswordSerializer,
     UserLoginAppSerializer,
     ChangeEmailSerializer,
-    ValidateChangeEmail
+    ValidateChangeEmail,
+    ForgetPasswordSerializer
 )
 from django.core.exceptions import ObjectDoesNotExist
 from api.programs.serializers import AccountCreatedModelSerializer, ProgramModifyModelSerializer
@@ -206,6 +207,17 @@ class UserViewSet(mixins.RetrieveModelMixin,
             data=request.data,
             context={'new_password': request.data['new_password'],
                      'repeat_password': request.data['repeat_password']}
+        )
+
+        serializer.is_valid(raise_exception=True)
+
+        return Response(status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['post'])
+    def forget_password(self, request):
+        """User login."""
+        serializer = ForgetPasswordSerializer(
+            data=request.data,
         )
 
         serializer.is_valid(raise_exception=True)
