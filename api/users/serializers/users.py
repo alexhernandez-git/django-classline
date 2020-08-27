@@ -681,3 +681,27 @@ class ForgetPasswordSerializer(serializers.Serializer):
 
         send_reset_password(user, token[0].key)
         return {'email': email, 'user': user}
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    """Acount verification serializer."""
+
+    password = serializers.CharField(min_length=8, max_length=64)
+    confirm_password = serializers.CharField(min_length=8, max_length=64)
+
+    def validate_password(self, data):
+
+        password = data
+        confirm_password = self.context['confirm_password']
+        if password != confirm_password:
+            raise serializers.ValidationError('Las contraseñas no coinciden')
+        self.context['password'] = password
+        return data
+
+    def save(self):
+        """Update user's verified status."""
+        user = self.context['user']
+        password = self.context['password']
+        user.set_password(password)
+        user.save()
+        return user

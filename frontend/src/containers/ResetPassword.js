@@ -18,16 +18,25 @@ import axios from "axios";
 import { AppContext } from "src/context/AppContext";
 
 const ResetPassword = () => {
-  const dispatch = useDispatch();
   const history = useHistory();
-  const { program } = useParams();
-  const programReducer = useSelector((state) => state.programReducer);
-  const authReducer = useSelector((state) => state.authReducer);
+  const { token } = useParams();
 
-  const programVideoRef = useRef();
-  const video = useRef();
   const appContext = useContext(AppContext);
 
+  const [resetPasswordErrors, setResetPasswordErrors] = useState({
+    password: null,
+    confirm_password: null,
+    non_field_errors: null,
+  });
+  const handleSubmitResetPassword = async (values, token) => {
+    const result = await appContext.ResetPassword(values, token);
+    if (result.status == 200 || result.status == 201) {
+      history.push("/");
+    } else {
+      console.log(result.data);
+      setResetPasswordErrors(result.data);
+    }
+  };
   return (
     <>
       <Global
@@ -91,8 +100,8 @@ const ResetPassword = () => {
                   confirm_password: "",
                 }}
                 onSubmit={(values) => {
-                  // const dispatchLogin = (values) => dispatch(login(values));
-                  // dispatchLogin(values);
+                  console.log(values);
+                  handleSubmitResetPassword(values, token);
                 }}
               >
                 {(props) => {
@@ -102,16 +111,37 @@ const ResetPassword = () => {
                         <Form>
                           <div>
                             <Field
-                              name="email"
+                              name="password"
                               type="password"
                               placeholder="Contraseña"
                             />
-
+                            {resetPasswordErrors.password &&
+                              resetPasswordErrors.password.map((error) => (
+                                <small className="d-block text-red">
+                                  {error}
+                                </small>
+                              ))}
                             <Field
                               name="confirm_password"
                               type="password"
                               placeholder="Confirmar contraseña"
                             />
+                            {resetPasswordErrors.confirm_password &&
+                              resetPasswordErrors.confirm_password.map(
+                                (error) => (
+                                  <small className="d-block text-red">
+                                    {error}
+                                  </small>
+                                )
+                              )}
+                            {resetPasswordErrors.non_field_errors &&
+                              resetPasswordErrors.non_field_errors.map(
+                                (error) => (
+                                  <small className="d-block text-red">
+                                    {error}
+                                  </small>
+                                )
+                              )}
                           </div>
                           <button
                             className="shadow"

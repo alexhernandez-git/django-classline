@@ -5,7 +5,7 @@ import { FaChalkboardTeacher } from "react-icons/fa";
 import { IoMdPricetag } from "react-icons/io";
 
 import { IconContext } from "react-icons";
-import { Link, Redirect, useLocation } from "react-router-dom";
+import { Link, Redirect, useLocation, useHistory } from "react-router-dom";
 import "static/assets/styles/components/Layout/Header.scss";
 import { AppContext } from "src/context/AppContext";
 import Logo from "../../../static/assets/img/logo.PNG";
@@ -14,6 +14,7 @@ import withReactContent from "sweetalert2-react-content";
 export default function Header() {
   const MySwal = withReactContent(Swal);
   const appContext = useContext(AppContext);
+  const history = useHistory();
   const [showLogin, setShowLogin] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const handleCloseResetPassword = () => setShowResetPassword(false);
@@ -21,6 +22,26 @@ export default function Header() {
   const handleChangeToResetPassword = () => {
     setShowLogin(false);
     setShowResetPassword(true);
+  };
+  const [resetPasswordForm, setResetPasswordForm] = useState({
+    email: "",
+  });
+  const [resetPasswordErrors, setResetPasswordErrors] = useState({
+    email: null,
+    non_field_errors: null,
+  });
+  const handleSubmitResetPassword = async (e) => {
+    e.preventDefault();
+    const result = await appContext.sendResetPasswordEmail(resetPasswordForm);
+    if (result.status == 200 || result.status == 201) {
+      setResetPasswordForm({
+        email: "",
+      });
+      history.push("/");
+      handleCloseResetPassword();
+    } else {
+      setResetPasswordErrors(result.data);
+    }
   };
   const [search, setSearch] = useState("");
   useEffect(() => {
@@ -301,10 +322,11 @@ export default function Header() {
             onHide={handleCloseLogin}
             animation={true}
             size="md"
+            centered
             className="text-grey"
           >
             <Modal.Header closeButton>
-              <Modal.Title>Login</Modal.Title>
+              <Modal.Title className="h5 mb-0">Login</Modal.Title>
             </Modal.Header>
             <Modal.Body className="bg-white rounded-bottom">
               {loginErrors.non_field_errors &&
@@ -382,10 +404,11 @@ export default function Header() {
             onHide={handleCloseRegister}
             animation={true}
             size="md"
+            centered
             className="text-grey"
           >
             <Modal.Header closeButton>
-              <Modal.Title>Registro</Modal.Title>
+              <Modal.Title className="h5 mb-0">Registro</Modal.Title>
             </Modal.Header>
             <Modal.Body className="bg-white rounded-bottom">
               <Form onSubmit={handleSubmitRegister}>
@@ -486,24 +509,34 @@ export default function Header() {
             onHide={handleCloseResetPassword}
             animation={true}
             size="md"
+            centered
             className="text-grey"
           >
             <Modal.Header closeButton>
-              <Modal.Title>Restablece la contraseña</Modal.Title>
+              <Modal.Title className="h5 mb-0">
+                Restablece la contraseña
+              </Modal.Title>
             </Modal.Header>
             <Modal.Body className="bg-white rounded-bottom">
-              <Form onSubmit={handleSubmitRegister}>
+              <Form onSubmit={handleSubmitResetPassword}>
                 <Form.Group>
                   <Form.Control
                     type="email"
                     placeholder="Email"
-                    value={userData.email}
+                    value={resetPasswordForm.email}
                     onChange={(e) =>
-                      setUserData({ ...userData, email: e.target.value })
+                      setResetPasswordForm({
+                        ...resetPasswordForm,
+                        email: e.target.value,
+                      })
                     }
                   />
-                  {signupErrors.email &&
-                    signupErrors.email.map((error) => (
+                  {resetPasswordErrors.email &&
+                    resetPasswordErrors.email.map((error) => (
+                      <small className="d-block text-red">{error}</small>
+                    ))}
+                  {resetPasswordErrors.non_field_errors &&
+                    resetPasswordErrors.non_field_errors.map((error) => (
                       <small className="d-block text-red">{error}</small>
                     ))}
                 </Form.Group>

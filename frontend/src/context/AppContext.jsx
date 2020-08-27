@@ -55,6 +55,47 @@ export const AppProvider = ({ children }) => {
         return err.response;
       });
   };
+  const sendResetPasswordEmail = async (form) => {
+    return await axios
+      .post("/api/users/forget_password/", { email: form.email })
+      .then((res) => {
+        Swal.fire({
+          title: "Email enviado!",
+          text: "Ve a tu correo y restablece tu contraseña",
+          icon: "success",
+          confirmButtonText: "Ok",
+        });
+
+        return res;
+      })
+      .catch((err) => {
+        console.log(err.response);
+        return err.response;
+      });
+  };
+  const ResetPassword = async (form, token) => {
+    return await axios
+      .post("/api/users/reset_password/", form, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then((res) => {
+        Swal.fire({
+          title: "Contraseña actualizada correctamente!",
+          text: "Ya puedes loguearte con tu nueva contraseña",
+          icon: "success",
+          confirmButtonText: "Ok",
+        });
+
+        return res;
+      })
+      .catch((err) => {
+        console.log(err.response);
+        return err.response;
+      });
+  };
   const validateChangeEmail = async (email) => {
     return await axios
       .post(
@@ -430,6 +471,8 @@ export const AppProvider = ({ children }) => {
         verifyAccount,
         changeEmail,
         validateChangeEmail,
+        sendResetPasswordEmail,
+        ResetPassword,
         login,
         logout,
         register,
