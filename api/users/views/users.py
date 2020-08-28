@@ -75,7 +75,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         """Assign permissions based on action."""
         if self.action in ['signup', 'login', 'login_from_platform', 'verify', 'list', 'retrieve', 'stripe_webhook_subscription_cancelled', 'login_from_app', 'forget_password']:
             permissions = [AllowAny]
-        elif self.action in ['update', 'delete', 'partial_update', 'change_password', 'change_email', 'validate_change_email', 'reset_password']:
+        elif self.action in ['update', 'delete', 'partial_update', 'change_password', 'change_email', 'validate_change_email', 'reset_password', 'create_commercial', 'create_user_by_commercial']:
             permissions = [IsAccountOwner, IsAuthenticated]
         else:
             permissions = [IsAuthenticated]
@@ -251,7 +251,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         # request.data['username'] = request.data['email']
 
         serializer = UserSignUpSerializer(
-            data=request.data, context={'are_program': False})
+            data=request.data, context={'are_program': False, 'create_commercial': True})
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         data = UserModelSerializer(user).data
@@ -266,7 +266,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         request.data['first_password'] = request.data['password']
         program = get_object_or_404(Program, code=kwargs['code'])
         serializer = UserSignUpSerializer(data=request.data, context={
-                                          'program': program, 'are_program': True})
+                                          'program': program, 'are_program': True, 'create_commercial': True})
         serializer.is_valid(raise_exception=True)
         data = serializer.save()
         account_data = AccountCreatedModelSerializer(data['user']).data
@@ -275,6 +275,45 @@ class UserViewSet(mixins.RetrieveModelMixin,
             'user': account_data,
             'program': program
         }
+        return Response(data, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['post'])
+    def create_commercial(self, request, *args, **kwargs):
+        """User sign up."""
+        request.data['is_commercial'] = True
+        request.data['is_staff'] = True
+        request.data['username'] = request.data['email']
+        request.data['email'] = '{}'.format(uuid.uuid4().hex[:9].upper())
+        request.data['first_password'] = request.data['password']
+        serializer = UserSignUpSerializer(data=request.data, context={
+            'are_program': False,
+            'create_commercial': True,
+            'user': request.user,
+            'commercial_level': request.data['commercial_level']
+        })
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        data = UserModelSerializer(user).data
+
+        return Response(data, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['post'])
+    def create_user_by_commercial(self, request, *args, **kwargs):
+        """User sign up."""
+        request.data['created_by_commercial'] = True
+        request.data['username'] = request.data['email']
+        request.data['email'] = '{}'.format(uuid.uuid4().hex[:9].upper())
+        request.data['first_password'] = request.data['password']
+        serializer = UserSignUpSerializer(data=request.data, context={
+            'user': request.user,
+            'are_program': False,
+            'create_commercial': False,
+            'create_user_by_commercial': True
+        })
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        data = UserModelSerializer(user).data
+
         return Response(data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['post'])

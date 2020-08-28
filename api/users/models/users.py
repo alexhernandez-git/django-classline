@@ -61,10 +61,24 @@ class User(CLineModel, AbstractUser):
         help_text='This account has created by academy owner'
     )
 
-    first_password = models.CharField(max_length=40, null=True, blank=True)
+    first_password = models.CharField(max_length=64, null=True, blank=True)
     password_changed = models.BooleanField(
 
         default=False
+    )
+    # Created by comercial
+    created_by_commercial = models.BooleanField(
+        default=False,
+        help_text='True if this account was created by commercial'
+    )
+    user_created_by = models.ForeignKey(
+        'users.User', on_delete=models.SET_NULL, null=True, blank=True)
+
+    # Commercial
+
+    is_commercial = models.BooleanField(
+        default=False,
+        help_text='True if its a Classline Academy Commercial'
     )
 
     def __str__(self):

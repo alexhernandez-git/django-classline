@@ -15,7 +15,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.validators import UniqueValidator
 
 # Models
-from api.users.models import Profile, User, Teacher
+from api.users.models import Profile, User, Teacher, Commercial
 
 from api.programs.models import Program, AccountCreated, Student
 
@@ -251,8 +251,6 @@ class UserListTeacherModelSerializer(serializers.ModelSerializer):
             'teacher',
             'created_account',
             'first_password'
-
-
         )
 
         read_only_fields = (
@@ -284,10 +282,7 @@ class UserProgramTeacherModelSerializer(serializers.ModelSerializer):
             'teacher',
             'created_account',
             'first_password'
-
-
         )
-
         read_only_fields = (
             'id',
             'username',
@@ -359,9 +354,19 @@ class UserSignUpSerializer(serializers.Serializer):
     first_name = serializers.CharField(min_length=2, max_length=30)
     last_name = serializers.CharField(min_length=2, max_length=30)
 
-    first_password = serializers.CharField(max_length=40, required=False)
+    first_password = serializers.CharField(max_length=64, required=False)
 
     created_account = serializers.BooleanField()
+
+    # Created by comercial
+    created_by_commercial = serializers.BooleanField(
+        default=False,
+    )
+
+    # Commercial
+    is_commercial = serializers.BooleanField(
+        required=False
+    )
 
     def validate(self, data):
         """Verify passwords match."""
@@ -382,16 +387,28 @@ class UserSignUpSerializer(serializers.Serializer):
 
         data.pop('password_confirmation')
 
-        if self.context['are_program']:
+        if self.context['are_program'] or self.context['create_user_by_commercial']:
             user = User.objects.create_user(
                 **data, is_verified=True, is_client=True)
+        elif self.context['is_commercial']:
+            user = User.objects.create_user(
+                **data, is_verified=True, is_client=False)
         else:
             # Change is verified to false to verify with email later
             user = User.objects.create_user(
                 **data, is_verified=False, is_client=True)
 
-        profile = Profile.objects.create(user=user)
-        teacher = Teacher.objects.create(user=user)
+        Profile.objects.create(user=user)
+
+        if self.context['is_commercial']:
+            Commercial.objects.create(
+                user=user, commercial_level=self.context['commercial_level'], commercial_created_by=self.context['user'])
+        else:
+            Teacher.objects.create(user=user)
+        if self.context['create_user_by_commercial']:
+            user.user_created_by = self.context['user']
+            user.save()
+
         if self.context['are_program']:
             program = self.context['program']
             program.students.add(user)
@@ -402,6 +419,9 @@ class UserSignUpSerializer(serializers.Serializer):
                 'user': AccountCreated.objects.get(user=user),
                 'program': program
             }
+        elif self.context['is_commercial'] or self.context['create_user_by_commercial']:
+            return user
+
         else:
             send_confirmation_email(user_pk=user.pk)
             return user
