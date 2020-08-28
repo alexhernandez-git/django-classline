@@ -41,28 +41,9 @@ const Sidebar = (props) => {
             Pagina Principal
           </SecctionLink>
         </Link> */}
-        <Link
-          to={`${
-            /\/demo\/?/.test(pathname) ? "/demo" : ""
-          }/academy/${program}/playlists`}
-        >
-          <SecctionLink active={/\/playlists\/?$/.test(pathname) && true}>
-            <IconContext.Provider
-              value={{
-                className: "sidebar-icon",
-              }}
-            >
-              <FaUsers />
-            </IconContext.Provider>{" "}
-            Lista de comerciales
-          </SecctionLink>
-        </Link>
-        <Link
-          to={`${
-            /\/demo\/?/.test(pathname) ? "/demo" : ""
-          }/academy/${program}/playlists`}
-        >
-          <SecctionLink active={/\/playlists\/?$/.test(pathname) && true}>
+
+        <Link to={`/dashboard`}>
+          <SecctionLink active={/\/dashboard\/?$/.test(pathname) && true}>
             <IconContext.Provider
               value={{
                 className: "sidebar-icon",
@@ -73,12 +54,11 @@ const Sidebar = (props) => {
             Lista de clientes
           </SecctionLink>
         </Link>
-        <Link
-          to={`${
-            /\/demo\/?/.test(pathname) ? "/demo" : ""
-          }/academy/${program}/playlists`}
-        >
-          <SecctionLink active={/\/playlists\/?$/.test(pathname) && true}>
+
+        <Link to={`/dashboard/payments`}>
+          <SecctionLink
+            active={/\/dashboard\/payments\/?$/.test(pathname) && true}
+          >
             <IconContext.Provider
               value={{
                 className: "sidebar-icon",
@@ -87,6 +67,20 @@ const Sidebar = (props) => {
               <FaMoneyBill />
             </IconContext.Provider>{" "}
             Ultimos pagos
+          </SecctionLink>
+        </Link>
+        <Link to={`/dashboard/commercials`}>
+          <SecctionLink
+            active={/\/dashboard\/commercials\/?$/.test(pathname) && true}
+          >
+            <IconContext.Provider
+              value={{
+                className: "sidebar-icon",
+              }}
+            >
+              <FaUsers />
+            </IconContext.Provider>{" "}
+            Lista de comerciales
           </SecctionLink>
         </Link>
       </>

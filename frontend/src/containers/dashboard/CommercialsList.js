@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Filters from "src/components/Layout/Filters";
 import { MdEdit } from "react-icons/md";
 import styled from "@emotion/styled";
-import CountRow from "src/components/AdminAcademy/AccountRow";
+import CostumerRow from "src/components/Dashboard/ui/CostumerRow";
 import { IconContext } from "react-icons";
 import { Modal, Form, Row, Col, Button } from "react-bootstrap";
 import VideoForm from "src/components/AdminAcademy/VideoForm";
@@ -26,7 +26,8 @@ import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-const SalesDashboard = () => {
+import CreateCostumerForm from "src/components/Dashboard/ui/CreateCostumerForm";
+const CommercialList = () => {
   const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
@@ -80,7 +81,7 @@ const SalesDashboard = () => {
     <Main padding>
       <Filters
         title=" "
-        placeholder="Buscar Cuentas"
+        placeholder="Buscar Comerciales"
         search={{ search: search, setSearch: setSearch }}
         onSubmit={handleSubmitSearch}
       />
@@ -88,7 +89,7 @@ const SalesDashboard = () => {
         <span className="d-block text-center"></span>
         <span className="d-block m-2 d-sm-none"></span>
         <ButtonCustom className="" onClick={handleShow}>
-          Crear Cuenta
+          Crear Comercial
         </ButtonCustom>
       </div>
       <div>
@@ -97,7 +98,7 @@ const SalesDashboard = () => {
             <thead>
               <tr>
                 <th scope="col" style={{ width: "20%" }}>
-                  Nombre de Usuario
+                  Username
                 </th>
                 <th scope="col" style={{ width: "20%" }}>
                   Contraseña
@@ -112,7 +113,7 @@ const SalesDashboard = () => {
             <tbody>
               {accountsReducer.accounts &&
                 accountsReducer.accounts.results.map((account) => (
-                  <CountRow
+                  <CostumerRow
                     handleShow={handleShow}
                     account={account}
                     key={account.id}
@@ -201,9 +202,9 @@ const SalesDashboard = () => {
                 <>
                   <FormFormik>
                     <Modal.Header closeButton>
-                      <Modal.Title>Crear una cuenta de alumno</Modal.Title>
+                      <Modal.Title>Crear una cuenta de cliente</Modal.Title>
                     </Modal.Header>
-                    <CreateCountForm />
+                    <CreateCostumerForm />
                     <Modal.Footer>
                       <ButtonCustom type="submit">Crear</ButtonCustom>
                     </Modal.Footer>
@@ -218,4 +219,4 @@ const SalesDashboard = () => {
   );
 };
 
-export default SalesDashboard;
+export default CommercialList;
