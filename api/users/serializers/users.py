@@ -457,7 +457,6 @@ class UserSignUpSerializer(serializers.Serializer):
             }
         elif self.context['create_commercial'] or self.context['create_user_by_commercial']:
             return user
-
         else:
             send_confirmation_email(user_pk=user.pk)
             return user

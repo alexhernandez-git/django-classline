@@ -284,7 +284,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         request.data['username'] = request.data['email']
 
         serializer = UserSignUpSerializer(
-            data=request.data, context={'are_program': False, 'create_commercial': True, 'create_user_by_commercial': False})
+            data=request.data, context={'are_program': False, 'create_commercial': False, 'create_user_by_commercial': False})
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         data = UserModelSerializer(user).data
