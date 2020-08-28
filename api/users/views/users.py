@@ -21,7 +21,9 @@ from api.users.serializers import (
     ChangeEmailSerializer,
     ValidateChangeEmail,
     ForgetPasswordSerializer,
-    ResetPasswordSerializer
+    ResetPasswordSerializer,
+    CommercialsLoginSerializer,
+    UserCommercialModelSerializer
 )
 from django.core.exceptions import ObjectDoesNotExist
 from api.programs.serializers import AccountCreatedModelSerializer, ProgramModifyModelSerializer
@@ -73,7 +75,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
     def get_permissions(self):
         """Assign permissions based on action."""
-        if self.action in ['signup', 'login', 'login_from_platform', 'verify', 'list', 'retrieve', 'stripe_webhook_subscription_cancelled', 'login_from_app', 'forget_password']:
+        if self.action in ['signup', 'login', 'login_from_platform', 'verify', 'list', 'retrieve', 'stripe_webhook_subscription_cancelled', 'login_from_app', 'forget_password', 'login_to_dashboard']:
             permissions = [AllowAny]
         elif self.action in ['update', 'delete', 'partial_update', 'change_password', 'change_email', 'validate_change_email', 'reset_password', 'create_commercial', 'create_user_by_commercial']:
             permissions = [IsAccountOwner, IsAuthenticated]
@@ -202,6 +204,37 @@ class UserViewSet(mixins.RetrieveModelMixin,
         return Response(data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['post'])
+    def login_to_dashboard(self, request, *args, **kwargs):
+        """User login."""
+
+        serializer = CommercialsLoginSerializer(
+            data=request.data,
+        )
+
+        serializer.is_valid(raise_exception=True)
+        user, token = serializer.save()
+        data = {
+            'user': UserCommercialModelSerializer(user, many=False).data,
+            'access_token': token,
+        }
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+        stripe_account_id = data.get('user').get(
+            'commercial').get('commercial_stripe_account_id')
+
+        if stripe_account_id != None and stripe_account_id != '':
+            stripe_dashboard_url = stripe.Account.create_login_link(
+                data.get('user').get('commercial').get(
+                    'commercial_stripe_account_id')
+            )
+
+            data['user']['commercial']['stripe_dashboard_url'] = stripe_dashboard_url['url']
+
+        return Response(data, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['post'])
     def change_password(self, request):
         """User login."""
         serializer = ChangePasswordSerializer(
@@ -251,7 +284,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         # request.data['username'] = request.data['email']
 
         serializer = UserSignUpSerializer(
-            data=request.data, context={'are_program': False, 'create_commercial': True})
+            data=request.data, context={'are_program': False, 'create_commercial': True, 'create_user_by_commercial': False})
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         data = UserModelSerializer(user).data
@@ -266,7 +299,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         request.data['first_password'] = request.data['password']
         program = get_object_or_404(Program, code=kwargs['code'])
         serializer = UserSignUpSerializer(data=request.data, context={
-                                          'program': program, 'are_program': True, 'create_commercial': True})
+                                          'program': program, 'are_program': True, 'create_commercial': True, 'create_user_by_commercial': False})
         serializer.is_valid(raise_exception=True)
         data = serializer.save()
         account_data = AccountCreatedModelSerializer(data['user']).data
@@ -285,15 +318,18 @@ class UserViewSet(mixins.RetrieveModelMixin,
         request.data['username'] = request.data['email']
         request.data['email'] = '{}'.format(uuid.uuid4().hex[:9].upper())
         request.data['first_password'] = request.data['password']
+        if request.user.commercial.commercial_level < 2:
+            commercial_level = request.user.commercial.commercial_level + 1
         serializer = UserSignUpSerializer(data=request.data, context={
             'are_program': False,
             'create_commercial': True,
+            'create_user_by_commercial': False,
             'user': request.user,
-            'commercial_level': request.data['commercial_level']
+            'commercial_level': commercial_level
         })
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        data = UserModelSerializer(user).data
+        data = UserCommercialModelSerializer(user).data
 
         return Response(data, status=status.HTTP_201_CREATED)
 

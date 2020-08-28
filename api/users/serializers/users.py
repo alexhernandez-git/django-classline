@@ -23,6 +23,7 @@ from api.programs.models import Program, AccountCreated, Student
 # Serializers
 from api.users.serializers.profiles import ProfileModelSerializer
 from api.users.serializers.teachers import TeacherModelSerializer, TeacherProgramsCountModelSerializer
+from api.users.serializers.commercials import CommercialModelSerializer
 from api.programs.serializers import ProgramBasicModelSerializer
 
 
@@ -153,6 +154,41 @@ class UserTeacherModelSerializer(serializers.ModelSerializer):
             'is_staff',
             'profile',
             'teacher',
+            'created_account',
+            'first_password'
+
+        )
+
+        read_only_fields = (
+            'id',
+            'username',
+        )
+
+
+class UserCommercialModelSerializer(serializers.ModelSerializer):
+    """User model serializer."""
+
+    profile = ProfileModelSerializer(read_only=True)
+    teacher = TeacherModelSerializer(read_only=True)
+    commercial = CommercialModelSerializer(read_only=True)
+
+    class Meta:
+        """Meta class."""
+
+        model = User
+        fields = (
+            'id',
+            'code',
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'phone_number',
+            'is_staff',
+            'profile',
+            'teacher',
+            'commercial',
+            'first_password',
             'created_account',
             'first_password'
 
@@ -356,7 +392,7 @@ class UserSignUpSerializer(serializers.Serializer):
 
     first_password = serializers.CharField(max_length=64, required=False)
 
-    created_account = serializers.BooleanField()
+    created_account = serializers.BooleanField(required=False)
 
     # Created by comercial
     created_by_commercial = serializers.BooleanField(
@@ -390,7 +426,7 @@ class UserSignUpSerializer(serializers.Serializer):
         if self.context['are_program'] or self.context['create_user_by_commercial']:
             user = User.objects.create_user(
                 **data, is_verified=True, is_client=True)
-        elif self.context['is_commercial']:
+        elif self.context['create_commercial']:
             user = User.objects.create_user(
                 **data, is_verified=True, is_client=False)
         else:
@@ -400,7 +436,7 @@ class UserSignUpSerializer(serializers.Serializer):
 
         Profile.objects.create(user=user)
 
-        if self.context['is_commercial']:
+        if self.context['create_commercial']:
             Commercial.objects.create(
                 user=user, commercial_level=self.context['commercial_level'], commercial_created_by=self.context['user'])
         else:
@@ -419,7 +455,7 @@ class UserSignUpSerializer(serializers.Serializer):
                 'user': AccountCreated.objects.get(user=user),
                 'program': program
             }
-        elif self.context['is_commercial'] or self.context['create_user_by_commercial']:
+        elif self.context['create_commercial'] or self.context['create_user_by_commercial']:
             return user
 
         else:
