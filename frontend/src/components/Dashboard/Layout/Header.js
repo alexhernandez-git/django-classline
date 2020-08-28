@@ -158,7 +158,6 @@ const Header = (props) => {
                 </>
               )} */}
               <>
-                <hr className="m-2" />
                 <Link to={`/dashboard/profile`}>
                   <button className="w-100 d-flex align-items-center justify-content-center">
                     <IconContext.Provider
