@@ -436,7 +436,7 @@ class UserSignUpSerializer(serializers.Serializer):
 
         Profile.objects.create(user=user)
 
-        if self.context['create_commercial']:
+        if self.context['create_commercial'] and 'commercial_level' in self.context:
             Commercial.objects.create(
                 user=user, commercial_level=self.context['commercial_level'], commercial_created_by=self.context['user'])
         else:
