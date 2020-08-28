@@ -546,7 +546,6 @@ class UserLoginAppSerializer(serializers.Serializer):
         regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
         # for custom mails use: '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
         if email and password:
-            print(email)
             if re.search(regex, email):
                 user_request = get_object_or_404(
                     User,
@@ -570,6 +569,48 @@ class UserLoginAppSerializer(serializers.Serializer):
         if not Student.objects.filter(user=user).exists():
             raise serializers.ValidationError(
                 'No perteneces a ninguna academia')
+
+        self.context['user'] = user
+        return data
+
+    def create(self, data):
+        """Generate or retrieve new token."""
+        token, created = Token.objects.get_or_create(user=self.context['user'])
+        return self.context['user'], token.key
+
+
+class CommercialsLoginSerializer(serializers.Serializer):
+    """User login serializer.
+
+    Handle the login request
+    """
+
+    email = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, data):
+        """Check credentials."""
+        # Validation with email or password
+        email = data['email']
+        password = data['password']
+        regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+        # for custom mails use: '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
+        if email and password:
+            if re.search(regex, email):
+                user_request = get_object_or_404(
+                    User,
+                    email=email
+                )
+                email = user_request.username
+            # Check if user set email
+        user = authenticate(username=email, password=password)
+        # import pdb; pdb.set_trace()
+        if not user.is_commercial:
+            raise serializers.ValidationError(
+                'Con esta cuenta no puedes acceder al dashboard')
+
+        if not user:
+            raise serializers.ValidationError('Credenciales invalidas')
 
         self.context['user'] = user
         return data

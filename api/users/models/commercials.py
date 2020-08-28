@@ -17,6 +17,7 @@ class Commercial(CLineModel):
     # Commercial fields
 
     commercial_level = models.PositiveIntegerField(default=0)
+    can_create_commercials = models.BooleanField(default=False)
     commercial_created_by = models.ForeignKey(
         'users.User', on_delete=models.SET_NULL, related_name='user_commercial_create', null=True, blank=True)
     commercial_stripe_account_id = models.CharField(
