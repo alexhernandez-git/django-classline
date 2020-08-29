@@ -9,10 +9,12 @@ import { AdminForm } from "src/components/ui/AdminForm";
 import SelectLang from "src/components/AdminAcademy/SelectLang";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form as FormFormik, Field } from "formik";
-import { updateUser } from "src/redux/actions/auth";
+import { updateUser } from "src/redux/actions/authCommercials";
 import { ButtonCustom } from "../../ui/ButtonCustom";
 const ProfileMainInfo = (props) => {
-  const authReducer = useSelector((state) => state.authReducer);
+  const authCommercialsReducer = useSelector(
+    (state) => state.authCommercialsReducer
+  );
   const dispatch = useDispatch();
   return (
     <div className="bg-white border p-3 rounded my-2 mb-4">
@@ -20,8 +22,12 @@ const ProfileMainInfo = (props) => {
       <Formik
         enableReinitialize={true}
         initialValues={{
-          first_name: authReducer.user && authReducer.user.first_name,
-          last_name: authReducer.user && authReducer.user.last_name,
+          first_name:
+            authCommercialsReducer.user &&
+            authCommercialsReducer.user.first_name,
+          last_name:
+            authCommercialsReducer.user &&
+            authCommercialsReducer.user.last_name,
         }}
         onSubmit={(values) => {
           const dispatchUpdateUser = (values) => dispatch(updateUser(values));
@@ -44,7 +50,7 @@ const ProfileMainInfo = (props) => {
                     </Col>
 
                     <Col lg={{ offset: 1, span: 6 }}>
-                      <span>{authReducer.user.username}</span>
+                      <span>{authCommercialsReducer.user.username}</span>
                     </Col>
                   </Row>
                   <Row className="mb-4">

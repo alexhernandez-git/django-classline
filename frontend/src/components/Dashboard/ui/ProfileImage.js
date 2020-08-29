@@ -6,11 +6,13 @@ import {
 } from "src/components/ui/ButtonCustom";
 import Cropper from "react-cropper";
 import { useSelector, useDispatch } from "react-redux";
-import { updateProfile } from "src/redux/actions/auth";
+import { updateProfile } from "src/redux/actions/authCommercials";
 import { AdminForm } from "../../ui/AdminForm";
 const ProfileImageForm = () => {
   const dispatch = useDispatch();
-  const authReducer = useSelector((state) => state.authReducer);
+  const authCommercialsReducer = useSelector(
+    (state) => state.authCommercialsReducer
+  );
 
   const cropper = useRef(null);
   const [show, setShow] = useState(false);
@@ -22,10 +24,13 @@ const ProfileImageForm = () => {
     "/static/assets/img/no-foto-square.png"
   );
   useEffect(() => {
-    if (authReducer.user && authReducer.user.profile.picture) {
-      setCropResult(authReducer.user.profile.picture);
+    if (
+      authCommercialsReducer.user &&
+      authCommercialsReducer.user.profile.picture
+    ) {
+      setCropResult(authCommercialsReducer.user.profile.picture);
     }
-  }, authReducer.isAuthenticated);
+  }, authCommercialsReducer.isAuthenticated);
   const [fileName, setFileName] = useState("");
   const inputFileImg = useRef(null);
   const handleUploadImage = (e) => {

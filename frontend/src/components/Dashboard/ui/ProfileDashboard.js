@@ -4,7 +4,7 @@ import Layout from "src/components/Layout/Layout";
 import Filters from "src/components/Layout/Filters";
 import Video from "src/components/ui/Video";
 import styled from "@emotion/styled";
-import { Main } from "src/components/ui/Main";
+import { Main } from "src/components/Dashboard/ui/Main";
 
 import { fetchVideos } from "src/redux/actions/videos";
 import { useDispatch, useSelector } from "react-redux";

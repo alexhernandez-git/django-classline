@@ -6,18 +6,21 @@ import Select from "react-select";
 import { AdminForm } from "src/components/ui/AdminForm";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form as FormFormik, Field } from "formik";
-import { changePassword } from "src/redux/actions/auth";
+import { changePassword } from "src/redux/actions/authCommercials";
 import { ButtonCustom } from "../../ui/ButtonCustom";
 const ProfileChangePassword = (props) => {
   const dispatch = useDispatch();
-  const authReducer = useSelector((state) => state.authReducer);
+  const authCommercialsReducer = useSelector(
+    (state) => state.authCommercialsReducer
+  );
   return (
     <div className="bg-white border p-3 rounded my-2 mb-4">
       <span className="d-none d-md-block">Actualizar contraseña</span>
       <Formik
         enableReinitialize={true}
         initialValues={{
-          email: authReducer.user && authReducer.user.username,
+          email:
+            authCommercialsReducer.user && authCommercialsReducer.user.username,
           password: "",
           new_password: "",
           repeat_password: "",
@@ -28,7 +31,9 @@ const ProfileChangePassword = (props) => {
           dispatchChangePassword(values);
           resetForm({
             values: {
-              email: authReducer.user && authReducer.user.username,
+              email:
+                authCommercialsReducer.user &&
+                authCommercialsReducer.user.username,
               password: "",
               new_password: "",
               repeat_password: "",

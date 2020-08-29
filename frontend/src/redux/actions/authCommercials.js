@@ -6,7 +6,7 @@ import {
   COMMERCIAL_LOADING,
   AUTH_COMMERCIAL_ERROR,
   LOGIN_COMMERCIAL_SUCCESS,
-  LOGOUT_SUCCESS,
+  LOGOUT_COMMERCIAL_SUCCESS,
   UPDATE_COMMERCIAL_PROFILE_SUCCESS,
   UPDATE_COMMERCIAL_PROFILE_FAIL,
   UPDATE_COMMERCIAL_PROFILE,
@@ -26,7 +26,7 @@ import {
 export const loadCommercial = () => (dispatch, getState) => {
   // User Loading
   dispatch({ type: COMMERCIAL_LOADING });
-
+  console.log(tokenConfig(getState));
   axios
     // .get("http://localhost:4000/users/1",
     .get(`/api/users/get_profile_from_dashboard`, tokenConfig(getState))
@@ -63,7 +63,7 @@ export const login = (data) => (dispatch, getState) => {
 };
 
 export const logout = () => (dispatch, getState) => {
-  dispatch({ type: LOGOUT_SUCCESS });
+  dispatch({ type: LOGOUT_COMMERCIAL_SUCCESS });
 };
 
 export const updateProfile = (profile) => (dispatch, getState) => {
@@ -93,7 +93,7 @@ export const updateUser = (user) => (dispatch, getState) => {
   dispatch({ type: UPDATE_COMMERCIAL });
   axios
     .patch(
-      `/api/users/${getState().authReducer.user.code}/`,
+      `/api/users/${getState().authCommercialsReducer.user.code}/`,
       user,
       tokenConfig(getState)
     )
@@ -166,7 +166,7 @@ export const connectStripe = (authCode) => (dispatch, getState) => {
 // Setup config with token - helper function
 export const tokenConfig = (getState) => {
   // Get token from state
-  let token = getState().authReducer.auth_commercial_token;
+  let token = getState().authCommercialsReducer.auth_commercial_token;
   // Headers
   const config = {
     headers: {

@@ -65,7 +65,6 @@ export default function (state = initialState, action) {
     case AUTH_COMMERCIAL_ERROR:
     case LOGIN_COMMERCIAL_FAIL:
     case LOGOUT_COMMERCIAL_SUCCESS:
-      console.log("entra");
       localStorage.removeItem("auth_commercial_token");
       return {
         ...state,

@@ -35,22 +35,31 @@ const Dashboard = () => {
     <>
       <ScrollToTop />
       <Switch>
-        <Route exact path="/dashboard/login" component={Login} />
-
-        <Layout>
-          <Route exact path="/dashboard" component={CostumersList} />
-          <Route exact path="/dashboard/profile" component={ProfileDashboard} />
-          <Route
-            exact
-            path="/dashboard/payments"
-            component={CostumersPayments}
-          />
-          <Route
-            exact
-            path="/dashboard/commercials"
-            component={CommercialList}
-          />
-        </Layout>
+        {!authCommercialsReducer.isAuthenticated ? (
+          <>
+            <Route exact path="/dashboard" component={Login} />
+            <Route exact path="/dashboard/**" component={Login} />
+          </>
+        ) : (
+          <Layout>
+            <Route exact path="/dashboard" component={CostumersList} />
+            <Route
+              exact
+              path="/dashboard/profile"
+              component={ProfileDashboard}
+            />
+            <Route
+              exact
+              path="/dashboard/payments"
+              component={CostumersPayments}
+            />
+            <Route
+              exact
+              path="/dashboard/commercials"
+              component={CommercialList}
+            />
+          </Layout>
+        )}
       </Switch>
     </>
   );
