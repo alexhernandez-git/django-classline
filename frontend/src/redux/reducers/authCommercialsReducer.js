@@ -73,7 +73,7 @@ export default function (state = initialState, action) {
         user: null,
         isAuthenticated: false,
         isLoading: false,
-        error: action.payload,
+        error: action.payload ? action.payload : null,
       };
     case UPDATE_COMMERCIAL_PROFILE:
       return {

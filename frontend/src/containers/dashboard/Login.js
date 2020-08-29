@@ -6,7 +6,6 @@ import ProgramBenefits from "src/components/MainPage/ProgramBenefits";
 import Estadistics from "src/components/MainPage/Estadistics";
 import { MdClose } from "react-icons/md";
 import { FaPlay } from "react-icons/fa";
-import { Link, useParams, useHistory } from "react-router-dom";
 import { IconContext } from "react-icons";
 import { useSelector, useDispatch } from "react-redux";
 import StudentReview from "src/components/Programs/StudentFeedback/StudentReview";
@@ -17,17 +16,9 @@ import StarRating from "src/components/Layout/StarRatings";
 import axios from "axios";
 const Login = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const { program } = useParams();
   const authCommercialsReducer = useSelector(
     (state) => state.authCommercialsReducer
   );
-  useEffect(() => {
-    if (authCommercialsReducer.isAuthenticated) history.push(`/dashboard`);
-  }, [authCommercialsReducer.isAuthenticated]);
-  const programVideoRef = useRef();
-  const video = useRef();
-
   return (
     <>
       <Global

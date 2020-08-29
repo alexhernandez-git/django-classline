@@ -31,12 +31,17 @@ export const loadCommercial = () => (dispatch, getState) => {
     // .get("http://localhost:4000/users/1",
     .get(`/api/users/get_profile_from_dashboard`, tokenConfig(getState))
     .then((res) => {
+      console.log(res.data);
       dispatch({
         type: COMMERCIAL_LOADED,
         payload: res.data,
       });
     })
-    .catch((err) => {});
+    .catch((err) => {
+      dispatch({
+        type: AUTH_COMMERCIAL_ERROR,
+      });
+    });
 };
 export const login = (data) => (dispatch, getState) => {
   console.log(data);

@@ -14,9 +14,7 @@ export const AppProvider = ({ children }) => {
     user: null,
   };
   const [userProfile, dispatchUser] = useReducer(userReducer, initialUser);
-  useEffect(() => {
-    console.log(userProfile);
-  }, [userProfile]);
+
   const verifyAccount = async (token) => {
     return await axios
       .post("/api/users/verify/", { token: token })
@@ -69,7 +67,6 @@ export const AppProvider = ({ children }) => {
         return res;
       })
       .catch((err) => {
-        console.log(err.response);
         return err.response;
       });
   };
@@ -92,7 +89,6 @@ export const AppProvider = ({ children }) => {
         return res;
       })
       .catch((err) => {
-        console.log(err.response);
         return err.response;
       });
   };
@@ -453,15 +449,12 @@ export const AppProvider = ({ children }) => {
         tokenConfig(userProfile, true)
       )
       .then((res) => {
-        console.log("stripe res data", res.data);
         dispatchUser({
           type: "STRIPE_CONNECTED",
           payload: res.data,
         });
       })
-      .catch((err) => {
-        console.log(err.response);
-      });
+      .catch((err) => {});
   };
 
   return (
