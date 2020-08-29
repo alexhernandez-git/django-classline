@@ -4,7 +4,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "static/assets/styles/styles.scss";
 import ScrollToTop from "src/utils/ScrollToTop";
 
-import MainPage from "../containers/dashboard/MainPage";
+import Login from "../containers/dashboard/Login";
 import Layout from "../components/Dashboard/Layout/Layout";
 import CostumersList from "../containers/dashboard/CostumersList";
 import ProfileDashboard from "../components/Dashboard/ui/ProfileDashboard";
@@ -15,7 +15,7 @@ const Dashboard = () => {
     <>
       <ScrollToTop />
       <Switch>
-        <Route exact path="/dashboard/login" component={MainPage} />
+        <Route exact path="/dashboard/login" component={Login} />
         <Layout>
           <Route exact path="/dashboard" component={CostumersList} />
           <Route exact path="/dashboard/profile" component={ProfileDashboard} />

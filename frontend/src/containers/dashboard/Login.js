@@ -12,41 +12,21 @@ import { useSelector, useDispatch } from "react-redux";
 import StudentReview from "src/components/Programs/StudentFeedback/StudentReview";
 
 import { Formik, Form as FormFormik, Field } from "formik";
-import { login } from "src/redux/actions/auth";
+import { login } from "src/redux/actions/authCommercials";
 import StarRating from "src/components/Layout/StarRatings";
 import axios from "axios";
-const MainPage = () => {
+const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { program } = useParams();
-  const programReducer = useSelector((state) => state.programReducer);
-  const authReducer = useSelector((state) => state.authReducer);
+  const authCommercialsReducer = useSelector(
+    (state) => state.authCommercialsReducer
+  );
   useEffect(() => {
-    if (authReducer.isAuthenticated) history.push(`/academy/${program}/home/`);
-  }, [authReducer.isAuthenticated]);
+    if (authCommercialsReducer.isAuthenticated) history.push(`/dashboard`);
+  }, [authCommercialsReducer.isAuthenticated]);
   const programVideoRef = useRef();
   const video = useRef();
-
-  const handleCloseVideo = () => {
-    video.current.pause();
-    setOpenVideo(false);
-  };
-
-  const handleWindowClick = (e) => {
-    if (!programVideoRef.current.contains(e.target)) {
-      handleCloseVideo(false);
-    }
-  };
-  useEffect(() => {
-    const handleClick = (e) => {
-      handleWindowClick(e);
-    };
-    window.addEventListener("mousedown", handleClick);
-
-    return () => {
-      window.removeEventListener("mousedown", handleClick);
-    };
-  });
 
   return (
     <>
@@ -143,8 +123,9 @@ const MainPage = () => {
                     password: "",
                   }}
                   onSubmit={(values) => {
-                    // const dispatchLogin = (values) => dispatch(login(values));
-                    // dispatchLogin(values);
+                    console.log("entra");
+                    const dispatchLogin = (values) => dispatch(login(values));
+                    dispatchLogin(values);
                   }}
                 >
                   {(props) => {
@@ -153,16 +134,17 @@ const MainPage = () => {
                         <FormFormik className="w-100">
                           <Form>
                             <div>
-                              {authReducer.error &&
-                                authReducer.error.data.detail && (
+                              {authCommercialsReducer.error &&
+                                authCommercialsReducer.error.data.detail && (
                                   <small className="d-block text-red text-center mb-2">
-                                    {authReducer.error.data.detail}
+                                    {authCommercialsReducer.error.data.detail}
                                   </small>
                                 )}
 
-                              {authReducer.error &&
-                                authReducer.error.data.non_field_errors &&
-                                authReducer.error.data.non_field_errors.map(
+                              {authCommercialsReducer.error &&
+                                authCommercialsReducer.error.data
+                                  .non_field_errors &&
+                                authCommercialsReducer.error.data.non_field_errors.map(
                                   (error) => (
                                     <small className="d-block text-red text-center mb-2">
                                       {error}
@@ -175,25 +157,29 @@ const MainPage = () => {
                                 type="text"
                                 placeholder="Nombre de usuario"
                               />
-                              {authReducer.error &&
-                                authReducer.error.data.email &&
-                                authReducer.error.data.email.map((error) => (
-                                  <small className="d-block text-red">
-                                    {error}
-                                  </small>
-                                ))}
+                              {authCommercialsReducer.error &&
+                                authCommercialsReducer.error.data.email &&
+                                authCommercialsReducer.error.data.email.map(
+                                  (error) => (
+                                    <small className="d-block text-red">
+                                      {error}
+                                    </small>
+                                  )
+                                )}
                               <Field
                                 name="password"
                                 type="password"
                                 placeholder="Contraseña"
                               />
-                              {authReducer.error &&
-                                authReducer.error.data.password &&
-                                authReducer.error.data.password.map((error) => (
-                                  <small className="d-block text-red">
-                                    {error}
-                                  </small>
-                                ))}
+                              {authCommercialsReducer.error &&
+                                authCommercialsReducer.error.data.password &&
+                                authCommercialsReducer.error.data.password.map(
+                                  (error) => (
+                                    <small className="d-block text-red">
+                                      {error}
+                                    </small>
+                                  )
+                                )}
                             </div>
                             <button
                               className="shadow"
@@ -287,4 +273,4 @@ const Form = styled.div`
   }
 `;
 
-export default MainPage;
+export default Login;

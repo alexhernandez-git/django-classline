@@ -29,12 +29,7 @@ export const loadCommercial = () => (dispatch, getState) => {
 
   axios
     // .get("http://localhost:4000/users/1",
-    .get(
-      `/api/users/${
-        getState().programReducer.program.code
-      }/get_profile_from_dashboard`,
-      tokenConfig(getState)
-    )
+    .get(`/api/users/get_profile_from_dashboard`, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: COMMERCIAL_LOADED,
@@ -46,12 +41,7 @@ export const loadCommercial = () => (dispatch, getState) => {
 export const login = (data) => (dispatch, getState) => {
   console.log(data);
   axios
-    .post(
-      `/api/users/${
-        getState().programReducer.program.code
-      }/login_to_dashboard/`,
-      data
-    )
+    .post(`/api/users/login_to_dashboard/`, data)
     .then((res) => {
       console.log(res.data);
       dispatch({
@@ -171,7 +161,7 @@ export const connectStripe = (authCode) => (dispatch, getState) => {
 // Setup config with token - helper function
 export const tokenConfig = (getState) => {
   // Get token from state
-  let token = getState().authReducer.auth_token;
+  let token = getState().authReducer.auth_commercial_token;
   // Headers
   const config = {
     headers: {

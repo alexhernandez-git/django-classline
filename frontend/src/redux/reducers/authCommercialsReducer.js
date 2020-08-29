@@ -19,7 +19,7 @@ import {
   STRIPE_COMMERCIAL_CONNECTED_FAIL,
 } from "../types";
 const initialState = {
-  auth_token: localStorage.getItem("auth_commercial_token"),
+  auth_commercial_token: localStorage.getItem("auth_commercial_token"),
   isAuthenticated: null,
   isLoading: true,
   user: null,
@@ -58,20 +58,19 @@ export default function (state = initialState, action) {
       return {
         ...state,
         user: action.payload.user,
-        rating: action.payload.rating,
-        auth_token: action.payload.access_token,
+        auth_commercial_token: action.payload.access_token,
         isAuthenticated: true,
         isLoading: false,
       };
     case AUTH_COMMERCIAL_ERROR:
     case LOGIN_COMMERCIAL_FAIL:
     case LOGOUT_COMMERCIAL_SUCCESS:
+      console.log("entra");
       localStorage.removeItem("auth_commercial_token");
       return {
         ...state,
-        auth_token: null,
+        auth_commercial_token: null,
         user: null,
-        rating: null,
         isAuthenticated: false,
         isLoading: false,
         error: action.payload,
@@ -135,19 +134,6 @@ export default function (state = initialState, action) {
         ...state,
         is_changing_password: false,
         change_password_error: action.payload,
-      };
-
-    case SET_STRIPE_CUSTOMER_DATA:
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          profile: {
-            ...state.user.profile,
-            stripe_customer_id: action.payload.customer_id,
-            payment_methods: action.payload.payment_methods,
-          },
-        },
       };
 
     case STRIPE_COMMERCIAL_CONNECTED:

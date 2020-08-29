@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { textEllipsis } from "src/components/ui/TextEllipsis";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "src/redux/actions/auth";
+import { logout } from "src/redux/actions/authCommercials";
 import { Modal, Button } from "react-bootstrap";
 import StarRatings from "react-star-ratings";
 import { Formik, Form as FormFormik, Field } from "formik";
@@ -32,7 +32,9 @@ const Header = (props) => {
   const { push } = useHistory();
   const { pathname } = useLocation();
   const { program } = useParams();
-  const authReducer = useSelector((state) => state.authReducer);
+  const authCommercialsReducer = useSelector(
+    (state) => state.authCommercialsReducer
+  );
   const programReducer = useSelector((state) => state.programReducer);
 
   const [profileDivOpen, setProfileDivOpen] = useState(false);
@@ -61,26 +63,24 @@ const Header = (props) => {
     };
   });
   const handleLogout = () => {
-    if (/\/demo\//.test(pathname)) {
-      push(`/program/${program}`);
-    } else {
-      const dispatchLogout = () => dispatch(logout());
-      dispatchLogout();
-      push(`/academy/${program}`);
-    }
+    const dispatchLogout = () => dispatch(logout());
+    dispatchLogout();
+    push(`/dashboard/login`);
   };
   const isInstructor = () => {
-    return authReducer.user.teacher.programs.some((pro) => pro.code == program);
+    return authCommercialsReducer.user.teacher.programs.some(
+      (pro) => pro.code == program
+    );
   };
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [rating, setRating] = useState(5);
   useEffect(() => {
-    if (authReducer.rating) {
-      setRating(authReducer.rating.rating);
+    if (authCommercialsReducer.rating) {
+      setRating(authCommercialsReducer.rating.rating);
     }
-  }, [authReducer]);
+  }, [authCommercialsReducer]);
   return (
     <>
       <ContainerHeader>
@@ -123,9 +123,9 @@ const Header = (props) => {
               <img
                 ref={avatarRef}
                 src={
-                  authReducer.isAuthenticated &&
-                  authReducer.user.profile.picture
-                    ? authReducer.user.profile.picture
+                  authCommercialsReducer.isAuthenticated &&
+                  authCommercialsReducer.user.profile.picture
+                    ? authCommercialsReducer.user.profile.picture
                     : "../../../static/assets/img/avatar.png"
                 }
                 alt="avatar"
@@ -142,14 +142,14 @@ const Header = (props) => {
               {/* {!/\/demo\//.test(pathname) && (
                 <>
                   <div className="d-flex justify-content-center py-2">
-                    {authReducer.isAuthenticated ? (
+                    {authCommercialsReducer.isAuthenticated ? (
                       <span>
-                        {authReducer.user.first_name == "" &&
-                        authReducer.user.last_name == ""
-                          ? authReducer.user.username
-                          : authReducer.user.first_name +
+                        {authCommercialsReducer.user.first_name == "" &&
+                        authCommercialsReducer.user.last_name == ""
+                          ? authCommercialsReducer.user.username
+                          : authCommercialsReducer.user.first_name +
                             " " +
-                            authReducer.user.last_name}
+                            authCommercialsReducer.user.last_name}
                       </span>
                     ) : (
                       "Cargando..."
