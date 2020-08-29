@@ -25,7 +25,7 @@ class Video(CLineModel):
 
     picture = models.ImageField(
         'profile picture',
-        upload_to='programs/playlists/videos/',
+        upload_to='programs/videos/pictures/',
         blank=True, null=True
     )
     video = models.FileField(

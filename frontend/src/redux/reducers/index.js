@@ -14,6 +14,7 @@ import meetupsReducer from "./meetupsReducer";
 import studentsReducer from "./studentsReducer";
 import accountsReducer from "./accountsReducer";
 import pricingReducer from "./pricingReducer";
+import authCommercialsReducer from "./authCommercialsReducer";
 
 export default combineReducers({
   authReducer,
@@ -31,4 +32,7 @@ export default combineReducers({
   pricingReducer,
   accountsReducer,
   studentsReducer,
+
+  // Commercials reducers
+  authCommercialsReducer,
 });

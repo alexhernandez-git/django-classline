@@ -584,6 +584,28 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
         return Response(data)
 
+    @action(detail=False, methods=['get'])
+    def get_profile_from_dashboard(self, request, *args, **kwargs):
+        data = {
+            'user': UserCommercialModelSerializer(request.user, many=False).data,
+        }
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+        stripe_account_id = data.get('user').get(
+            'commercial').get('commercial_stripe_account_id')
+
+        if stripe_account_id != None and stripe_account_id != '':
+            stripe_dashboard_url = stripe.Account.create_login_link(
+                data.get('user').get('commercial').get(
+                    'commercial_stripe_account_id')
+            )
+
+            data['user']['commercial']['stripe_dashboard_url'] = stripe_dashboard_url['url']
+
+        return Response(data, status=status.HTTP_201_CREATED)
+
     # @action(detail=True, methods=['get'])
     # def get_ratings(self, request, *args, **kwargs):
     #     user = get_object_or_404(User, code=kwargs['code'])
