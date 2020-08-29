@@ -138,17 +138,17 @@ export const changePassword = (data) => (dispatch, getState) => {
 };
 
 export const connectStripe = (authCode) => (dispatch, getState) => {
-  console.log(data);
   dispatch({
     type: STRIPE_COMMERCIAL_CONNECTED,
   });
   axios
     .post(
-      "/api/users/stripe_connect/",
+      "/api/users/stripe_connect_commercial/",
       { code: authCode },
       tokenConfig(getState)
     )
     .then((res) => {
+      console.log(res);
       console.log(res.data);
       dispatch({
         type: STRIPE_COMMERCIAL_CONNECTED_SUCCESS,

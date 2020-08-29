@@ -12,17 +12,18 @@ import CostumersPayments from "../containers/dashboard/CostumersPayments";
 import CommercialList from "../containers/dashboard/CommercialsList";
 import { useSelector, useDispatch } from "react-redux";
 import { loadCommercial } from "../redux/actions/authCommercials";
-import { useHistory } from "react-router-dom";
+import { connectStripe } from "../redux/actions/authCommercials";
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   const dispatch = useDispatch();
+  if (new URLSearchParams(props.location.search).get("code") != null) {
+    const authCode = new URLSearchParams(props.location.search).get("code");
+    dispatch(connectStripe(authCode));
+  }
   const authCommercialsReducer = useSelector(
     (state) => state.authCommercialsReducer
   );
-  const history = useHistory();
-  useEffect(() => {
-    if (authCommercialsReducer.isAuthenticated) history.push(`/dashboard`);
-  }, [authCommercialsReducer.isAuthenticated]);
+
   useEffect(() => {
     console.log(authCommercialsReducer);
   }, [authCommercialsReducer]);
