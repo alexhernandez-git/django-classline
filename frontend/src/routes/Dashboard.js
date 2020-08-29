@@ -16,7 +16,12 @@ import { connectStripe } from "../redux/actions/authCommercials";
 
 const Dashboard = (props) => {
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    if (new URLSearchParams(props.location.search).get("code") != null) {
+      const authCode = new URLSearchParams(props.location.search).get("code");
+      dispatch(connectStripe(authCode));
+    }
+  }, []);
   const authCommercialsReducer = useSelector(
     (state) => state.authCommercialsReducer
   );

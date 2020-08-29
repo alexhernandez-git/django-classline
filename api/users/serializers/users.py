@@ -169,7 +169,6 @@ class UserCommercialModelSerializer(serializers.ModelSerializer):
     """User model serializer."""
 
     profile = ProfileModelSerializer(read_only=True)
-    teacher = TeacherModelSerializer(read_only=True)
     commercial = CommercialModelSerializer(read_only=True)
 
     class Meta:
@@ -186,7 +185,6 @@ class UserCommercialModelSerializer(serializers.ModelSerializer):
             'phone_number',
             'is_staff',
             'profile',
-            'teacher',
             'commercial',
             'first_password',
             'created_account',
@@ -198,6 +196,43 @@ class UserCommercialModelSerializer(serializers.ModelSerializer):
             'id',
             'username',
         )
+
+
+class UserTeacherCreatedByCommercialModelSerializer(serializers.ModelSerializer):
+    """User model serializer."""
+
+    profile = ProfileModelSerializer(read_only=True)
+    teacher = TeacherModelSerializer(read_only=True)
+    user_created_by = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        """Meta class."""
+
+        model = User
+        fields = (
+            'id',
+            'code',
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'phone_number',
+            'is_staff',
+            'profile',
+            'teacher',
+            'created_account',
+            'first_password',
+            'user_created_by'
+
+        )
+
+        read_only_fields = (
+            'id',
+            'username',
+        )
+
+    def get_user_created_by(self, obj):
+        return UserCommercialModelSerializer(obj.user_created_by, many=False).data
 
 
 class UserWithoutTeacherModelSerializer(serializers.ModelSerializer):

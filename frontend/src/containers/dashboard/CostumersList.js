@@ -31,6 +31,9 @@ const CostumersList = () => {
   const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
+  const authCommercialsReducer = useSelector(
+    (state) => state.authCommercialsReducer
+  );
   useEffect(() => {
     if (!programReducer.isLoading) {
       const dispatchFetchAccount = () => dispatch(fetchAccounts());
@@ -85,13 +88,16 @@ const CostumersList = () => {
         search={{ search: search, setSearch: setSearch }}
         onSubmit={handleSubmitSearch}
       />
-      <div className="d-sm-flex justify-content-between mb-2 align-items-end mb-3">
-        <span className="d-block text-center"></span>
-        <span className="d-block m-2 d-sm-none"></span>
-        <ButtonCustom className="" onClick={handleShow}>
-          Crear Cliente
-        </ButtonCustom>
-      </div>
+      {(authCommercialsReducer.user.commercial.commercial_stripe_account_id ||
+        authCommercialsReducer.user.commercial.commercial_level == 0) && (
+        <div className="d-sm-flex justify-content-between mb-2 align-items-end mb-3">
+          <span className="d-block text-center"></span>
+          <span className="d-block m-2 d-sm-none"></span>
+          <ButtonCustom className="" onClick={handleShow}>
+            Crear Cliente
+          </ButtonCustom>
+        </div>
+      )}
       <div>
         <div className="table-responsive">
           <table class="table table-hover">

@@ -438,57 +438,52 @@ class UserViewSet(mixins.RetrieveModelMixin,
         else:
             return HttpResponse(status=400)
 
-    # @action(detail=False, methods=['post'])
-    # def stripe_connect_commercial(self, request, *args, **kwargs):
-    #     """Process stripe connect auth flow."""
-    #     user = request.user
-    #     commercial = user.commercial
-    #     code = request.data.get("code")
+    @action(detail=False, methods=['post'])
+    def stripe_connect_commercial(self, request, *args, **kwargs):
+        """Process stripe connect auth flow."""
+        user = request.user
+        commercial = user.commercial
+        code = request.data.get("code")
 
-    #     if commercial.commercial_stripe_account_id == None or commercial.commercial_stripe_account_id == '':
-    #         if 'STRIPE_API_KEY' in os.environ:
-    #             stripe.api_key = os.environ['STRIPE_API_KEY']
-    #         else:
-    #             stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+        if commercial.commercial_stripe_account_id == None or commercial.commercial_stripe_account_id == '':
+            if 'STRIPE_API_KEY' in os.environ:
+                stripe.api_key = os.environ['STRIPE_API_KEY']
+            else:
+                stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
 
-    #         response = stripe.OAuth.token(
-    #             grant_type='authorization_code',
-    #             code=code,
-    #         )
-    #         # Access the connected account id in the response
-    #         connected_account_id = response['stripe_user_id']
-    #         if Commercial.objects.filter(commercial_stripe_account_id=connected_account_id).exists():
-    #             return HttpResponse({'message': 'Esta cuenta de stripe ya esta siendo usada por otro usuario'}, status=400)
+            response = stripe.OAuth.token(
+                grant_type='authorization_code',
+                code=code,
+            )
+            # Access the connected account id in the response
+            connected_account_id = response['stripe_user_id']
+            if Commercial.objects.filter(commercial_stripe_account_id=connected_account_id).exists():
+                return HttpResponse({'message': 'Esta cuenta de stripe ya esta siendo usada por otro usuario'}, status=400)
 
-    #         # stripe.Account.modify(
-    #         #     connected_account_id,
-    #         #     settings={
-    #         #         'payouts': {
-    #         #             'schedule': {
-    #         #                 'interval': 'monthly',
-    #         #                 'monthly_anchor': 1
-    #         #             }
-    #         #         }
-    #         #     }
-    #         # )
-    #         partial = request.method == 'PATCH'
-    #         commercial.commercial_stripe_account_id = connected_account_id
-    #         serializer = CommercialModelSerializer(
-    #             commercial,
-    #             data=request.data,
-    #         )
-    #         serializer.is_valid(raise_exception=True)
-    #         serializer.save()
-    #         data = UserWithoutTeacherModelSerializer(user).data
-    #         if commercial.commercial_stripe_account_id != None and commercial.commercial_stripe_account_id != '':
-    #             stripe_dashboard_url = stripe.Account.create_login_link(
-    #                 data.get('commercial').get('commercial_stripe_account_id')
-    #             )
-    #             data['commercial']['stripe_dashboard_url'] = stripe_dashboard_url['url']
+            # stripe.Account.modify(
+            #     connected_account_id,
+            #     settings={
+            #         'payouts': {
+            #             'schedule': {
+            #                 'interval': 'monthly',
+            #                 'monthly_anchor': 1
+            #             }
+            #         }
+            #     }
+            # )
+            partial = request.method == 'PATCH'
+            commercial.commercial_stripe_account_id = connected_account_id
+            serializer = CommercialModelSerializer(
+                commercial,
+                data=request.data,
+            )
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            data = UserWithoutTeacherModelSerializer(user).data
 
-    #         return Response(data)
-    #     else:
-    #         return HttpResponse(status=400)
+            return Response(data)
+        else:
+            return HttpResponse(status=400)
 
     @action(detail=False, methods=['post'])
     def stripe_webhook_subscription_cancelled(self, request, *args, **kwargs):
