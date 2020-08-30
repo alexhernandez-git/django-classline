@@ -17,7 +17,7 @@ class Event(CLineModel):
     """
 
     code = models.CharField(max_length=10, blank=True, null=True)
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=100)
     description = models.TextField(max_length=500, blank=True)
     videoconference = models.TextField(max_length=500, blank=True)
 

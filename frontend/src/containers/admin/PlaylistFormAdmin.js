@@ -17,7 +17,7 @@ import * as Yup from "yup";
 const PlaylistSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, "El nombre es muy corto")
-    .max(50, "El nombre es muy largo")
+    .max(100, "El nombre es muy largo")
     .required("Este campo es obligatorio"),
 });
 

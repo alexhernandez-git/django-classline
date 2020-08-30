@@ -15,9 +15,10 @@ class Playlist(CLineModel):
     picture = models.ImageField(
         'profile picture',
         upload_to='programs/playlists/pictures/',
-        blank=True, null=True
+        blank=True, null=True,
+        max_length=500
     )
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
     tracks = models.ManyToManyField('programs.Video', through='PlaylistTrack')
     program = models.ForeignKey(
         'programs.Program', on_delete=models.CASCADE, related_name='program_playlist')

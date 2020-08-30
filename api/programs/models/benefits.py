@@ -17,7 +17,7 @@ class Benefit(CLineModel):
     """
     code = models.CharField(max_length=10, blank=True, null=True)
 
-    name = models.CharField(max_length=40, blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
     program = models.ForeignKey('programs.Program', on_delete=models.CASCADE)
 
     def __str__(self):

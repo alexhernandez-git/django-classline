@@ -20,7 +20,8 @@ class Profile(CLineModel):
         'profile picture',
         upload_to='users/pictures/',
         blank=True,
-        null=True
+        null=True,
+        max_length=500
     )
     biography = models.TextField(max_length=1000, blank=True)
 

@@ -18,7 +18,7 @@ class Program(CLineModel):
     and statistics.
     """
     code = models.CharField(max_length=10, blank=True, null=True)
-    title = models.CharField(max_length=50, blank=True, null=True)
+    title = models.CharField(max_length=100, blank=True, null=True)
     subtitle = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(max_length=1000, blank=True, null=True)
     actived = models.BooleanField(default=False)
@@ -48,13 +48,15 @@ class Program(CLineModel):
         'profile picture',
         upload_to='programs/pictures/',
         blank=True,
-        null=True
+        null=True,
+        max_length=500
     )
     video_presentation = models.FileField(
         'profile video',
         upload_to='programs/videos/',
         blank=True,
-        null=True
+        null=True,
+        max_length=500
     )
     students = models.ManyToManyField(
         'users.User',

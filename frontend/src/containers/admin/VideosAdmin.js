@@ -29,7 +29,7 @@ import * as Yup from "yup";
 const VideoSchema = Yup.object().shape({
   title: Yup.string()
     .min(2, "El titulo es muy corto")
-    .max(50, "El titulo es muy largo")
+    .max(100, "El titulo es muy largo")
     .required("Este campo es obligatorio"),
   description: Yup.string().max(500, "La descripción es demasiado larga"),
   video: Yup.mixed().required("Este campo es obligatorio"),

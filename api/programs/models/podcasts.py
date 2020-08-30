@@ -13,7 +13,7 @@ import string
 class Podcast(CLineModel):
 
     code = models.CharField(max_length=10, blank=True, null=True)
-    title = models.CharField(max_length=50, default='')
+    title = models.CharField(max_length=100, default='')
     description = models.TextField(max_length=500, blank=True, null=True)
     duration = models.FloatField(blank=True, null=True)
     program = models.ForeignKey(
@@ -23,13 +23,13 @@ class Podcast(CLineModel):
     picture = models.ImageField(
         'podcast picture',
         upload_to='programs/podcasts/pictures/',
-
+        max_length=500,
         blank=True, null=True
     )
     audio = models.FileField(
         'podcast audio',
         upload_to='programs/podcasts/videos/',
-
+        max_length=500
     )
 
     def __str__(self):

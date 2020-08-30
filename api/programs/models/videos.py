@@ -16,7 +16,7 @@ class Video(CLineModel):
     and statistics.
     """
     code = models.CharField(max_length=10, blank=True, null=True)
-    title = models.CharField(max_length=50, default='')
+    title = models.CharField(max_length=100, default='')
     description = models.TextField(max_length=500, blank=True, null=True)
     program = models.ForeignKey(
         'programs.Program', on_delete=models.CASCADE, related_name='program_videos')
@@ -26,12 +26,13 @@ class Video(CLineModel):
     picture = models.ImageField(
         'profile picture',
         upload_to='programs/videos/pictures/',
-        blank=True, null=True
+        blank=True, null=True,
+        max_length=500
     )
     video = models.FileField(
         'profile video',
         upload_to='programs/videos/videos/',
-
+        max_length=500
     )
 
     def __str__(self):
