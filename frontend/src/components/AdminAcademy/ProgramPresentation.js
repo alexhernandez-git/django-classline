@@ -58,7 +58,7 @@ const ProgramPresentation = (props) => {
       return;
     }
     setCropResult(
-      cropper.current.getCroppedCanvas().toDataURL("image/jpeg", 0.7)
+      cropper.current.getCroppedCanvas().toDataURL("image/png", 0.7)
     );
 
     var file = dataURLtoFile(

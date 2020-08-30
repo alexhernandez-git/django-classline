@@ -52,11 +52,11 @@ const PodcastForm = (props) => {
       return;
     }
     setCropResult(
-      cropper.current.getCroppedCanvas().toDataURL("image/jpeg", 0.7)
+      cropper.current.getCroppedCanvas().toDataURL("image/png", 0.7)
     );
 
     var file = dataURLtoFile(
-      cropper.current.getCroppedCanvas().toDataURL("image/jpeg", 0.7),
+      cropper.current.getCroppedCanvas().toDataURL("image/png", 0.7),
       Math.random().toString(36) + fileName
     );
     if (file.size / 1024 / 1024 < 5) {
