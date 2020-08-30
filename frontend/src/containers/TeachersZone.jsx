@@ -62,8 +62,6 @@ export default function TeachersZone() {
                 component={
                   !appContext.userProfile.is_authenticated ? (
                     <Redirect to="/" />
-                  ) : appContext.userProfile.user.profile.is_teacher ? (
-                    TeachersPrograms
                   ) : (
                     () => <Redirect to="/myzone/instructor" />
                   )
@@ -75,8 +73,6 @@ export default function TeachersZone() {
                 component={
                   !appContext.userProfile.is_authenticated ? (
                     <Redirect to="/" />
-                  ) : appContext.userProfile.user.profile.is_teacher ? (
-                    ProgramsCreate
                   ) : (
                     () => <Redirect to="/myzone/instructor" />
                   )

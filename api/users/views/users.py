@@ -362,10 +362,12 @@ class UserViewSet(mixins.RetrieveModelMixin,
         """Update profile data."""
         user = request.user
         profile = user.profile
+
         partial = request.method == 'PATCH'
         serializer = ProfileModelSerializer(
             profile,
             data=request.data,
+            partial=partial
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -424,6 +426,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
             serializer = ProfileModelSerializer(
                 profile,
                 data=request.data,
+                partial=partial
             )
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -476,6 +479,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
             serializer = CommercialModelSerializer(
                 commercial,
                 data=request.data,
+                partial=partial
             )
             serializer.is_valid(raise_exception=True)
             serializer.save()

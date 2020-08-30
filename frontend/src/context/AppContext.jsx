@@ -187,7 +187,7 @@ export const AppProvider = ({ children }) => {
     data.append("picture", file, file.name);
 
     return await axios
-      .patch("/api/users/profile/", data, tokenConfig(userProfile, true))
+      .patch("/api/users/profile/", data, tokenConfig(userProfile))
       .then((res) => {
         dispatchUser({
           type: "UPLOAD_PROFILE_IMAGE",
