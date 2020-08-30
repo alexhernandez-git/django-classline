@@ -63,7 +63,7 @@ export default function TeachersZone() {
                   !appContext.userProfile.is_authenticated ? (
                     <Redirect to="/" />
                   ) : (
-                    () => <Redirect to="/myzone/instructor" />
+                    TeachersPrograms
                   )
                 }
               />
@@ -74,7 +74,7 @@ export default function TeachersZone() {
                   !appContext.userProfile.is_authenticated ? (
                     <Redirect to="/" />
                   ) : (
-                    () => <Redirect to="/myzone/instructor" />
+                    ProgramsCreate
                   )
                 }
               />
