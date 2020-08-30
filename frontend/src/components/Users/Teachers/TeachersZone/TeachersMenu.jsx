@@ -71,28 +71,30 @@ export default function TeachersMenu() {
               appContext.userProfile.is_authenticated &&
               appContext.userProfile.user.profile.is_teacher ? (
                 <> */}
-            <Link to="/myzone/instructor/programs">
-              <div className="seccion">
-                <div
-                  className={
-                    /^\/myzone\/instructor\/program*/.test(location.pathname)
-                      ? "div-icon-rol bg-white rounded-circle"
-                      : "div-icon bg-white rounded-circle"
-                  }
-                >
-                  <IconContext.Provider
-                    value={{
-                      className: "global-class-name text-primary",
-                      size: "20px",
-                    }}
+            {appContext.userProfile.is_authenticated && (
+              <Link to="/myzone/instructor/programs">
+                <div className="seccion">
+                  <div
+                    className={
+                      /^\/myzone\/instructor\/program*/.test(location.pathname)
+                        ? "div-icon-rol bg-white rounded-circle"
+                        : "div-icon bg-white rounded-circle"
+                    }
                   >
-                    <FaChalkboardTeacher />
-                  </IconContext.Provider>
-                </div>
+                    <IconContext.Provider
+                      value={{
+                        className: "global-class-name text-primary",
+                        size: "20px",
+                      }}
+                    >
+                      <FaChalkboardTeacher />
+                    </IconContext.Provider>
+                  </div>
 
-                <small className="text-white">Academias</small>
-              </div>
-            </Link>
+                  <small className="text-white">Academias</small>
+                </div>
+              </Link>
+            )}
             {/* </>
               ) : (
                 ""
