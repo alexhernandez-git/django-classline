@@ -13,7 +13,7 @@ const CreateCostumerForm = () => {
   const cropper = useRef(null);
   const inputFileVideo = useRef(null);
   const inputFileImg = useRef(null);
-  const accountsReducer = useSelector((state) => state.accountsReducer);
+  const costumersReducer = useSelector((state) => state.costumersReducer);
 
   return (
     <div className="p-4">
@@ -28,9 +28,9 @@ const CreateCostumerForm = () => {
 
           <Col lg={{ offset: 1, span: 6 }}>
             <Field type="text" placeholder="Email" name="email" />
-            {accountsReducer.account_create_error &&
-              accountsReducer.account_create_error.data.username &&
-              accountsReducer.account_create_error.data.username.map(
+            {costumersReducer.account_create_error &&
+              costumersReducer.account_create_error.data.username &&
+              costumersReducer.account_create_error.data.username.map(
                 (error) => <small className="d-block text-red">{error}</small>
               )}
           </Col>
@@ -45,9 +45,9 @@ const CreateCostumerForm = () => {
 
           <Col lg={{ offset: 1, span: 6 }}>
             <Field type="text" placeholder="Nombre" name="first_name" />
-            {accountsReducer.account_create_error &&
-              accountsReducer.account_create_error.data.first_name &&
-              accountsReducer.account_create_error.data.first_name.map(
+            {costumersReducer.account_create_error &&
+              costumersReducer.account_create_error.data.first_name &&
+              costumersReducer.account_create_error.data.first_name.map(
                 (error) => <small className="d-block text-red">{error}</small>
               )}
           </Col>
@@ -62,9 +62,9 @@ const CreateCostumerForm = () => {
 
           <Col lg={{ offset: 1, span: 6 }}>
             <Field type="text" placeholder="Apellidos" name="last_name" />
-            {accountsReducer.account_create_error &&
-              accountsReducer.account_create_error.data.last_name &&
-              accountsReducer.account_create_error.data.last_name.map(
+            {costumersReducer.account_create_error &&
+              costumersReducer.account_create_error.data.last_name &&
+              costumersReducer.account_create_error.data.last_name.map(
                 (error) => <small className="d-block text-red">{error}</small>
               )}
           </Col>
@@ -80,9 +80,9 @@ const CreateCostumerForm = () => {
 
           <Col lg={{ offset: 1, span: 6 }}>
             <Field type="password" placeholder="Contraseña" name="password" />
-            {accountsReducer.account_create_error &&
-              accountsReducer.account_create_error.data.password &&
-              accountsReducer.account_create_error.data.password.map(
+            {costumersReducer.account_create_error &&
+              costumersReducer.account_create_error.data.password &&
+              costumersReducer.account_create_error.data.password.map(
                 (error) => <small className="d-block text-red">{error}</small>
               )}
           </Col>
@@ -102,9 +102,9 @@ const CreateCostumerForm = () => {
               placeholder="Repite la contraseña"
               name="password_confirmation"
             />
-            {accountsReducer.account_create_error &&
-              accountsReducer.account_create_error.data.non_field_errors &&
-              accountsReducer.account_create_error.data.non_field_errors.map(
+            {costumersReducer.account_create_error &&
+              costumersReducer.account_create_error.data.non_field_errors &&
+              costumersReducer.account_create_error.data.non_field_errors.map(
                 (error) => <small className="d-block text-red">{error}</small>
               )}
           </Col>

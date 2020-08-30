@@ -11,39 +11,35 @@ import {
   ButtonCustom,
   ButtonCustomSuccess,
 } from "src/components/ui/ButtonCustom";
-import CreateCountForm from "src/components/AdminAcademy/CreateAccountForm";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchAccounts,
-  createAccount,
-  deleteAccount,
-  resetAccountCreate,
-  fetchAccountsPagination,
-} from "src/redux/actions/accounts";
+
 import { Formik, Form as FormFormik } from "formik";
-import accountsReducer from "src/redux/reducers/accountsReducer";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import CreateCostumerForm from "src/components/Dashboard/ui/CreateCostumerForm";
+import {
+  createCostumer,
+  fetchCostumers,
+  deleteCostumer,
+  fetchCostumersPagination,
+  resetCostumerCreate,
+} from "../../redux/actions/costumers";
 const CommercialList = () => {
   const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
-  const programReducer = useSelector((state) => state.programReducer);
   useEffect(() => {
-    if (!programReducer.isLoading) {
-      const dispatchFetchAccount = () => dispatch(fetchAccounts());
-      dispatchFetchAccount();
-    }
-  }, [programReducer.isLoading]);
-  const accountsReducer = useSelector((state) => state.accountsReducer);
+    const dispatchFetchAccount = () => dispatch(fetchCostumers());
+    dispatchFetchAccount();
+  }, []);
+  const costumersReducer = useSelector((state) => state.costumersReducer);
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
     setShow(false);
-    const dispatchResetAccountCreate = () => dispatch(resetAccountCreate());
+    const dispatchResetAccountCreate = () => dispatch(resetCostumerCreate());
     dispatchResetAccountCreate();
   };
   const handleShow = () => setShow(true);
@@ -58,7 +54,7 @@ const CommercialList = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        const dispatchDeleteAccount = (id) => dispatch(deleteAccount(id));
+        const dispatchDeleteAccount = (id) => dispatch(deleteCostumer(id));
         dispatchDeleteAccount(id);
       }
     });
@@ -67,14 +63,14 @@ const CommercialList = () => {
 
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    const dispatchFetchAccount = (search) => dispatch(fetchAccounts(search));
+    const dispatchFetchAccount = (search) => dispatch(fetchCostumers(search));
     dispatchFetchAccount(search);
   };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
 
     const dispatchFetchAccountsPagination = (url) =>
-      dispatch(fetchAccountsPagination(url));
+      dispatch(fetchCostumersPagination(url));
     dispatchFetchAccountsPagination(url);
   };
   return (
@@ -111,8 +107,8 @@ const CommercialList = () => {
               </tr>
             </thead>
             <tbody>
-              {accountsReducer.accounts &&
-                accountsReducer.accounts.results.map((account) => (
+              {costumersReducer.accounts &&
+                costumersReducer.accounts.results.map((account) => (
                   <CostumerRow
                     handleShow={handleShow}
                     account={account}
@@ -122,12 +118,12 @@ const CommercialList = () => {
                 ))}
             </tbody>
           </table>
-          {accountsReducer.isLoading && <span>Cargando...</span>}
-          {accountsReducer.accounts &&
-            (accountsReducer.accounts.previous ||
-              accountsReducer.accounts.next) && (
+          {costumersReducer.isLoading && <span>Cargando...</span>}
+          {costumersReducer.accounts &&
+            (costumersReducer.accounts.previous ||
+              costumersReducer.accounts.next) && (
               <div className="d-flex justify-content-center my-5">
-                {accountsReducer.accounts.previous ? (
+                {costumersReducer.accounts.previous ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -136,7 +132,7 @@ const CommercialList = () => {
                   >
                     <IoIosArrowDropleft
                       onClick={() =>
-                        handleChangePage(accountsReducer.accounts.previous)
+                        handleChangePage(costumersReducer.accounts.previous)
                       }
                     />
                   </IconContext.Provider>
@@ -150,7 +146,7 @@ const CommercialList = () => {
                     <IoIosArrowDropleft />
                   </IconContext.Provider>
                 )}
-                {accountsReducer.accounts.next ? (
+                {costumersReducer.accounts.next ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -159,7 +155,7 @@ const CommercialList = () => {
                   >
                     <IoIosArrowDropright
                       onClick={() =>
-                        handleChangePage(accountsReducer.accounts.next)
+                        handleChangePage(costumersReducer.accounts.next)
                       }
                     />
                   </IconContext.Provider>
@@ -193,7 +189,7 @@ const CommercialList = () => {
               };
 
               const dispatchCreateAccount = (user) =>
-                dispatch(createAccount(user, handleClose));
+                dispatch(createCostumer(user, handleClose));
               dispatchCreateAccount(user);
             }}
           >
@@ -202,7 +198,7 @@ const CommercialList = () => {
                 <>
                   <FormFormik>
                     <Modal.Header closeButton>
-                      <Modal.Title>Crear una cuenta de cliente</Modal.Title>
+                      <Modal.Title>Crear una cuenta de comercial</Modal.Title>
                     </Modal.Header>
                     <CreateCostumerForm />
                     <Modal.Footer>

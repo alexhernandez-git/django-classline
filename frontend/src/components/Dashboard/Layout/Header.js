@@ -65,7 +65,6 @@ const Header = (props) => {
   const handleLogout = () => {
     const dispatchLogout = () => dispatch(logout());
     dispatchLogout();
-    push(`/dashboard/login`);
   };
   const isInstructor = () => {
     return authCommercialsReducer.user.teacher.programs.some(

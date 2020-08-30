@@ -24,7 +24,8 @@ from api.users.serializers import (
     ResetPasswordSerializer,
     CommercialsLoginSerializer,
     UserCommercialModelSerializer,
-    CommercialModelSerializer
+    CommercialModelSerializer,
+    UserTeacherCreatedByCommercialModelSerializer
 )
 from django.core.exceptions import ObjectDoesNotExist
 from api.programs.serializers import AccountCreatedModelSerializer, ProgramModifyModelSerializer
@@ -324,7 +325,6 @@ class UserViewSet(mixins.RetrieveModelMixin,
         """User sign up."""
         request.data['created_by_commercial'] = True
         request.data['username'] = request.data['email']
-        request.data['email'] = '{}'.format(uuid.uuid4().hex[:9].upper())
         request.data['first_password'] = request.data['password']
         serializer = UserSignUpSerializer(data=request.data, context={
             'user': request.user,
@@ -334,7 +334,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         })
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        data = UserModelSerializer(user).data
+        data = UserTeacherCreatedByCommercialModelSerializer(user).data
 
         return Response(data, status=status.HTTP_201_CREATED)
 

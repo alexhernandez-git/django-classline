@@ -32,3 +32,15 @@ class ProfileModelSerializer(serializers.ModelSerializer):
         from api.users.serializers.subscriptions import SubscriptionModelSerializer
 
         return SubscriptionModelSerializer(obj.subscriptions.filter(active=True), many=True).data
+
+
+class ProfileWithoutSubscriptionsModelSerializer(serializers.ModelSerializer):
+    """Profile model serializer."""
+
+    class Meta:
+        """Meta class."""
+
+        model = Profile
+        fields = (
+            'picture',
+        )

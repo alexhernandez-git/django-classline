@@ -16,7 +16,8 @@ class CustomUserAdmin(UserAdmin):
     )
     list_display = ('email', 'first_name', 'last_name',
                     'is_staff', 'is_client', 'is_commercial')
-    list_filter = ('is_client', 'is_staff', 'created', 'modified')
+    list_filter = ('is_client', 'is_staff', 'created',
+                   'modified', 'created_by_commercial')
 
 
 @admin.register(Profile)

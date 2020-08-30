@@ -21,7 +21,7 @@ from api.programs.models import Program, AccountCreated, Student
 
 
 # Serializers
-from api.users.serializers.profiles import ProfileModelSerializer
+from api.users.serializers.profiles import ProfileModelSerializer, ProfileWithoutSubscriptionsModelSerializer
 from api.users.serializers.teachers import TeacherModelSerializer, TeacherProgramsCountModelSerializer
 from api.users.serializers.commercials import CommercialModelSerializer
 from api.programs.serializers import ProgramBasicModelSerializer
@@ -168,7 +168,7 @@ class UserTeacherModelSerializer(serializers.ModelSerializer):
 class UserCommercialModelSerializer(serializers.ModelSerializer):
     """User model serializer."""
 
-    profile = ProfileModelSerializer(read_only=True)
+    profile = ProfileWithoutSubscriptionsModelSerializer(read_only=True)
     commercial = CommercialModelSerializer(read_only=True)
 
     class Meta:

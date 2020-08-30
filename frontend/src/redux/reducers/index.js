@@ -15,6 +15,7 @@ import studentsReducer from "./studentsReducer";
 import accountsReducer from "./accountsReducer";
 import pricingReducer from "./pricingReducer";
 import authCommercialsReducer from "./authCommercialsReducer";
+import costumersReducer from "./costumersReducer";
 
 export default combineReducers({
   authReducer,
@@ -35,4 +36,5 @@ export default combineReducers({
 
   // Commercials reducers
   authCommercialsReducer,
+  costumersReducer,
 });

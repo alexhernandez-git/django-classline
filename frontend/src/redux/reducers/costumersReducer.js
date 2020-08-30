@@ -1,14 +1,14 @@
 import {
-  ACCOUNTS_FETCH,
-  ACCOUNTS_SUCCESS,
-  ACCOUNTS_FAIL,
-  CREATE_ACCOUNT,
-  CREATE_ACCOUNT_FAIL,
-  CREATE_ACCOUNT_SUCCESS,
-  DELETE_ACCOUNT,
-  DELETE_ACCOUNT_FAIL,
-  DELETE_ACCOUNT_SUCCESS,
-  RESET_ACCOUNT_CREATE,
+  COSTUMERS_FETCH,
+  COSTUMERS_SUCCESS,
+  COSTUMERS_FAIL,
+  CREATE_COSTUMER,
+  CREATE_COSTUMER_FAIL,
+  CREATE_COSTUMER_SUCCESS,
+  DELETE_COSTUMER,
+  DELETE_COSTUMER_FAIL,
+  DELETE_COSTUMER_SUCCESS,
+  RESET_COSTUMER_CREATE,
 } from "../types";
 
 const initialState = {
@@ -29,32 +29,31 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case ACCOUNTS_FETCH:
+    case COSTUMERS_FETCH:
       return {
         ...state,
         isLoading: true,
       };
-    case ACCOUNTS_SUCCESS:
+    case COSTUMERS_SUCCESS:
       return {
         ...state,
         isLoading: false,
         accounts: action.payload,
       };
 
-    case ACCOUNTS_FAIL:
+    case COSTUMERS_FAIL:
       return {
         ...state,
         accounts: null,
         isLoading: false,
         error: action.payload,
       };
-    case CREATE_ACCOUNT:
+    case CREATE_COSTUMER:
       return {
         ...state,
         account_creating: true,
       };
-    case CREATE_ACCOUNT_SUCCESS:
-      console.log(action.payload);
+    case CREATE_COSTUMER_SUCCESS:
       return {
         ...state,
         account_creating: false,
@@ -65,19 +64,19 @@ export default function (state = initialState, action) {
         },
       };
 
-    case CREATE_ACCOUNT_FAIL:
+    case CREATE_COSTUMER_FAIL:
       return {
         ...state,
         account_creating: false,
         account_create_error: action.payload,
       };
-    case DELETE_ACCOUNT:
+    case DELETE_COSTUMER:
       return {
         ...state,
         account_delete: action.payload,
         account_deleting: true,
       };
-    case DELETE_ACCOUNT_SUCCESS:
+    case DELETE_COSTUMER_SUCCESS:
       return {
         ...state,
         account_deleting: false,
@@ -91,14 +90,14 @@ export default function (state = initialState, action) {
         account_delete: null,
       };
 
-    case DELETE_ACCOUNT_FAIL:
+    case DELETE_COSTUMER_FAIL:
       return {
         ...state,
         account_deleting: false,
         account_delete: null,
         account_delete_error: action.payload,
       };
-    case RESET_ACCOUNT_CREATE:
+    case RESET_COSTUMER_CREATE:
       return {
         ...state,
         account_creating: false,
