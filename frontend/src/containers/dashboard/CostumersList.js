@@ -77,7 +77,7 @@ const CommercialList = () => {
     <Main padding>
       <Filters
         title=" "
-        placeholder="Buscar Comerciales"
+        placeholder="Buscar Clientes"
         search={{ search: search, setSearch: setSearch }}
         onSubmit={handleSubmitSearch}
       />
