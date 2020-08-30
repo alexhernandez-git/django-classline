@@ -29,7 +29,7 @@ export default function TeachersZone() {
                   Instructor
                 </div>
               </div>
-              {appContext.userProfile.is_authenticated &&
+              {/* {appContext.userProfile.is_authenticated &&
               !appContext.userProfile.user.profile.is_teacher ? (
                 <>
                   <div>
@@ -40,7 +40,7 @@ export default function TeachersZone() {
                 </>
               ) : (
                 ""
-              )}
+              )} */}
               {/* <ScrollToTop /> */}
               <Route
                 exact

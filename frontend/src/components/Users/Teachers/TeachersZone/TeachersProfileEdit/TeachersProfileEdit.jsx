@@ -55,7 +55,7 @@ const TeacherProfileEdit = (props) => {
 
                 <span>Completa tu perfil de instructor</span>
               </div>
-              {!appContext.userProfile.user.profile.is_teacher ? (
+              {/* {!appContext.userProfile.user.profile.is_teacher ? (
                 <>
                   <div className="d-block my-2 d-sm-none"></div>
                   <div>
@@ -69,7 +69,7 @@ const TeacherProfileEdit = (props) => {
                 </>
               ) : (
                 ""
-              )}
+              )} */}
             </div>
             <Tab.Container
               id="left-tabs-example"

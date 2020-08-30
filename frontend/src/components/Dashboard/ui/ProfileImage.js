@@ -59,7 +59,7 @@ const ProfileImageForm = () => {
     setCropResult(cropper.current.getCroppedCanvas().toDataURL());
 
     var file = dataURLtoFile(
-      cropper.current.getCroppedCanvas().toDataURL(),
+      cropper.current.getCroppedCanvas().toDataURL("image/png", 0.7),
       Math.random().toString(36) + fileName
     );
     if (file.size < 2000000) {

@@ -17,7 +17,7 @@ class ProfileModelSerializer(serializers.ModelSerializer):
         model = Profile
         fields = (
             'picture',
-            'is_teacher',
+            # 'is_teacher',
             'is_enterprise',
             'company_name',
             'language',
