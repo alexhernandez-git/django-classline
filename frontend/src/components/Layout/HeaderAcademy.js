@@ -131,29 +131,33 @@ const Header = (props) => {
         {/\/admin\/?/.test(pathname) && (
           <Title css={textEllipsis}>Panel de administración</Title>
         )}
+
         <ButtonsHeader>
-          {!/\/demo\//.test(pathname) && (
-            <>
-              {!authReducer.rating ? (
-                <button onClick={handleShow}>
-                  <small className="d-none d-sm-block mr-2">Puntuar</small>
-                  <IconContext.Provider
-                    value={{ className: "global-class-name" }}
-                  >
-                    <FaRegStar />
-                  </IconContext.Provider>
-                </button>
-              ) : (
-                <button onClick={handleShow}>
-                  <IconContext.Provider
-                    value={{ className: "global-class-name" }}
-                  >
-                    <FaStar />
-                  </IconContext.Provider>
-                </button>
-              )}
-            </>
-          )}
+          {!/\/demo\//.test(pathname) &&
+            !authReducer.user.teacher.programs.some(
+              (programSome) => programSome.code == program
+            ) && (
+              <>
+                {!authReducer.rating ? (
+                  <button onClick={handleShow}>
+                    <small className="d-none d-sm-block mr-2">Puntuar</small>
+                    <IconContext.Provider
+                      value={{ className: "global-class-name" }}
+                    >
+                      <FaRegStar />
+                    </IconContext.Provider>
+                  </button>
+                ) : (
+                  <button onClick={handleShow}>
+                    <IconContext.Provider
+                      value={{ className: "global-class-name" }}
+                    >
+                      <FaStar />
+                    </IconContext.Provider>
+                  </button>
+                )}
+              </>
+            )}
 
           <div className="position-relative" ref={profileDiv}>
             <Avatar className="cursor-pointer">
