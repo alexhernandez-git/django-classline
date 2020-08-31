@@ -21,7 +21,7 @@ export const fetchCostumers = (search = "") => (dispatch, getState) => {
   dispatch({ type: COSTUMERS_FETCH });
 
   axios
-    .get(`/api/created-costumer/?search=${search}`, tokenConfig(getState))
+    .get(`/api/created-costumers/?search=${search}`, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: COSTUMERS_SUCCESS,
@@ -96,7 +96,7 @@ export const deleteCostumer = (id) => (dispatch, getState) => {
   });
 
   axios
-    .delete(`/api/created-costumer/${id}/`, tokenConfig(getState))
+    .delete(`/api/created-costumers/${id}/`, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: DELETE_COSTUMER_SUCCESS,

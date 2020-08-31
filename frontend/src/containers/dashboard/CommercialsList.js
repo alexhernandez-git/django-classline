@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Filters from "src/components/Layout/Filters";
 import { MdEdit } from "react-icons/md";
 import styled from "@emotion/styled";
-import CostumerRow from "src/components/Dashboard/ui/CostumerRow";
+import CommercialRow from "src/components/Dashboard/ui/CommercialRow";
 import { IconContext } from "react-icons";
 import { Modal, Form, Row, Col, Button } from "react-bootstrap";
 import VideoForm from "src/components/AdminAcademy/VideoForm";
@@ -18,28 +18,29 @@ import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import CreateCostumerForm from "src/components/Dashboard/ui/CreateCostumerForm";
+import CreateCommercialForm from "src/components/Dashboard/ui/CreateCommercialForm";
 import {
-  createCostumer,
-  fetchCostumers,
-  deleteCostumer,
-  fetchCostumersPagination,
-  resetCostumerCreate,
-} from "../../redux/actions/costumers";
+  createCommercial,
+  fetchCommercial,
+  deleteCommercial,
+  fetchCommercialsPagination,
+  resetCommercialCreate,
+  changeCurrentCommercial,
+} from "../../redux/actions/commercials";
 const CommercialList = () => {
   const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
   useEffect(() => {
-    const dispatchFetchAccount = () => dispatch(fetchCostumers());
+    const dispatchFetchAccount = () => dispatch(fetchCommercial());
     dispatchFetchAccount();
   }, []);
-  const costumersReducer = useSelector((state) => state.costumersReducer);
+  const commercialsReducer = useSelector((state) => state.commercialsReducer);
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
     setShow(false);
-    const dispatchResetAccountCreate = () => dispatch(resetCostumerCreate());
+    const dispatchResetAccountCreate = () => dispatch(resetCommercialCreate());
     dispatchResetAccountCreate();
   };
   const handleShow = () => setShow(true);
@@ -54,7 +55,7 @@ const CommercialList = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        const dispatchDeleteAccount = (id) => dispatch(deleteCostumer(id));
+        const dispatchDeleteAccount = (id) => dispatch(deleteCommercial(id));
         dispatchDeleteAccount(id);
       }
     });
@@ -63,14 +64,14 @@ const CommercialList = () => {
 
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    const dispatchFetchAccount = (search) => dispatch(fetchCostumers(search));
+    const dispatchFetchAccount = (search) => dispatch(fetchCommercial(search));
     dispatchFetchAccount(search);
   };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
 
     const dispatchFetchAccountsPagination = (url) =>
-      dispatch(fetchCostumersPagination(url));
+      dispatch(fetchCommercialsPagination(url));
     dispatchFetchAccountsPagination(url);
   };
   return (
@@ -82,8 +83,19 @@ const CommercialList = () => {
         onSubmit={handleSubmitSearch}
       />
       <div className="d-sm-flex justify-content-between mb-2 align-items-end mb-3">
-        <span className="d-block text-center"></span>
         <span className="d-block m-2 d-sm-none"></span>
+        {commercialsReducer.current_commercial ? (
+          <ButtonCustom
+            onClick={() => {
+              dispatch(changeCurrentCommercial(null));
+              dispatch(fetchCommercial());
+            }}
+          >
+            Volver
+          </ButtonCustom>
+        ) : (
+          <div></div>
+        )}
         <ButtonCustom className="" onClick={handleShow}>
           Crear Comercial
         </ButtonCustom>
@@ -94,22 +106,30 @@ const CommercialList = () => {
             <thead>
               <tr>
                 <th scope="col" style={{ width: "20%" }}>
+                  Codigo
+                </th>
+                <th scope="col" style={{ width: "20%" }}>
                   Username
                 </th>
                 <th scope="col" style={{ width: "20%" }}>
                   Contraseña
                 </th>
-                <th scope="col" style={{ width: "100%" }}>
+                <th scope="col" style={{ minWidth: "200px" }}>
                   Nombre completo
                 </th>
-                <th scope="col">Creado</th>
-                <th scope="col">Acciones</th>
+                <th scope="col">Nivel</th>
+                <th
+                  scope="col"
+                  style={{ minWidth: "155px", textAlign: "center" }}
+                >
+                  Sus comerciales
+                </th>
               </tr>
             </thead>
             <tbody>
-              {costumersReducer.accounts &&
-                costumersReducer.accounts.results.map((account) => (
-                  <CostumerRow
+              {commercialsReducer.accounts &&
+                commercialsReducer.accounts.results.map((account) => (
+                  <CommercialRow
                     handleShow={handleShow}
                     account={account}
                     key={account.id}
@@ -118,12 +138,12 @@ const CommercialList = () => {
                 ))}
             </tbody>
           </table>
-          {costumersReducer.isLoading && <span>Cargando...</span>}
-          {costumersReducer.accounts &&
-            (costumersReducer.accounts.previous ||
-              costumersReducer.accounts.next) && (
+          {commercialsReducer.isLoading && <span>Cargando...</span>}
+          {commercialsReducer.accounts &&
+            (commercialsReducer.accounts.previous ||
+              commercialsReducer.accounts.next) && (
               <div className="d-flex justify-content-center my-5">
-                {costumersReducer.accounts.previous ? (
+                {commercialsReducer.accounts.previous ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -132,7 +152,7 @@ const CommercialList = () => {
                   >
                     <IoIosArrowDropleft
                       onClick={() =>
-                        handleChangePage(costumersReducer.accounts.previous)
+                        handleChangePage(commercialsReducer.accounts.previous)
                       }
                     />
                   </IconContext.Provider>
@@ -146,7 +166,7 @@ const CommercialList = () => {
                     <IoIosArrowDropleft />
                   </IconContext.Provider>
                 )}
-                {costumersReducer.accounts.next ? (
+                {commercialsReducer.accounts.next ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -155,7 +175,7 @@ const CommercialList = () => {
                   >
                     <IoIosArrowDropright
                       onClick={() =>
-                        handleChangePage(costumersReducer.accounts.next)
+                        handleChangePage(commercialsReducer.accounts.next)
                       }
                     />
                   </IconContext.Provider>
@@ -189,7 +209,7 @@ const CommercialList = () => {
               };
 
               const dispatchCreateAccount = (user) =>
-                dispatch(createCostumer(user, handleClose));
+                dispatch(createCommercial(user, handleClose));
               dispatchCreateAccount(user);
             }}
           >
@@ -200,7 +220,7 @@ const CommercialList = () => {
                     <Modal.Header closeButton>
                       <Modal.Title>Crear una cuenta de comercial</Modal.Title>
                     </Modal.Header>
-                    <CreateCostumerForm />
+                    <CreateCommercialForm />
                     <Modal.Footer>
                       <ButtonCustom type="submit">Crear</ButtonCustom>
                     </Modal.Footer>

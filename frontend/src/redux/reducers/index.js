@@ -16,6 +16,7 @@ import accountsReducer from "./accountsReducer";
 import pricingReducer from "./pricingReducer";
 import authCommercialsReducer from "./authCommercialsReducer";
 import costumersReducer from "./costumersReducer";
+import commercialsReducer from "./commercialsReducer";
 
 export default combineReducers({
   authReducer,
@@ -37,4 +38,5 @@ export default combineReducers({
   // Commercials reducers
   authCommercialsReducer,
   costumersReducer,
+  commercialsReducer,
 });
