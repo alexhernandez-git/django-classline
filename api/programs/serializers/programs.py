@@ -141,7 +141,7 @@ class ProgramModifyModelSerializer(serializers.ModelSerializer):
     def get_is_subscribed(self, obj):
         from api.users.serializers.subscriptions import AccountsSubscriptionModelSerializer
         return obj.user.teacher.subscriptions.filter(
-            program=obj.code, active=True).exists()
+            program=obj, active=True).exists()
 
     def update(self, instance, validated_data):
         # Actualizar el precio de la clase
@@ -228,7 +228,7 @@ class ProgramBasicModelSerializer(serializers.ModelSerializer):
         from api.users.serializers.subscriptions import AccountsSubscriptionModelSerializer
 
         return obj.user.teacher.subscriptions.filter(
-            program=obj.code, active=True).exists()
+            program=obj, active=True).exists()
 
 
 class ProgramModelSerializer(serializers.ModelSerializer):
@@ -340,7 +340,7 @@ class ProgramModelSerializer(serializers.ModelSerializer):
     def get_is_subscribed(self, obj):
         from api.users.serializers.subscriptions import AccountsSubscriptionModelSerializer
         return obj.user.teacher.subscriptions.filter(
-            program=obj.code, active=True).exists()
+            program=obj, active=True).exists()
 
 
 class ProgramListModelSerializer(serializers.ModelSerializer):
@@ -444,7 +444,7 @@ class ProgramListModelSerializer(serializers.ModelSerializer):
     def get_is_subscribed(self, obj):
         from api.users.serializers.subscriptions import AccountsSubscriptionModelSerializer
         return obj.user.teacher.subscriptions.filter(
-            program=obj.code, active=True).exists()
+            program=obj, active=True).exists()
 
 
 class ActiveProgramSerializer(serializers.Serializer):

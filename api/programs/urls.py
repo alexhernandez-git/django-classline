@@ -13,6 +13,7 @@ from api.programs.views.events import EventViewSet
 from api.programs.views.students import StudentViewSet
 from api.programs.views.accounts_created import AccountCreatedViewSet
 from api.programs.views.ratings import RatingViewSet
+from api.programs.views.courses import CourseViewSet
 router = DefaultRouter()
 router.register(r'programs', ProgramViewSet, basename='program')
 router.register(
@@ -50,6 +51,11 @@ router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/ratings',
     RatingViewSet,
     basename='ratings'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/courses',
+    CourseViewSet,
+    basename='courses'
 )
 urlpatterns = [
     path('', include(router.urls))

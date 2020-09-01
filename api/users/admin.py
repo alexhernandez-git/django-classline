@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 # Models
-from api.users.models import User, Profile, Teacher, Subscription, Coupon, PromotionCode, Commercial
+from api.users.models import User, Profile, Teacher, Subscription, Coupon, PromotionCode, Commercial, Payment
 
 
 class CustomUserAdmin(UserAdmin):
@@ -47,7 +47,13 @@ class ProfileAdmin(admin.ModelAdmin):
 
 
 @admin.register(Subscription)
-class Program(admin.ModelAdmin):
+class Subscription(admin.ModelAdmin):
+    """Profile model admin."""
+    list_display = ('id',)
+
+
+@admin.register(Payment)
+class Payment(admin.ModelAdmin):
     """Profile model admin."""
     list_display = ('id',)
 

@@ -47,8 +47,8 @@ class AccountsSubscriptionSignUpSerializer(serializers.Serializer):
     Handle subscription sign up data validation and subscription creation.
     """
     subscription_id = serializers.CharField()
-    user = serializers.CharField()
-    program = serializers.CharField()
+    user = UserModelSerializer()
+    program = ProgramModelSerializer()
     product = serializers.CharField()
     to_be_cancelled = serializers.BooleanField()
     cancelled = serializers.BooleanField()
@@ -113,7 +113,8 @@ class SubscriptionModelSerializer(serializers.ModelSerializer):
             'cancelled',
             'payment_issue',
             'user',
-            'program'
+            'program',
+            'payments'
         )
 
         read_only_fields = (
@@ -127,8 +128,8 @@ class SubscriptionSignUpSerializer(serializers.Serializer):
     Handle subscription sign up data validation and subscription creation.
     """
     subscription_id = serializers.CharField()
-    user = serializers.CharField()
-    program = serializers.CharField()
+    user = UserModelSerializer()
+    program = ProgramModelSerializer()
     to_be_cancelled = serializers.BooleanField()
     cancelled = serializers.BooleanField()
     payment_issue = serializers.BooleanField()

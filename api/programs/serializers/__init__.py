@@ -5,6 +5,7 @@ from .programs import *
 from .videos import *
 from .podcasts import *
 from .playlists import *
+from .courses import *
 from .students import *
 from .accounts_created import *
 from .ratings import *

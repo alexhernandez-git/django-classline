@@ -7,7 +7,7 @@ from rest_framework import serializers
 from api.users.models import Payment
 
 
-class TransfersModelSerializer(serializers.ModelSerializer):
+class PaymentModelSerializer(serializers.ModelSerializer):
     """Transfers model serializer."""
 
     class Meta:
@@ -17,7 +17,7 @@ class TransfersModelSerializer(serializers.ModelSerializer):
         fields = (
             'invoice_id',
             'subscription_id',
-            'ammount_paid',
+            'amount_paid',
             'currency',
             'customer',
             'customer_email',

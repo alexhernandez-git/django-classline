@@ -16,8 +16,9 @@ class Payment(CLineModel):
     A subscription holds a Stripe subscription meta which belongs to a student for a particular course
     """
     invoice_id = models.CharField(max_length=100, blank=True, null=True)
-    subscription_id = models.CharField(max_length=100, blank=True, null=True)
-    ammount_paid = models.PositiveIntegerField(default=0)
+    subscription = models.ForeignKey(
+        'users.Subscription', on_delete=models.SET_NULL, null=True, blank=True)
+    amount_paid = models.PositiveIntegerField(default=0)
     currency = models.CharField(max_length=10, blank=True, null=True)
     customer = models.CharField(max_length=100, blank=True, null=True)
     customer_email = models.CharField(max_length=100, blank=True, null=True)

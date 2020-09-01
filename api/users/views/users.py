@@ -1,7 +1,7 @@
 """Users views."""
 
 # Django REST Framework
-from api.users.models import User, Profile, Subscription, Commercial
+from api.users.models import User, Profile, Subscription, Commercial, Payment
 from api.programs.models import Program, Rating, Student
 import stripe
 import json
@@ -25,7 +25,8 @@ from api.users.serializers import (
     CommercialsLoginSerializer,
     UserCommercialModelSerializer,
     CommercialModelSerializer,
-    UserTeacherCreatedByCommercialModelSerializer
+    UserTeacherCreatedByCommercialModelSerializer,
+    PaymentModelSerializer
 )
 from django.core.exceptions import ObjectDoesNotExist
 from api.programs.serializers import AccountCreatedModelSerializer, ProgramModifyModelSerializer
@@ -77,7 +78,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
     def get_permissions(self):
         """Assign permissions based on action."""
-        if self.action in ['signup', 'login', 'login_from_platform', 'verify', 'list', 'retrieve', 'stripe_webhook_subscription_cancelled', 'login_from_app', 'forget_password', 'login_to_dashboard']:
+        if self.action in ['stripe_webhook_payment_succeeded', 'signup', 'login', 'login_from_platform', 'verify', 'list', 'retrieve', 'stripe_webhook_subscription_cancelled', 'login_from_app', 'forget_password', 'login_to_dashboard']:
             permissions = [AllowAny]
         elif self.action in ['update', 'delete', 'partial_update', 'change_password', 'change_email', 'validate_change_email', 'reset_password', 'create_commercial', 'create_user_by_commercial']:
             permissions = [IsAccountOwner, IsAuthenticated]
@@ -512,17 +513,80 @@ class UserViewSet(mixins.RetrieveModelMixin,
             subscription = event.data.object  # contains a stripe.Subscription
             subscription_data = Subscription.objects.get(
                 subscription_id=subscription.id, active=True)
-            student = User.objects.get(code=subscription_data.user)
-            program = Program.objects.get(code=subscription_data.program)
+            student = subscription_data.user
+            program = subscription_data.program
             program.students.remove(student)
             subscription_data.active = False
             subscription_data.save()
+            return HttpResponse(subscription, status=200)
 
         else:
             # Unexpected event type
             return HttpResponse(status=400)
 
-        return HttpResponse(subscription, status=200)
+    @action(detail=False, methods=['post'])
+    def stripe_webhook_payment_succeeded(self, request, *args, **kwargs):
+        """Process stripe webhook notification for subscription cancellation"""
+        payload = request.body
+        event = None
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
+        try:
+            event = stripe.Event.construct_from(
+                json.loads(payload), stripe.api_key
+            )
+        except ValueError as e:
+            # Invalid payload
+            return HttpResponse(status=400)
+
+        # Handle the event
+        if event.type == 'invoice.payment_succeeded':
+            invoice = event.data.object  # contains a stripe.Invoice
+            subscription_data = Subscription.objects.get(
+                subscription_id=invoice.subscription, active=True)
+            payment = Payment.objects.create(
+                invoice_id=invoice.id,
+                subscription=subscription_data,
+                amount_paid=invoice.amount_paid,
+                currency=invoice.currency,
+                customer=invoice.customer,
+                customer_email=invoice.customer_email,
+                customer_name=invoice.customer_name,
+                status=invoice.status
+            )
+
+            subscription_data.payments.add(payment)
+            subscription_data.save()
+            customer = subscription_data.user
+            user = customer.user_created_by
+            if user and user.commercial.commercial_level > 0 and payment:
+                commercial = user.commercial
+                if commercial.commercial_level == 1:
+                    stripe.Transfer.create(
+                        amount=int(payment.amount_paid * 50 / 100),
+                        currency=payment.currency,
+                        destination=commercial.commercial_stripe_account_id
+                    )
+                if commercial.commercial_level == 2 and user.created_by_commercial and commercial.commercial_created_by:
+                    commercial_boss = commercial.commercial_created_by
+                    stripe.Transfer.create(
+                        amount=int(payment.amount_paid * 40 / 100),
+                        currency=payment.currency,
+                        destination=commercial.commercial_stripe_account_id
+                    )
+                    stripe.Transfer.create(
+                        amount=int(payment.amount_paid * 10 / 100),
+                        currency=payment.currency,
+                        destination=commercial_boss.commercial_stripe_account_id
+                    )
+            return Response(PaymentModelSerializer(payment, many=False).data, status=200)
+
+        else:
+            # Unexpected event type
+            return Response(status=400)
 
     @action(detail=False, methods=['get'])
     def get_profile(self, request, *args, **kwargs):

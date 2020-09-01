@@ -1,6 +1,34 @@
 """Program views."""
 
 # Django REST Framework
+import os
+import stripe
+from api.users.serializers import (
+    ProfileModelSerializer,
+    UserWithoutTeacherModelSerializer,
+    AccountsSubscriptionSignUpSerializer,
+    AccountsSubscriptionModelSerializer,
+    CouponModelSerializer
+)
+from api.users.serializers.subscriptions import(
+    SubscriptionSignUpSerializer
+)
+from api.programs.serializers import (
+    ProgramModelSerializer,
+    ProgramModifyModelSerializer,
+    ProgramListModelSerializer,
+    ProgramPriceModelSerializer,
+    ProgramLanguageModelSerializer,
+    ActiveProgramSerializer,
+    AddStudentProgramSerializer,
+    ProgramCreateModelSerializer,
+    AddAccountsSerializer,
+    CancelAccountsSerializer,
+    PublishProgramSerializer,
+    CancelPublishProgramSerializer,
+    CancelActiveProgramSerializer,
+
+)
 from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -19,38 +47,6 @@ from api.programs.models import Program
 from api.users.models import User, Subscription, Teacher, Profile, Coupon
 
 # Serializers
-from api.programs.serializers import (
-    ProgramModelSerializer,
-    ProgramModifyModelSerializer,
-    ProgramListModelSerializer,
-    ProgramPriceModelSerializer,
-    ProgramLanguageModelSerializer,
-    ActiveProgramSerializer,
-    AddStudentProgramSerializer,
-    ProgramCreateModelSerializer,
-    AddAccountsSerializer,
-    CancelAccountsSerializer,
-    PublishProgramSerializer,
-    CancelPublishProgramSerializer,
-    CancelActiveProgramSerializer,
-
-)
-
-from api.users.serializers.subscriptions import(
-    SubscriptionSignUpSerializer
-)
-
-from api.users.serializers import (
-    ProfileModelSerializer,
-    UserWithoutTeacherModelSerializer,
-    AccountsSubscriptionSignUpSerializer,
-    AccountsSubscriptionModelSerializer,
-    CouponModelSerializer
-)
-
-
-import stripe
-import os
 
 
 class ProgramViewSet(mixins.CreateModelMixin,
@@ -83,7 +79,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
         elif self.action == 'list':
             return ProgramListModelSerializer
         elif self.action == 'list_students':
-            return UserWithoutTeacherModelSerializer
+            return ProgramModelSerializer
         elif self.action == 'retrieve':
             return ProgramModelSerializer
         elif self.action == 'active':
@@ -307,8 +303,8 @@ class ProgramViewSet(mixins.CreateModelMixin,
 
         new_subscription = Subscription(
             subscription_id=subscription.id,
-            user=user.code,
-            program=program.code,
+            user=user,
+            program=program,
             to_be_cancelled=False,
             cancelled=False,
             payment_issue=False,
@@ -359,7 +355,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
         # except:
         #     pass
         cancel_subscription = profile.subscriptions.filter(
-            user=request.user.code, program=program.code, active=True)[0]
+            user=request.user, program=program, active=True)[0]
 
         if cancel_subscription:
             subscription_deleted = stripe.Subscription.delete(
@@ -367,7 +363,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
                 prorate=False,
                 invoice_now=True
             )
-            if not profile.subscriptions.filter(user=request.user.code, program=program.code, active=False).exists():
+            if not profile.subscriptions.filter(user=request.user, program=program, active=False).exists():
 
                 invoice = stripe.Invoice.retrieve(
                     subscription_deleted['latest_invoice'])
@@ -384,8 +380,8 @@ class ProgramViewSet(mixins.CreateModelMixin,
                         refund_amount=str(invoice['amount_paid'])
                     )
 
-            student = User.objects.get(code=cancel_subscription.user)
-            program = Program.objects.get(code=cancel_subscription.program)
+            student = cancel_subscription.user
+            program = cancel_subscription.program
             program.students.remove(student)
             cancel_subscription.active = False
             cancel_subscription.save()
@@ -506,9 +502,9 @@ class ProgramViewSet(mixins.CreateModelMixin,
                     },
                 )
 
-            if teacher.subscriptions.filter(user=program.user.code, program=program.code, active=True).exists():
+            if teacher.subscriptions.filter(user=program.user, program=program, active=True).exists():
                 accounts_subscription = teacher.subscriptions.filter(
-                    user=program.user.code, program=program.code, active=True)[0]
+                    user=program.user, program=program, active=True)[0]
                 subscription = stripe.Subscription.retrieve(
                     accounts_subscription.subscription_id)
                 # upcoming_invoice = stripe.Invoice.upcoming(customer=customer_id)
@@ -611,8 +607,8 @@ class ProgramViewSet(mixins.CreateModelMixin,
                 teacher_subscription = Subscription.objects.get(
                     subscription_id=subscription.id, active=True)
                 teacher_subscription.subscription_id = subscription.id
-                teacher_subscription.user = user.code
-                teacher_subscription.program = program.code
+                teacher_subscription.user = user
+                teacher_subscription.program = program
                 teacher_subscription.product = product['id']
                 teacher_subscription.to_be_cancelled = False
                 teacher_subscription.payment_issue = False
@@ -706,8 +702,8 @@ class ProgramViewSet(mixins.CreateModelMixin,
 
                 sub = Subscription.objects.create(
                     subscription_id=subscription.id,
-                    user=user.code,
-                    program=program.code,
+                    user=user,
+                    program=program,
                     product=product['id'],
                     to_be_cancelled=False,
                     cancelled=False,
@@ -775,10 +771,10 @@ class ProgramViewSet(mixins.CreateModelMixin,
         # if teacher.discount:
         #     teacher.discount.delete()
         serializer.is_valid(raise_exception=True)
-        if teacher.subscriptions.filter(user=program.user.code, program=program.code, active=True).exists():
+        if teacher.subscriptions.filter(user=program.user, program=program, active=True).exists():
             try:
                 accounts_subscription = teacher.subscriptions.filter(
-                    user=program.user.code, program=program.code, active=True)[0]
+                    user=program.user, program=program, active=True)[0]
                 subscription_deleted = stripe.Subscription.delete(
                     accounts_subscription.subscription_id)
                 accounts_subscription.active = False

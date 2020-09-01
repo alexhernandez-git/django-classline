@@ -46,24 +46,24 @@ const CheckoutAccounts = (props) => {
   const [showPro, setShowPro] = useState(false);
   const [pricingPro, setPricingPro] = useState({
     // Prod
-    id: "prod_Hs4SzrmKsWWX1y",
-    price_id: "price_1HIKJQIgGIa3w9CpFZZl6nJm",
-    level: 0,
-    accounts: level_pro ? current_accounts : 75,
-    description: "Accounts Volume Pricing",
-    level_pro: true,
-    price: null,
-    currency: "EUR",
-    // ------------------------------------------------------
-    // Dev
-    // id: "prod_HqaU1ykblf4gX6",
-    // price_id: "price_1HGtJaIgGIa3w9Cpd7Q2ObG4",
+    // id: "prod_Hs4SzrmKsWWX1y",
+    // price_id: "price_1HIKJQIgGIa3w9CpFZZl6nJm",
     // level: 0,
     // accounts: level_pro ? current_accounts : 75,
     // description: "Accounts Volume Pricing",
     // level_pro: true,
     // price: null,
     // currency: "EUR",
+    // ------------------------------------------------------
+    // Dev
+    id: "prod_HqaU1ykblf4gX6",
+    price_id: "price_1HGtJaIgGIa3w9Cpd7Q2ObG4",
+    level: 0,
+    accounts: level_pro ? current_accounts : 75,
+    description: "Accounts Volume Pricing",
+    level_pro: true,
+    price: null,
+    currency: "EUR",
   });
   const handleClosePro = () => setShowPro(false);
   const handleShowPro = (pricing) => {
@@ -290,43 +290,10 @@ const CheckoutAccounts = (props) => {
   };
   const [newCard, setNewCard] = useState(false);
   // Dev
-  // const [pricingEur, setPricingEur] = useState([
-  //   {
-  //     id: "prod_HqrMoS5S5j3Eab",
-  //     price_id: "price_1HH9eAIgGIa3w9CpaGCfCDTF",
-  //     level: 1,
-  //     accounts: 10,
-  //     description: "10 Academy Accounts",
-  //     level_pro: false,
-  //     price: 19.99,
-  //     currency: "EUR",
-  //   },
-  //   {
-  //     id: "prod_HqrNx2F5IFtxc4",
-  //     price_id: "price_1HH9f6IgGIa3w9Cpfn5kT24j",
-  //     level: 2,
-  //     accounts: 25,
-  //     description: "20 Academy Accounts",
-  //     level_pro: false,
-  //     price: 49.99,
-  //     currency: "EUR",
-  //   },
-  //   {
-  //     id: "prod_HqrPff8wCoJawR",
-  //     price_id: "price_1HH9gHIgGIa3w9CpFxKr6Ix5",
-  //     level: 3,
-  //     accounts: 50,
-  //     level_pro: false,
-  //     description: "50 Academy Accounts",
-  //     price: 99.99,
-  //     currency: "EUR",
-  //   },
-  // ]);
-  // Prod
   const [pricingEur, setPricingEur] = useState([
     {
-      id: "prod_Hs4Rx29VRZNKDX",
-      price_id: "price_1HIKJ5IgGIa3w9Cpjm1QHRGU",
+      id: "prod_HqrMoS5S5j3Eab",
+      price_id: "price_1HH9eAIgGIa3w9CpaGCfCDTF",
       level: 1,
       accounts: 10,
       description: "10 Academy Accounts",
@@ -335,8 +302,8 @@ const CheckoutAccounts = (props) => {
       currency: "EUR",
     },
     {
-      id: "prod_Hs4Ry1Jg0W4obe",
-      price_id: "price_1HIKJ1IgGIa3w9CpfenoV54Y",
+      id: "prod_HqrNx2F5IFtxc4",
+      price_id: "price_1HH9f6IgGIa3w9Cpfn5kT24j",
       level: 2,
       accounts: 25,
       description: "20 Academy Accounts",
@@ -345,8 +312,8 @@ const CheckoutAccounts = (props) => {
       currency: "EUR",
     },
     {
-      id: "prod_Hs4Ulgt6V6c433",
-      price_id: "price_1HIKLkIgGIa3w9CpBmOw7sSD",
+      id: "prod_HqrPff8wCoJawR",
+      price_id: "price_1HH9gHIgGIa3w9CpFxKr6Ix5",
       level: 3,
       accounts: 50,
       level_pro: false,
@@ -355,6 +322,39 @@ const CheckoutAccounts = (props) => {
       currency: "EUR",
     },
   ]);
+  // Prod
+  // const [pricingEur, setPricingEur] = useState([
+  //   {
+  //     id: "prod_Hs4Rx29VRZNKDX",
+  //     price_id: "price_1HIKJ5IgGIa3w9Cpjm1QHRGU",
+  //     level: 1,
+  //     accounts: 10,
+  //     description: "10 Academy Accounts",
+  //     level_pro: false,
+  //     price: 19.99,
+  //     currency: "EUR",
+  //   },
+  //   {
+  //     id: "prod_Hs4Ry1Jg0W4obe",
+  //     price_id: "price_1HIKJ1IgGIa3w9CpfenoV54Y",
+  //     level: 2,
+  //     accounts: 25,
+  //     description: "20 Academy Accounts",
+  //     level_pro: false,
+  //     price: 49.99,
+  //     currency: "EUR",
+  //   },
+  //   {
+  //     id: "prod_Hs4Ulgt6V6c433",
+  //     price_id: "price_1HIKLkIgGIa3w9CpBmOw7sSD",
+  //     level: 3,
+  //     accounts: 50,
+  //     level_pro: false,
+  //     description: "50 Academy Accounts",
+  //     price: 99.99,
+  //     currency: "EUR",
+  //   },
+  // ]);
   const [promoCode, setPromoCode] = useState(null);
 
   const [couponText, setCouponText] = useState("");

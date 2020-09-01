@@ -11,6 +11,7 @@ from .views import users as user_views
 from .views import promotion_codes as promotion_codes_views
 from .views import created_costumers as created_costumers_views
 from .views import commercials as commercials_views
+from .views import payments as payments_views
 
 router = DefaultRouter()
 router.register(r'users', user_views.UserViewSet, basename='users')
@@ -20,6 +21,8 @@ router.register(r'created-costumers',
                 created_costumers_views.CreatedCostumerViewSet, basename='created-costumers')
 router.register(r'commercials',
                 commercials_views.CommercialViewSet, basename='commercials')
+router.register(r'payments',
+                payments_views.PaymentViewSet, basename='payments')
 urlpatterns = [
     path('', include(router.urls))
 ]
