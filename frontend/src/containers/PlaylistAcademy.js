@@ -53,7 +53,7 @@ const PlaylistPage = (props) => {
               playlistReducer.playlist.tracks.map((track, index) => (
                 <Link
                   to={{
-                    pathname: `/academy/${programReducer.program.code}/playlist/${playlistReducer.playlist.id}/${index}`,
+                    pathname: `/academy/${programReducer.program.code}/course/${playlistReducer.playlist.id}/${index}`,
                     query: { track: track.id },
                   }}
                   params={{ track: track.id }}

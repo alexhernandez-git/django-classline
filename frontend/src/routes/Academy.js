@@ -116,18 +116,18 @@ const Academy = () => {
             />
             <Route
               exact
-              path="/academy/:program/playlists:search?"
+              path="/academy/:program/courses:search?"
               component={
-                programReducer.program.are_playlists
+                programReducer.program.are_courses
                   ? PlaylistsAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />
             <Route
               exact
-              path="/academy/:program/playlist/:id/:track?"
+              path="/academy/:program/course/:id/:track?"
               component={
-                programReducer.program.are_playlists
+                programReducer.program.are_courses
                   ? PlaylistAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
@@ -182,12 +182,12 @@ const Academy = () => {
 
                 <Route
                   exact
-                  path="/academy/:program/admin/playlists:search?"
+                  path="/academy/:program/admin/courses:search?"
                   component={CoursesAdmin}
                 />
                 <Route
                   exact
-                  path="/academy/:program/admin/playlist/form"
+                  path="/academy/:program/admin/course/form"
                   component={CourseFormAdmin}
                 />
                 <Route

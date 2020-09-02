@@ -31,7 +31,7 @@ class Program(CLineModel):
     accounts_to_create_left = models.PositiveIntegerField(default=0)
     are_meetups = models.BooleanField(default=True)
     are_videos = models.BooleanField(default=True)
-    are_playlists = models.BooleanField(default=True)
+    are_courses = models.BooleanField(default=True)
     are_podcasts = models.BooleanField(default=True)
 
     # accounts

@@ -4,7 +4,7 @@ import { Main } from "src/components/ui/Main";
 import Filters from "src/components/Layout/Filters";
 import { ButtonCustom } from "src/components/ui/ButtonCustom";
 
-import PlaylistCard from "src/components/AdminAcademy/PlaylistCard";
+import CourseCard from "src/components/AdminAcademy/CourseCard";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -92,7 +92,7 @@ const CoursesAdmin = () => {
       </div>
       {coursesReducer.playlists &&
         coursesReducer.playlists.results.map((playlist) => (
-          <PlaylistCard
+          <CourseCard
             playlist={playlist}
             key={playlist.id}
             handleSetEditPlaylist={handleSetEditPlaylist}

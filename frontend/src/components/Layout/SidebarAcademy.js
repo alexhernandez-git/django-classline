@@ -75,8 +75,8 @@ const Sidebar = (props) => {
               Videos
             </SecctionLink>
           </Link>
-          <Link to={`/academy/${program}/admin/playlists`}>
-            <SecctionLink active={/\/playlists\/?$/.test(pathname) && true}>
+          <Link to={`/academy/${program}/admin/courses`}>
+            <SecctionLink active={/\/courses\/?$/.test(pathname) && true}>
               <IconContext.Provider
                 value={{
                   className: "sidebar-icon",
@@ -162,13 +162,13 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
-          {programReducer.program.are_playlists && (
+          {programReducer.program.are_courses && (
             <Link
               to={`${
                 /\/demo\/?/.test(pathname) ? "/demo" : ""
-              }/academy/${program}/playlists`}
+              }/academy/${program}/courses`}
             >
-              <SecctionLink active={/\/playlists\/?$/.test(pathname) && true}>
+              <SecctionLink active={/\/courses\/?$/.test(pathname) && true}>
                 <IconContext.Provider
                   value={{
                     className: "sidebar-icon",
@@ -216,6 +216,23 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
+          <hr />
+          <Link
+            to={`${
+              /\/demo\/?/.test(pathname) ? "/demo" : ""
+            }/academy/${program}/playlists`}
+          >
+            <SecctionLink active={/\/playlists\/?$/.test(pathname) && true}>
+              <IconContext.Provider
+                value={{
+                  className: "sidebar-icon",
+                }}
+              >
+                <FaListUl />
+              </IconContext.Provider>{" "}
+              Listas de reproducción
+            </SecctionLink>
+          </Link>
           {/* <Link href="/[program]/comunity" as={`/academy/${program}/comunity`}>
 
                         <SecctionLink active={/\/comunity\/?$/.test(pathname) && true}>

@@ -3,7 +3,7 @@ import { Main } from "src/components/ui/Main";
 import styled from "@emotion/styled";
 import Layout from "src/components/Layout/Layout";
 import Filters from "src/components/Layout/Filters";
-import Playlist from "src/components/ui/Playlist";
+import Course from "src/components/ui/Course";
 import {
   fetchPlaylists,
   fetchPlaylistsPagination,
@@ -52,7 +52,7 @@ const playlists = () => {
             {playlistsReducer.playlists &&
               playlistsReducer.playlists.results.map((playlist) => (
                 <div className="cursor-pointer" key={playlist.key}>
-                  <Playlist playlist={playlist} />
+                  <Course playlist={playlist} />
                 </div>
               ))}
           </GridVideos>

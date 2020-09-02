@@ -60,7 +60,7 @@ export default function Home() {
                 <hr />
               </>
             )}
-            {programReducer.program.are_playlists && (
+            {programReducer.program.are_courses && (
               <>
                 <div className="mb-4">
                   <MainPlaylists />
