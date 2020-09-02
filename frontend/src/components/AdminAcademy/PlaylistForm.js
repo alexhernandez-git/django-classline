@@ -91,7 +91,7 @@ const PlaylistForm = (props) => {
             </Col>
 
             <Col lg={{ offset: 1, span: 6 }}>
-              <Field type="text" name="name" placeholder="Nombre del curso" />
+              <Field type="text" name="name" placeholder="Nombre..." />
               {errors.name && touched.name ? (
                 <small className="d-block text-red">{errors.name}</small>
               ) : null}

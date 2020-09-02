@@ -13,8 +13,8 @@ import VideosAcademy from "src/containers/VideosAcademy";
 import MeetupsAcademy from "src/containers/MeetupsAcademy";
 import PodcastsAcademy from "src/containers/PodcastsAcademy";
 import VideoAcademy from "src/containers/VideoAcademy";
-import PlaylistsAcademy from "src/containers/PlaylistsAcademy";
-import PlaylistAcademy from "src/containers/PlaylistAcademy";
+import CoursesAcademy from "src/containers/CoursesAcademy";
+import CourseAcademy from "src/containers/CourseAcademy";
 import ProfileAcademy from "src/containers/ProfileAcademy";
 import ConfigurationAdmin from "src/containers/admin/ConfigurationAdmin";
 import VideosAdmin from "src/containers/admin/VideosAdmin";
@@ -34,6 +34,9 @@ import { fetchProgramRating } from "../redux/actions/rating";
 import { Helmet } from "react-helmet";
 import CoursesAdmin from "../containers/admin/CoursesAdmin";
 import CourseFormAdmin from "../containers/admin/CourseFormAdmin";
+import PlaylistsAcademy from "../containers/PlaylistsAcademy";
+import PlaylistFormAcademy from "../containers/PlaylistFormAcademy";
+import PlaylistAcademy from "../containers/PlaylistAcademy";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -119,7 +122,7 @@ const Academy = () => {
               path="/academy/:program/courses:search?"
               component={
                 programReducer.program.are_courses
-                  ? PlaylistsAcademy
+                  ? CoursesAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />
@@ -128,7 +131,7 @@ const Academy = () => {
               path="/academy/:program/course/:id/:track?"
               component={
                 programReducer.program.are_courses
-                  ? PlaylistAcademy
+                  ? CourseAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />
@@ -150,6 +153,12 @@ const Academy = () => {
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />
+            <Route
+              exact
+              path="/academy/:program/playlist/:id/:track?"
+              component={PlaylistAcademy}
+            />
+
             {authReducer.user && authReducer.user.created_account && (
               <Route
                 exact
@@ -157,6 +166,16 @@ const Academy = () => {
                 component={ProfileAcademy}
               />
             )}
+            <Route
+              exact
+              path="/academy/:program/playlists:search?"
+              component={PlaylistsAcademy}
+            />
+            <Route
+              exact
+              path="/academy/:program/form/playlist"
+              component={PlaylistFormAcademy}
+            />
             {authReducer.user && isInstructor() ? (
               <>
                 <Route
@@ -187,7 +206,7 @@ const Academy = () => {
                 />
                 <Route
                   exact
-                  path="/academy/:program/admin/course/form"
+                  path="/academy/:program/admin/form/course"
                   component={CourseFormAdmin}
                 />
                 <Route

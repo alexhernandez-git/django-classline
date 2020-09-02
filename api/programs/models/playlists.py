@@ -22,6 +22,8 @@ class Playlist(CLineModel):
     tracks = models.ManyToManyField('programs.Video', through='PlaylistTrack')
     program = models.ForeignKey(
         'programs.Program', on_delete=models.CASCADE, related_name='program_playlist')
+    user = models.ForeignKey(
+        'users.User', on_delete=models.CASCADE, related_name='user_playlist')
 
     def __str__(self):
         """Return description."""

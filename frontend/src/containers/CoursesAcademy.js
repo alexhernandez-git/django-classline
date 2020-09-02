@@ -3,18 +3,18 @@ import { Main } from "src/components/ui/Main";
 import styled from "@emotion/styled";
 import Layout from "src/components/Layout/Layout";
 import Filters from "src/components/Layout/Filters";
-import Playlist from "src/components/ui/Playlist";
+import Course from "src/components/ui/Course";
 import {
   fetchPlaylists,
   fetchPlaylistsPagination,
-} from "src/redux/actions/playlists";
+} from "src/redux/actions/courses";
 import { useDispatch, useSelector } from "react-redux";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
 import { useParams } from "react-router-dom";
 const playlists = () => {
   const main = useRef();
-  const playlistsReducer = useSelector((state) => state.playlistsReducer);
+  const coursesReducer = useSelector((state) => state.coursesReducer);
   const programReducer = useSelector((state) => state.programReducer);
 
   const dispatch = useDispatch();
@@ -49,19 +49,19 @@ const playlists = () => {
       <div className="row">
         <div className="col-12">
           <GridVideos>
-            {playlistsReducer.playlists &&
-              playlistsReducer.playlists.results.map((playlist) => (
+            {coursesReducer.playlists &&
+              coursesReducer.playlists.results.map((playlist) => (
                 <div className="cursor-pointer" key={playlist.key}>
-                  <Playlist playlist={playlist} />
+                  <Course playlist={playlist} />
                 </div>
               ))}
           </GridVideos>
-          {playlistsReducer.isLoading && <span>Cargando...</span>}
-          {playlistsReducer.playlists &&
-            (playlistsReducer.playlists.previous ||
-              playlistsReducer.playlists.next) && (
+          {coursesReducer.isLoading && <span>Cargando...</span>}
+          {coursesReducer.playlists &&
+            (coursesReducer.playlists.previous ||
+              coursesReducer.playlists.next) && (
               <div className="d-flex justify-content-center my-5">
-                {playlistsReducer.playlists.previous ? (
+                {coursesReducer.playlists.previous ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -70,7 +70,7 @@ const playlists = () => {
                   >
                     <IoIosArrowDropleft
                       onClick={() =>
-                        handleChangePage(playlistsReducer.playlists.previous)
+                        handleChangePage(coursesReducer.playlists.previous)
                       }
                     />
                   </IconContext.Provider>
@@ -84,7 +84,7 @@ const playlists = () => {
                     <IoIosArrowDropleft />
                   </IconContext.Provider>
                 )}
-                {playlistsReducer.playlists.next ? (
+                {coursesReducer.playlists.next ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -93,7 +93,7 @@ const playlists = () => {
                   >
                     <IoIosArrowDropright
                       onClick={() =>
-                        handleChangePage(playlistsReducer.playlists.next)
+                        handleChangePage(coursesReducer.playlists.next)
                       }
                     />
                   </IconContext.Provider>

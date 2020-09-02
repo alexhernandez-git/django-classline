@@ -216,23 +216,27 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
-          <hr />
-          <Link
-            to={`${
-              /\/demo\/?/.test(pathname) ? "/demo" : ""
-            }/academy/${program}/playlists`}
-          >
-            <SecctionLink active={/\/playlists\/?$/.test(pathname) && true}>
-              <IconContext.Provider
-                value={{
-                  className: "sidebar-icon",
-                }}
+          {!/\/demo\/?/.test(pathname) && (
+            <>
+              <hr />
+              <Link
+                to={`${
+                  /\/demo\/?/.test(pathname) ? "/demo" : ""
+                }/academy/${program}/playlists`}
               >
-                <FaListUl />
-              </IconContext.Provider>{" "}
-              Listas de reproducción
-            </SecctionLink>
-          </Link>
+                <SecctionLink active={/\/playlists\/?$/.test(pathname) && true}>
+                  <IconContext.Provider
+                    value={{
+                      className: "sidebar-icon",
+                    }}
+                  >
+                    <FaListUl />
+                  </IconContext.Provider>{" "}
+                  Listas de reproducción
+                </SecctionLink>
+              </Link>
+            </>
+          )}
           {/* <Link href="/[program]/comunity" as={`/academy/${program}/comunity`}>
 
                         <SecctionLink active={/\/comunity\/?$/.test(pathname) && true}>

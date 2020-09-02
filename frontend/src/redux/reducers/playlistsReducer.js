@@ -17,7 +17,9 @@ import {
 
 const initialState = {
   isLoading: false,
-  playlists: null,
+  playlists: {
+    results: [],
+  },
   error: null,
   playlist_edit: null,
   playlist_editing: false,

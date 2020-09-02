@@ -12,17 +12,12 @@ import { tokenConfig } from "./auth";
 export const fetchPopularPlaylists = (id) => (dispatch, getState) => {
   // User Loading
   dispatch({ type: POPULAR_PLAYLISTS_FETCH });
-  console.log(id);
-  console.log(
-    `/api/programs/${
-      getState().programReducer.program.code
-    }/videos/get_popular_playlists/`
-  );
+
   axios
     .get(
       `/api/programs/${
         getState().programReducer.program.code
-      }/playlists/get_popular_playlists/`,
+      }/courses/get_popular_courses/`,
       tokenConfig(getState)
     )
     .then((res) => {

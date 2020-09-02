@@ -87,7 +87,8 @@ class PlaylistModelSerializer(serializers.ModelSerializer):
         picture = get_object_or_404(Video, id=tracks[0]['video']['id']).picture
 
         validated_data['picture'] = File(picture, picture.name)
-        playlist = Playlist.objects.create(**validated_data)
+        playlist = Playlist.objects.create(
+            **validated_data, user=self.context['request'].user)
         for track in tracks:
             track['video'] = get_object_or_404(Video, id=track['video']['id'])
             PlaylistTrack.objects.create(

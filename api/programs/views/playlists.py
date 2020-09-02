@@ -56,7 +56,7 @@ class PlaylistViewSet(mixins.CreateModelMixin,
 
     @action(detail=False, methods=['get'])
     def get_popular_playlists(self, request, *args, **kwargs):
-        playlist = self.get_queryset()
+        playlist = self.get_queryset().filter(user=request.user)
         playlist = self.serializer_class(playlist, many=True).data
         return Response(playlist, status=status.HTTP_200_OK)
 
@@ -99,3 +99,15 @@ class PlaylistViewSet(mixins.CreateModelMixin,
 
         data = PlaylistModelSerializer(playlist).data
         return Response(data, status=status.HTTP_200_OK)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(
+            self.get_queryset().filter(user=request.user))
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

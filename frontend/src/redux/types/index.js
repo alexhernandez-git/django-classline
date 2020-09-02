@@ -120,12 +120,12 @@ export const DELETE_PLAYLIST_FAIL = "DELETE_PLAYLIST_FAIL";
 
 // Playlist
 export const PLAYLIST_FETCH = "PLAYLIST_FETCH";
-export const PLAYLIST_SUCCESS = "PLAYLIST_LOADED";
+export const PLAYLIST_SUCCESS = "PLAYLIST_SUCCESS";
 export const PLAYLIST_FAIL = "PLAYLIST_FAIL";
 
 // Courses
 export const COURSES_FETCH = "COURSES_FETCH";
-export const COURSES_SUCCESS = "COURSES_LOADED";
+export const COURSES_SUCCESS = "COURSES_SUCCESS";
 export const COURSES_FAIL = "COURSES_FAIL";
 export const SET_COURSE_EDIT = "SET_COURSE_EDIT";
 export const DELETE_COURSE_EDIT = "DELETE_COURSE_EDIT";
@@ -141,7 +141,7 @@ export const DELETE_COURSE_FAIL = "DELETE_COURSE_FAIL";
 
 // Course
 export const COURSE_FETCH = "COURSE_FETCH";
-export const COURSE_SUCCESS = "COURSE_LOADED";
+export const COURSE_SUCCESS = "COURSE_SUCCESS";
 export const COURSE_FAIL = "COURSE_FAIL";
 
 // Podcasts

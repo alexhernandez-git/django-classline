@@ -29,13 +29,17 @@ const CoursesAdmin = () => {
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
 
+  const coursesReducer = useSelector((state) => state.coursesReducer);
   useEffect(() => {
-    if (!programReducer.isLoading && programReducer.program) {
+    if (
+      !programReducer.isLoading &&
+      programReducer.program &&
+      coursesReducer.playlists.results.length == 0
+    ) {
       const dispatchFetchPlaylists = () => dispatch(fetchPlaylists());
       dispatchFetchPlaylists();
     }
   }, [programReducer.isLoading]);
-  const coursesReducer = useSelector((state) => state.coursesReducer);
   const handleSetEditPlaylist = (playlist) => {
     const dispatchSetEditPlaylist = (playlist) =>
       dispatch(setPlaylistEdit(playlist));
@@ -84,7 +88,7 @@ const CoursesAdmin = () => {
         onSubmit={handleSubmitSearch}
       />
       <div className="d-flex justify-content-end mb-3">
-        <Link to={`/academy/${program}/admin/playlist/form`}>
+        <Link to={`/academy/${program}/admin/form/course`}>
           <ButtonCustom onClick={handleDeleteEditPlaylist}>
             Nuevo Curso
           </ButtonCustom>

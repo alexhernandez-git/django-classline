@@ -12,8 +12,8 @@ import HomeAcademy from "src/containers/HomeAcademy";
 import VideosAcademy from "src/containers/VideosAcademy";
 import MeetupsAcademy from "src/containers/MeetupsAcademy";
 import PodcastsAcademy from "src/containers/PodcastsAcademy";
-import PlaylistsAcademy from "src/containers/PlaylistsAcademy";
-import PlaylistAcademy from "src/containers/PlaylistAcademy";
+import CoursesAcademy from "src/containers/CoursesAcademy";
+import CourseAcademy from "src/containers/CourseAcademy";
 
 import "static/assets/styles/styles.scss";
 import ScrollToTop from "src/utils/ScrollToTop";
@@ -88,10 +88,10 @@ const Academy = () => {
 
           <Route
             exact
-            path="/demo/academy/:program/playlists:search?"
+            path="/demo/academy/:program/courses:search?"
             component={
-              programReducer.program.are_playlists
-                ? PlaylistsAcademy
+              programReducer.program.are_courses
+                ? CoursesAcademy
                 : () => <Redirect to={`/academy/${programId}/home`} />
             }
           />
@@ -99,8 +99,8 @@ const Academy = () => {
             exact
             path="/demo/academy/:program/playlist/:id/:track?"
             component={
-              programReducer.program.are_playlists
-                ? PlaylistAcademy
+              programReducer.program.are_courses
+                ? CourseAcademy
                 : () => <Redirect to={`/academy/${programId}/home`} />
             }
           />

@@ -1,1 +1,1 @@
-{"status":"done","error":"ModuleNotFoundError","message":"Module not found: Error: Can't resolve 'src/components/ui/Playlist' in '/home/alex/django-classline/frontend/src/components/MainPage'","chunks":{"main":[{"name":"main.js","path":"/home/alex/django-classline/frontend/static/bundles/main.js"}]}}
+{"status":"done","chunks":{"main":[{"name":"main.js","path":"/home/alex/django-classline/frontend/static/bundles/main.js"}]}}

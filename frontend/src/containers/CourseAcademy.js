@@ -7,7 +7,7 @@ import VideoPlayer from "src/components/ui/VideoPlayer";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useParams, Link } from "react-router-dom";
-import { fetchPlaylist } from "src/redux/actions/playlist";
+import { fetchPlaylist } from "src/redux/actions/course";
 const PlaylistPage = (props) => {
   const dispatch = useDispatch();
 
@@ -22,20 +22,20 @@ const PlaylistPage = (props) => {
       dispatchFetchVideo(videoId);
     }
   }, [videoId, programReducer.isLoading]);
-  const playlistReducer = useSelector((state) => state.playlistReducer);
+  const courseReducer = useSelector((state) => state.courseReducer);
   return (
     <Main padding>
       <div className="row">
         <div className="col-md-6 col-lg-8">
-          {playlistReducer.playlist &&
-            !playlistReducer.isLoading &&
-            playlistReducer.playlist.tracks.length > 0 && (
+          {courseReducer.playlist &&
+            !courseReducer.isLoading &&
+            courseReducer.playlist.tracks.length > 0 && (
               <VideoPlayer
-                video={playlistReducer.playlist.tracks[trackId].video}
+                video={courseReducer.playlist.tracks[trackId].video}
               />
             )}
-          {playlistReducer.isLoading && <span>Cargando...</span>}
-          {playlistReducer.playlist.tracks.length == 0 && (
+          {courseReducer.isLoading && <span>Cargando...</span>}
+          {courseReducer.playlist.tracks.length == 0 && (
             <span>No hay videos en esta lista</span>
           )}
         </div>
@@ -45,15 +45,15 @@ const PlaylistPage = (props) => {
           <PlaylistScroll>
             <div className="d-flex justify-content-center h3 mb-3">
               <span>
-                {playlistReducer.playlist && playlistReducer.playlist.name}
+                {courseReducer.playlist && courseReducer.playlist.name}
               </span>
             </div>
 
-            {playlistReducer.playlist &&
-              playlistReducer.playlist.tracks.map((track, index) => (
+            {courseReducer.playlist &&
+              courseReducer.playlist.tracks.map((track, index) => (
                 <Link
                   to={{
-                    pathname: `/academy/${programReducer.program.code}/playlist/${playlistReducer.playlist.id}/${index}`,
+                    pathname: `/academy/${programReducer.program.code}/course/${courseReducer.playlist.id}/${index}`,
                     query: { track: track.id },
                   }}
                   params={{ track: track.id }}
@@ -71,7 +71,7 @@ const PlaylistPage = (props) => {
                   </PlaylistVideo>
                 </Link>
               ))}
-            {playlistReducer.isLoading && <span>Cargando...</span>}
+            {courseReducer.isLoading && <span>Cargando...</span>}
           </PlaylistScroll>
         </div>
       </div>
