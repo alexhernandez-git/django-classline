@@ -472,6 +472,10 @@ class UserSignUpSerializer(serializers.Serializer):
         Profile.objects.create(user=user)
 
         if self.context['create_commercial'] and 'commercial_level' in self.context:
+            if not self.context['user'].commercial.can_create_commercials:
+                raise serializers.ValidationError(
+                    'Este usuario no puede crear comerciales')
+
             Commercial.objects.create(
                 user=user, commercial_level=self.context['commercial_level'], commercial_created_by=self.context['user'], can_create_commercials=self.context['can_create_commercials'])
         else:

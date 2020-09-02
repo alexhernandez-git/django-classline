@@ -83,7 +83,6 @@ const CostumersPayments = () => {
                 <th scope="col" style={{ width: "100px" }}>
                   Realizado
                 </th>
-                <th scope="col">Estado</th>
               </tr>
             </thead>
             <tbody>

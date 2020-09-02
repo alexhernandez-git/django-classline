@@ -304,7 +304,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         request.data['is_commercial'] = True
         request.data['is_staff'] = True
         request.data['username'] = request.data['email']
-        request.data['email'] = '{}'.format(uuid.uuid4().hex[:9].upper())
+        # request.data['email'] = '{}'.format(uuid.uuid4().hex[:9].upper())
         request.data['first_password'] = request.data['password']
 
         commercial_level = request.user.commercial.commercial_level + 1

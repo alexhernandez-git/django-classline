@@ -85,14 +85,23 @@ const CostumerRow = (props) => {
       </td>
       <td>{commercial.commercial_level}</td>
       <td className="text-center">
-        <ButtonCustom
-          onClick={() => {
-            dispatch(changeCurrentCommercial(code));
-            dispatch(fetchCommercial());
-          }}
-        >
-          Ver
-        </ButtonCustom>
+        {commercial.can_create_commercials ? (
+          <ButtonCustom
+            onClick={() => {
+              dispatch(changeCurrentCommercial(code));
+              dispatch(fetchCommercial());
+            }}
+          >
+            Ver
+          </ButtonCustom>
+        ) : (
+          <ButtonCustom
+            className="cursor-no-pointer"
+            style={{ opacity: "0.4" }}
+          >
+            Ver
+          </ButtonCustom>
+        )}
       </td>
     </tr>
   );

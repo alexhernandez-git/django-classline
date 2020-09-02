@@ -35,6 +35,9 @@ const CommercialList = () => {
     dispatchFetchAccount();
   }, []);
   const commercialsReducer = useSelector((state) => state.commercialsReducer);
+  const authCommercialsReducer = useSelector(
+    (state) => state.authCommercialsReducer
+  );
 
   const [show, setShow] = useState(false);
 
@@ -96,9 +99,12 @@ const CommercialList = () => {
         ) : (
           <div></div>
         )}
-        <ButtonCustom className="" onClick={handleShow}>
-          Crear Comercial
-        </ButtonCustom>
+        {authCommercialsReducer.isAuthenticated &&
+          authCommercialsReducer.user.commercial.can_create_commercials && (
+            <ButtonCustom className="" onClick={handleShow}>
+              Crear Comercial
+            </ButtonCustom>
+          )}
       </div>
       <div>
         <div className="table-responsive">

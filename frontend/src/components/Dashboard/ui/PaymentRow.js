@@ -40,7 +40,6 @@ const PaymentRow = (props) => {
       <td>{customer_email}</td>
       <td>{program}</td>
       <td>{moment(created).format("DD/MM/YY")}</td>
-      <td>{status}</td>
     </tr>
   );
 };
