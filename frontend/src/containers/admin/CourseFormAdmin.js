@@ -21,7 +21,7 @@ const PlaylistSchema = Yup.object().shape({
     .required("Este campo es obligatorio"),
 });
 
-const NewPlaylist = () => {
+const CourseFormAdmin = () => {
   const router = useHistory();
   const coursesReducer = useSelector((state) => state.coursesReducer);
 
@@ -102,4 +102,4 @@ const AddVideoList = styled.div`
   overflow: auto;
   border: 1px solid #ccc;
 `;
-export default NewPlaylist;
+export default CourseFormAdmin;

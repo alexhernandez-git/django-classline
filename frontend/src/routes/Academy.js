@@ -32,6 +32,8 @@ import { fetchProgram } from "../redux/actions/program";
 import IndexAcademy from "src/containers/IndexAcademy";
 import { fetchProgramRating } from "../redux/actions/rating";
 import { Helmet } from "react-helmet";
+import CoursesAdmin from "../containers/admin/CoursesAdmin";
+import CourseFormAdmin from "../containers/admin/CourseFormAdmin";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -181,12 +183,12 @@ const Academy = () => {
                 <Route
                   exact
                   path="/academy/:program/admin/playlists:search?"
-                  component={PlaylistsAdmin}
+                  component={CoursesAdmin}
                 />
                 <Route
                   exact
                   path="/academy/:program/admin/playlist/form"
-                  component={PlaylistFormAdmin}
+                  component={CourseFormAdmin}
                 />
                 <Route
                   exact

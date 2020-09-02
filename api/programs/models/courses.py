@@ -47,7 +47,7 @@ class Course(CLineModel):
 
 class CourseTrack(CLineModel):
     code = models.CharField(max_length=10, blank=True, null=True)
-    Course = models.ForeignKey('programs.Course', on_delete=models.CASCADE)
+    course = models.ForeignKey('programs.Course', on_delete=models.CASCADE)
     video = models.ForeignKey('programs.Video', on_delete=models.CASCADE)
     position = models.IntegerField()
 

@@ -70,7 +70,7 @@ class CourseModelSerializer(serializers.ModelSerializer):
         # Actualizar el precio de la clase
         tracks = self.context['tracks']
 
-        CourseTrack.objects.filter(Course=instance).delete()
+        CourseTrack.objects.filter(course=instance).delete()
         for track in tracks:
             track['video'] = get_object_or_404(Video, id=track['video']['id'])
             CourseTrack.objects.create(

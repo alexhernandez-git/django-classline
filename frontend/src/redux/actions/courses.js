@@ -2,20 +2,20 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 import {
-  PLAYLISTS_FETCH,
-  PLAYLISTS_SUCCESS,
-  PLAYLISTS_FAIL,
-  SET_PLAYLIST_EDIT,
-  DELETE_PLAYLIST_EDIT,
-  EDIT_PLAYLIST,
-  EDIT_PLAYLIST_FAIL,
-  EDIT_PLAYLIST_SUCCESS,
-  CREATE_PLAYLIST,
-  CREATE_PLAYLIST_FAIL,
-  CREATE_PLAYLIST_SUCCESS,
-  DELETE_PLAYLIST,
-  DELETE_PLAYLIST_FAIL,
-  DELETE_PLAYLIST_SUCCESS,
+  COURSES_FETCH,
+  COURSES_SUCCESS,
+  COURSES_FAIL,
+  SET_COURSE_EDIT,
+  DELETE_COURSE_EDIT,
+  EDIT_COURSE,
+  EDIT_COURSE_FAIL,
+  EDIT_COURSE_SUCCESS,
+  CREATE_COURSE,
+  CREATE_COURSE_FAIL,
+  CREATE_COURSE_SUCCESS,
+  DELETE_COURSE,
+  DELETE_COURSE_FAIL,
+  DELETE_COURSE_SUCCESS,
 } from "../types";
 
 import { tokenConfig } from "./auth";
@@ -23,7 +23,7 @@ import { tokenConfig } from "./auth";
 // CHECK TOKEN & LOAD USER
 export const fetchPlaylists = (search = "") => (dispatch, getState) => {
   // User Loading
-  dispatch({ type: PLAYLISTS_FETCH });
+  dispatch({ type: COURSES_FETCH });
 
   axios
     .get(
@@ -34,32 +34,32 @@ export const fetchPlaylists = (search = "") => (dispatch, getState) => {
     )
     .then((res) => {
       dispatch({
-        type: PLAYLISTS_SUCCESS,
+        type: COURSES_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
-        type: PLAYLISTS_FAIL,
+        type: COURSES_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
 };
 export const fetchPlaylistsPagination = (url) => (dispatch, getState) => {
   // User Loading
-  dispatch({ type: PLAYLISTS_FETCH });
+  dispatch({ type: COURSES_FETCH });
 
   axios
     .get(url, tokenConfig(getState))
     .then((res) => {
       dispatch({
-        type: PLAYLISTS_SUCCESS,
+        type: COURSES_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
-        type: PLAYLISTS_FAIL,
+        type: COURSES_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
@@ -68,7 +68,7 @@ export const setPlaylistEdit = (playlist) => (dispatch) => {
   // User Loading
 
   dispatch({
-    type: SET_PLAYLIST_EDIT,
+    type: SET_COURSE_EDIT,
     payload: playlist,
   });
 };
@@ -77,7 +77,7 @@ export const deletePlaylistEdit = () => (dispatch) => {
   // User Loading
 
   dispatch({
-    type: DELETE_PLAYLIST_EDIT,
+    type: DELETE_COURSE_EDIT,
   });
 };
 
@@ -85,7 +85,7 @@ export const editPlaylist = (playlist) => (dispatch, getState) => {
   delete playlist.picture;
   console.log(playlist);
   dispatch({
-    type: EDIT_PLAYLIST,
+    type: EDIT_COURSE,
   });
   axios
     .patch(
@@ -99,13 +99,13 @@ export const editPlaylist = (playlist) => (dispatch, getState) => {
       console.log("res", res);
 
       dispatch({
-        type: EDIT_PLAYLIST_SUCCESS,
+        type: EDIT_COURSE_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
-        type: EDIT_PLAYLIST_FAIL,
+        type: EDIT_COURSE_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
@@ -115,7 +115,7 @@ export const createPlaylist = (playlist) => (dispatch, getState) => {
   delete playlist.picture;
   console.log(playlist);
   dispatch({
-    type: CREATE_PLAYLIST,
+    type: CREATE_COURSE,
   });
 
   axios
@@ -126,13 +126,13 @@ export const createPlaylist = (playlist) => (dispatch, getState) => {
     )
     .then((res) => {
       dispatch({
-        type: CREATE_PLAYLIST_SUCCESS,
+        type: CREATE_COURSE_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
-        type: CREATE_PLAYLIST_FAIL,
+        type: CREATE_COURSE_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
@@ -140,7 +140,7 @@ export const createPlaylist = (playlist) => (dispatch, getState) => {
 
 export const deletePlaylist = (id) => (dispatch, getState) => {
   dispatch({
-    type: DELETE_PLAYLIST,
+    type: DELETE_COURSE,
     payload: id,
   });
 
@@ -151,7 +151,7 @@ export const deletePlaylist = (id) => (dispatch, getState) => {
     )
     .then(() => {
       dispatch({
-        type: DELETE_PLAYLIST_SUCCESS,
+        type: DELETE_COURSE_SUCCESS,
       });
       Swal.fire({
         title: "Eliminado!",
@@ -161,7 +161,7 @@ export const deletePlaylist = (id) => (dispatch, getState) => {
     })
     .catch((err) => {
       dispatch({
-        type: DELETE_PLAYLIST_FAIL,
+        type: DELETE_COURSE_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

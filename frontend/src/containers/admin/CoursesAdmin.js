@@ -20,7 +20,7 @@ import {
 } from "src/redux/actions/courses";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
-const playlists = () => {
+const CoursesAdmin = () => {
   const MySwal = withReactContent(Swal);
 
   const main = useRef();
@@ -35,7 +35,7 @@ const playlists = () => {
       dispatchFetchPlaylists();
     }
   }, [programReducer.isLoading]);
-  const playlistsReducer = useSelector((state) => state.playlistsReducer);
+  const coursesReducer = useSelector((state) => state.coursesReducer);
   const handleSetEditPlaylist = (playlist) => {
     const dispatchSetEditPlaylist = (playlist) =>
       dispatch(setPlaylistEdit(playlist));
@@ -79,7 +79,7 @@ const playlists = () => {
     <Main padding ref={main}>
       <Filters
         title="Cursos"
-        placeholder="Buscar lista"
+        placeholder="Buscar Curso"
         search={{ search: search, setSearch: setSearch }}
         onSubmit={handleSubmitSearch}
       />
@@ -90,8 +90,8 @@ const playlists = () => {
           </ButtonCustom>
         </Link>
       </div>
-      {playlistsReducer.playlists &&
-        playlistsReducer.playlists.results.map((playlist) => (
+      {coursesReducer.playlists &&
+        coursesReducer.playlists.results.map((playlist) => (
           <PlaylistCard
             playlist={playlist}
             key={playlist.id}
@@ -99,12 +99,12 @@ const playlists = () => {
             handleDeletePlaylist={handleDeletePlaylist}
           />
         ))}
-      {playlistsReducer.isLoading && <span>Cargando...</span>}
-      {playlistsReducer.playlists &&
-        (playlistsReducer.playlists.previous ||
-          playlistsReducer.playlists.next) && (
+      {coursesReducer.isLoading && <span>Cargando...</span>}
+      {coursesReducer.playlists &&
+        (coursesReducer.playlists.previous ||
+          coursesReducer.playlists.next) && (
           <div className="d-flex justify-content-center my-5">
-            {playlistsReducer.playlists.previous ? (
+            {coursesReducer.playlists.previous ? (
               <IconContext.Provider
                 value={{
                   size: 50,
@@ -113,7 +113,7 @@ const playlists = () => {
               >
                 <IoIosArrowDropleft
                   onClick={() =>
-                    handleChangePage(playlistsReducer.playlists.previous)
+                    handleChangePage(coursesReducer.playlists.previous)
                   }
                 />
               </IconContext.Provider>
@@ -127,7 +127,7 @@ const playlists = () => {
                 <IoIosArrowDropleft />
               </IconContext.Provider>
             )}
-            {playlistsReducer.playlists.next ? (
+            {coursesReducer.playlists.next ? (
               <IconContext.Provider
                 value={{
                   size: 50,
@@ -136,7 +136,7 @@ const playlists = () => {
               >
                 <IoIosArrowDropright
                   onClick={() =>
-                    handleChangePage(playlistsReducer.playlists.next)
+                    handleChangePage(coursesReducer.playlists.next)
                   }
                 />
               </IconContext.Provider>
@@ -156,4 +156,4 @@ const playlists = () => {
   );
 };
 
-export default playlists;
+export default CoursesAdmin;
