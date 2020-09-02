@@ -5,6 +5,7 @@ const Mp3Player = (props) => {
   return (
     <AudioPlayer
       autoPlay
+      customAdditionalControls={[]}
       src={audio}
       // onPlay={e => console.log("onPlay")}
       // other props here

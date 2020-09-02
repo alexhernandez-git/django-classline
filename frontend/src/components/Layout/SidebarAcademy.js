@@ -216,7 +216,7 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
-          {!/\/demo\/?/.test(pathname) && (
+          {programReducer.program.are_videos && !/\/demo\/?/.test(pathname) && (
             <>
               <hr />
               <Link
