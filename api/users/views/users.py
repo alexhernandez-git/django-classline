@@ -306,14 +306,20 @@ class UserViewSet(mixins.RetrieveModelMixin,
         request.data['username'] = request.data['email']
         request.data['email'] = '{}'.format(uuid.uuid4().hex[:9].upper())
         request.data['first_password'] = request.data['password']
-        if request.user.commercial.commercial_level < 2:
-            commercial_level = request.user.commercial.commercial_level + 1
+
+        commercial_level = request.user.commercial.commercial_level + 1
+        if commercial_level > 0 and commercial_level < 2:
+            can_create_commercials = True
+        else:
+            can_create_commercials = False
+
         serializer = UserSignUpSerializer(data=request.data, context={
             'are_program': False,
             'create_commercial': True,
             'create_user_by_commercial': False,
             'user': request.user,
-            'commercial_level': commercial_level
+            'commercial_level': commercial_level,
+            'can_create_commercials': can_create_commercials
         })
         serializer.is_valid(raise_exception=True)
         user = serializer.save()

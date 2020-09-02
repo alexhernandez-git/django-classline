@@ -2,7 +2,7 @@ import { PAYMENTS_FETCH, PAYMENTS_SUCCESS, PAYMENTS_FAIL } from "../types";
 
 const initialState = {
   isLoading: false,
-  playlist: null,
+  payments: null,
   error: null,
 };
 
@@ -17,13 +17,13 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        playlist: action.payload,
+        payments: action.payload,
       };
 
     case PAYMENTS_FAIL:
       return {
         ...state,
-        playlist: null,
+        payments: null,
         isLoading: false,
         error: action.payload,
       };

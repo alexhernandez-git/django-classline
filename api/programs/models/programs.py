@@ -70,7 +70,7 @@ class Program(CLineModel):
 
     def __str__(self):
         """Return description."""
-        return '{}'.format(self.description)
+        return '{}'.format(self.title)
 
     def save(self, **kwargs):
 

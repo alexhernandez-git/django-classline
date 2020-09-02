@@ -2,14 +2,14 @@ import axios from "axios";
 
 import { PAYMENTS_FETCH, PAYMENTS_SUCCESS, PAYMENTS_FAIL } from "../types";
 
-import { tokenConfig } from "./auth";
+import { tokenConfig } from "./authCommercials";
 // CHECK TOKEN & LOAD USER
-export const fetchPlaylist = (id) => (dispatch, getState) => {
+export const fetchPayments = (search = "") => (dispatch, getState) => {
   // User Loading
   dispatch({ type: PAYMENTS_FETCH });
 
   axios
-    .get(`/api/payments/`, tokenConfig(getState))
+    .get(`/api/payments/?search=${search}`, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: PAYMENTS_SUCCESS,

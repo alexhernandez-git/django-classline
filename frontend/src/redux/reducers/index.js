@@ -19,6 +19,7 @@ import pricingReducer from "./pricingReducer";
 import authCommercialsReducer from "./authCommercialsReducer";
 import costumersReducer from "./costumersReducer";
 import commercialsReducer from "./commercialsReducer";
+import paymentsReducer from "./paymentsReducer";
 
 export default combineReducers({
   authReducer,
@@ -43,4 +44,5 @@ export default combineReducers({
   authCommercialsReducer,
   costumersReducer,
   commercialsReducer,
+  paymentsReducer,
 });

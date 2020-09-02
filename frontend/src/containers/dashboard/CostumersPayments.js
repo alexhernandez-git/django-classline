@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Filters from "src/components/Layout/Filters";
 import { MdEdit } from "react-icons/md";
 import styled from "@emotion/styled";
-import CostumerRow from "src/components/Dashboard/ui/CostumerRow";
+import PaymentRow from "src/components/Dashboard/ui/PaymentRow";
 import { IconContext } from "react-icons";
 import { Modal, Form, Row, Col, Button } from "react-bootstrap";
 import VideoForm from "src/components/AdminAcademy/VideoForm";
@@ -26,47 +26,25 @@ import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import CreateCostumerForm from "src/components/Dashboard/ui/CreateCostumerForm";
+import { fetchPayments } from "../../redux/actions/payments";
 const CostumersPayments = () => {
   const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
   useEffect(() => {
-    if (!programReducer.isLoading) {
-      const dispatchFetchAccount = () => dispatch(fetchAccounts());
-      dispatchFetchAccount();
-    }
-  }, [programReducer.isLoading]);
-  const accountsReducer = useSelector((state) => state.accountsReducer);
+    const dispatchFetchAccount = () => dispatch(fetchPayments());
+    dispatchFetchAccount();
+  }, []);
+  const paymentsReducer = useSelector((state) => state.paymentsReducer);
 
   const [show, setShow] = useState(false);
 
-  const handleClose = () => {
-    setShow(false);
-    const dispatchResetAccountCreate = () => dispatch(resetAccountCreate());
-    dispatchResetAccountCreate();
-  };
   const handleShow = () => setShow(true);
-  const handleDeleteAccount = (id) => {
-    MySwal.fire({
-      title: "Estas seguro?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Eliminar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.value) {
-        const dispatchDeleteAccount = (id) => dispatch(deleteAccount(id));
-        dispatchDeleteAccount(id);
-      }
-    });
-  };
   const [search, setSearch] = useState("");
 
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    const dispatchFetchAccount = (search) => dispatch(fetchAccounts(search));
+    const dispatchFetchAccount = (search) => dispatch(fetchPayments(search));
     dispatchFetchAccount(search);
   };
   const handleChangePage = (url) => {
@@ -93,33 +71,38 @@ const CostumersPayments = () => {
                 <th scope="col" style={{ width: "20%" }}>
                   Cantidad
                 </th>
+                <th scope="col" style={{ minWidth: "100px" }}>
+                  Moneda
+                </th>
                 <th scope="col" style={{ width: "20%" }}>
                   Cliente
                 </th>
                 <th scope="col" style={{ width: "100%" }}>
                   Academia
                 </th>
-                <th scope="col">Realizado</th>
+                <th scope="col" style={{ width: "100px" }}>
+                  Realizado
+                </th>
+                <th scope="col">Estado</th>
               </tr>
             </thead>
             <tbody>
-              {accountsReducer.accounts &&
-                accountsReducer.accounts.results.map((account) => (
-                  <CostumerRow
+              {paymentsReducer.payments &&
+                paymentsReducer.payments.results.map((payment) => (
+                  <PaymentRow
                     handleShow={handleShow}
-                    account={account}
-                    key={account.id}
-                    handleDeleteAccount={handleDeleteAccount}
+                    payment={payment}
+                    key={payment.id}
                   />
                 ))}
             </tbody>
           </table>
-          {accountsReducer.isLoading && <span>Cargando...</span>}
-          {accountsReducer.accounts &&
-            (accountsReducer.accounts.previous ||
-              accountsReducer.accounts.next) && (
+          {paymentsReducer.isLoading && <span>Cargando...</span>}
+          {paymentsReducer.payments &&
+            (paymentsReducer.payments.previous ||
+              paymentsReducer.payments.next) && (
               <div className="d-flex justify-content-center my-5">
-                {accountsReducer.accounts.previous ? (
+                {paymentsReducer.payments.previous ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -128,7 +111,7 @@ const CostumersPayments = () => {
                   >
                     <IoIosArrowDropleft
                       onClick={() =>
-                        handleChangePage(accountsReducer.accounts.previous)
+                        handleChangePage(paymentsReducer.payments.previous)
                       }
                     />
                   </IconContext.Provider>
@@ -142,7 +125,7 @@ const CostumersPayments = () => {
                     <IoIosArrowDropleft />
                   </IconContext.Provider>
                 )}
-                {accountsReducer.accounts.next ? (
+                {paymentsReducer.payments.next ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -151,7 +134,7 @@ const CostumersPayments = () => {
                   >
                     <IoIosArrowDropright
                       onClick={() =>
-                        handleChangePage(accountsReducer.accounts.next)
+                        handleChangePage(paymentsReducer.payments.next)
                       }
                     />
                   </IconContext.Provider>

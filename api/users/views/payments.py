@@ -55,12 +55,14 @@ class PaymentViewSet(mixins.RetrieveModelMixin,
     serializer_class = PaymentModelSerializer
     lookup_field = 'code'
     filter_backends = (SearchFilter,  DjangoFilterBackend)
-    search_fields = ('first_name', 'last_name', 'email')
+    search_fields = ('amount_paid', 'currency',
+                     'customer_name', 'customer_email')
 
     def list(self, request, *args, **kwargs):
-
         queryset = self.filter_queryset(self.get_queryset())
-
+        if request.user.commercial.commercial_level > 0:
+            queryset.filter(
+                subscription__user__user_created_by=request.user)
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)

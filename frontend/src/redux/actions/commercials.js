@@ -26,7 +26,6 @@ export const fetchCommercial = (search = "") => (dispatch, getState) => {
   } else {
     code = getState().authCommercialsReducer.user.code;
   }
-  console.log(code);
   axios
     .get(
       `/api/commercials/?user_code=${code}&search=${search}`,

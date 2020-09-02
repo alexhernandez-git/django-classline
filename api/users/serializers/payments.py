@@ -9,6 +9,7 @@ from api.users.models import Payment
 
 class PaymentModelSerializer(serializers.ModelSerializer):
     """Transfers model serializer."""
+    program = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         """Meta class."""
@@ -22,5 +23,9 @@ class PaymentModelSerializer(serializers.ModelSerializer):
             'customer',
             'customer_email',
             'customer_name',
-            'status'
+            'status',
+            'program'
         )
+
+    def get_program(self, obj):
+        return obj.subscription.program.__str__()

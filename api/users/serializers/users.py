@@ -473,7 +473,7 @@ class UserSignUpSerializer(serializers.Serializer):
 
         if self.context['create_commercial'] and 'commercial_level' in self.context:
             Commercial.objects.create(
-                user=user, commercial_level=self.context['commercial_level'], commercial_created_by=self.context['user'])
+                user=user, commercial_level=self.context['commercial_level'], commercial_created_by=self.context['user'], can_create_commercials=self.context['can_create_commercials'])
         else:
             Teacher.objects.create(user=user)
         if self.context['create_user_by_commercial']:
