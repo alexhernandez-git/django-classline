@@ -59,10 +59,11 @@ class PaymentViewSet(mixins.RetrieveModelMixin,
                      'customer_name', 'customer_email')
 
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
+        queryset = self.get_queryset()
         if request.user.commercial.commercial_level > 0:
-            queryset.filter(
+            queryset = queryset.filter(
                 subscription__user__user_created_by=request.user)
+        queryset = self.filter_queryset(queryset)
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
