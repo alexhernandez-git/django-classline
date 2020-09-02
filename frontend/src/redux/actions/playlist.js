@@ -7,7 +7,6 @@ import { tokenConfig } from "./auth";
 export const fetchPlaylist = (id) => (dispatch, getState) => {
   // User Loading
   dispatch({ type: PLAYLIST_FETCH });
-
   axios
     .get(
       `/api/programs/${getState().programReducer.program.code}/playlists/${id}`,
