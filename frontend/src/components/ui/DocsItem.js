@@ -58,7 +58,7 @@ const DocsItem = (props) => {
             <IconContext.Provider
               value={{
                 size: 20,
-                className: "cursor-pointer text-dark mr-2",
+                className: "cursor-pointer text-dark mr-2 action-icon",
               }}
             >
               <OverlayTrigger
@@ -77,7 +77,7 @@ const DocsItem = (props) => {
             <IconContext.Provider
               value={{
                 size: 20,
-                className: "cursor-pointer text-dark mr-2",
+                className: "cursor-pointer text-dark mr-2 action-icon",
               }}
             >
               <OverlayTrigger
@@ -96,7 +96,7 @@ const DocsItem = (props) => {
           <IconContext.Provider
             value={{
               size: 20,
-              className: "cursor-pointer text-dark mr-2",
+              className: "cursor-pointer text-dark mr-2 action-icon",
             }}
           >
             <OverlayTrigger
@@ -111,7 +111,7 @@ const DocsItem = (props) => {
           <IconContext.Provider
             value={{
               size: 20,
-              className: "cursor-pointer text-dark mr-2",
+              className: "cursor-pointer text-dark mr-2 action-icon",
             }}
           >
             <OverlayTrigger
@@ -126,7 +126,7 @@ const DocsItem = (props) => {
           <IconContext.Provider
             value={{
               size: 20,
-              className: "cursor-pointer text-dark",
+              className: "cursor-pointer text-dark action-icon",
             }}
           >
             <OverlayTrigger
