@@ -171,7 +171,7 @@ const DocsItem = (props) => {
           )}
         </div>
       </div>
-      <div className="d-flex justify-content-end">
+      {/* <div className="d-flex justify-content-end">
         {file && (
           <IconContext.Provider
             value={{
@@ -188,7 +188,7 @@ const DocsItem = (props) => {
             </OverlayTrigger>
           </IconContext.Provider>
         )}
-      </div>
+      </div> */}
     </Content>
   );
 };
