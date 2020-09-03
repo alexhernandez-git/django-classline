@@ -12,10 +12,11 @@ import {
 
 import Cropper from "react-cropper";
 
-import { Field } from "formik";
+import { Field, FieldArray } from "formik";
 import { IconContext } from "react-icons";
 import { FaFileAlt } from "react-icons/fa";
 import styled from "@emotion/styled";
+import Checkbox from "src/components/ui/Checkbox";
 
 const FileForm = (props) => {
   const { setFieldValue, values, isEdit, errors, touched } = props;
@@ -45,7 +46,7 @@ const FileForm = (props) => {
     }
     const reader = new FileReader();
 
-    if (files[0].size > 200000000) {
+    if (files[0].size > 2000000) {
       alert("El tamaño del archivo es muy grande");
     } else {
       reader.onload = () => {
@@ -58,7 +59,7 @@ const FileForm = (props) => {
   return (
     <div className="p-4">
       <AdminForm>
-        <Row className="my-4">
+        <Row className="mb-5">
           <Col
             lg={{ span: 4 }}
             className="text-center d-lg-flex justify-content-end align-items-center"
@@ -73,14 +74,69 @@ const FileForm = (props) => {
             ) : null}
           </Col>
         </Row>
-        <Row className="my-4">
+
+        {/* <Row className="mb-5">
+          <Col
+            lg={{ span: 4 }}
+            className="text-center d-lg-flex justify-content-end align-items-center"
+          >
+            <span className="m-0 font-weight-normal">Privado</span>
+          </Col>
+
+          <Col
+            lg={{ offset: 1, span: 6 }}
+            className="d-flex justify-content-center d-lg-block"
+          >
+            <Checkbox name="private" />
+          </Col>
+        </Row> */}
+        {/* <Row className="mb-5">
+          <Col
+            lg={{ span: 4 }}
+            className="text-center d-lg-flex justify-content-end align-items-center"
+          >
+            <span className="m-0 font-weight-normal">Compartir con</span>
+          </Col>
+
+          <Col lg={{ offset: 1, span: 6 }} className="position-relative">
+            <FieldArray
+              name="students"
+              render={(arrayHelpers) => (
+                <div>
+                  {values.students && values.students.length > 0 ? (
+                    values.students.map((friend, index) => (
+                      <div key={index}>
+                        <span>{values.students[index]}</span>
+                        <button
+                          type="button"
+                          onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+                        >
+                          X
+                        </button>
+                      </div>
+                    ))
+                  ) : (
+                    <button type="button" onClick={() => arrayHelpers.push("")}>
+                      {/* show this when user has removed all students from the list *
+                      Add a friend
+                    </button>
+                  )}
+                </div>
+              )}
+            />
+            {/* {errors.title && touched.title ? (
+              <small className="d-block text-red">{errors.title}</small>
+            ) : null} 
+          </Col>
+        </Row> */}
+        <Row className="">
           <Col
             lg={{ span: 4 }}
             className="text-center d-lg-flex justify-content-end align-items-center"
           >
             <div>
               <span className="m-0 font-weight-normal d-block">Archivo</span>
-              <small>(2Mb max)</small>
+              <small>(2MB max)</small>
             </div>
           </Col>
 

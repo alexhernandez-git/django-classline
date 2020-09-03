@@ -3,24 +3,36 @@ import styled from "@emotion/styled";
 import { textEllipsis } from "./TextEllipsis";
 import moment from "moment";
 import { IconContext } from "react-icons";
-import { FaFileAlt, FaFolder, FaCog } from "react-icons/fa";
+import { FaFileAlt, FaFolder, FaCog, FaEdit, FaTrashAlt } from "react-icons/fa";
+import { ImLock, ImUnlocked } from "react-icons/im";
 import { useState, useRef, useEffect } from "react";
-import { MdCancel, MdShare, MdFileDownload } from "react-icons/md";
+import {
+  MdCancel,
+  MdShare,
+  MdFileDownload,
+  MdEdit,
+  MdDelete,
+  MdPublic,
+  MdLock,
+} from "react-icons/md";
+import { IoMdUnlock, IoMdLock } from "react-icons/io";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const DocsItem = (props) => {
-  const { file, admin } = props;
+  const { file, admin, handleShowShare } = props;
   const { pathname } = useLocation();
   const { program } = useParams();
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(props.isEditing);
   const [inputValue, setInputValue] = useState("Rutina de pectoral");
   const input = useRef();
+  const [isPrivate, setIsPrivate] = useState(false);
   useEffect(() => {
     /**
      * Alert if clicked on outside of element
      */
     function handleClickOutside(event) {
       if (input.current && !input.current.contains(event.target)) {
-        setIsEditing(false);
+        handleUpdateName();
         console.log("entra");
       }
     }
@@ -32,39 +44,98 @@ const DocsItem = (props) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [input]);
+  const handleUpdateName = (e = null) => {
+    if (e) {
+      e.preventDefault();
+    }
+    setIsEditing(false);
+  };
   return (
     <Content>
       {admin && (
         <div className="d-flex justify-content-end">
-          <IconContext.Provider
-            value={{
-              size: 20,
-              className: "cursor-pointer text-dark action-icon mr-2",
-            }}
-          ></IconContext.Provider>
+          {isPrivate ? (
+            <IconContext.Provider
+              value={{
+                size: 20,
+                className: "cursor-pointer text-dark action-icon mr-2",
+              }}
+            >
+              <OverlayTrigger
+                key={"top"}
+                placement={"top"}
+                overlay={
+                  <Tooltip id={`tooltip-p`}>
+                    Clica para cambiar de privado a publico.
+                  </Tooltip>
+                }
+              >
+                <MdLock onClick={() => setIsPrivate(false)} />
+              </OverlayTrigger>
+            </IconContext.Provider>
+          ) : (
+            <IconContext.Provider
+              value={{
+                size: 20,
+                className: "cursor-pointer text-dark action-icon mr-2",
+              }}
+            >
+              <OverlayTrigger
+                key={"top"}
+                placement={"top"}
+                overlay={
+                  <Tooltip id={`tooltip-top`}>
+                    Clica para cambiar de publico a privado.
+                  </Tooltip>
+                }
+              >
+                <MdPublic onClick={() => setIsPrivate(true)} />
+              </OverlayTrigger>
+            </IconContext.Provider>
+          )}
           <IconContext.Provider
             value={{
               size: 20,
               className: "cursor-pointer text-dark action-icon mr-2",
             }}
           >
-            <FaCog />
+            <OverlayTrigger
+              key={"top"}
+              placement={"top"}
+              overlay={<Tooltip id={`tooltip-p`}>Compartir.</Tooltip>}
+            >
+              <MdShare onClick={handleShowShare} />
+            </OverlayTrigger>
           </IconContext.Provider>
+
           <IconContext.Provider
             value={{
               size: 20,
               className: "cursor-pointer text-dark action-icon mr-2",
             }}
           >
-            <MdShare />
+            <OverlayTrigger
+              key={"top"}
+              placement={"top"}
+              overlay={<Tooltip id={`tooltip-p`}>Editar.</Tooltip>}
+            >
+              <MdEdit onClick={() => setIsEditing(true)} />
+            </OverlayTrigger>
           </IconContext.Provider>
+
           <IconContext.Provider
             value={{
               size: 20,
               className: "cursor-pointer text-dark action-icon",
             }}
           >
-            <MdCancel />
+            <OverlayTrigger
+              key={"top"}
+              placement={"top"}
+              overlay={<Tooltip id={`tooltip-p`}>Eliminar.</Tooltip>}
+            >
+              <MdDelete />
+            </OverlayTrigger>
           </IconContext.Provider>
         </div>
       )}
@@ -79,13 +150,16 @@ const DocsItem = (props) => {
         </IconContext.Provider>
         <div className="text">
           {isEditing && admin ? (
-            <input
-              ref={input}
-              className="input"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              type="text"
-            />
+            <form onSubmit={(e) => handleUpdateName(e)}>
+              <input
+                ref={input}
+                className="input"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                type="text"
+                autoFocus
+              />
+            </form>
           ) : (
             <small
               css={textEllipsis}
@@ -98,14 +172,22 @@ const DocsItem = (props) => {
         </div>
       </div>
       <div className="d-flex justify-content-end">
-        <IconContext.Provider
-          value={{
-            size: 20,
-            className: "cursor-pointer text-dark action-icon mr-2",
-          }}
-        >
-          <MdFileDownload />
-        </IconContext.Provider>
+        {file && (
+          <IconContext.Provider
+            value={{
+              size: 20,
+              className: "cursor-pointer text-dark action-icon mr-2",
+            }}
+          >
+            <OverlayTrigger
+              key={"bottom"}
+              placement={"bottom"}
+              overlay={<Tooltip id={`tooltip-p`}>Descargar.</Tooltip>}
+            >
+              <MdFileDownload />
+            </OverlayTrigger>
+          </IconContext.Provider>
+        )}
       </div>
     </Content>
   );
