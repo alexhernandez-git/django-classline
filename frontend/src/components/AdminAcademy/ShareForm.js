@@ -14,6 +14,7 @@ import { IconContext } from "react-icons";
 import { FaFileAlt } from "react-icons/fa";
 import styled from "@emotion/styled";
 import Checkbox from "src/components/ui/Checkbox";
+import { MdRemove } from "react-icons/md";
 const ShareForm = (props) => {
   const { setFieldValue, values, isEdit, errors, touched } = props;
   const cropper = useRef(null);
@@ -22,6 +23,13 @@ const ShareForm = (props) => {
   const handleShow = () => setShow(true);
   const [searching, setSearching] = useState(false);
   const [inputSearch, setInputSearch] = useState("");
+  useEffect(() => {
+    if (inputSearch) {
+      setSearching(true);
+    } else {
+      setSearching(false);
+    }
+  }, [inputSearch]);
   return (
     <div className="p-4">
       <AdminForm>
@@ -31,60 +39,133 @@ const ShareForm = (props) => {
           name="students"
           render={(arrayHelpers) => (
             <div>
-              <input type="text" placeholder={"Añade a tus alumnos"} />
-              <div className="position-relative">
-                <StudentsContainer>
-                  <StudentCard className="">
-                    <div className="img-div">
-                      <img src="../../../static/assets/img/avatar.png" alt="" />
-                    </div>
-                    <div className="ml-3">
-                      <div>Alex Hernandez</div>
-                      <small className="text-grey">vlexhndz@gmail.com</small>
-                    </div>
-                  </StudentCard>
-                  <StudentCard className="">
-                    <div className="img-div">
-                      <img src="../../../static/assets/img/avatar.png" alt="" />
-                    </div>
-                    <div className="ml-3">
-                      <div>Alex Hernandez</div>
-                      <small className="text-grey">vlexhndz@gmail.com</small>
-                    </div>
-                  </StudentCard>
-
-                  <StudentCard className="">
-                    <div className="img-div">
-                      <img src="../../../static/assets/img/avatar.png" alt="" />
-                    </div>
-                    <div className="ml-3">
-                      <div>Alex Hernandez</div>
-                      <small className="text-grey">vlexhndz@gmail.com</small>
-                    </div>
-                  </StudentCard>
-                  <StudentCard className="">
-                    <div className="img-div">
-                      <img src="../../../static/assets/img/avatar.png" alt="" />
-                    </div>
-                    <div className="ml-3">
-                      <div>Alex Hernandez</div>
-                      <small className="text-grey">vlexhndz@gmail.com</small>
-                    </div>
-                  </StudentCard>
-                </StudentsContainer>
-              </div>
+              <input
+                type="text"
+                placeholder={"Añade a tus alumnos"}
+                value={inputSearch}
+                onChange={(e) => setInputSearch(e.target.value)}
+              />
+              {searching && (
+                <div className="position-relative">
+                  <StudentsContainer>
+                    <StudentCard
+                      className=""
+                      onClick={() => {
+                        arrayHelpers.push("Alex Hernandez");
+                        setSearching(false);
+                      }}
+                    >
+                      <div className="img-div">
+                        <img
+                          src="../../../static/assets/img/avatar.png"
+                          alt=""
+                        />
+                      </div>
+                      <div className="ml-3">
+                        <div>Alex Hernandez</div>
+                        <small className="text-grey">vlexhndz@gmail.com</small>
+                      </div>
+                    </StudentCard>
+                    <StudentCard
+                      className=""
+                      onClick={() => {
+                        arrayHelpers.push("Alex Hernandez");
+                        setSearching(false);
+                      }}
+                    >
+                      <div className="img-div">
+                        <img
+                          src="../../../static/assets/img/avatar.png"
+                          alt=""
+                        />
+                      </div>
+                      <div className="ml-3">
+                        <div>Alex Hernandez</div>
+                        <small className="text-grey">vlexhndz@gmail.com</small>
+                      </div>
+                    </StudentCard>
+                    <StudentCard
+                      className=""
+                      onClick={() => {
+                        arrayHelpers.push("Alex Hernandez");
+                        setSearching(false);
+                      }}
+                    >
+                      <div className="img-div">
+                        <img
+                          src="../../../static/assets/img/avatar.png"
+                          alt=""
+                        />
+                      </div>
+                      <div className="ml-3">
+                        <div>Alex Hernandez</div>
+                        <small className="text-grey">vlexhndz@gmail.com</small>
+                      </div>
+                    </StudentCard>
+                    <StudentCard
+                      className=""
+                      onClick={() => {
+                        arrayHelpers.push("Alex Hernandez");
+                        setSearching(false);
+                      }}
+                    >
+                      <div className="img-div">
+                        <img
+                          src="../../../static/assets/img/avatar.png"
+                          alt=""
+                        />
+                      </div>
+                      <div className="ml-3">
+                        <div>Alex Hernandez</div>
+                        <small className="text-grey">vlexhndz@gmail.com</small>
+                      </div>
+                    </StudentCard>
+                    <StudentCard
+                      className=""
+                      onClick={() => {
+                        arrayHelpers.push("Alex Hernandez");
+                        setSearching(false);
+                      }}
+                    >
+                      <div className="img-div">
+                        <img
+                          src="../../../static/assets/img/avatar.png"
+                          alt=""
+                        />
+                      </div>
+                      <div className="ml-3">
+                        <div>Alex Hernandez</div>
+                        <small className="text-grey">vlexhndz@gmail.com</small>
+                      </div>
+                    </StudentCard>
+                  </StudentsContainer>
+                </div>
+              )}
               {values.students &&
                 values.students.length > 0 &&
-                values.students.map((friend, index) => (
-                  <div key={index}>
-                    <span>{values.students[index]}</span>
-                    <button
-                      type="button"
-                      onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+                values.students.map((student, index) => (
+                  <StudentSelectedCard key={index}>
+                    <div className="d-flex">
+                      <div className="img-div">
+                        <img
+                          src="../../../static/assets/img/avatar.png"
+                          alt=""
+                        />
+                      </div>
+                      <div className="ml-3">
+                        <div>{values.students[index]}</div>
+                        <small className="text-grey">vlexhndz@gmail.com</small>
+                      </div>
+                    </div>
+                    <IconContext.Provider
+                      value={{
+                        className: "cursor-pointer",
+                        size: 30,
+                      }}
                     >
-                      X
-                    </button>
-                  </div>
+                      <MdRemove onClick={() => arrayHelpers.remove(index)} />
+                    </IconContext.Provider>
+                  </StudentSelectedCard>
                 ))}
             </div>
           )}
@@ -106,6 +187,24 @@ const StudentCard = styled.div`
   margin: 1rem 0;
   padding: 0.5rem;
   display: flex;
+  &:hover {
+    background: #efefef;
+  }
+  .img-div {
+    overflow: hidden;
+    width: 50px;
+    border-radius: 25px;
+  }
+  .img-div img {
+    width: 100%;
+  }
+`;
+const StudentSelectedCard = styled.div`
+  margin: 1rem 0;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   &:hover {
     background: #efefef;
   }

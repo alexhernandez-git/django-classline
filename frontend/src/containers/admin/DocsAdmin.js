@@ -193,7 +193,7 @@ export default function DocsAdmin() {
           }}
         </Formik>
       </Modal>
-      <Modal show={showShare} onHide={handleCloseShare} size="lg" centered>
+      <Modal show={showShare} onHide={handleCloseShare} size="lg">
         <Formik
           enableReinitialize={true}
           initialValues={{
@@ -233,7 +233,7 @@ export default function DocsAdmin() {
                     touched={props.touched}
                   />
                   <Modal.Footer>
-                    <ButtonCustom type="submit">Guardar</ButtonCustom>
+                    <ButtonCustom type="submit">Compartir</ButtonCustom>
                   </Modal.Footer>
                 </FormFormik>
               </>
