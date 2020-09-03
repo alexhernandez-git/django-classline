@@ -10,6 +10,7 @@ import {
 import Layout from "src/components/Layout/LayoutAcademy";
 import HomeAcademy from "src/containers/HomeAcademy";
 import VideosAcademy from "src/containers/VideosAcademy";
+import DocsAcademy from "src/containers/DocsAcademy";
 import MeetupsAcademy from "src/containers/MeetupsAcademy";
 import PodcastsAcademy from "src/containers/PodcastsAcademy";
 import VideoAcademy from "src/containers/VideoAcademy";
@@ -37,6 +38,8 @@ import CourseFormAdmin from "../containers/admin/CourseFormAdmin";
 import PlaylistsAcademy from "../containers/PlaylistsAcademy";
 import PlaylistFormAcademy from "../containers/PlaylistFormAcademy";
 import PlaylistAcademy from "../containers/PlaylistAcademy";
+import SharedDocsAcademy from "../containers/SharedDocsAcademy";
+import DocsAdmin from "../containers/admin/DocsAdmin";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -110,10 +113,10 @@ const Academy = () => {
             />
             <Route
               exact
-              path="/academy/:program/video/:id"
+              path="/academy/:program/docs/:id"
               component={
-                programReducer.program.are_videos
-                  ? VideoAcademy
+                programReducer.program.are_docs || true
+                  ? DocsAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />
@@ -150,6 +153,24 @@ const Academy = () => {
               component={
                 programReducer.program.are_meetups
                   ? MeetupsAcademy
+                  : () => <Redirect to={`/academy/${programId}/home`} />
+              }
+            />
+            <Route
+              exact
+              path="/academy/:program/docs"
+              component={
+                programReducer.program.are_docs || true
+                  ? DocsAcademy
+                  : () => <Redirect to={`/academy/${programId}/home`} />
+              }
+            />
+            <Route
+              exact
+              path="/academy/:program/shared-docs"
+              component={
+                programReducer.program.are_docs || true
+                  ? SharedDocsAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />
@@ -218,6 +239,11 @@ const Academy = () => {
                   exact
                   path="/academy/:program/admin/meetups"
                   component={MeetupsAdmin}
+                />
+                <Route
+                  exact
+                  path="/academy/:program/admin/docs"
+                  component={DocsAdmin}
                 />
               </>
             ) : (

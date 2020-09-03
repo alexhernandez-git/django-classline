@@ -11,6 +11,8 @@ import {
   FaVideo,
 } from "react-icons/fa";
 import { BsFillCollectionPlayFill, BsFillChatDotsFill } from "react-icons/bs";
+import { MdFolderShared, MdFolder } from "react-icons/md";
+
 import { IconContext } from "react-icons";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -112,7 +114,19 @@ const Sidebar = (props) => {
               Clases online
             </SecctionLink>
           </Link>
-
+          <Link to={`/academy/${program}/admin/docs`}>
+            <SecctionLink active={/\/docs\/?$/.test(pathname) && true}>
+              <IconContext.Provider
+                value={{
+                  className: "sidebar-icon",
+                  size: 25,
+                }}
+              >
+                <MdFolder />
+              </IconContext.Provider>{" "}
+              Documentos
+            </SecctionLink>
+          </Link>
           <Link to={`/academy/${program}/home`}>
             <SecctionLink>
               <IconContext.Provider
@@ -216,42 +230,69 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
-          {programReducer.program.are_videos && !/\/demo\/?/.test(pathname) && (
-            <>
-              <hr />
-              <Link
-                to={`${
-                  /\/demo\/?/.test(pathname) ? "/demo" : ""
-                }/academy/${program}/playlists`}
-              >
-                <SecctionLink active={/\/playlists\/?$/.test(pathname) && true}>
-                  <IconContext.Provider
-                    value={{
-                      className: "sidebar-icon",
-                    }}
-                  >
-                    <FaListUl />
-                  </IconContext.Provider>{" "}
-                  Listas de reproducción
-                </SecctionLink>
-              </Link>
-            </>
+          {(programReducer.program.are_docs || true) && (
+            <Link
+              to={`${
+                /\/demo\/?/.test(pathname) ? "/demo" : ""
+              }/academy/${program}/docs`}
+            >
+              <SecctionLink active={/\/docs\/?$/.test(pathname) && true}>
+                <IconContext.Provider
+                  value={{
+                    className: "sidebar-icon",
+                    size: 25,
+                  }}
+                >
+                  <MdFolder />
+                </IconContext.Provider>{" "}
+                Documentos
+              </SecctionLink>
+            </Link>
           )}
-          {/* <Link href="/[program]/comunity" as={`/academy/${program}/comunity`}>
-
-                        <SecctionLink active={/\/comunity\/?$/.test(pathname) && true}>
-
-                            <IconContext.Provider value={{
-
-                                className: "sidebar-icon"
-                            }}>
-
-                                <FaUsers />
-                            </IconContext.Provider>{' '}
-Comunidad
-
-</SecctionLink>
-                    </Link> */}
+          {programReducer.program.are_videos &&
+            (programReducer.program.are_docs || true) &&
+            !/\/demo\/?/.test(pathname) && (
+              <>
+                <hr />
+                <Link
+                  to={`${
+                    /\/demo\/?/.test(pathname) ? "/demo" : ""
+                  }/academy/${program}/playlists`}
+                >
+                  <SecctionLink
+                    active={/\/playlists\/?$/.test(pathname) && true}
+                  >
+                    <IconContext.Provider
+                      value={{
+                        className: "sidebar-icon",
+                      }}
+                    >
+                      <FaListUl />
+                    </IconContext.Provider>{" "}
+                    Listas de reproducción
+                  </SecctionLink>
+                </Link>
+                <Link
+                  to={`${
+                    /\/demo\/?/.test(pathname) ? "/demo" : ""
+                  }/academy/${program}/shared-docs`}
+                >
+                  <SecctionLink
+                    active={/\/shared-docs\/?$/.test(pathname) && true}
+                  >
+                    <IconContext.Provider
+                      value={{
+                        className: "sidebar-icon",
+                        size: 25,
+                      }}
+                    >
+                      <MdFolderShared />
+                    </IconContext.Provider>{" "}
+                    Compartido conmigo
+                  </SecctionLink>
+                </Link>
+              </>
+            )}
         </>
       )}
     </ContainerSidebar>
