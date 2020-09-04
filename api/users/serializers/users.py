@@ -391,6 +391,31 @@ class UserCustomTeacherModelSerializer(serializers.ModelSerializer):
         )
 
 
+class UserSharedModelSerializer(serializers.ModelSerializer):
+    """User model serializer."""
+
+    profile = ProfileWithoutSubscriptionsModelSerializer(read_only=True)
+
+    class Meta:
+        """Meta class."""
+
+        model = User
+        fields = (
+            'id',
+            'code',
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'profile',
+        )
+
+        read_only_fields = (
+            'id',
+            'username',
+        )
+
+
 class UserSignUpSerializer(serializers.Serializer):
     """Useer sign up serializer.
 

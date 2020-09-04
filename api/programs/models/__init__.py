@@ -10,3 +10,6 @@ from .courses import Course, CourseTrack
 from .students import Student
 from .accounts_created import AccountCreated
 from .ratings import Rating
+from .subscriptions import Subscription
+from .files import File
+from .folders import Folder

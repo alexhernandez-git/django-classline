@@ -14,6 +14,8 @@ from api.programs.views.students import StudentViewSet
 from api.programs.views.accounts_created import AccountCreatedViewSet
 from api.programs.views.ratings import RatingViewSet
 from api.programs.views.courses import CourseViewSet
+from api.programs.views.files import FileViewSet
+from api.programs.views.folders import FolderViewSet
 router = DefaultRouter()
 router.register(r'programs', ProgramViewSet, basename='program')
 router.register(
@@ -56,6 +58,16 @@ router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/courses',
     CourseViewSet,
     basename='courses'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/files',
+    FileViewSet,
+    basename='files'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/folders',
+    FolderViewSet,
+    basename='folders'
 )
 urlpatterns = [
     path('', include(router.urls))

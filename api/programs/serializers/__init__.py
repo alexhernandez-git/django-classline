@@ -9,3 +9,5 @@ from .courses import *
 from .students import *
 from .accounts_created import *
 from .ratings import *
+from .folders import *
+from .files import *
