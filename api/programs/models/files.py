@@ -24,7 +24,7 @@ class File(CLineModel):
         max_length=500,
     )
     top_folder = models.ForeignKey(
-        'programs.Program', on_delete=models.CASCADE, related_name='files_folder')
+        'programs.Program', on_delete=models.CASCADE, related_name='files_folder', null=True, blank=True)
 
     shared_users = models.ManyToManyField(
         'users.User'

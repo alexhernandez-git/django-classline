@@ -51,15 +51,21 @@ class FolderViewSet(mixins.CreateModelMixin,
     lookup_field = 'pk'
     queryset = Folder.objects.all()
 
+    def get_permissions(self):
+        """Assign permissions based on action."""
+        permissions = [IsAuthenticated]
+
+        return [permission() for permission in permissions]
+
     def get_queryset(self):
         """Restrict list to public-only."""
         queryset = Folder.objects.filter(program=self.program)
         return queryset
 
     def list(self, request, *args, **kwargs):
-        if 'folder_top' in request.GET:
+        if 'top_folder' in request.GET:
             queryset = self.get_queryset().filter(
-                folder_top=request.GET['folder_top'])
+                top_folder=request.GET['top_folder'])
         else:
             queryset = self.get_queryset()
         queryset = self.filter_queryset(queryset)
@@ -75,16 +81,21 @@ class FolderViewSet(mixins.CreateModelMixin,
         """Call by owners to finish a ride."""
 
         program = self.program
+        if 'top_folder' in request.data:
+            top_folder = request.data['top_folder']
+        else:
+            top_folder = None
         serializer = FolderModelSerializer(
             data=request.data,
             context={
                 'program': program,
-                'request': request},
+                'request': request,
+                'top_folder': top_folder},
         )
         serializer.is_valid(raise_exception=True)
-        file = serializer.save()
+        folder = serializer.save()
 
-        data = FolderModelSerializer(file, many=False).data
+        data = FolderModelSerializer(folder, many=False).data
 
         return Response(data, status=status.HTTP_201_CREATED)
 

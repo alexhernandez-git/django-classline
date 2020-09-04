@@ -31,7 +31,6 @@ from api.users.serializers import (
     UserWithoutTeacherModelSerializer
 )
 
-
 import stripe
 
 # Utils
@@ -55,6 +54,12 @@ class FileViewSet(mixins.CreateModelMixin,
         """Restrict list to public-only."""
         queryset = File.objects.filter(program=self.program)
         return queryset
+
+    def get_permissions(self):
+        """Assign permissions based on action."""
+        permissions = [IsAuthenticated]
+
+        return [permission() for permission in permissions]
 
     def list(self, request, *args, **kwargs):
         if 'folder_top' in request.GET:

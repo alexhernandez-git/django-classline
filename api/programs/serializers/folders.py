@@ -7,9 +7,28 @@ from rest_framework import serializers
 from api.programs.models import Folder
 
 
+class TopFolderModelSerializer(serializers.ModelSerializer):
+    """Folder model serializer."""
+    class Meta:
+        """Meta class."""
+
+        model = Folder
+        fields = (
+            'id',
+            'name',
+            'code',
+            'is_private',
+        )
+
+        read_only_fields = (
+            'id',
+        )
+
+
 class FolderModelSerializer(serializers.ModelSerializer):
     """Folder model serializer."""
     shared_users = serializers.SerializerMethodField(read_only=True)
+    top_folder = TopFolderModelSerializer(read_only=True)
 
     class Meta:
         """Meta class."""
@@ -35,4 +54,7 @@ class FolderModelSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         program = self.context['program']
         validated_data['program'] = program
+        if self.context['top_folder']:
+            validated_data['top_folder'] = Folder.objects.get(
+                pk=self.context['top_folder'])
         return super().create(validated_data)

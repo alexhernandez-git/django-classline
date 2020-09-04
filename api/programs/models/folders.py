@@ -20,7 +20,7 @@ class Folder(CLineModel):
     is_private = models.BooleanField(default=False)
 
     top_folder = models.ForeignKey(
-        'programs.Program', on_delete=models.CASCADE, related_name='folders_folder')
+        'programs.Folder', on_delete=models.CASCADE, related_name='folders_folder', null=True, blank=True)
 
     shared_users = models.ManyToManyField(
         'users.User'
