@@ -62,9 +62,9 @@ class FileViewSet(mixins.CreateModelMixin,
         return [permission() for permission in permissions]
 
     def list(self, request, *args, **kwargs):
-        if 'folder_top' in request.GET:
+        if 'top_folder' in request.GET:
             queryset = self.get_queryset().filter(
-                folder_top=request.GET['folder_top'])
+                top_folder=request.GET['top_folder'])
         else:
             queryset = self.get_queryset()
         queryset = self.filter_queryset(queryset)
@@ -80,11 +80,15 @@ class FileViewSet(mixins.CreateModelMixin,
         """Call by owners to finish a ride."""
 
         program = self.program
+        if 'top_folder' in request.data:
+            top_folder = request.data['top_folder']
+        else:
+            top_folder = None
         serializer = FileModelSerializer(
             data=request.data,
             context={
                 'program': program,
-                'request': request},
+                'top_folder': top_folder},
         )
         serializer.is_valid(raise_exception=True)
         file = serializer.save()
