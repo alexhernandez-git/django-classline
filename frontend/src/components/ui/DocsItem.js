@@ -26,6 +26,8 @@ import { editFile } from "../../redux/actions/files";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { ButtonCustom } from "./ButtonCustom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 const FileSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, "El color no el válido")
@@ -34,6 +36,8 @@ const FileSchema = Yup.object().shape({
 });
 
 const DocsItem = (props) => {
+  const MySwal = withReactContent(Swal);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
@@ -105,34 +109,73 @@ const DocsItem = (props) => {
     }
     setIsEditing(false);
   };
-  const handleUpdatePrivacity = (e = null) => {
-    if (e) {
-      e.preventDefault();
-    }
+  const handleUpdatePrivacity = (privacity) => {
     if (is_file) {
-      if (file.is_private != isPrivate) {
-        dispatch(
-          editFile({
-            id: file.id,
-            is_private: isPrivate,
-          })
-        );
+      if (file.is_private != privacity) {
+        MySwal.fire({
+          title: "Estas seguro?",
+          text: privacity
+            ? `Cambiaras de pública a privada`
+            : `Cambiaras de privada a pública`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cambiar",
+          cancelButtonText: "Atras",
+        }).then((result) => {
+          if (result.value) {
+            dispatch(
+              editFile({
+                id: file.id,
+                is_private: privacity,
+              })
+            );
+            setIsPrivate(privacity);
+
+            MySwal.fire({
+              title: "Privacidad cambiada!",
+              icon: "success",
+              confirmButtonText: "Ok",
+            });
+          }
+        });
       }
     } else {
-      if (folder.is_private != isPrivate) {
-        dispatch(
-          editFolder({
-            id: folder.id,
-            is_private: isPrivate,
-          })
-        );
+      if (folder.is_private != privacity) {
+        MySwal.fire({
+          title: "Estas seguro?",
+          text: privacity
+            ? `Cambiaras de pública a privada`
+            : `Cambiaras de privada a pública`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cambiar",
+          cancelButtonText: "Atras",
+        }).then((result) => {
+          if (result.value) {
+            dispatch(
+              editFolder({
+                id: folder.id,
+                is_private: privacity,
+              })
+            );
+            setIsPrivate(privacity);
+
+            MySwal.fire({
+              title: "Privacidad cambiada!",
+              icon: "success",
+              confirmButtonText: "Ok",
+            });
+          }
+        });
       }
     }
     setIsEditing(false);
   };
-  useEffect(() => {
-    handleUpdatePrivacity();
-  }, [isPrivate]);
+
   const handleUpdateColor = (e) => {
     e.preventDefault();
     if (!is_file) {
@@ -189,7 +232,7 @@ const DocsItem = (props) => {
                     </Tooltip>
                   }
                 >
-                  <MdLock onClick={() => setIsPrivate(false)} />
+                  <MdLock onClick={() => handleUpdatePrivacity(false)} />
                 </OverlayTrigger>
               </IconContext.Provider>
             ) : (
@@ -208,7 +251,7 @@ const DocsItem = (props) => {
                     </Tooltip>
                   }
                 >
-                  <MdPublic onClick={() => setIsPrivate(true)} />
+                  <MdPublic onClick={() => handleUpdatePrivacity(true)} />
                 </OverlayTrigger>
               </IconContext.Provider>
             )}
@@ -270,12 +313,13 @@ const DocsItem = (props) => {
           value={{
             size: 100,
             className: "cursor-pointer",
-            color: color,
+            color: !is_file && folder.color,
           }}
         >
           {is_file ? <FaFileAlt /> : <FaFolder />}
         </IconContext.Provider>
         <div className="text">
+          {console.log(isEditing && admin)}
           {isEditing && admin ? (
             <form onSubmit={(e) => handleUpdateName(e)}>
               <input
@@ -326,6 +370,27 @@ const DocsItem = (props) => {
             <CirclePicker
               color={color ? color : ""}
               onChangeComplete={handleChangeComplete}
+              colors={[
+                "#f44336",
+                "#e91e63",
+                "#9c27b0",
+                "#673ab7",
+                "#3f51b5",
+                "#2196f3",
+                "#03a9f4",
+                "#00bcd4",
+                "#009688",
+                "#4caf50",
+                "#8bc34a",
+                "#cddc39",
+                "#ffeb3b",
+                "#ffc107",
+                "#ff9800",
+                "#ff5722",
+                "#795548",
+                // "#607d8b",
+                "#212529",
+              ]}
             />
           </div>
           <Modal.Footer>

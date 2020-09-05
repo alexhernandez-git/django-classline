@@ -100,6 +100,8 @@ export default function DocsAdmin() {
   const handleDeleteFolder = (folder) => {
     MySwal.fire({
       title: "Estas seguro?",
+      text: "Se eliminará esta carpeta con todos los archivos dentro",
+
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -115,6 +117,7 @@ export default function DocsAdmin() {
   const handleDeleteFile = (file) => {
     MySwal.fire({
       title: "Estas seguro?",
+      text: "Se eliminará esta carpeta con todos los archivos dentro",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
