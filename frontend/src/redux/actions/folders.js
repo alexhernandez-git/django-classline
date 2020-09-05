@@ -14,7 +14,8 @@ import {
   DELETE_FOLDER,
   DELETE_FOLDER_FAIL,
   DELETE_FOLDER_SUCCESS,
-  SET_TOP_FOLDER,
+  SET_CURRENT_FOLDER,
+  REMOVE_CURRENT_FOLDER,
 } from "../types";
 
 import { tokenConfig } from "./auth";
@@ -23,15 +24,17 @@ import { tokenConfig } from "./auth";
 export const fetchFolders = (search = "") => (dispatch, getState) => {
   // User Loading
   dispatch({ type: FOLDERS_FETCH });
-  let top_folder = "";
-  if (getState().foldersReducer.top_folder) {
-    top_folder = getState().foldersReducer.top_folder;
+  let current_folder = "";
+  if (getState().foldersReducer.current_folders.length > 0) {
+    current_folder = getState().foldersReducer.current_folders[
+      getState().foldersReducer.current_folders.length - 1
+    ];
   }
   axios
     .get(
       `/api/programs/${
         getState().programReducer.program.code
-      }/folders/?search=${search}&top_folder=${top_folder}`,
+      }/folders/?search=${search}&top_folder=${current_folder}`,
       tokenConfig(getState)
     )
     .then((res) => {
@@ -83,8 +86,10 @@ export const createFolder = () => (dispatch, getState) => {
   let folder = {
     name: "Nueva Carpeta",
   };
-  if (getState().foldersReducer.top_folder) {
-    folder.top_folder = getState().foldersReducer.top_folder;
+  if (getState().foldersReducer.current_folders.length > 0) {
+    folder.top_folder = getState().foldersReducer.current_folders[
+      getState().foldersReducer.current_folders.length - 1
+    ];
   }
   axios
     .post(
@@ -116,7 +121,7 @@ export const deleteFolders = (id) => (dispatch, getState) => {
 
   axios
     .delete(
-      `/api/programs/${getState().programReducer.program.code}/folders/${id}`,
+      `/api/programs/${getState().programReducer.program.code}/folders/${id}/`,
       tokenConfig(getState)
     )
     .then(() => {
@@ -137,9 +142,14 @@ export const deleteFolders = (id) => (dispatch, getState) => {
     });
 };
 
-export const setTopFolder = (id) => (dispatch, getState) => {
+export const setCurrentFolder = (id) => (dispatch, getState) => {
   dispatch({
-    type: SET_TOP_FOLDER,
+    type: SET_CURRENT_FOLDER,
     payload: id,
+  });
+};
+export const removeCurrentFolder = () => (dispatch, getState) => {
+  dispatch({
+    type: REMOVE_CURRENT_FOLDER,
   });
 };

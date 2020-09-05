@@ -25,6 +25,10 @@ import {
   createFolder,
   fetchFolders,
   deleteFolders,
+  setTopFolder,
+  setCurrentFolder,
+  fetchTopFolders,
+  removeCurrentFolder,
 } from "../../redux/actions/folders";
 import { fetchFiles, createFile, deleteFiles } from "../../redux/actions/files";
 import Swal from "sweetalert2";
@@ -130,6 +134,16 @@ export default function DocsAdmin() {
       }
     });
   };
+  const hanldeEnterFolder = (folder) => {
+    dispatch(setCurrentFolder(folder.id));
+    dispatch(fetchFolders());
+    dispatch(fetchFiles());
+  };
+  const hanldeEnterTopFolder = () => {
+    dispatch(removeCurrentFolder());
+    dispatch(fetchFolders());
+    dispatch(fetchFiles());
+  };
   return (
     <>
       <Main padding ref={main}>
@@ -140,38 +154,59 @@ export default function DocsAdmin() {
           search={{ search: search, setSearch: setSearch }}
           onSubmit={handleSubmitSearch}
         />
-        <div className="d-sm-flex justify-content-end mb-3">
-          <ButtonCustom
-            type="button"
-            className="d-flex align-items-center mr-3 justify-content-center"
-            onClick={handleCreateFolder}
-          >
-            <IconContext.Provider
-              value={{
-                className: "cursor-pointer mr-2",
-                color: "#fff",
-              }}
+        <div className="d-sm-flex justify-content-between mb-3">
+          <div>
+            {foldersReducer.current_folders.length > 0 && (
+              <ButtonCustom
+                type="button"
+                className="d-flex align-items-center mr-3 justify-content-center"
+                onClick={hanldeEnterTopFolder}
+              >
+                <IconContext.Provider
+                  value={{
+                    className: "cursor-pointer mr-2",
+                    color: "#fff",
+                  }}
+                >
+                  <FaFolder />
+                </IconContext.Provider>
+                Volver
+              </ButtonCustom>
+            )}
+          </div>
+          <div className="d-flex">
+            <ButtonCustom
+              type="button"
+              className="d-flex align-items-center mr-3 justify-content-center"
+              onClick={handleCreateFolder}
             >
-              <FaFolder />
-            </IconContext.Provider>
-            Nueva carpeta
-          </ButtonCustom>
-          <div className="d-block d-sm-none m-2"></div>
-          <ButtonCustom
-            type="button"
-            className="d-flex align-items-center justify-content-center"
-            onClick={handleShow}
-          >
-            <IconContext.Provider
-              value={{
-                className: "cursor-pointer mr-2",
-                color: "#fff",
-              }}
+              <IconContext.Provider
+                value={{
+                  className: "cursor-pointer mr-2",
+                  color: "#fff",
+                }}
+              >
+                <FaFolder />
+              </IconContext.Provider>
+              Nueva carpeta
+            </ButtonCustom>
+            <div className="d-block d-sm-none m-2"></div>
+            <ButtonCustom
+              type="button"
+              className="d-flex align-items-center justify-content-center"
+              onClick={handleShow}
             >
-              <FaFile />
-            </IconContext.Provider>
-            Nuevo archivo
-          </ButtonCustom>
+              <IconContext.Provider
+                value={{
+                  className: "cursor-pointer mr-2",
+                  color: "#fff",
+                }}
+              >
+                <FaFile />
+              </IconContext.Provider>
+              Nuevo archivo
+            </ButtonCustom>
+          </div>
         </div>
         <div className="row">
           <div className="col-12">
@@ -185,6 +220,7 @@ export default function DocsAdmin() {
                     folder={folder}
                     key={folder.id}
                     handleDeleteFolder={handleDeleteFolder}
+                    hanldeEnterFolder={hanldeEnterFolder}
                   />
                 ))}
               {filesReducer.files &&
@@ -312,17 +348,17 @@ const ButtonSearchUsers = styled.button`
 export const GridFolders = styled.div`
   display: grid;
   grid-gap: 4rem 2rem;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   @media screen and (max-width: 1200px) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
   @media screen and (max-width: 992px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
   @media screen and (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
   @media screen and (max-width: 480px) {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 `;

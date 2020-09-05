@@ -1,10 +1,8 @@
 import { Link, useParams, useLocation } from "react-router-dom";
 import styled from "@emotion/styled";
 import { textEllipsis } from "./TextEllipsis";
-import moment from "moment";
 import { IconContext } from "react-icons";
 import { FaFileAlt, FaFolder, FaCog, FaEdit, FaTrashAlt } from "react-icons/fa";
-import { ImLock, ImUnlocked } from "react-icons/im";
 import React, { useState, useRef, useEffect } from "react";
 import { Modal, Form, Row, Col, Button } from "react-bootstrap";
 import { Formik, Form as FormFormik } from "formik";
@@ -54,6 +52,7 @@ const DocsItem = (props) => {
     handleShowShare,
     handleDeleteFolder,
     handleDeleteFile,
+    hanldeEnterFolder,
   } = props;
   const dispatch = useDispatch();
   const { pathname } = useLocation();
@@ -193,7 +192,7 @@ const DocsItem = (props) => {
   const handleChangeComplete = (color) => {
     setColor(color.hex);
   };
-
+  const handleDownloadFile = () => {};
   return (
     <Content>
       {admin && (
@@ -316,7 +315,13 @@ const DocsItem = (props) => {
             color: !is_file && folder.color,
           }}
         >
-          {is_file ? <FaFileAlt /> : <FaFolder />}
+          {is_file ? (
+            <a href={file.file} target={"_blank"}>
+              <FaFileAlt />
+            </a>
+          ) : (
+            <FaFolder onClick={() => hanldeEnterFolder(folder)} />
+          )}
         </IconContext.Provider>
         <div className="text">
           {console.log(isEditing && admin)}

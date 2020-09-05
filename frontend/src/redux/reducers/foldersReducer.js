@@ -11,7 +11,8 @@ import {
   DELETE_FOLDER,
   DELETE_FOLDER_FAIL,
   DELETE_FOLDER_SUCCESS,
-  SET_TOP_FOLDER,
+  SET_CURRENT_FOLDER,
+  REMOVE_CURRENT_FOLDER,
 } from "../types";
 
 const initialState = {
@@ -26,7 +27,7 @@ const initialState = {
   folder_delete: null,
   folder_deleting: false,
   folder_delete_error: null,
-  top_folder: null,
+  current_folders: [],
 };
 
 export default function (state = initialState, action) {
@@ -112,10 +113,18 @@ export default function (state = initialState, action) {
         folder_delete: null,
         folder_delete_error: action.payload,
       };
-    case SET_TOP_FOLDER:
+
+    case SET_CURRENT_FOLDER:
       return {
         ...state,
-        top_folder: action.payload,
+        current_folders: [...state.current_folders, action.payload],
+      };
+    case REMOVE_CURRENT_FOLDER:
+      return {
+        ...state,
+        current_folders: state.current_folders.filter(
+          (_, i) => i !== state.current_folders.length - 1
+        ),
       };
     default:
       return state;

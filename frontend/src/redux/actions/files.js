@@ -22,15 +22,17 @@ import { tokenConfig } from "./auth";
 export const fetchFiles = (search = "") => (dispatch, getState) => {
   // User Loading
   dispatch({ type: FILES_FETCH });
-  let top_folder = "";
-  if (getState().foldersReducer.top_folder) {
-    top_folder = getState().foldersReducer.top_folder;
+  let current_folder = "";
+  if (getState().foldersReducer.current_folders.length > 0) {
+    current_folder = getState().foldersReducer.current_folders[
+      getState().foldersReducer.current_folders.length - 1
+    ];
   }
   axios
     .get(
       `/api/programs/${
         getState().programReducer.program.code
-      }/files/?search=${search}&top_folder=${top_folder}`,
+      }/files/?search=${search}&top_folder=${current_folder}`,
       tokenConfig(getState)
     )
     .then((res) => {
@@ -82,8 +84,13 @@ export const createFile = (file) => (dispatch, getState) => {
   const fd = new FormData();
   fd.append("name", file.name);
   fd.append("file", file.file, file.file.name);
-  if (getState().foldersReducer.top_folder) {
-    fd.append("top_folder", getState().foldersReducer.top_folder);
+  if (getState().foldersReducer.current_folders.length > 0) {
+    fd.append(
+      "top_folder",
+      getState().foldersReducer.current_folders[
+        getState().foldersReducer.current_folders.length - 1
+      ]
+    );
   }
 
   axios
@@ -114,7 +121,7 @@ export const deleteFiles = (id) => (dispatch, getState) => {
 
   axios
     .delete(
-      `/api/programs/${getState().programReducer.program.code}/files/${id}`,
+      `/api/programs/${getState().programReducer.program.code}/files/${id}/`,
       tokenConfig(getState)
     )
     .then(() => {

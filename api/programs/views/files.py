@@ -1,7 +1,7 @@
 """Program views."""
 
 # Django REST Framework
-from rest_framework import mixins, viewsets, status
+from rest_framework import mixins, viewsets, status, filters
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -49,6 +49,8 @@ class FileViewSet(mixins.CreateModelMixin,
     serializer_class = FileModelSerializer
     lookup_field = 'pk'
     queryset = File.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
 
     def get_queryset(self):
         """Restrict list to public-only."""
@@ -66,7 +68,8 @@ class FileViewSet(mixins.CreateModelMixin,
             queryset = self.get_queryset().filter(
                 top_folder=request.GET['top_folder'])
         else:
-            queryset = self.get_queryset()
+            queryset = self.get_queryset().filter(
+                top_folder=None)
         queryset = self.filter_queryset(queryset)
         page = self.paginate_queryset(queryset)
         if page is not None:
