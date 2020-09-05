@@ -38,6 +38,7 @@ class FolderModelSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'code',
+            'color',
             'is_private',
             'top_folder',
             'shared_users'

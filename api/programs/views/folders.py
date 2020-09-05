@@ -63,7 +63,7 @@ class FolderViewSet(mixins.CreateModelMixin,
         return queryset
 
     def list(self, request, *args, **kwargs):
-        if 'top_folder' in request.GET:
+        if 'top_folder' in request.GET and request.GET['top_folder']:
             queryset = self.get_queryset().filter(
                 top_folder=request.GET['top_folder'])
         else:
@@ -85,6 +85,7 @@ class FolderViewSet(mixins.CreateModelMixin,
             top_folder = request.data['top_folder']
         else:
             top_folder = None
+
         serializer = FolderModelSerializer(
             data=request.data,
             context={

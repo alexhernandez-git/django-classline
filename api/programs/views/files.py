@@ -62,7 +62,7 @@ class FileViewSet(mixins.CreateModelMixin,
         return [permission() for permission in permissions]
 
     def list(self, request, *args, **kwargs):
-        if 'top_folder' in request.GET:
+        if 'top_folder' in request.GET and request.GET['top_folder']:
             queryset = self.get_queryset().filter(
                 top_folder=request.GET['top_folder'])
         else:

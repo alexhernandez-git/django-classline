@@ -19,22 +19,30 @@ import { Formik, Form as FormFormik } from "formik";
 import { Modal, Form, Row, Col, Button } from "react-bootstrap";
 
 import * as Yup from "yup";
-import VideoForm from "src/components/AdminAcademy/VideoForm";
 import FileForm from "../../components/AdminAcademy/FileForm";
 import ShareForm from "../../components/AdminAcademy/ShareForm";
-
-const VideoSchema = Yup.object().shape({
-  title: Yup.string()
+import {
+  createFolder,
+  fetchFolders,
+  deleteFolders,
+} from "../../redux/actions/folders";
+import { fetchFiles, createFile, deleteFiles } from "../../redux/actions/files";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+const FileSchema = Yup.object().shape({
+  name: Yup.string()
     .min(2, "El titulo es muy corto")
     .max(100, "El titulo es muy largo")
     .required("Este campo es obligatorio"),
-  description: Yup.string().max(500, "La descripción es demasiado larga"),
-  video: Yup.mixed().required("Este campo es obligatorio"),
+  file: Yup.mixed().required("Este campo es obligatorio"),
 });
 
 export default function DocsAdmin() {
+  const MySwal = withReactContent(Swal);
+
   const main = useRef();
-  const videosReducer = useSelector((state) => state.videosReducer);
+  const foldersReducer = useSelector((state) => state.foldersReducer);
+  const filesReducer = useSelector((state) => state.filesReducer);
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
@@ -57,29 +65,27 @@ export default function DocsAdmin() {
   const programReducer = useSelector((state) => state.programReducer);
   useEffect(() => {
     if (!programReducer.isLoading && programReducer.program) {
-      const dispatchFetchVideos = () => dispatch(fetchVideos());
-      dispatchFetchVideos();
+      const dispatchFetchFolders = () => dispatch(fetchFolders());
+      dispatchFetchFolders();
+      const dispatchFetchFiles = () => dispatch(fetchFiles());
+      dispatchFetchFiles();
     }
-  }, [programReducer.isLoading]);
+  }, []);
   const [search, setSearch] = useState("");
   // useEffect(() => {
   //   if (!programReducer.isLoading && programReducer.program) {
-  //     const dispatchFetchVideos = (search) => dispatch(fetchVideos(search));
-  //     dispatchFetchVideos(search);
+  //     const dispatchFetchFolders = (search) => dispatch(fetchFolders(search));
+  //     dispatchFetchFolders(search);
   //   }
   // }, [search, programReducer.isLoading]);
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    const dispatchFetchVideos = (search) => dispatch(fetchVideos(search));
-    dispatchFetchVideos(search);
+    const dispatchFetchFolders = (search) => dispatch(fetchFolders(search));
+    dispatchFetchFolders(search);
+    const dispatchFetchFiles = (search) => dispatch(fetchFiles(search));
+    dispatchFetchFiles(search);
   };
-  const handleChangePage = (url) => {
-    main.current.scrollTo(0, 0);
 
-    const dispatchFetchVideosPagination = (url) =>
-      dispatch(fetchVideosPagination(url));
-    dispatchFetchVideosPagination(url);
-  };
   const [showShare, setShowShare] = useState(false);
 
   const handleCloseShare = () => {
@@ -87,6 +93,39 @@ export default function DocsAdmin() {
   };
   const handleShowShare = () => {
     setShowShare(true);
+  };
+  const handleCreateFolder = () => {
+    dispatch(createFolder());
+  };
+  const handleDeleteFolder = (folder) => {
+    MySwal.fire({
+      title: "Estas seguro?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Atras",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteFolders(folder.id));
+      }
+    });
+  };
+  const handleDeleteFile = (file) => {
+    MySwal.fire({
+      title: "Estas seguro?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Atras",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteFiles(file.id));
+      }
+    });
   };
   return (
     <>
@@ -99,7 +138,11 @@ export default function DocsAdmin() {
           onSubmit={handleSubmitSearch}
         />
         <div className="d-sm-flex justify-content-end mb-3">
-          <ButtonCustom className="d-flex align-items-center mr-3 justify-content-center">
+          <ButtonCustom
+            type="button"
+            className="d-flex align-items-center mr-3 justify-content-center"
+            onClick={handleCreateFolder}
+          >
             <IconContext.Provider
               value={{
                 className: "cursor-pointer mr-2",
@@ -112,6 +155,7 @@ export default function DocsAdmin() {
           </ButtonCustom>
           <div className="d-block d-sm-none m-2"></div>
           <ButtonCustom
+            type="button"
             className="d-flex align-items-center justify-content-center"
             onClick={handleShow}
           >
@@ -129,19 +173,32 @@ export default function DocsAdmin() {
         <div className="row">
           <div className="col-12">
             <GridFolders>
-              <DocsItem admin handleShowShare={handleShowShare} />
-              <DocsItem admin handleShowShare={handleShowShare} />
-              <DocsItem admin handleShowShare={handleShowShare} />
-              <DocsItem admin handleShowShare={handleShowShare} />
-              <DocsItem admin handleShowShare={handleShowShare} />
-              <DocsItem admin handleShowShare={handleShowShare} />
-              <DocsItem admin handleShowShare={handleShowShare} />
-              <DocsItem admin handleShowShare={handleShowShare} file />
-              <DocsItem admin handleShowShare={handleShowShare} file />
-              <DocsItem admin handleShowShare={handleShowShare} file />
-              <DocsItem admin handleShowShare={handleShowShare} file />
+              {foldersReducer.folders &&
+                foldersReducer.folders.map((folder) => (
+                  <DocsItem
+                    admin
+                    is_editing={folder.is_editing}
+                    handleShowShare={handleShowShare}
+                    folder={folder}
+                    key={folder.id}
+                    handleDeleteFolder={handleDeleteFolder}
+                  />
+                ))}
+              {filesReducer.files &&
+                filesReducer.files.map((file) => (
+                  <DocsItem
+                    admin
+                    handleShowShare={handleShowShare}
+                    is_file
+                    file={file}
+                    key={file.id}
+                    handleDeleteFile={handleDeleteFile}
+                  />
+                ))}
             </GridFolders>
-            {videosReducer.isLoading && <span>Cargando...</span>}
+            {(foldersReducer.isLoading || filesReducer.isLoading) && (
+              <span>Cargando...</span>
+            )}
           </div>
         </div>
       </Main>
@@ -149,22 +206,13 @@ export default function DocsAdmin() {
         <Formik
           enableReinitialize={true}
           initialValues={{
-            title: "",
-            description: "",
-            picture: null,
-            video: null,
-            duration: null,
+            name: "",
+            file: null,
           }}
-          validationSchema={VideoSchema}
+          validationSchema={FileSchema}
           onSubmit={(values) => {
-            if (videosReducer.video_edit) {
-              const dispatchEditVideo = (values) => dispatch(editVideo(values));
-              dispatchEditVideo(values);
-            } else {
-              const dispatchCreateVideo = (values) =>
-                dispatch(createVideo(values));
-              dispatchCreateVideo(values);
-            }
+            const dispatchCreateFile = (values) => dispatch(createFile(values));
+            dispatchCreateFile(values);
 
             handleClose();
           }}
@@ -180,7 +228,6 @@ export default function DocsAdmin() {
                   <FileForm
                     values={props.values}
                     setFieldValue={props.setFieldValue}
-                    isEdit={videosReducer.video_edit ? true : false}
                     errors={props.errors}
                     touched={props.touched}
                   />
@@ -193,6 +240,7 @@ export default function DocsAdmin() {
           }}
         </Formik>
       </Modal>
+
       <Modal show={showShare} onHide={handleCloseShare} size="lg">
         <Formik
           enableReinitialize={true}
@@ -204,9 +252,8 @@ export default function DocsAdmin() {
             duration: null,
             students: ["jared", "ian", "brent"],
           }}
-          validationSchema={VideoSchema}
           onSubmit={(values) => {
-            if (videosReducer.video_edit) {
+            if (foldersReducer.video_edit) {
               const dispatchEditVideo = (values) => dispatch(editVideo(values));
               dispatchEditVideo(values);
             } else {

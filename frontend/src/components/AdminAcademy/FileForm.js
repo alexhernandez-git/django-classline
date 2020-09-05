@@ -19,21 +19,13 @@ import styled from "@emotion/styled";
 import Checkbox from "src/components/ui/Checkbox";
 
 const FileForm = (props) => {
-  const { setFieldValue, values, isEdit, errors, touched } = props;
+  const { setFieldValue, values, errors, touched } = props;
   const cropper = useRef(null);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [srcImage, setSrcImage] = useState(null);
 
-  const [cropResult, setCropResult] = useState(
-    isEdit ? values.picture : "../../../static/assets/img/no-foto.png"
-  );
-
-  const [fileName, setFileName] = useState("");
-  const inputFileImg = useRef(null);
-
-  const [srcFile, setSrcFile] = useState(isEdit ? values.audio : null);
+  const [srcFile, setSrcFile] = useState(null);
 
   const handleUploadFile = (e) => {
     e.preventDefault();
@@ -53,7 +45,7 @@ const FileForm = (props) => {
         setSrcFile(reader.result);
       };
       reader.readAsDataURL(files[0]);
-      setFieldValue("audio", files[0]);
+      setFieldValue("file", files[0]);
     }
   };
   return (
@@ -68,67 +60,13 @@ const FileForm = (props) => {
           </Col>
 
           <Col lg={{ offset: 1, span: 6 }}>
-            <Field name="title" type="text" placeholder="Nombre del Archivo" />
-            {errors.title && touched.title ? (
-              <small className="d-block text-red">{errors.title}</small>
+            <Field name="name" type="text" placeholder="Nombre del Archivo" />
+            {errors.name && touched.name ? (
+              <small className="d-block text-red">{errors.name}</small>
             ) : null}
           </Col>
         </Row>
 
-        {/* <Row className="mb-5">
-          <Col
-            lg={{ span: 4 }}
-            className="text-center d-lg-flex justify-content-end align-items-center"
-          >
-            <span className="m-0 font-weight-normal">Privado</span>
-          </Col>
-
-          <Col
-            lg={{ offset: 1, span: 6 }}
-            className="d-flex justify-content-center d-lg-block"
-          >
-            <Checkbox name="private" />
-          </Col>
-        </Row> */}
-        {/* <Row className="mb-5">
-          <Col
-            lg={{ span: 4 }}
-            className="text-center d-lg-flex justify-content-end align-items-center"
-          >
-            <span className="m-0 font-weight-normal">Compartir con</span>
-          </Col>
-
-          <Col lg={{ offset: 1, span: 6 }} className="position-relative">
-            <FieldArray
-              name="students"
-              render={(arrayHelpers) => (
-                <div>
-                  {values.students && values.students.length > 0 ? (
-                    values.students.map((friend, index) => (
-                      <div key={index}>
-                        <span>{values.students[index]}</span>
-                        <button
-                          type="button"
-                          onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
-                        >
-                          X
-                        </button>
-                      </div>
-                    ))
-                  ) : (
-                    <button type="button" onClick={() => arrayHelpers.push("")}>
-                      {/* show this when user has removed all students from the list *
-                      Add a friend
-                    </button>
-                  )}
-                </div>
-              )}
-            />
-            {/* {errors.title && touched.title ? (
-              <small className="d-block text-red">{errors.title}</small>
-            ) : null} 
-          </Col>
-        </Row> */}
         <Row className="">
           <Col
             lg={{ span: 4 }}
@@ -151,7 +89,7 @@ const FileForm = (props) => {
                 >
                   <FaFileAlt />
                 </IconContext.Provider>
-                <span>{values.audio.name}</span>
+                <span>{values.file.name}</span>
               </File>
             )}
 
@@ -164,8 +102,8 @@ const FileForm = (props) => {
             <label htmlFor="audio-upload" css={ButtonStyle} className="w-100">
               Subir el archivo
             </label>
-            {errors.audio && touched.audio ? (
-              <small className="d-block text-red">{errors.audio}</small>
+            {errors.file && touched.file ? (
+              <small className="d-block text-red">{errors.file}</small>
             ) : null}
           </Col>
         </Row>
