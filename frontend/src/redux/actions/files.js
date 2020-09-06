@@ -141,3 +141,31 @@ export const deleteFiles = (id) => (dispatch, getState) => {
       });
     });
 };
+
+export const editSharedUsersFile = (file) => (dispatch, getState) => {
+  dispatch({
+    type: EDIT_FILE,
+  });
+  axios
+    .patch(
+      `/api/programs/${getState().programReducer.program.code}/files/${
+        file.id
+      }/update_shared_users/`,
+      file,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log("res", res);
+
+      dispatch({
+        type: EDIT_FILE_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: EDIT_FILE_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};

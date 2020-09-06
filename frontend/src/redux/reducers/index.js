@@ -22,6 +22,7 @@ import commercialsReducer from "./commercialsReducer";
 import paymentsReducer from "./paymentsReducer";
 import foldersReducer from "./foldersReducer";
 import filesReducer from "./filesReducer";
+import shareStudentsReducer from "./shareStudentsReducer";
 
 export default combineReducers({
   authReducer,
@@ -43,6 +44,7 @@ export default combineReducers({
   studentsReducer,
   foldersReducer,
   filesReducer,
+  shareStudentsReducer,
 
   // Commercials reducers
   authCommercialsReducer,

@@ -153,3 +153,31 @@ export const removeCurrentFolder = () => (dispatch, getState) => {
     type: REMOVE_CURRENT_FOLDER,
   });
 };
+export const editSharedUsersFolder = (folder) => (dispatch, getState) => {
+  dispatch({
+    type: EDIT_FOLDER,
+  });
+  axios
+    .patch(
+      `/api/programs/${getState().programReducer.program.code}/folders/${
+        folder.id
+      }/update_shared_users/`,
+      folder,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log("res", res);
+
+      dispatch({
+        type: EDIT_FOLDER_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err.response);
+      dispatch({
+        type: EDIT_FOLDER_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};

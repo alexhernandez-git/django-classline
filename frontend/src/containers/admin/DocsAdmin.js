@@ -90,14 +90,6 @@ export default function DocsAdmin() {
     dispatchFetchFiles(search);
   };
 
-  const [showShare, setShowShare] = useState(false);
-
-  const handleCloseShare = () => {
-    setShowShare(false);
-  };
-  const handleShowShare = () => {
-    setShowShare(true);
-  };
   const handleCreateFolder = () => {
     dispatch(createFolder());
   };
@@ -216,7 +208,6 @@ export default function DocsAdmin() {
                   <DocsItem
                     admin
                     is_editing={folder.is_editing}
-                    handleShowShare={handleShowShare}
                     folder={folder}
                     key={folder.id}
                     handleDeleteFolder={handleDeleteFolder}
@@ -227,7 +218,6 @@ export default function DocsAdmin() {
                 filesReducer.files.map((file) => (
                   <DocsItem
                     admin
-                    handleShowShare={handleShowShare}
                     is_file
                     file={file}
                     key={file.id}
@@ -272,54 +262,6 @@ export default function DocsAdmin() {
                   />
                   <Modal.Footer>
                     <ButtonCustom type="submit">Guardar</ButtonCustom>
-                  </Modal.Footer>
-                </FormFormik>
-              </>
-            );
-          }}
-        </Formik>
-      </Modal>
-
-      <Modal show={showShare} onHide={handleCloseShare} size="lg">
-        <Formik
-          enableReinitialize={true}
-          initialValues={{
-            title: "",
-            description: "",
-            picture: null,
-            video: null,
-            duration: null,
-            students: ["jared", "ian", "brent"],
-          }}
-          onSubmit={(values) => {
-            if (foldersReducer.video_edit) {
-              const dispatchEditVideo = (values) => dispatch(editVideo(values));
-              dispatchEditVideo(values);
-            } else {
-              const dispatchCreateVideo = (values) =>
-                dispatch(createVideo(values));
-              dispatchCreateVideo(values);
-            }
-
-            handleClose();
-          }}
-        >
-          {(props) => {
-            return (
-              <>
-                <FormFormik>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Compartir con tus alumnos</Modal.Title>
-                  </Modal.Header>
-
-                  <ShareForm
-                    values={props.values}
-                    setFieldValue={props.setFieldValue}
-                    errors={props.errors}
-                    touched={props.touched}
-                  />
-                  <Modal.Footer>
-                    <ButtonCustom type="submit">Compartir</ButtonCustom>
                   </Modal.Footer>
                 </FormFormik>
               </>

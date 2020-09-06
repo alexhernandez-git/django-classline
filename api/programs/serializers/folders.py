@@ -74,7 +74,8 @@ class ShareUsersFoldersSerializer(serializers.Serializer):
         program = self.context['program']
 
         def get_users(user):
-            return get_object_or_404(User, pk=user.id)
+
+            return get_object_or_404(User, pk=user['id'])
         new_shared_users = list(map(get_users, shared_users))
 
         return {

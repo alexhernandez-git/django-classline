@@ -19,13 +19,15 @@ import {
 } from "react-icons/md";
 import { IoMdUnlock, IoMdLock } from "react-icons/io";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { editFolder } from "../../redux/actions/folders";
-import { editFile } from "../../redux/actions/files";
+import { editFolder, editSharedUsersFolder } from "../../redux/actions/folders";
+import { editFile, editSharedUsersFile } from "../../redux/actions/files";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { ButtonCustom } from "./ButtonCustom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import ShareForm from "../../components/AdminAcademy/ShareForm";
+
 const FileSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, "El color no el válido")
@@ -49,7 +51,6 @@ const DocsItem = (props) => {
     file,
     folder,
     admin,
-    handleShowShare,
     handleDeleteFolder,
     handleDeleteFile,
     hanldeEnterFolder,
@@ -193,6 +194,15 @@ const DocsItem = (props) => {
     setColor(color.hex);
   };
   const handleDownloadFile = () => {};
+
+  const [showShare, setShowShare] = useState(false);
+
+  const handleCloseShare = () => {
+    setShowShare(false);
+  };
+  const handleShowShare = () => {
+    setShowShare(true);
+  };
   return (
     <Content>
       {admin && (
@@ -402,6 +412,46 @@ const DocsItem = (props) => {
             <ButtonCustom type="submit">Guardar</ButtonCustom>
           </Modal.Footer>
         </form>
+      </Modal>
+
+      <Modal show={showShare} onHide={handleCloseShare} size="lg">
+        <Formik
+          enableReinitialize={true}
+          initialValues={{
+            id: is_file ? file.id : folder.id,
+            shared_users: is_file ? file.shared_users : folder.shared_users,
+          }}
+          onSubmit={(values) => {
+            console.log(values);
+            if (is_file) {
+              dispatch(editSharedUsersFile(values));
+            } else {
+              dispatch(editSharedUsersFolder(values));
+            }
+            handleCloseShare();
+          }}
+        >
+          {(props) => {
+            return (
+              <>
+                <FormFormik>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Compartir con tus alumnos</Modal.Title>
+                  </Modal.Header>
+                  <ShareForm
+                    values={props.values}
+                    setFieldValue={props.setFieldValue}
+                    errors={props.errors}
+                    touched={props.touched}
+                  />
+                  <Modal.Footer>
+                    <ButtonCustom type="submit">Compartir</ButtonCustom>
+                  </Modal.Footer>
+                </FormFormik>
+              </>
+            );
+          }}
+        </Formik>
       </Modal>
     </Content>
   );
