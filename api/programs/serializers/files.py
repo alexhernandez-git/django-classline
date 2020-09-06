@@ -17,6 +17,7 @@ from api.programs.serializers import TopFolderModelSerializer
 class FileModelSerializer(serializers.ModelSerializer):
     """File model serializer."""
     shared_users = serializers.SerializerMethodField(read_only=True)
+    filename = serializers.SerializerMethodField(read_only=True)
     top_folder = TopFolderModelSerializer(read_only=True)
 
     class Meta:
@@ -30,7 +31,8 @@ class FileModelSerializer(serializers.ModelSerializer):
             'is_private',
             'file',
             'top_folder',
-            'shared_users'
+            'filename',
+            'shared_users',
         )
 
         read_only_fields = (
@@ -40,6 +42,9 @@ class FileModelSerializer(serializers.ModelSerializer):
     def get_shared_users(self, obj):
         from api.users.serializers import UserSharedModelSerializer
         return UserSharedModelSerializer(obj.shared_users, many=True).data
+
+    def get_filename(self, obj):
+        return obj.filename()
 
     def create(self, validated_data):
         program = self.context['program']

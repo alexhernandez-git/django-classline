@@ -64,8 +64,8 @@ const MainPlaylists = () => {
         <Slider {...settings}>
           {popularPlaylistsReducer.playlists &&
             popularPlaylistsReducer.playlists.map((playlist) => (
-              <div className="p-2 cursor-pointer">
-                <Course playlist={playlist} key={playlist.id} />
+              <div className="p-2 cursor-pointer" key={playlist.id}>
+                <Course playlist={playlist} />
               </div>
             ))}
         </Slider>

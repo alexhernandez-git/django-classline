@@ -9,6 +9,8 @@ from api.utils.models import CLineModel
 import random
 import string
 
+import os
+
 
 class File(CLineModel):
 
@@ -29,6 +31,9 @@ class File(CLineModel):
     shared_users = models.ManyToManyField(
         'users.User'
     )
+
+    def filename(self):
+        return os.path.basename(self.file.name)
 
     def __str__(self):
         """Return description."""

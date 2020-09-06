@@ -66,8 +66,8 @@ const FavouriteVideos = () => {
         <Slider {...settings}>
           {popularVideosReducer.videos &&
             popularVideosReducer.videos.map((video) => (
-              <div className="p-2">
-                <Video video={video} key={video.id} />
+              <div className="p-2" key={video.id}>
+                <Video video={video} />
               </div>
             ))}
         </Slider>
