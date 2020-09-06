@@ -19,7 +19,8 @@ from api.programs.models import File
 
 # Serializers
 from api.programs.serializers import (
-    FileModelSerializer
+    FileModelSerializer,
+    ShareUsersFilesSerializer
 )
 
 from api.programs.serializers.subscriptions import(
@@ -106,6 +107,28 @@ class FileViewSet(mixins.CreateModelMixin,
         partial = request.method == 'PATCH'
 
         serializer = FileModelSerializer(
+            file,
+            data=request.data,
+            context={
+                'program': program,
+                'request': request
+            },
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+
+        file = serializer.save()
+
+        data = FileModelSerializer(file).data
+        return Response(data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['put', 'patch'])
+    def update_shared_users(self, request, *args, **kwargs):
+        file = self.get_object()
+        program = self.program
+        partial = request.method == 'PATCH'
+
+        serializer = ShareUsersFilesSerializer(
             file,
             data=request.data,
             context={

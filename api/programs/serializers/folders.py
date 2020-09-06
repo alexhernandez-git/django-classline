@@ -1,10 +1,14 @@
 """Folder serializer."""
 
+# Django
+from django.shortcuts import get_object_or_404
+
 # Django REST Framework
 from rest_framework import serializers
 
 # Models
 from api.programs.models import Folder
+from api.users.models import User
 
 
 class TopFolderModelSerializer(serializers.ModelSerializer):
@@ -59,3 +63,33 @@ class FolderModelSerializer(serializers.ModelSerializer):
             validated_data['top_folder'] = Folder.objects.get(
                 pk=self.context['top_folder'])
         return super().create(validated_data)
+
+
+class ShareUsersFoldersSerializer(serializers.Serializer):
+    """Folder model serializer."""
+    shared_users = serializers.ListField(child=serializers.DictField())
+
+    def validate(self, data):
+        shared_users = data['shared_users']
+        program = self.context['program']
+
+        def get_users(user):
+            return get_object_or_404(User, pk=user.id)
+        new_shared_users = list(map(get_users, shared_users))
+
+        return {
+            'shared_users': new_shared_users,
+            'program': program
+        }
+
+    def update(self, instance, validated_data):
+        # program = validated_data['program']
+        shared_users = validated_data['shared_users']
+
+        instance.shared_users.clear()
+        for user in shared_users:
+            instance.shared_users.add(user)
+
+        instance.save()
+
+        return instance

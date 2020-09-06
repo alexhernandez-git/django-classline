@@ -20,7 +20,7 @@ from api.programs.models import Program, Student
 from api.users.models import User
 
 # Serializers
-from api.programs.serializers import StudentModelSerializer
+from api.programs.serializers import StudentModelSerializer, StudentListModelSerializer
 
 # Utils
 from api.utils.permissions import AddProgramMixin
@@ -36,6 +36,12 @@ class StudentViewSet(mixins.ListModelMixin,
     filter_backends = [filters.SearchFilter]
     search_fields = ['user__first_name', 'user__username',
                      'user__email', 'user__last_name']
+
+    def get_serializer_class(self):
+        """Return serializer based on action."""
+        if self.action == 'list':
+            return StudentListModelSerializer
+        return StudentModelSerializer
 
     def get_queryset(self):
         program = self.program

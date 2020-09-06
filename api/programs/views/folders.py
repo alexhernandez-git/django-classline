@@ -19,7 +19,8 @@ from api.programs.models import Folder
 
 # Serializers
 from api.programs.serializers import (
-    FolderModelSerializer
+    FolderModelSerializer,
+    ShareUsersFoldersSerializer
 )
 
 from api.programs.serializers.subscriptions import(
@@ -104,12 +105,12 @@ class FolderViewSet(mixins.CreateModelMixin,
         return Response(data, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
-        file = self.get_object()
+        folder = self.get_object()
         program = self.program
         partial = request.method == 'PATCH'
 
         serializer = FolderModelSerializer(
-            file,
+            folder,
             data=request.data,
             context={
                 'program': program,
@@ -119,7 +120,29 @@ class FolderViewSet(mixins.CreateModelMixin,
         )
         serializer.is_valid(raise_exception=True)
 
-        file = serializer.save()
+        folder = serializer.save()
 
-        data = FolderModelSerializer(file).data
+        data = FolderModelSerializer(folder).data
+        return Response(data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['put', 'patch'])
+    def update_shared_users(self, request, *args, **kwargs):
+        folder = self.get_object()
+        program = self.program
+        partial = request.method == 'PATCH'
+
+        serializer = ShareUsersFoldersSerializer(
+            folder,
+            data=request.data,
+            context={
+                'program': program,
+                'request': request
+            },
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+
+        folder = serializer.save()
+
+        data = FolderModelSerializer(folder).data
         return Response(data, status=status.HTTP_200_OK)

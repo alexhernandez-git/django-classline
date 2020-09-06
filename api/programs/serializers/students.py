@@ -34,3 +34,26 @@ class StudentModelSerializer(serializers.ModelSerializer):
         from api.users.serializers import UserWithoutTeacherModelSerializer
         user = obj.user
         return UserWithoutTeacherModelSerializer(user, many=False).data
+
+
+class StudentListModelSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        """Meta class."""
+
+        model = Student
+        fields = (
+            'id',
+            'user',
+            'created'
+        )
+        # extra_kwargs = {'end': {'required': False}}
+        read_only_fields = (
+            'id',
+        )
+
+    def get_user(self, obj):
+        from api.users.serializers import UserSharedModelSerializer
+        user = obj.user
+        return UserSharedModelSerializer(user, many=False).data
