@@ -13,11 +13,21 @@ import { useParams } from "react-router-dom";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
 import DocsItem from "src/components/ui/DocsItem";
+import {
+  fetchFolders,
+  setCurrentFolder,
+  removeCurrentFolder,
+} from "../redux/actions/publicFolders";
+import { fetchFiles } from "../redux/actions/publicFiles";
+import { ButtonCustom } from "../components/ui/ButtonCustom";
+import { FaFolder } from "react-icons/fa";
 
 export default function DocsAcademy() {
   const main = useRef();
-  const videosReducer = useSelector((state) => state.videosReducer);
-
+  const publicFoldersReducer = useSelector(
+    (state) => state.publicFoldersReducer
+  );
+  const publicFilesReducer = useSelector((state) => state.publicFilesReducer);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const handleOpenCategories = () => {
     setCategoriesOpen((CategoriesOpen) => {
@@ -32,10 +42,12 @@ export default function DocsAcademy() {
   const programReducer = useSelector((state) => state.programReducer);
   useEffect(() => {
     if (!programReducer.isLoading && programReducer.program) {
-      const dispatchFetchVideos = () => dispatch(fetchVideos());
-      dispatchFetchVideos();
+      const dispatchFetchFolders = () => dispatch(fetchFolders());
+      dispatchFetchFolders();
+      const dispatchFetchFiles = () => dispatch(fetchFiles());
+      dispatchFetchFiles();
     }
-  }, [programReducer.isLoading]);
+  }, []);
   const [search, setSearch] = useState("");
   // useEffect(() => {
   //   if (!programReducer.isLoading && programReducer.program) {
@@ -45,8 +57,10 @@ export default function DocsAcademy() {
   // }, [search, programReducer.isLoading]);
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    const dispatchFetchVideos = (search) => dispatch(fetchVideos(search));
-    dispatchFetchVideos(search);
+    const dispatchFetchFolders = (search) => dispatch(fetchFolders(search));
+    dispatchFetchFolders(search);
+    const dispatchFetchFiles = (search) => dispatch(fetchFiles(search));
+    dispatchFetchFiles(search);
   };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
@@ -54,6 +68,16 @@ export default function DocsAcademy() {
     const dispatchFetchVideosPagination = (url) =>
       dispatch(fetchVideosPagination(url));
     dispatchFetchVideosPagination(url);
+  };
+  const hanldeEnterFolder = (folder) => {
+    dispatch(setCurrentFolder(folder.id));
+    dispatch(fetchFolders());
+    dispatch(fetchFiles());
+  };
+  const hanldeEnterTopFolder = () => {
+    dispatch(removeCurrentFolder());
+    dispatch(fetchFolders());
+    dispatch(fetchFiles());
   };
   return (
     <>
@@ -65,23 +89,48 @@ export default function DocsAcademy() {
           search={{ search: search, setSearch: setSearch }}
           onSubmit={handleSubmitSearch}
         />
-
+        <div className=" mb-3">
+          {publicFoldersReducer.current_folders.length > 0 && (
+            <ButtonCustom
+              type="button"
+              className="d-flex align-items-center mr-3 justify-content-center"
+              onClick={hanldeEnterTopFolder}
+            >
+              <IconContext.Provider
+                value={{
+                  className: "cursor-pointer mr-2",
+                  color: "#fff",
+                }}
+              >
+                <FaFolder />
+              </IconContext.Provider>
+              Volver
+            </ButtonCustom>
+          )}
+        </div>
         <div className="row">
           <div className="col-12">
             <GridFolders>
-              <DocsItem />
-              <DocsItem />
-              <DocsItem />
-              <DocsItem />
-              <DocsItem />
-              <DocsItem />
-              <DocsItem />
-              <DocsItem file />
-              <DocsItem file />
-              <DocsItem file />
-              <DocsItem file />
+              {publicFoldersReducer.folders &&
+                publicFoldersReducer.folders.map((folder) => (
+                  <DocsItem
+                    folder={folder}
+                    key={folder.id}
+                    hanldeEnterFolder={hanldeEnterFolder}
+                  />
+                ))}
+              {publicFilesReducer.files &&
+                publicFilesReducer.files.map((file) => (
+                  <DocsItem
+                    is_file
+                    file={file}
+                    key={file.id}
+                    hanldeEnterFolder={hanldeEnterFolder}
+                  />
+                ))}
             </GridFolders>
-            {videosReducer.isLoading && <span>Cargando...</span>}
+            {publicFilesReducer.isLoading ||
+              (publicFoldersReducer.isLoading && <span>Cargando...</span>)}
           </div>
         </div>
       </Main>
@@ -106,17 +155,17 @@ const ButtonSearchUsers = styled.button`
 export const GridFolders = styled.div`
   display: grid;
   grid-gap: 4rem 2rem;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   @media screen and (max-width: 1200px) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
   @media screen and (max-width: 992px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
   @media screen and (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
   @media screen and (max-width: 480px) {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 `;

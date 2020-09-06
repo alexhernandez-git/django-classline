@@ -23,6 +23,10 @@ import paymentsReducer from "./paymentsReducer";
 import foldersReducer from "./foldersReducer";
 import filesReducer from "./filesReducer";
 import shareStudentsReducer from "./shareStudentsReducer";
+import publicFilesReducer from "./publicFilesReducer";
+import publicFoldersReducer from "./publicFoldersReducer";
+import sharedFilesReducer from "./sharedFilesReducer";
+import sharedFoldersReducer from "./sharedFoldersReducer";
 
 export default combineReducers({
   authReducer,
@@ -44,6 +48,10 @@ export default combineReducers({
   studentsReducer,
   foldersReducer,
   filesReducer,
+  publicFoldersReducer,
+  publicFilesReducer,
+  sharedFoldersReducer,
+  sharedFilesReducer,
   shareStudentsReducer,
 
   // Commercials reducers

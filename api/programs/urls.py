@@ -16,7 +16,13 @@ from api.programs.views.ratings import RatingViewSet
 from api.programs.views.courses import CourseViewSet
 from api.programs.views.files import FileViewSet
 from api.programs.views.folders import FolderViewSet
+from api.programs.views.public_files import PublicFileViewSet
+from api.programs.views.public_folders import PublicFolderViewSet
+from api.programs.views.shared_files import SharedFileViewSet
+from api.programs.views.shared_folders import SharedFolderViewSet
+
 router = DefaultRouter()
+
 router.register(r'programs', ProgramViewSet, basename='program')
 router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/videos',
@@ -68,6 +74,26 @@ router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/folders',
     FolderViewSet,
     basename='folders'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/public-files',
+    PublicFileViewSet,
+    basename='public-files'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/public-folders',
+    PublicFolderViewSet,
+    basename='public-folders'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/shared-files',
+    SharedFileViewSet,
+    basename='shared-files'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/shared-folders',
+    SharedFolderViewSet,
+    basename='shared-folders'
 )
 urlpatterns = [
     path('', include(router.urls))

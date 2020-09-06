@@ -221,6 +221,7 @@ export default function DocsAdmin() {
                     is_file
                     file={file}
                     key={file.id}
+                    hanldeEnterFolder={hanldeEnterFolder}
                     handleDeleteFile={handleDeleteFile}
                   />
                 ))}

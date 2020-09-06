@@ -23,6 +23,7 @@ import { fetchProgram } from "../redux/actions/program";
 import IndexAcademy from "src/containers/IndexAcademy";
 
 import styled from "@emotion/styled";
+import DocsAcademy from "../containers/DocsAcademy";
 
 const Academy = () => {
   const dispatch = useDispatch();
@@ -119,6 +120,15 @@ const Academy = () => {
             component={
               programReducer.program.are_meetups
                 ? MeetupsAcademy
+                : () => <Redirect to={`/academy/${programId}/home`} />
+            }
+          />
+          <Route
+            exact
+            path="/demo/academy/:program/docs"
+            component={
+              programReducer.program.are_docs || true
+                ? DocsAcademy
                 : () => <Redirect to={`/academy/${programId}/home`} />
             }
           />

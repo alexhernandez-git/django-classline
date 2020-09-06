@@ -1,4 +1,4 @@
-import { Link, useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import styled from "@emotion/styled";
 import { textEllipsis } from "./TextEllipsis";
 import { IconContext } from "react-icons";
@@ -326,7 +326,10 @@ const DocsItem = (props) => {
           }}
         >
           {is_file ? (
-            <a href={file.file} target={"_blank"}>
+            <a
+              href={!/\/demo\//.test(pathname) ? file.file : "#"}
+              target={!/\/demo\//.test(pathname) ? "_blank" : "_self"}
+            >
               <FaFileAlt />
             </a>
           ) : (
