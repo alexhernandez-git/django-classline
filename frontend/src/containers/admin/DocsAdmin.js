@@ -1,8 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 
-import Layout from "src/components/Layout/Layout";
 import Filters from "src/components/Layout/Filters";
-import Video from "src/components/ui/Video";
 import styled from "@emotion/styled";
 import { Main } from "src/components/ui/Main";
 

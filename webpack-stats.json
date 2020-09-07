@@ -1,1 +1,1 @@
-{"status":"done","chunks":{"main":[{"name":"main.js","path":"/home/alex/django-classline/frontend/static/bundles/main.js"}]}}
+{"status":"done","chunks":{"main":[{"name":"main.js","path":"/home/alex/django-classline/frontend/static/bundles/main.js"}]},"error":"ModuleBuildError","message":"Module build failed (from ./node_modules/babel-loader/lib/index.js):\nError: ENOENT: no such file or directory, open '/home/alex/django-classline/frontend/src/redux/reducers/moveFilesReducer.js'"}

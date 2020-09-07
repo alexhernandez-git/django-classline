@@ -14,6 +14,9 @@ import {
   FaFileCsv,
   FaFilePowerpoint,
   FaFilePdf,
+  FaFolderOpen,
+  FaDownload,
+  FaFileDownload,
 } from "react-icons/fa";
 import React, { useState, useRef, useEffect } from "react";
 import { Modal, Form, Row, Col, Button } from "react-bootstrap";
@@ -33,12 +36,13 @@ import { IoMdUnlock, IoMdLock } from "react-icons/io";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { editFolder, editSharedUsersFolder } from "../../redux/actions/folders";
 import { editFile, editSharedUsersFile } from "../../redux/actions/files";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { ButtonCustom } from "./ButtonCustom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import ShareForm from "../../components/AdminAcademy/ShareForm";
+import MoveDocsItems from "../AdminAcademy/MoveDocsItems";
 
 const FileSchema = Yup.object().shape({
   name: Yup.string()
@@ -205,7 +209,6 @@ const DocsItem = (props) => {
   const handleChangeComplete = (color) => {
     setColor(color.hex);
   };
-  const handleDownloadFile = () => {};
 
   const [showShare, setShowShare] = useState(false);
 
@@ -247,12 +250,51 @@ const DocsItem = (props) => {
         return <FaFileAlt />;
     }
   };
+  const [showMove, setShowMove] = useState(false);
+
+  const handleCloseMove = () => {
+    setShowMove(false);
+  };
+  const handleShowMove = () => {
+    setShowMove(true);
+  };
+  const moveFoldersReducer = useSelector((state) => state.moveFoldersReducer);
+  const handleMoveSubmit = (e) => {
+    e.preventDefault();
+    console.log(
+      moveFoldersReducer.current_folders[
+        moveFoldersReducer.current_folders.length - 1
+      ]
+    );
+  };
+
   return (
     <Content>
       {admin && (
-        <div className="d-flex justify-content-between">
-          <div></div>
+        <div className="d-flex justify-content-center">
+          {/* <div></div> */}
           <div>
+            {is_file && (
+              <IconContext.Provider
+                value={{
+                  size: 20,
+                  className: "cursor-pointer text-dark mr-2 action-icon",
+                }}
+              >
+                <OverlayTrigger
+                  key={"top"}
+                  placement={"top"}
+                  overlay={<Tooltip id={`tooltip-p`}>Descargar.</Tooltip>}
+                >
+                  <a
+                    href={!/\/demo\//.test(pathname) ? file.file : "#"}
+                    target={!/\/demo\//.test(pathname) ? "_blank" : "_self"}
+                  >
+                    <MdFileDownload onClick={() => {}} />
+                  </a>
+                </OverlayTrigger>
+              </IconContext.Provider>
+            )}
             {!is_file && (
               <IconContext.Provider
                 value={{
@@ -308,6 +350,7 @@ const DocsItem = (props) => {
                 </OverlayTrigger>
               </IconContext.Provider>
             )}
+
             <IconContext.Provider
               value={{
                 size: 20,
@@ -322,7 +365,20 @@ const DocsItem = (props) => {
                 <MdShare onClick={handleShowShare} />
               </OverlayTrigger>
             </IconContext.Provider>
-
+            <IconContext.Provider
+              value={{
+                size: 20,
+                className: "cursor-pointer text-dark mr-2 action-icon",
+              }}
+            >
+              <OverlayTrigger
+                key={"top"}
+                placement={"top"}
+                overlay={<Tooltip id={`tooltip-p`}>Mover.</Tooltip>}
+              >
+                <FaFolderOpen onClick={handleShowMove} />
+              </OverlayTrigger>
+            </IconContext.Provider>
             <IconContext.Provider
               value={{
                 size: 20,
@@ -499,6 +555,17 @@ const DocsItem = (props) => {
             );
           }}
         </Formik>
+      </Modal>
+      <Modal show={showMove} onHide={handleCloseMove} size="lg" centered>
+        <form onSubmit={handleMoveSubmit}>
+          <Modal.Header closeButton>
+            <Modal.Title>Mover</Modal.Title>
+          </Modal.Header>
+          <MoveDocsItems doc={is_file ? file : folder} />
+          <Modal.Footer>
+            <ButtonCustom type="submit">Mover</ButtonCustom>
+          </Modal.Footer>
+        </form>
       </Modal>
     </Content>
   );

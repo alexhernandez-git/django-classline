@@ -27,6 +27,7 @@ import publicFilesReducer from "./publicFilesReducer";
 import publicFoldersReducer from "./publicFoldersReducer";
 import sharedFilesReducer from "./sharedFilesReducer";
 import sharedFoldersReducer from "./sharedFoldersReducer";
+import moveFoldersReducer from "./moveFoldersReducer";
 
 export default combineReducers({
   authReducer,
@@ -53,6 +54,7 @@ export default combineReducers({
   sharedFoldersReducer,
   sharedFilesReducer,
   shareStudentsReducer,
+  moveFoldersReducer,
 
   // Commercials reducers
   authCommercialsReducer,
