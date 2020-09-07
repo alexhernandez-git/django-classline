@@ -655,7 +655,7 @@ const Price = styled.div`
 
 export const SlickSliderAdmin = styled.div`
   .slick-track {
-    height: 550px;
+    height: 650px;
   }
   .slick-prev {
     left: -10px !important;
