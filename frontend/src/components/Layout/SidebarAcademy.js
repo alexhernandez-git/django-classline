@@ -268,7 +268,7 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
-          {programReducer.program.are_docs && (
+          {programReducer.program.are_docs && !/\/demo\/?/.test(pathname) && (
             <Link
               to={`${
                 /\/demo\/?/.test(pathname) ? "/demo" : ""
