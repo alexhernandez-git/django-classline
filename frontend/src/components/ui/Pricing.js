@@ -318,6 +318,7 @@ const Pricing = (props) => {
             <li>Cursos ilimitados</li>
             <li>Podcasts ilimitados</li>
             <li>Clases online ilimitadas</li>
+            <li>Documentos ilimitados</li>
           </ul>
         </PricingCard>
       </div>
@@ -400,6 +401,7 @@ const Pricing = (props) => {
                 <li>Cursos ilimitados</li>
                 <li>Podcasts ilimitados</li>
                 <li>Clases online ilimitadas</li>
+                <li>Documentos ilimitados</li>
               </ul>
               <div className="extended-card  shadow-sm">
                 Descuento por volumen!
