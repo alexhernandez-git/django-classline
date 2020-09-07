@@ -58,6 +58,7 @@ export default function (state = initialState, action) {
         folder_editing: true,
       };
     case EDIT_FOLDER_SUCCESS:
+      action.payload.is_editing = false;
       return {
         ...state,
         folder_editing: false,

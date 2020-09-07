@@ -2,7 +2,19 @@ import { useParams, useLocation } from "react-router-dom";
 import styled from "@emotion/styled";
 import { textEllipsis } from "./TextEllipsis";
 import { IconContext } from "react-icons";
-import { FaFileAlt, FaFolder, FaCog, FaEdit, FaTrashAlt } from "react-icons/fa";
+import {
+  FaFileAlt,
+  FaFolder,
+  FaCog,
+  FaEdit,
+  FaTrashAlt,
+  FaFileWord,
+  FaFileExcel,
+  FaFileImage,
+  FaFileCsv,
+  FaFilePowerpoint,
+  FaFilePdf,
+} from "react-icons/fa";
 import React, { useState, useRef, useEffect } from "react";
 import { Modal, Form, Row, Col, Button } from "react-bootstrap";
 import { Formik, Form as FormFormik } from "formik";
@@ -203,6 +215,38 @@ const DocsItem = (props) => {
   const handleShowShare = () => {
     setShowShare(true);
   };
+  const setFileIcon = () => {
+    console.log(file.filename.split(".").pop());
+    switch (file.filename.split(".").pop()) {
+      case "docx":
+      case "DOCX":
+        return <FaFileWord style={{ color: "#4285f4" }} />;
+      case "xlsx":
+      case "XLSX":
+        return <FaFileExcel style={{ color: "#0f9d58" }} />;
+      case "PNG":
+      case "png":
+      case "JPG":
+      case "jpg":
+      case "JPEG":
+      case "jpeg":
+        return <FaFileImage style={{ color: "#777" }} />;
+      case "csv":
+      case "CSV":
+        return <FaFileCsv style={{ color: "#0f9d58" }} />;
+      case "PPTX":
+      case "pptx":
+      case "PPT":
+      case "ppt":
+        return <FaFilePowerpoint style={{ color: "#fd7541" }} />;
+      case "PDF":
+      case "pdf":
+        return <FaFilePdf style={{ color: "#ea4335" }} />;
+
+      default:
+        return <FaFileAlt />;
+    }
+  };
   return (
     <Content>
       {admin && (
@@ -330,7 +374,7 @@ const DocsItem = (props) => {
               href={!/\/demo\//.test(pathname) ? file.file : "#"}
               target={!/\/demo\//.test(pathname) ? "_blank" : "_self"}
             >
-              <FaFileAlt />
+              {setFileIcon()}
             </a>
           ) : (
             <FaFolder onClick={() => hanldeEnterFolder(folder)} />
