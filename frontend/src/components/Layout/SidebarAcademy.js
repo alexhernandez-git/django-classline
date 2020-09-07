@@ -230,7 +230,7 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
-          {(programReducer.program.are_docs || true) && (
+          {programReducer.program.are_docs && (
             <Link
               to={`${
                 /\/demo\/?/.test(pathname) ? "/demo" : ""
@@ -249,50 +249,44 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
-          {programReducer.program.are_videos &&
-            (programReducer.program.are_docs || true) &&
-            !/\/demo\/?/.test(pathname) && (
-              <>
-                <hr />
-                <Link
-                  to={`${
-                    /\/demo\/?/.test(pathname) ? "/demo" : ""
-                  }/academy/${program}/playlists`}
+          <hr />
+          {programReducer.program.are_videos && !/\/demo\/?/.test(pathname) && (
+            <Link
+              to={`${
+                /\/demo\/?/.test(pathname) ? "/demo" : ""
+              }/academy/${program}/playlists`}
+            >
+              <SecctionLink active={/\/playlists\/?$/.test(pathname) && true}>
+                <IconContext.Provider
+                  value={{
+                    className: "sidebar-icon",
+                  }}
                 >
-                  <SecctionLink
-                    active={/\/playlists\/?$/.test(pathname) && true}
-                  >
-                    <IconContext.Provider
-                      value={{
-                        className: "sidebar-icon",
-                      }}
-                    >
-                      <FaListUl />
-                    </IconContext.Provider>{" "}
-                    Listas de reproducción
-                  </SecctionLink>
-                </Link>
-                <Link
-                  to={`${
-                    /\/demo\/?/.test(pathname) ? "/demo" : ""
-                  }/academy/${program}/shared-docs`}
+                  <FaListUl />
+                </IconContext.Provider>{" "}
+                Listas de reproducción
+              </SecctionLink>
+            </Link>
+          )}
+          {programReducer.program.are_docs && (
+            <Link
+              to={`${
+                /\/demo\/?/.test(pathname) ? "/demo" : ""
+              }/academy/${program}/shared-docs`}
+            >
+              <SecctionLink active={/\/shared-docs\/?$/.test(pathname) && true}>
+                <IconContext.Provider
+                  value={{
+                    className: "sidebar-icon",
+                    size: 25,
+                  }}
                 >
-                  <SecctionLink
-                    active={/\/shared-docs\/?$/.test(pathname) && true}
-                  >
-                    <IconContext.Provider
-                      value={{
-                        className: "sidebar-icon",
-                        size: 25,
-                      }}
-                    >
-                      <MdFolderShared />
-                    </IconContext.Provider>{" "}
-                    Compartido conmigo
-                  </SecctionLink>
-                </Link>
-              </>
-            )}
+                  <MdFolderShared />
+                </IconContext.Provider>{" "}
+                Compartido conmigo
+              </SecctionLink>
+            </Link>
+          )}
         </>
       )}
     </ContainerSidebar>

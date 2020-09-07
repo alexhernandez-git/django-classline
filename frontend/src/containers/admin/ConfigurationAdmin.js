@@ -60,6 +60,7 @@ const index = (props) => {
         are_courses: program.are_courses,
         courses: program.courses,
         are_podcasts: program.are_podcasts,
+        are_docs: program.are_docs,
         podcasts: program.podcasts,
         students: program.students,
         program_price: program.program_price,

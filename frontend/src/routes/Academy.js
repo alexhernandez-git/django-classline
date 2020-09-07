@@ -115,7 +115,7 @@ const Academy = () => {
               exact
               path="/academy/:program/docs/:id"
               component={
-                programReducer.program.are_docs || true
+                programReducer.program.are_docs
                   ? DocsAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
@@ -160,7 +160,7 @@ const Academy = () => {
               exact
               path="/academy/:program/docs"
               component={
-                programReducer.program.are_docs || true
+                programReducer.program.are_docs
                   ? DocsAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
@@ -169,7 +169,7 @@ const Academy = () => {
               exact
               path="/academy/:program/shared-docs"
               component={
-                programReducer.program.are_docs || true
+                programReducer.program.are_docs
                   ? SharedDocsAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }

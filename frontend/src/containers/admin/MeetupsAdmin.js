@@ -77,7 +77,6 @@ const meetups = () => {
             ? args.videoconference
             : args.extendedProps.videoconference,
         recurrent: true,
-
       });
     }
   }, [args]);
@@ -123,7 +122,6 @@ const meetups = () => {
       videoconference: "",
       backgroundColor: "",
       recurrent: true,
-
     };
     setArgs(newEvent);
   };
@@ -140,7 +138,7 @@ const meetups = () => {
       description: args.event.extendedProps.description,
       videoconference: args.event.extendedProps.videoconference,
       day_of_week: args.event.extendedProps.day_of_week,
-     recurrent: true,
+      recurrent: true,
     });
   };
   const handleEventDrop = (args) => {
@@ -191,7 +189,7 @@ const meetups = () => {
   };
   return (
     <Main padding>
-      <Filters title="Videoconferencias" className="border-bottom" />
+      <Filters title="Clases online" className="border-bottom" />
       <ContainerCalendar className="container">
         <div className="calendar">
           <FullCalendar

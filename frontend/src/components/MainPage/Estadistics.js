@@ -59,9 +59,25 @@ const Caracteristics = () => {
               </IconContext.Provider>
             </div>
           )}
-          {programReducer.program.are_playlists && (
+          {programReducer.program.are_courses && (
             <div className="position-relative">
               Cursos
+              <IconContext.Provider
+                value={{
+                  style: {
+                    top: "2px",
+                  },
+                  className: "mr-3 text-primary position-absolute",
+                  size: "20px",
+                }}
+              >
+                <IoMdCheckmark />{" "}
+              </IconContext.Provider>
+            </div>
+          )}
+          {programReducer.program.are_docs && (
+            <div className="position-relative">
+              Documentos
               <IconContext.Provider
                 value={{
                   style: {
@@ -92,9 +108,14 @@ const Caracteristics = () => {
               Podcasts: {programReducer.program.podcasts}
             </div>
           )}
-          {programReducer.program.are_playlists && (
+          {programReducer.program.are_courses && (
             <div className="position-relative">
-              Cursos: {programReducer.program.playlists}
+              Cursos: {programReducer.program.courses}
+            </div>
+          )}
+          {programReducer.program.are_docs && (
+            <div className="position-relative">
+              Documentos: {programReducer.program.docs}
             </div>
           )}
           <div className="position-relative">

@@ -122,6 +122,7 @@ const ProgramConfiguration = (props) => {
             <Checkbox name="are_courses" />
           </Col>
         </Row>
+
         <Row className="mb-5">
           <Col
             lg={{ span: 4 }}
@@ -137,7 +138,7 @@ const ProgramConfiguration = (props) => {
             <Checkbox name="are_podcasts" />
           </Col>
         </Row>
-        <Row className="mb-6">
+        <Row className="mb-5">
           <Col
             lg={{ span: 4 }}
             className="text-center d-lg-flex justify-content-end align-items-center"
@@ -150,6 +151,21 @@ const ProgramConfiguration = (props) => {
             className="d-flex justify-content-center d-lg-block"
           >
             <Checkbox name="are_meetups" />
+          </Col>
+        </Row>
+        <Row className="">
+          <Col
+            lg={{ span: 4 }}
+            className="text-center d-lg-flex justify-content-end align-items-center"
+          >
+            <span className="m-0 font-weight-normal">Documentos</span>
+          </Col>
+
+          <Col
+            lg={{ offset: 1, span: 6 }}
+            className="d-flex justify-content-center d-lg-block"
+          >
+            <Checkbox name="are_docs" />
           </Col>
         </Row>
         {/* <Row className="mb-5">

@@ -127,7 +127,7 @@ const Academy = () => {
             exact
             path="/demo/academy/:program/docs"
             component={
-              programReducer.program.are_docs || true
+              programReducer.program.are_docs
                 ? DocsAcademy
                 : () => <Redirect to={`/academy/${programId}/home`} />
             }

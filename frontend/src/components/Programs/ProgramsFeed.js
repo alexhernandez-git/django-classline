@@ -148,6 +148,15 @@ export default function ProfessorFeed(props) {
                   </div>
                 </div>
               )}
+              {program.are_docs && (
+                <div className="row">
+                  <div className="col-12">
+                    <small className="font-weight-bold text-info mb-2">
+                      Documentos públicos: {program.docs}
+                    </small>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </Card.Body>

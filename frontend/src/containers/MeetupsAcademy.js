@@ -85,7 +85,7 @@ const meetups = () => {
   ]);
   return (
     <Main padding>
-      <Filters title="Videoconferencias" className="border-bottom" />
+      <Filters title="Clases online" className="border-bottom" />
       <ContainerCalendar className="container">
         <div className="calendar">
           <FullCalendar

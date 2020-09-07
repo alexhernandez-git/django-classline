@@ -208,6 +208,26 @@ const InformationCourse = () => {
                 </div>
               </div>
             )}
+            {programContext.programState.program.are_docs && (
+              <div className="row pr-3 pl-3 mt-3">
+                <div className="col-sm-6 d-flex align-items-center">
+                  <IconContext.Provider
+                    value={{
+                      className: "text-primary mr-2",
+                      size: "16px",
+                    }}
+                  >
+                    <FaChalkboardTeacher />
+                  </IconContext.Provider>
+                  <span className="m-0 text-center text-primary font-weight-normal">
+                    Documentos públicos
+                  </span>
+                </div>
+                <div className="col-sm-6 col-lg-6">
+                  {programContext.programState.program.docs}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

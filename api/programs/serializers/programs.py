@@ -20,7 +20,8 @@ from api.programs.models import (
     Playlist,
     Video,
     Podcast,
-    Rating
+    Rating,
+    File
 )
 
 
@@ -245,6 +246,7 @@ class ProgramModelSerializer(serializers.ModelSerializer):
     videos = serializers.SerializerMethodField(read_only=True)
     courses = serializers.SerializerMethodField(read_only=True)
     podcasts = serializers.SerializerMethodField(read_only=True)
+    docs = serializers.SerializerMethodField(read_only=True)
     ratings = serializers.SerializerMethodField(read_only=True)
     is_subscribed = serializers.SerializerMethodField(read_only=True)
 
@@ -272,6 +274,7 @@ class ProgramModelSerializer(serializers.ModelSerializer):
             'videos',
             'courses',
             'podcasts',
+            'docs',
             'are_meetups',
             'are_videos',
             'are_courses',
@@ -311,6 +314,10 @@ class ProgramModelSerializer(serializers.ModelSerializer):
     def get_podcasts(self, obj):
         podcasts = Podcast.objects.filter(program=obj.id).count()
         return podcasts
+
+    def get_docs(self, obj):
+        files = File.objects.filter(program=obj.id, is_private=False).count()
+        return files
 
     def get_students_count(self, obj):
         from api.users.serializers.users import UserTeacherCountModelSerializer
@@ -357,6 +364,7 @@ class ProgramListModelSerializer(serializers.ModelSerializer):
     videos = serializers.SerializerMethodField(read_only=True)
     courses = serializers.SerializerMethodField(read_only=True)
     podcasts = serializers.SerializerMethodField(read_only=True)
+    docs = serializers.SerializerMethodField(read_only=True)
     ratings = serializers.SerializerMethodField(read_only=True)
     is_subscribed = serializers.SerializerMethodField(read_only=True)
 
@@ -383,6 +391,7 @@ class ProgramListModelSerializer(serializers.ModelSerializer):
             'videos',
             'courses',
             'podcasts',
+            'docs',
             'are_meetups',
             'are_videos',
             'are_courses',
@@ -430,6 +439,10 @@ class ProgramListModelSerializer(serializers.ModelSerializer):
     def get_podcasts(self, obj):
         podcasts = Podcast.objects.filter(program=obj.id).count()
         return podcasts
+
+    def get_docs(self, obj):
+        files = File.objects.filter(program=obj.id, is_private=False).count()
+        return files
 
     def get_program_price(self, obj):
         price = ProgramPrice.objects.filter(program=obj)
