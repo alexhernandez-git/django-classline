@@ -94,3 +94,28 @@ class ShareUsersFoldersSerializer(serializers.Serializer):
         instance.save()
 
         return instance
+
+
+class MoveFoldersSerializer(serializers.Serializer):
+    """Folder model serializer."""
+    top_folder = serializers.CharField()
+
+    def validate(self, data):
+        if 'top_folder' in data:
+            top_folder = data['top_folder']
+            top_folder = get_object_or_404(Folder, pk=top_folder)
+        else:
+            top_folder = None
+
+        return {
+            'top_folder': top_folder,
+        }
+
+    def update(self, instance, validated_data):
+        # program = validated_data['program']
+        top_folder = validated_data['top_folder']
+
+        instance.top_folder = top_folder
+        instance.save()
+
+        return instance

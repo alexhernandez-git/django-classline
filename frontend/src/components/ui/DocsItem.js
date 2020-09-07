@@ -43,6 +43,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import ShareForm from "../../components/AdminAcademy/ShareForm";
 import MoveDocsItems from "../AdminAcademy/MoveDocsItems";
+import { moveFile, moveFolder } from "../../redux/actions/moveFolders";
 
 const FileSchema = Yup.object().shape({
   name: Yup.string()
@@ -219,7 +220,6 @@ const DocsItem = (props) => {
     setShowShare(true);
   };
   const setFileIcon = () => {
-    console.log(file.filename.split(".").pop());
     switch (file.filename.split(".").pop()) {
       case "docx":
       case "DOCX":
@@ -261,11 +261,29 @@ const DocsItem = (props) => {
   const moveFoldersReducer = useSelector((state) => state.moveFoldersReducer);
   const handleMoveSubmit = (e) => {
     e.preventDefault();
-    console.log(
-      moveFoldersReducer.current_folders[
-        moveFoldersReducer.current_folders.length - 1
-      ]
-    );
+
+    if (is_file) {
+      dispatch(
+        moveFile({
+          ...file,
+          top_folder:
+            moveFoldersReducer.current_folders[
+              moveFoldersReducer.current_folders.length - 1
+            ],
+        })
+      );
+    } else {
+      dispatch(
+        moveFolder({
+          ...folder,
+          top_folder:
+            moveFoldersReducer.current_folders[
+              moveFoldersReducer.current_folders.length - 1
+            ],
+        })
+      );
+    }
+    handleCloseMove();
   };
 
   return (
@@ -437,7 +455,6 @@ const DocsItem = (props) => {
           )}
         </IconContext.Provider>
         <div className="text">
-          {console.log(isEditing && admin)}
           {isEditing && admin ? (
             <form onSubmit={(e) => handleUpdateName(e)}>
               <input
@@ -478,7 +495,6 @@ const DocsItem = (props) => {
           </IconContext.Provider>
         )}
       </div> */}
-      {console.log(color)}
       <Modal show={show} onHide={handleClose} size="sm" centered>
         <form onSubmit={handleUpdateColor}>
           <Modal.Header closeButton>
@@ -525,7 +541,6 @@ const DocsItem = (props) => {
             shared_users: is_file ? file.shared_users : folder.shared_users,
           }}
           onSubmit={(values) => {
-            console.log(values);
             if (is_file) {
               dispatch(editSharedUsersFile(values));
             } else {

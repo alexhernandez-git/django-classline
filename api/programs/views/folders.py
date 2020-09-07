@@ -20,7 +20,9 @@ from api.programs.models import Folder
 # Serializers
 from api.programs.serializers import (
     FolderModelSerializer,
-    ShareUsersFoldersSerializer
+    ShareUsersFoldersSerializer,
+    MoveFoldersSerializer
+
 )
 
 from api.programs.serializers.subscriptions import(
@@ -136,6 +138,26 @@ class FolderViewSet(mixins.CreateModelMixin,
             data=request.data,
             context={
                 'program': program,
+                'request': request
+            },
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+
+        folder = serializer.save()
+
+        data = FolderModelSerializer(folder).data
+        return Response(data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['put', 'patch'])
+    def update_top_folder(self, request, *args, **kwargs):
+        folder = self.get_object()
+        partial = request.method == 'PATCH'
+
+        serializer = MoveFoldersSerializer(
+            folder,
+            data=request.data,
+            context={
                 'request': request
             },
             partial=partial

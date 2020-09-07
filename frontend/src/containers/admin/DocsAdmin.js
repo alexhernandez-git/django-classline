@@ -124,15 +124,17 @@ export default function DocsAdmin() {
       }
     });
   };
-  const hanldeEnterFolder = (folder) => {
-    dispatch(setCurrentFolder(folder.id));
+  const refetchDocs = () => {
     dispatch(fetchFolders());
     dispatch(fetchFiles());
   };
+  const hanldeEnterFolder = (folder) => {
+    dispatch(setCurrentFolder(folder.id));
+    refetchDocs();
+  };
   const hanldeEnterTopFolder = () => {
     dispatch(removeCurrentFolder());
-    dispatch(fetchFolders());
-    dispatch(fetchFiles());
+    refetchDocs();
   };
   return (
     <>

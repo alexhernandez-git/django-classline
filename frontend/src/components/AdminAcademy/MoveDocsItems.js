@@ -75,13 +75,16 @@ const MoveDocsItems = (props) => {
         <div className="col-12">
           <GridFolders>
             {moveFoldersReducer.folders &&
-              moveFoldersReducer.folders.map((folder) => (
-                <DocsItem
-                  folder={folder}
-                  key={folder.id}
-                  hanldeEnterFolder={hanldeEnterFolder}
-                />
-              ))}
+              moveFoldersReducer.folders.map(
+                (folder) =>
+                  folder.id != doc.id && (
+                    <DocsItem
+                      folder={folder}
+                      key={folder.id}
+                      hanldeEnterFolder={hanldeEnterFolder}
+                    />
+                  )
+              )}
           </GridFolders>
           {moveFoldersReducer.isLoading && <span>Cargando...</span>}
         </div>
