@@ -18,6 +18,7 @@ from api.programs.models import (
     Event,
     ProgramLanguage,
     Course,
+    Playlist,
     Video,
     Podcast,
     Rating,
