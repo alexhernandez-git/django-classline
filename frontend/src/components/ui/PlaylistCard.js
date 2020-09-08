@@ -40,17 +40,6 @@ const PlaylistCard = (props) => {
               {name}
             </span>
           </div>
-          <small
-            style={{
-              display: "-webkit-box",
-              WebkitLineClamp: "1",
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            11/08/12
-          </small>
         </div>
         <div className="d-none d-xl-flex align-items-center justify-content-center flex-column mx-4">
           <span className="h5 m-0 font-weight-normal">{tracks.length}</span>

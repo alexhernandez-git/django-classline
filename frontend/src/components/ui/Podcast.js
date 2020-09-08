@@ -23,7 +23,15 @@ function msToHMS(secconds) {
   return hms;
 }
 const Podcast = (props) => {
-  const { id, title, description, picture, views, duration } = props.podcast;
+  const {
+    id,
+    title,
+    description,
+    picture,
+    views,
+    duration,
+    created,
+  } = props.podcast;
   const active = props.active;
   return (
     <VideoItem
@@ -81,7 +89,7 @@ const Podcast = (props) => {
               textOverflow: "ellipsis",
             }}
           >
-            11/08/12
+            {moment(created).format("DD-MM-YYYY")}
           </small>
         </div>
         <div className="d-none d-xl-flex align-items-center justify-content-center flex-column mx-4">
