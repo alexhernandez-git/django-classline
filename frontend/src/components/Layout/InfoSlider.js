@@ -131,8 +131,8 @@ const InfoSlider = () => {
                         </span>
                         <span className="text-grey">
                           Te vamos a demostrar que con nuestras academias puedes
-                          seguir aprendiendo y divirtiéndote desde cualquier
-                          lugar del mundo
+                          seguir aprendiendo y divirtiéndote desde tu casa o
+                          cualquier lugar del mundo
                         </span>
                       </div>
                     </div>
