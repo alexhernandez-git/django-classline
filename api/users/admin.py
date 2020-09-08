@@ -11,7 +11,7 @@ from api.users.models import User, Profile, Teacher, Subscription, Coupon, Promo
 class CustomUserAdmin(UserAdmin):
     """User model admin."""
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('is_commercial',
+        (None, {'fields': ('is_verified', 'is_commercial',
                            'created_by_commercial', 'user_created_by')}),
     )
     list_display = ('email', 'first_name', 'last_name',
