@@ -179,7 +179,11 @@ const Academy = () => {
               path="/academy/:program/playlist/:id/:track?"
               component={PlaylistAcademy}
             />
-
+            <Route
+              exact
+              path="/academy/:program/video/:id"
+              component={VideoAcademy}
+            />
             {authReducer.user && authReducer.user.created_account && (
               <Route
                 exact
