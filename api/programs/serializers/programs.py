@@ -17,7 +17,7 @@ from api.programs.models import (
     ProgramPrice,
     Event,
     ProgramLanguage,
-    Playlist,
+    Course,
     Video,
     Podcast,
     Rating,
@@ -304,7 +304,7 @@ class ProgramModelSerializer(serializers.ModelSerializer):
         return len(events)
 
     def get_courses(self, obj):
-        courses = Playlist.objects.filter(program=obj.id).count()
+        courses = Course.objects.filter(program=obj.id).count()
         return courses
 
     def get_videos(self, obj):
@@ -429,7 +429,7 @@ class ProgramListModelSerializer(serializers.ModelSerializer):
         return UserTeacherCountModelSerializer(obj.user).data
 
     def get_courses(self, obj):
-        courses = Playlist.objects.filter(program=obj.id).count()
+        courses = Course.objects.filter(program=obj.id).count()
         return courses
 
     def get_videos(self, obj):
