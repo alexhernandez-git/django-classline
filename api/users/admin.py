@@ -12,7 +12,7 @@ class CustomUserAdmin(UserAdmin):
     """User model admin."""
     fieldsets = UserAdmin.fieldsets + (
         (None, {'fields': ('is_verified', 'is_commercial',
-                           'created_by_commercial', 'user_created_by')}),
+                           'created_by_commercial', 'user_created_by', 'password_changed')}),
     )
     list_display = ('email', 'first_name', 'last_name',
                     'is_staff', 'is_client', 'is_commercial')
