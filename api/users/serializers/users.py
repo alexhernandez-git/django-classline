@@ -704,12 +704,12 @@ class CommercialsLoginSerializer(serializers.Serializer):
             # Check if user set email
         user = authenticate(username=email, password=password)
         # import pdb; pdb.set_trace()
+        if not user:
+            raise serializers.ValidationError('Credenciales invalidas')
+
         if not user.is_commercial:
             raise serializers.ValidationError(
                 'Con esta cuenta no puedes acceder al dashboard')
-
-        if not user:
-            raise serializers.ValidationError('Credenciales invalidas')
 
         self.context['user'] = user
         return data
