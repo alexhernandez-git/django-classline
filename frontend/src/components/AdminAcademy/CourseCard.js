@@ -6,7 +6,7 @@ import { IconContext } from "react-icons";
 import { Link, useParams } from "react-router-dom";
 const PlaylistCard = (props) => {
   const { program } = useParams();
-  const { id, name, picture, tracks } = props.playlist;
+  const { id, name, picture, tracks, created } = props.playlist;
   return (
     <VideoItem
       className="my-course d-flex justify-content-between rounded bg-white"
@@ -40,7 +40,7 @@ const PlaylistCard = (props) => {
               {name}
             </span>
           </div>
-          <small
+          {/* <small
             style={{
               display: "-webkit-box",
               WebkitLineClamp: "1",
@@ -49,8 +49,8 @@ const PlaylistCard = (props) => {
               textOverflow: "ellipsis",
             }}
           >
-            11/08/12
-          </small>
+         
+          </small> */}
         </div>
         <div className="d-none d-xl-flex align-items-center justify-content-center flex-column mx-4">
           <span className="h5 m-0 font-weight-normal">{tracks.length}</span>
