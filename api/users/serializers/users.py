@@ -188,7 +188,8 @@ class UserCommercialModelSerializer(serializers.ModelSerializer):
             'commercial',
             'first_password',
             'created_account',
-            'first_password'
+            'first_password',
+            'password_changed',
 
         )
 
@@ -222,7 +223,8 @@ class UserTeacherCreatedByCommercialModelSerializer(serializers.ModelSerializer)
             'teacher',
             'created_account',
             'first_password',
-            'user_created_by'
+            'user_created_by',
+            'password_changed',
 
         )
 
@@ -255,7 +257,8 @@ class UserWithoutTeacherModelSerializer(serializers.ModelSerializer):
             'is_staff',
             'profile',
             'created_account',
-            'first_password'
+            'first_password',
+            'password_changed',
 
 
         )
@@ -288,7 +291,8 @@ class UserTeacherCountModelSerializer(serializers.ModelSerializer):
             'profile',
             'created_account',
             'first_password',
-            'teacher'
+            'teacher',
+            'password_changed',
 
 
         )
@@ -321,7 +325,8 @@ class UserListTeacherModelSerializer(serializers.ModelSerializer):
             'profile',
             'teacher',
             'created_account',
-            'first_password'
+            'first_password',
+            'password_changed',
         )
 
         read_only_fields = (
@@ -352,7 +357,8 @@ class UserProgramTeacherModelSerializer(serializers.ModelSerializer):
             'profile',
             'teacher',
             'created_account',
-            'first_password'
+            'first_password',
+            'password_changed',
         )
         read_only_fields = (
             'id',
@@ -382,7 +388,10 @@ class UserCustomTeacherModelSerializer(serializers.ModelSerializer):
             'profile',
             'teacher',
             'created_account',
-            'first_password'
+            'first_password',
+            'password_changed',
+
+            'password_changed',
         )
 
         read_only_fields = (

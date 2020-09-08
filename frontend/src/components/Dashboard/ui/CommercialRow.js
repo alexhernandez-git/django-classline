@@ -38,7 +38,6 @@ const CostumerRow = (props) => {
   const handleToggleShowPassword = () => {
     setShowPassword((showPassword) => (showPassword ? false : true));
   };
-
   return (
     <tr className="position-relative">
       <td>{code}</td>
