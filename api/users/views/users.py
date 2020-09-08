@@ -283,7 +283,6 @@ class UserViewSet(mixins.RetrieveModelMixin,
         """User sign up."""
         request.data['created_account'] = True
         request.data['username'] = request.data['email']
-        request.data['email'] = '{}'.format(uuid.uuid4().hex[:9].upper())
         request.data['first_password'] = request.data['password']
         program = get_object_or_404(Program, code=kwargs['code'])
         serializer = UserSignUpSerializer(data=request.data, context={
