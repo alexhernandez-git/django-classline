@@ -3,6 +3,8 @@ import styled from "@emotion/styled";
 import { FaTrashAlt } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import { IconContext } from "react-icons";
+import moment from "moment";
+
 const PodcastCard = (props) => {
   function msToHMS(secconds) {
     // 1- Convert to seconds:
@@ -24,7 +26,15 @@ const PodcastCard = (props) => {
     }
     return hms;
   }
-  const { id, title, description, audio, picture, duration } = props.podcast;
+  const {
+    id,
+    title,
+    description,
+    audio,
+    picture,
+    duration,
+    created,
+  } = props.podcast;
   return (
     <VideoItem
       className="my-course d-flex justify-content-between rounded bg-white"
@@ -79,13 +89,11 @@ const PodcastCard = (props) => {
               textOverflow: "ellipsis",
             }}
           >
-            11/08/12
+            {moment(created).format("DD-MM-YYYY")}
           </small>
         </div>
         <div className="d-none d-xl-flex align-items-center justify-content-center flex-column mx-4">
-          <span className="h5 m-0 font-weight-normal">
-          {msToHMS(duration)}
-          </span>
+          <span className="h5 m-0 font-weight-normal">{msToHMS(duration)}</span>
           <small>Minutos</small>
         </div>
 
