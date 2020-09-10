@@ -83,7 +83,7 @@ export const createFile = (file) => (dispatch, getState) => {
   });
   const fd = new FormData();
   fd.append("name", file.name);
-  fd.append("file", file.file, file.file.name);
+  fd.append("file", file.file, Math.random().toString(36) + file.file.name);
   if (getState().foldersReducer.current_folders.length > 0) {
     fd.append(
       "top_folder",
