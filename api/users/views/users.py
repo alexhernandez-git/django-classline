@@ -78,12 +78,13 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
     def get_permissions(self):
         """Assign permissions based on action."""
-        if self.action in ['stripe_webhook_payment_succeeded', 'signup', 'login', 'login_from_platform', 'verify', 'list', 'retrieve', 'stripe_webhook_subscription_cancelled', 'login_from_app', 'forget_password', 'login_to_dashboard']:
+        if self.action in ['signup', 'login', 'login_from_platform', 'verify', 'list', 'retrieve', 'stripe_webhook_subscription_cancelled', 'login_from_app', 'forget_password', 'login_to_dashboard']:
             permissions = [AllowAny]
         elif self.action in ['update', 'delete', 'partial_update', 'change_password', 'change_email', 'validate_change_email', 'reset_password', 'create_commercial', 'create_user_by_commercial']:
             permissions = [IsAccountOwner, IsAuthenticated]
+
         else:
-            permissions = [IsAuthenticated]
+            permissions = []
         return [p() for p in permissions]
 
     def get_serializer_class(self):
@@ -548,7 +549,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
             return HttpResponse(status=400)
 
         # Handle the event
-        if event.type == 'invoice.payment_succeeded':
+        if event.livemode and event.type == 'invoice.payment_succeeded':
             invoice = event.data.object  # contains a stripe.Invoice
             subscription_data = Subscription.objects.get(
                 subscription_id=invoice.subscription, active=True)

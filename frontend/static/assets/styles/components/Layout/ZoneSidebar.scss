@@ -60,7 +60,7 @@
     display: contents !important;
   }
 }
-@media (min-width: 768px) and (min-height: 768px) {
+@media (min-width: 768px) {
   .zone-sidebar {
     min-width: inherit;
     min-height: calc(100vh - 70px);
