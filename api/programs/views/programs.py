@@ -66,7 +66,7 @@ class ProgramViewSet(mixins.CreateModelMixin,
         """Restrict list to public-only."""
         queryset = Program.objects.all()
         if self.action in ['list']:
-            queryset = Program.objects.filter(actived=True)
+            queryset = Program.objects.filter(actived=True, published=True)
 
         return queryset
 

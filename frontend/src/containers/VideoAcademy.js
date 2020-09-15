@@ -50,20 +50,20 @@ const video = () => {
           <div className="d-block d-md-none m-5"></div>
           {videoReducer.video && !videoReducer.isLoading && (
             <>
-          {recomendedVideosReducer.videos &&
-            recomendedVideosReducer.videos.map((video) => (
-              video.id != videoReducer.video.id && (
-
-                <Link to={`/academy/${program}/video/${video.id}`}>
-                  <div className="cursor-pointer">
-                    <Video video={video} key={video.id} />
-                    <hr />
-                  </div>
-                </Link>
-                )
-            ))}
+              {recomendedVideosReducer.videos &&
+                recomendedVideosReducer.videos.map(
+                  (video) =>
+                    video.id != videoReducer.video.id && (
+                      <Link to={`/academy/${program}/video/${video.id}`}>
+                        <div className="cursor-pointer">
+                          <Video video={video} key={video.id} />
+                          <hr />
+                        </div>
+                      </Link>
+                    )
+                )}
             </>
-            )}
+          )}
           {recomendedVideosReducer.isLoading && <span>Cargando...</span>}
         </div>
       </div>
