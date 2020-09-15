@@ -82,7 +82,7 @@ const VideoPlayer = (props) => {
     screenfull.toggle(playerContainerRef.current);
   };
   const handleProgress = (changeState) => {
-    if (count > 2) {
+    if (count > 1) {
       controlsRef.current.style.visibility = "hidden";
       count = 0;
     }
