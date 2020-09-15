@@ -126,7 +126,7 @@ const VideoPlayer = (props) => {
       >
         <ReactPlayer
           ref={playerRef}
-          url={"https://media.w3.org/2010/05/sintel/trailer_hd.mp4"}
+          url={video}
           width="100%"
           height="100%"
           style={{ display: "flex", alignItems: "center" }}
