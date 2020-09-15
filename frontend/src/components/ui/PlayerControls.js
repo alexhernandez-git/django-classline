@@ -45,6 +45,7 @@ const PlayerControls = forwardRef((props, ref) => {
 
   return (
     <ControlsWrapper ref={ref}>
+      <div className="click-zone" onClick={onPlayPause}></div>
       <div className="video-title">{title}</div>
       <div className="middle-controls">
         <IconContext.Provider
@@ -178,27 +179,46 @@ const ControlsWrapper = styled.div`
   justify-content: space-between;
   z-index: 1;
   padding: 1rem 1.6rem;
+  .click-zone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 1;
+    height: calc(100% - 5rem);
+    padding: 1rem 1.6rem;
+  }
   .video-title {
     color: #fff;
+    z-index: 3;
   }
   .controls-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    z-index: 3;
   }
   .controls-bar .volume-wrapper {
     display: grid;
     grid-template-columns: 4rem 10rem;
     align-items: center;
+    z-index: 3;
   }
   .middle-controls {
     display: flex;
     color: #fff;
     align-items: center;
+    z-index: 3;
+
     justify-content: center;
   }
   .press-icon:hover {
     color: #fff !important;
+    z-index: 3;
   }
 `;
 
