@@ -43,7 +43,7 @@ const VideoPlayer = (props) => {
 
   const [state, setState] = useState({
     playing: true,
-    muted: true,
+    muted: false,
     volume: 0.5,
     playbackRate: 1.0,
     played: 0,
