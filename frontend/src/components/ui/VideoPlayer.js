@@ -1,6 +1,30 @@
 import React from "react";
 import styled from "@emotion/styled";
 import moment from "moment";
+import ReactPlayer from "react-player";
+import { IconContext } from "react-icons/lib";
+import { FaBackward, FaForward, FaPlay, FaVolumeUp } from "react-icons/fa";
+import { RiFullscreenFill } from "react-icons/ri";
+import Slider, { Range } from "rc-slider";
+import "static/assets/styles/components/Layout/rc-slider.scss";
+import PlayerControls from "./PlayerControls";
+import { useState, useRef } from "react";
+import screenfull from "screenfull";
+
+const format = (seconds) => {
+  if (isNaN(seconds)) {
+    return "00:00";
+  }
+  const date = new Date(seconds * 1000);
+  const hh = date.getUTCHours();
+  const mm = date.getUTCMinutes();
+  const ss = date.getUTCSeconds().toString().padStart(2, "0");
+  if (hh) {
+    return `${hh}:${mm.toString().padStart(2, "0")}:${ss}`;
+  }
+  return `${mm}:${ss}`;
+};
+let count = 0;
 
 const VideoPlayer = (props) => {
   const {
@@ -13,18 +37,134 @@ const VideoPlayer = (props) => {
     created,
   } = props.video;
 
+  const playerContainerRef = useRef();
+  const playerRef = useRef();
+  const controlsRef = useRef();
+
+  const [state, setState] = useState({
+    playing: true,
+    muted: true,
+    volume: 0.5,
+    playbackRate: 1.0,
+    played: 0,
+    seeking: false,
+  });
+
+  const { playing, muted, volume, playbackRate, played, seeking } = state;
+
+  const handlePlayPause = () => {
+    setState({ ...state, playing: !state.playing });
+  };
+  const handleRewind = () => {
+    playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
+  };
+  const handleFastForward = () => {
+    playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10);
+  };
+  const handleMute = () => {
+    setState({ ...state, muted: !state.muted });
+  };
+  const handleVolumeChange = (newValue) => {
+    setState({
+      ...state,
+      volume: parseFloat(newValue / 100),
+      muted: newValue === 0 ? true : false,
+    });
+  };
+  const handleVolumeSeekUp = (newValue) => {
+    setState({
+      ...state,
+      volume: parseFloat(newValue / 100),
+      muted: newValue === 0 ? true : false,
+    });
+  };
+  const toggleFullScreen = () => {
+    screenfull.toggle(playerContainerRef.current);
+  };
+  const handleProgress = (changeState) => {
+    if (count > 2) {
+      controlsRef.current.style.visibility = "hidden";
+      count = 0;
+    }
+    if (controlsRef.current.style.visibility == "visible") {
+      count += 1;
+    }
+    if (!seeking) {
+      setState({ ...state, ...changeState });
+    }
+  };
+  const handleSeekChange = (newValue) => {
+    setState({ ...state, played: parseFloat(newValue / 100) });
+  };
+  const handleSeekMouseDown = (e) => {
+    setState({ ...state, seeking: true });
+  };
+  const handleSeekMouseUp = (newValue) => {
+    setState({ ...state, seeking: false });
+    playerRef.current.seekTo(newValue / 100);
+  };
+
+  const handleMouseMove = () => {
+    controlsRef.current.style.visibility = "visible";
+    count = 0;
+  };
+
+  const currentTime = playerRef.current
+    ? playerRef.current.getCurrentTime()
+    : "00:00";
+  const duration = playerRef.current
+    ? playerRef.current.getDuration()
+    : "00:00";
+  const elapsedTime = format(currentTime);
+  const totalDuration = format(duration);
   return (
     <>
-      <video
-        config={{ file: { attributes: { controlsList: "nodownload" } } }}
-        onContextMenu={(e) => e.preventDefault()}
-        controlsList="nodownload"
-        controls
-        autoPlay
-        poster={picture}
-        src={video}
-        style={{ width: "100%" }}
-      />
+      <PlayerWrapper
+        ref={playerContainerRef}
+        onMouseMove={handleMouseMove}
+        onDoubleClick={toggleFullScreen}
+      >
+        <ReactPlayer
+          ref={playerRef}
+          url={"https://media.w3.org/2010/05/sintel/trailer_hd.mp4"}
+          width="100%"
+          height="100%"
+          style={{ display: "flex", alignItems: "center" }}
+          playing={playing}
+          config={{
+            file: {
+              attributes: {
+                onContextMenu: (e) => e.preventDefault(),
+                controlsList: "nodownload",
+              },
+            },
+          }}
+          muted={muted}
+          volume={volume}
+          playbackRate={playbackRate}
+          onProgress={handleProgress}
+          // controls
+        />
+        <PlayerControls
+          ref={controlsRef}
+          onPlayPause={handlePlayPause}
+          {...props}
+          {...state}
+          onRewind={handleRewind}
+          onFastForward={handleFastForward}
+          onMute={handleMute}
+          onVolumeChange={handleVolumeChange}
+          onVolumeSeekUp={handleVolumeSeekUp}
+          onToggleFullScreen={toggleFullScreen}
+          onSeek={handleSeekChange}
+          onSeekMouseDown={handleSeekMouseDown}
+          onSeekMouseUp={handleSeekMouseUp}
+          played={played}
+          elapsedTime={elapsedTime}
+          totalDuration={totalDuration}
+        />
+      </PlayerWrapper>
+
       <div className="d-flex justify-content-between mt-4">
         <div>
           <span className="d-block">{title}</span>
@@ -38,6 +178,10 @@ const VideoPlayer = (props) => {
     </>
   );
 };
-const VideoButtons = styled.div``;
+const PlayerWrapper = styled.div`
+  width: 100%;
+  height: max-content;
+  position: relative;
+`;
 
 export default VideoPlayer;
