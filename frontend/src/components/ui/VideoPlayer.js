@@ -8,7 +8,7 @@ import { RiFullscreenFill } from "react-icons/ri";
 import Slider, { Range } from "rc-slider";
 import "static/assets/styles/components/Layout/rc-slider.scss";
 import PlayerControls from "./PlayerControls";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import screenfull from "screenfull";
 
 const format = (seconds) => {
@@ -81,6 +81,9 @@ const VideoPlayer = (props) => {
   const toggleFullScreen = () => {
     screenfull.toggle(playerContainerRef.current);
   };
+  useEffect(() => {
+    controlsRef.current.style.visibility = "hidden";
+  }, []);
   const handleProgress = (changeState) => {
     if (count > 1) {
       controlsRef.current.style.visibility = "hidden";
