@@ -124,7 +124,7 @@ const Sidebar = (props) => {
               >
                 <MdFolder />
               </IconContext.Provider>{" "}
-              Documentos
+              Recursos
             </SecctionLink>
           </Link>
           <Link to={`/academy/${program}/home`}>
@@ -245,7 +245,7 @@ const Sidebar = (props) => {
                 >
                   <MdFolder />
                 </IconContext.Provider>{" "}
-                Documentos
+                Recursos
               </SecctionLink>
             </Link>
           )}
