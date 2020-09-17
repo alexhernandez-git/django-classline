@@ -23,6 +23,7 @@ import { Formik, Form as FormFormik } from "formik";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import ContainerWrapper from "src/components/ui/Container";
 
 import * as Yup from "yup";
 
@@ -108,77 +109,83 @@ const videos = () => {
             onSubmit={handleSubmitSearch}
           />
         </form>
-        <div className="d-flex justify-content-between mb-3">
-          <div>
-            {videosReducer.video_creating && (
-              <span>Subiendo video, por favor espera...</span>
-            )}
-            {videosReducer.video_editing && (
-              <span>Editando video, por favor espera...</span>
-            )}
-          </div>
-          <ButtonCustom onClick={() => handleShow()}>Nuevo Video</ButtonCustom>
-        </div>
-
-        {videosReducer.videos &&
-          videosReducer.videos.results.map((video) => (
-            <VideoCard
-              handleShow={handleShow}
-              video={video}
-              key={video.id}
-              handleVideoDelete={handleVideoDelete}
-            />
-          ))}
-        {videosReducer.isLoading && <span>Cargando...</span>}
-        {videosReducer.videos &&
-          (videosReducer.videos.previous || videosReducer.videos.next) && (
-            <div className="d-flex justify-content-center my-5">
-              {videosReducer.videos.previous ? (
-                <IconContext.Provider
-                  value={{
-                    size: 50,
-                    className: "cursor-pointer",
-                  }}
-                >
-                  <IoIosArrowDropleft
-                    onClick={() =>
-                      handleChangePage(videosReducer.videos.previous)
-                    }
-                  />
-                </IconContext.Provider>
-              ) : (
-                <IconContext.Provider
-                  value={{
-                    size: 50,
-                    color: "#a1a1a1",
-                  }}
-                >
-                  <IoIosArrowDropleft />
-                </IconContext.Provider>
+        <ContainerWrapper>
+          <div className="d-flex justify-content-between mb-3">
+            <div>
+              {videosReducer.video_creating && (
+                <span>Subiendo video, por favor espera...</span>
               )}
-              {videosReducer.videos.next ? (
-                <IconContext.Provider
-                  value={{
-                    size: 50,
-                    className: "cursor-pointer",
-                  }}
-                >
-                  <IoIosArrowDropright
-                    onClick={() => handleChangePage(videosReducer.videos.next)}
-                  />
-                </IconContext.Provider>
-              ) : (
-                <IconContext.Provider
-                  value={{
-                    size: 50,
-                    color: "#a1a1a1",
-                  }}
-                >
-                  <IoIosArrowDropright />
-                </IconContext.Provider>
+              {videosReducer.video_editing && (
+                <span>Editando video, por favor espera...</span>
               )}
             </div>
-          )}
+            <ButtonCustom onClick={() => handleShow()}>
+              Nuevo Video
+            </ButtonCustom>
+          </div>
+
+          {videosReducer.videos &&
+            videosReducer.videos.results.map((video) => (
+              <VideoCard
+                handleShow={handleShow}
+                video={video}
+                key={video.id}
+                handleVideoDelete={handleVideoDelete}
+              />
+            ))}
+          {videosReducer.isLoading && <span>Cargando...</span>}
+          {videosReducer.videos &&
+            (videosReducer.videos.previous || videosReducer.videos.next) && (
+              <div className="d-flex justify-content-center my-5">
+                {videosReducer.videos.previous ? (
+                  <IconContext.Provider
+                    value={{
+                      size: 50,
+                      className: "cursor-pointer",
+                    }}
+                  >
+                    <IoIosArrowDropleft
+                      onClick={() =>
+                        handleChangePage(videosReducer.videos.previous)
+                      }
+                    />
+                  </IconContext.Provider>
+                ) : (
+                  <IconContext.Provider
+                    value={{
+                      size: 50,
+                      color: "#a1a1a1",
+                    }}
+                  >
+                    <IoIosArrowDropleft />
+                  </IconContext.Provider>
+                )}
+                {videosReducer.videos.next ? (
+                  <IconContext.Provider
+                    value={{
+                      size: 50,
+                      className: "cursor-pointer",
+                    }}
+                  >
+                    <IoIosArrowDropright
+                      onClick={() =>
+                        handleChangePage(videosReducer.videos.next)
+                      }
+                    />
+                  </IconContext.Provider>
+                ) : (
+                  <IconContext.Provider
+                    value={{
+                      size: 50,
+                      color: "#a1a1a1",
+                    }}
+                  >
+                    <IoIosArrowDropright />
+                  </IconContext.Provider>
+                )}
+              </div>
+            )}
+        </ContainerWrapper>
       </Main>
       <Modal show={show} onHide={handleClose} size="lg">
         <Formik

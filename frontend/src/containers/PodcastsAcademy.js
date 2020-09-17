@@ -88,7 +88,7 @@ const Podcasts = () => {
         onSubmit={handleSubmitSearch}
       />
 
-      <div className="row">
+      <PodcastsContainer className="row">
         <div className="col-12">
           {podcastsReducer.podcasts &&
             podcastsReducer.podcasts.results.map((podcast) => {
@@ -159,7 +159,7 @@ const Podcasts = () => {
               </div>
             )}
         </div>
-      </div>
+      </PodcastsContainer>
     </Main>
   );
 };
@@ -175,10 +175,10 @@ const AudioPlayerContainer = styled.div`
     width: 100%;
   }
 `;
-const CategoriesContent = styled.div`
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 40vh;
+const PodcastsContainer = styled.div`
+  max-width: 120rem;
+  margin: auto;
+  width: 100%;
 `;
 
 export default Podcasts;

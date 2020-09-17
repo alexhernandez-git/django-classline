@@ -21,6 +21,7 @@ import {
 import { fetchFiles } from "../redux/actions/publicFiles";
 import { ButtonCustom } from "../components/ui/ButtonCustom";
 import { FaFolder } from "react-icons/fa";
+import ContainerWrapper from "src/components/ui/Container";
 
 export default function DocsAcademy() {
   const main = useRef();
@@ -89,50 +90,52 @@ export default function DocsAcademy() {
           search={{ search: search, setSearch: setSearch }}
           onSubmit={handleSubmitSearch}
         />
-        <div className=" mb-3">
-          {publicFoldersReducer.current_folders.length > 0 && (
-            <ButtonCustom
-              type="button"
-              className="d-flex align-items-center mr-3 justify-content-center"
-              onClick={hanldeEnterTopFolder}
-            >
-              <IconContext.Provider
-                value={{
-                  className: "cursor-pointer mr-2",
-                  color: "#fff",
-                }}
+        <ContainerWrapper>
+          <div className=" mb-3">
+            {publicFoldersReducer.current_folders.length > 0 && (
+              <ButtonCustom
+                type="button"
+                className="d-flex align-items-center mr-3 justify-content-center"
+                onClick={hanldeEnterTopFolder}
               >
-                <FaFolder />
-              </IconContext.Provider>
-              Volver
-            </ButtonCustom>
-          )}
-        </div>
-        <div className="row">
-          <div className="col-12">
-            <GridFolders>
-              {publicFoldersReducer.folders &&
-                publicFoldersReducer.folders.map((folder) => (
-                  <DocsItem
-                    folder={folder}
-                    key={folder.id}
-                    hanldeEnterFolder={hanldeEnterFolder}
-                  />
-                ))}
-              {publicFilesReducer.files &&
-                publicFilesReducer.files.map((file) => (
-                  <DocsItem
-                    is_file
-                    file={file}
-                    key={file.id}
-                    hanldeEnterFolder={hanldeEnterFolder}
-                  />
-                ))}
-            </GridFolders>
-            {publicFilesReducer.isLoading ||
-              (publicFoldersReducer.isLoading && <span>Cargando...</span>)}
+                <IconContext.Provider
+                  value={{
+                    className: "cursor-pointer mr-2",
+                    color: "#fff",
+                  }}
+                >
+                  <FaFolder />
+                </IconContext.Provider>
+                Volver
+              </ButtonCustom>
+            )}
           </div>
-        </div>
+          <div className="row">
+            <div className="col-12">
+              <GridFolders>
+                {publicFoldersReducer.folders &&
+                  publicFoldersReducer.folders.map((folder) => (
+                    <DocsItem
+                      folder={folder}
+                      key={folder.id}
+                      hanldeEnterFolder={hanldeEnterFolder}
+                    />
+                  ))}
+                {publicFilesReducer.files &&
+                  publicFilesReducer.files.map((file) => (
+                    <DocsItem
+                      is_file
+                      file={file}
+                      key={file.id}
+                      hanldeEnterFolder={hanldeEnterFolder}
+                    />
+                  ))}
+              </GridFolders>
+              {publicFilesReducer.isLoading ||
+                (publicFoldersReducer.isLoading && <span>Cargando...</span>)}
+            </div>
+          </div>
+        </ContainerWrapper>
       </Main>
     </>
   );
@@ -156,6 +159,7 @@ export const GridFolders = styled.div`
   display: grid;
   grid-gap: 4rem 2rem;
   grid-template-columns: repeat(7, 1fr);
+
   @media screen and (max-width: 1200px) {
     grid-template-columns: repeat(5, 1fr);
   }

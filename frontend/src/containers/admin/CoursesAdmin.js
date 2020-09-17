@@ -20,6 +20,7 @@ import {
 } from "src/redux/actions/courses";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
+import ContainerWrapper from "src/components/ui/Container";
 const CoursesAdmin = () => {
   const MySwal = withReactContent(Swal);
 
@@ -87,75 +88,77 @@ const CoursesAdmin = () => {
         search={{ search: search, setSearch: setSearch }}
         onSubmit={handleSubmitSearch}
       />
-      <div className="d-flex justify-content-end mb-3">
-        <Link to={`/academy/${program}/admin/form/course`}>
-          <ButtonCustom onClick={handleDeleteEditPlaylist}>
-            Nuevo Curso
-          </ButtonCustom>
-        </Link>
-      </div>
-      {coursesReducer.playlists &&
-        coursesReducer.playlists.results.map((playlist) => (
-          <CourseCard
-            playlist={playlist}
-            key={playlist.id}
-            handleSetEditPlaylist={handleSetEditPlaylist}
-            handleDeletePlaylist={handleDeletePlaylist}
-          />
-        ))}
-      {coursesReducer.isLoading && <span>Cargando...</span>}
-      {coursesReducer.playlists &&
-        (coursesReducer.playlists.previous ||
-          coursesReducer.playlists.next) && (
-          <div className="d-flex justify-content-center my-5">
-            {coursesReducer.playlists.previous ? (
-              <IconContext.Provider
-                value={{
-                  size: 50,
-                  className: "cursor-pointer",
-                }}
-              >
-                <IoIosArrowDropleft
-                  onClick={() =>
-                    handleChangePage(coursesReducer.playlists.previous)
-                  }
-                />
-              </IconContext.Provider>
-            ) : (
-              <IconContext.Provider
-                value={{
-                  size: 50,
-                  color: "#a1a1a1",
-                }}
-              >
-                <IoIosArrowDropleft />
-              </IconContext.Provider>
-            )}
-            {coursesReducer.playlists.next ? (
-              <IconContext.Provider
-                value={{
-                  size: 50,
-                  className: "cursor-pointer",
-                }}
-              >
-                <IoIosArrowDropright
-                  onClick={() =>
-                    handleChangePage(coursesReducer.playlists.next)
-                  }
-                />
-              </IconContext.Provider>
-            ) : (
-              <IconContext.Provider
-                value={{
-                  size: 50,
-                  color: "#a1a1a1",
-                }}
-              >
-                <IoIosArrowDropright />
-              </IconContext.Provider>
-            )}
-          </div>
-        )}
+      <ContainerWrapper>
+        <div className="d-flex justify-content-end mb-3">
+          <Link to={`/academy/${program}/admin/form/course`}>
+            <ButtonCustom onClick={handleDeleteEditPlaylist}>
+              Nuevo Curso
+            </ButtonCustom>
+          </Link>
+        </div>
+        {coursesReducer.playlists &&
+          coursesReducer.playlists.results.map((playlist) => (
+            <CourseCard
+              playlist={playlist}
+              key={playlist.id}
+              handleSetEditPlaylist={handleSetEditPlaylist}
+              handleDeletePlaylist={handleDeletePlaylist}
+            />
+          ))}
+        {coursesReducer.isLoading && <span>Cargando...</span>}
+        {coursesReducer.playlists &&
+          (coursesReducer.playlists.previous ||
+            coursesReducer.playlists.next) && (
+            <div className="d-flex justify-content-center my-5">
+              {coursesReducer.playlists.previous ? (
+                <IconContext.Provider
+                  value={{
+                    size: 50,
+                    className: "cursor-pointer",
+                  }}
+                >
+                  <IoIosArrowDropleft
+                    onClick={() =>
+                      handleChangePage(coursesReducer.playlists.previous)
+                    }
+                  />
+                </IconContext.Provider>
+              ) : (
+                <IconContext.Provider
+                  value={{
+                    size: 50,
+                    color: "#a1a1a1",
+                  }}
+                >
+                  <IoIosArrowDropleft />
+                </IconContext.Provider>
+              )}
+              {coursesReducer.playlists.next ? (
+                <IconContext.Provider
+                  value={{
+                    size: 50,
+                    className: "cursor-pointer",
+                  }}
+                >
+                  <IoIosArrowDropright
+                    onClick={() =>
+                      handleChangePage(coursesReducer.playlists.next)
+                    }
+                  />
+                </IconContext.Provider>
+              ) : (
+                <IconContext.Provider
+                  value={{
+                    size: 50,
+                    color: "#a1a1a1",
+                  }}
+                >
+                  <IoIosArrowDropright />
+                </IconContext.Provider>
+              )}
+            </div>
+          )}
+      </ContainerWrapper>
     </Main>
   );
 };

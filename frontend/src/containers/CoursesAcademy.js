@@ -118,6 +118,9 @@ export const GridVideos = styled.div`
   display: grid;
   grid-gap: 4rem 2rem;
   grid-template-columns: repeat(4, 1fr);
+  max-width: 120rem;
+  margin: auto;
+  width: 100%;
   @media screen and (max-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);
   }

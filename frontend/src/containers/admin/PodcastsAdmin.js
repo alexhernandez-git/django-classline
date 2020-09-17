@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import Layout from "src/components/Layout/Layout";
 import { Main } from "src/components/ui/Main";
+import ContainerWrapper from "src/components/ui/Container";
 import Filters from "src/components/Layout/Filters";
 import { Modal, Form, Row, Col, Button } from "react-bootstrap";
 import {
@@ -106,82 +107,83 @@ const Podcasts = () => {
           search={{ search: search, setSearch: setSearch }}
           onSubmit={handleSubmitSearch}
         />
-
-        <div className="d-flex justify-content-between mb-3">
-          <div>
-            {podcastsReducer.podcast_creating && (
-              <span>Subiendo podcast, por favor espera...</span>
-            )}
-            {podcastsReducer.podcast_editing && (
-              <span>Editando podcast, por favor espera...</span>
-            )}
-          </div>
-          <ButtonCustom onClick={() => handleShow()}>
-            Nuevo Podcast
-          </ButtonCustom>
-        </div>
-        {podcastsReducer.podcasts &&
-          podcastsReducer.podcasts.results.map((podcast) => (
-            <PodcastCard
-              key={podcast.id}
-              podcast={podcast}
-              handleShow={handleShow}
-              handleDeletePodcast={handleDeletePodcast}
-            />
-          ))}
-        {podcastsReducer.isLoading && <span>Cargando...</span>}
-        {podcastsReducer.podcasts &&
-          (podcastsReducer.podcasts.previous ||
-            podcastsReducer.podcasts.next) && (
-            <div className="d-flex justify-content-center my-5">
-              {podcastsReducer.podcasts.previous ? (
-                <IconContext.Provider
-                  value={{
-                    size: 50,
-                    className: "cursor-pointer",
-                  }}
-                >
-                  <IoIosArrowDropleft
-                    onClick={() =>
-                      handleChangePage(podcastsReducer.podcasts.previous)
-                    }
-                  />
-                </IconContext.Provider>
-              ) : (
-                <IconContext.Provider
-                  value={{
-                    size: 50,
-                    color: "#a1a1a1",
-                  }}
-                >
-                  <IoIosArrowDropleft />
-                </IconContext.Provider>
+        <ContainerWrapper>
+          <div className="d-flex justify-content-between mb-3">
+            <div>
+              {podcastsReducer.podcast_creating && (
+                <span>Subiendo podcast, por favor espera...</span>
               )}
-              {podcastsReducer.podcasts.next ? (
-                <IconContext.Provider
-                  value={{
-                    size: 50,
-                    className: "cursor-pointer",
-                  }}
-                >
-                  <IoIosArrowDropright
-                    onClick={() =>
-                      handleChangePage(podcastsReducer.podcasts.next)
-                    }
-                  />
-                </IconContext.Provider>
-              ) : (
-                <IconContext.Provider
-                  value={{
-                    size: 50,
-                    color: "#a1a1a1",
-                  }}
-                >
-                  <IoIosArrowDropright />
-                </IconContext.Provider>
+              {podcastsReducer.podcast_editing && (
+                <span>Editando podcast, por favor espera...</span>
               )}
             </div>
-          )}
+            <ButtonCustom onClick={() => handleShow()}>
+              Nuevo Podcast
+            </ButtonCustom>
+          </div>
+          {podcastsReducer.podcasts &&
+            podcastsReducer.podcasts.results.map((podcast) => (
+              <PodcastCard
+                key={podcast.id}
+                podcast={podcast}
+                handleShow={handleShow}
+                handleDeletePodcast={handleDeletePodcast}
+              />
+            ))}
+          {podcastsReducer.isLoading && <span>Cargando...</span>}
+          {podcastsReducer.podcasts &&
+            (podcastsReducer.podcasts.previous ||
+              podcastsReducer.podcasts.next) && (
+              <div className="d-flex justify-content-center my-5">
+                {podcastsReducer.podcasts.previous ? (
+                  <IconContext.Provider
+                    value={{
+                      size: 50,
+                      className: "cursor-pointer",
+                    }}
+                  >
+                    <IoIosArrowDropleft
+                      onClick={() =>
+                        handleChangePage(podcastsReducer.podcasts.previous)
+                      }
+                    />
+                  </IconContext.Provider>
+                ) : (
+                  <IconContext.Provider
+                    value={{
+                      size: 50,
+                      color: "#a1a1a1",
+                    }}
+                  >
+                    <IoIosArrowDropleft />
+                  </IconContext.Provider>
+                )}
+                {podcastsReducer.podcasts.next ? (
+                  <IconContext.Provider
+                    value={{
+                      size: 50,
+                      className: "cursor-pointer",
+                    }}
+                  >
+                    <IoIosArrowDropright
+                      onClick={() =>
+                        handleChangePage(podcastsReducer.podcasts.next)
+                      }
+                    />
+                  </IconContext.Provider>
+                ) : (
+                  <IconContext.Provider
+                    value={{
+                      size: 50,
+                      color: "#a1a1a1",
+                    }}
+                  >
+                    <IoIosArrowDropright />
+                  </IconContext.Provider>
+                )}
+              </div>
+            )}
+        </ContainerWrapper>
       </Main>
       <Modal show={show} onHide={handleClose} size="lg">
         <Formik

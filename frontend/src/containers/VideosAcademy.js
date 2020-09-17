@@ -141,6 +141,7 @@ const ButtonSearchUsers = styled.button`
   padding: 7px 12px;
   border-radius: 100px;
   color: #828282;
+
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -152,6 +153,9 @@ export const GridVideos = styled.div`
   display: grid;
   grid-gap: 4rem 2rem;
   grid-template-columns: repeat(4, 1fr);
+  max-width: 120rem;
+  margin: auto;
+  width: 100%;
   @media screen and (max-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);
   }

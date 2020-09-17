@@ -42,36 +42,35 @@ const PlaylistPage = (props) => {
         <div className="col-md-6 col-lg-4">
           <div className="d-block d-md-none m-5"></div>
 
+          <div className="d-flex justify-content-center bg-dark text-white p-4 h2 mb-0">
+            <span>{courseReducer.playlist && courseReducer.playlist.name}</span>
+          </div>
           <PlaylistScroll>
-            <div className="d-flex justify-content-center h3 mb-3">
-              <span>
-                {courseReducer.playlist && courseReducer.playlist.name}
-              </span>
-            </div>
-
-            {courseReducer.playlist &&
-              courseReducer.playlist.tracks.map((track, index) => (
-                <Link
-                  to={{
-                    pathname: `/academy/${programReducer.program.code}/course/${courseReducer.playlist.id}/${index}`,
-                    query: { track: track.id },
-                  }}
-                  params={{ track: track.id }}
-                  key={track.id}
-                >
-                  <PlaylistVideo
-                    className={
-                      track.id == trackId
-                        ? "active d-flex justify-content-between align-items-center cursor-pointer"
-                        : "d-flex justify-content-between align-items-center cursor-pointer"
-                    }
+            <div className="p-3">
+              {courseReducer.playlist &&
+                courseReducer.playlist.tracks.map((track, index) => (
+                  <Link
+                    to={{
+                      pathname: `/academy/${programReducer.program.code}/course/${courseReducer.playlist.id}/${index}`,
+                      query: { track: track.id },
+                    }}
+                    params={{ track: track.id }}
+                    key={track.id}
                   >
-                    <span className="mr-4">{index + 1}</span>
-                    <Video video={track.video} />
-                  </PlaylistVideo>
-                </Link>
-              ))}
-            {courseReducer.isLoading && <span>Cargando...</span>}
+                    <PlaylistVideo
+                      className={
+                        track.id == trackId
+                          ? "active d-flex justify-content-between align-items-center cursor-pointer"
+                          : "d-flex justify-content-between align-items-center cursor-pointer"
+                      }
+                    >
+                      <span className="mr-4">{index + 1}</span>
+                      <Video video={track.video} />
+                    </PlaylistVideo>
+                  </Link>
+                ))}
+              {courseReducer.isLoading && <span>Cargando...</span>}
+            </div>
           </PlaylistScroll>
         </div>
       </div>
@@ -82,12 +81,7 @@ const PlaylistScroll = styled.div`
   background: #fff;
   max-height: 80vh;
   overflow: auto;
-  padding: 1rem;
   box-shadow: inset 0 0 20px 0px #ccc;
-  @media screen and (max-width: 768px) {
-    max-height: inherit;
-    box-shadow: none;
-  }
 `;
 const PlaylistVideo = styled.div`
   padding: 1rem;

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
 
 import Layout from "src/components/Layout/Layout";
+import Container from "src/components/ui/Container";
 import { Main } from "src/components/ui/Main";
 import Filters from "src/components/Layout/Filters";
 import { Tab, Nav, Col, Row } from "react-bootstrap";
@@ -59,7 +60,7 @@ const Students = () => {
         search={{ search: search, setSearch: setSearch }}
         onSubmit={handleSubmitSearch}
       />
-      <div>
+      <Container>
         <div className="table-responsive-lg">
           <table className="table table-hover">
             <thead>
@@ -143,7 +144,7 @@ const Students = () => {
               </div>
             )}
         </div>
-      </div>
+      </Container>
     </Main>
   );
 };

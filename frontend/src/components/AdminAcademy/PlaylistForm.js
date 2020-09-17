@@ -227,6 +227,7 @@ const VideosForm = styled.form`
   position: absolute;
   z-index: 10000;
   background: #fff;
+  width: 100%;
 `;
 const PlaylistVideo = styled.div`
   padding: 1rem;

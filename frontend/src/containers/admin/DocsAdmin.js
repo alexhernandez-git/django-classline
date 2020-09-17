@@ -31,6 +31,8 @@ import {
 import { fetchFiles, createFile, deleteFiles } from "../../redux/actions/files";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import ContainerWrapper from "src/components/ui/Container";
+
 const FileSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, "El titulo es muy corto")
@@ -146,13 +148,32 @@ export default function DocsAdmin() {
           search={{ search: search, setSearch: setSearch }}
           onSubmit={handleSubmitSearch}
         />
-        <div className="d-sm-flex justify-content-between mb-3">
-          <div>
-            {foldersReducer.current_folders.length > 0 && (
+        <ContainerWrapper>
+          <div className="d-sm-flex justify-content-between mb-3">
+            <div>
+              {foldersReducer.current_folders.length > 0 && (
+                <ButtonCustom
+                  type="button"
+                  className="d-flex align-items-center mr-3 justify-content-center"
+                  onClick={hanldeEnterTopFolder}
+                >
+                  <IconContext.Provider
+                    value={{
+                      className: "cursor-pointer mr-2",
+                      color: "#fff",
+                    }}
+                  >
+                    <FaFolder />
+                  </IconContext.Provider>
+                  Volver
+                </ButtonCustom>
+              )}
+            </div>
+            <div className="d-flex">
               <ButtonCustom
                 type="button"
                 className="d-flex align-items-center mr-3 justify-content-center"
-                onClick={hanldeEnterTopFolder}
+                onClick={handleCreateFolder}
               >
                 <IconContext.Provider
                   value={{
@@ -162,75 +183,58 @@ export default function DocsAdmin() {
                 >
                   <FaFolder />
                 </IconContext.Provider>
-                Volver
+                Nueva carpeta
               </ButtonCustom>
-            )}
-          </div>
-          <div className="d-flex">
-            <ButtonCustom
-              type="button"
-              className="d-flex align-items-center mr-3 justify-content-center"
-              onClick={handleCreateFolder}
-            >
-              <IconContext.Provider
-                value={{
-                  className: "cursor-pointer mr-2",
-                  color: "#fff",
-                }}
+              <div className="d-block d-sm-none m-2"></div>
+              <ButtonCustom
+                type="button"
+                className="d-flex align-items-center justify-content-center"
+                onClick={handleShow}
               >
-                <FaFolder />
-              </IconContext.Provider>
-              Nueva carpeta
-            </ButtonCustom>
-            <div className="d-block d-sm-none m-2"></div>
-            <ButtonCustom
-              type="button"
-              className="d-flex align-items-center justify-content-center"
-              onClick={handleShow}
-            >
-              <IconContext.Provider
-                value={{
-                  className: "cursor-pointer mr-2",
-                  color: "#fff",
-                }}
-              >
-                <FaFile />
-              </IconContext.Provider>
-              Nuevo archivo
-            </ButtonCustom>
+                <IconContext.Provider
+                  value={{
+                    className: "cursor-pointer mr-2",
+                    color: "#fff",
+                  }}
+                >
+                  <FaFile />
+                </IconContext.Provider>
+                Nuevo archivo
+              </ButtonCustom>
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-12">
-            <GridFolders>
-              {foldersReducer.folders &&
-                foldersReducer.folders.map((folder) => (
-                  <DocsItem
-                    admin
-                    is_editing={folder.is_editing}
-                    folder={folder}
-                    key={folder.id}
-                    handleDeleteFolder={handleDeleteFolder}
-                    hanldeEnterFolder={hanldeEnterFolder}
-                  />
-                ))}
-              {filesReducer.files &&
-                filesReducer.files.map((file) => (
-                  <DocsItem
-                    admin
-                    is_file
-                    file={file}
-                    key={file.id}
-                    hanldeEnterFolder={hanldeEnterFolder}
-                    handleDeleteFile={handleDeleteFile}
-                  />
-                ))}
-            </GridFolders>
-            {(foldersReducer.isLoading || filesReducer.isLoading) && (
-              <span>Cargando...</span>
-            )}
+          <div className="row">
+            <div className="col-12">
+              <GridFolders>
+                {foldersReducer.folders &&
+                  foldersReducer.folders.map((folder) => (
+                    <DocsItem
+                      admin
+                      is_editing={folder.is_editing}
+                      folder={folder}
+                      key={folder.id}
+                      handleDeleteFolder={handleDeleteFolder}
+                      hanldeEnterFolder={hanldeEnterFolder}
+                    />
+                  ))}
+                {filesReducer.files &&
+                  filesReducer.files.map((file) => (
+                    <DocsItem
+                      admin
+                      is_file
+                      file={file}
+                      key={file.id}
+                      hanldeEnterFolder={hanldeEnterFolder}
+                      handleDeleteFile={handleDeleteFile}
+                    />
+                  ))}
+              </GridFolders>
+              {(foldersReducer.isLoading || filesReducer.isLoading) && (
+                <span>Cargando...</span>
+              )}
+            </div>
           </div>
-        </div>
+        </ContainerWrapper>
       </Main>
       <Modal show={show} onHide={handleClose} size="lg" centered>
         <Formik

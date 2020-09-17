@@ -43,7 +43,12 @@ const Filters = (props) => {
   );
 };
 const Title = styled.h3``;
-const FilterContainer = styled.div``;
+const FilterContainer = styled.div`
+  max-width: 120rem;
+  margin: auto;
+  width: 100%;
+  padding: 0 1rem;
+`;
 const FilterButton = styled.span`
   cursor: pointer;
 `;
