@@ -220,7 +220,7 @@ const InformationCourse = () => {
                     <FaChalkboardTeacher />
                   </IconContext.Provider>
                   <span className="m-0 text-center text-primary font-weight-normal">
-                    Documentos públicos
+                    Recursos
                   </span>
                 </div>
                 <div className="col-sm-6 col-lg-6">

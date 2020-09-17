@@ -115,7 +115,7 @@ const Caracteristics = () => {
           )}
           {programReducer.program.are_docs && (
             <div className="position-relative">
-              Documentos: {programReducer.program.docs}
+              Recursos: {programReducer.program.docs}
             </div>
           )}
           <div className="position-relative">
