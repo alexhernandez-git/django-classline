@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
+import ContainerWrapper from "src/components/ui/Container";
+
 export default function Videos() {
   const main = useRef();
   const videosReducer = useSelector((state) => state.videosReducer);
@@ -64,71 +66,73 @@ export default function Videos() {
           search={{ search: search, setSearch: setSearch }}
           onSubmit={handleSubmitSearch}
         />
-
-        <div className="row">
-          <div className="col-12">
-            <GridVideos>
+        <ContainerWrapper>
+          <div className="row">
+            <div className="col-12">
+              <GridVideos>
+                {videosReducer.videos &&
+                  videosReducer.videos.results.map((video) => (
+                    <div key={video.id}>
+                      <Video video={video} />
+                    </div>
+                  ))}
+              </GridVideos>
+              {videosReducer.isLoading && <span>Cargando...</span>}
               {videosReducer.videos &&
-                videosReducer.videos.results.map((video) => (
-                  <div key={video.id}>
-                    <Video video={video} />
+                (videosReducer.videos.previous ||
+                  videosReducer.videos.next) && (
+                  <div className="d-flex justify-content-center my-5">
+                    {videosReducer.videos.previous ? (
+                      <IconContext.Provider
+                        value={{
+                          size: 50,
+                          className: "cursor-pointer",
+                        }}
+                      >
+                        <IoIosArrowDropleft
+                          onClick={() =>
+                            handleChangePage(videosReducer.videos.previous)
+                          }
+                        />
+                      </IconContext.Provider>
+                    ) : (
+                      <IconContext.Provider
+                        value={{
+                          size: 50,
+                          color: "#a1a1a1",
+                        }}
+                      >
+                        <IoIosArrowDropleft />
+                      </IconContext.Provider>
+                    )}
+                    {videosReducer.videos.next ? (
+                      <IconContext.Provider
+                        value={{
+                          size: 50,
+                          className: "cursor-pointer",
+                        }}
+                      >
+                        <IoIosArrowDropright
+                          onClick={() =>
+                            handleChangePage(videosReducer.videos.next)
+                          }
+                        />
+                      </IconContext.Provider>
+                    ) : (
+                      <IconContext.Provider
+                        value={{
+                          size: 50,
+                          color: "#a1a1a1",
+                        }}
+                      >
+                        <IoIosArrowDropright />
+                      </IconContext.Provider>
+                    )}
                   </div>
-                ))}
-            </GridVideos>
-            {videosReducer.isLoading && <span>Cargando...</span>}
-            {videosReducer.videos &&
-              (videosReducer.videos.previous || videosReducer.videos.next) && (
-                <div className="d-flex justify-content-center my-5">
-                  {videosReducer.videos.previous ? (
-                    <IconContext.Provider
-                      value={{
-                        size: 50,
-                        className: "cursor-pointer",
-                      }}
-                    >
-                      <IoIosArrowDropleft
-                        onClick={() =>
-                          handleChangePage(videosReducer.videos.previous)
-                        }
-                      />
-                    </IconContext.Provider>
-                  ) : (
-                    <IconContext.Provider
-                      value={{
-                        size: 50,
-                        color: "#a1a1a1",
-                      }}
-                    >
-                      <IoIosArrowDropleft />
-                    </IconContext.Provider>
-                  )}
-                  {videosReducer.videos.next ? (
-                    <IconContext.Provider
-                      value={{
-                        size: 50,
-                        className: "cursor-pointer",
-                      }}
-                    >
-                      <IoIosArrowDropright
-                        onClick={() =>
-                          handleChangePage(videosReducer.videos.next)
-                        }
-                      />
-                    </IconContext.Provider>
-                  ) : (
-                    <IconContext.Provider
-                      value={{
-                        size: 50,
-                        color: "#a1a1a1",
-                      }}
-                    >
-                      <IoIosArrowDropright />
-                    </IconContext.Provider>
-                  )}
-                </div>
-              )}
+                )}
+            </div>
           </div>
-        </div>
+        </ContainerWrapper>
       </Main>
     </>
   );
@@ -153,9 +157,7 @@ export const GridVideos = styled.div`
   display: grid;
   grid-gap: 4rem 2rem;
   grid-template-columns: repeat(4, 1fr);
-  max-width: 120rem;
-  margin: auto;
-  width: 100%;
+
   @media screen and (max-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);
   }

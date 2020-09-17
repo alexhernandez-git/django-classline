@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import Layout from "src/components/Layout/Layout";
 import { Main } from "src/components/ui/Main";
+import ContainerWrapper from "src/components/ui/Container";
 import Filters from "src/components/Layout/Filters";
 import { ButtonCustom } from "src/components/ui/ButtonCustom";
 import styled from "@emotion/styled";
@@ -88,7 +89,7 @@ const PlaylistsAcademy = () => {
         search={{ search: search, setSearch: setSearch }}
         onSubmit={handleSubmitSearch}
       />
-      <PlaylistsContainer>
+      <ContainerWrapper>
         <div className="d-flex justify-content-end mb-3">
           <Link to={`/academy/${program}/form/playlist`}>
             <ButtonCustom onClick={handleDeleteEditPlaylist}>
@@ -158,14 +159,9 @@ const PlaylistsAcademy = () => {
               )}
             </div>
           )}
-      </PlaylistsContainer>
+      </ContainerWrapper>
     </Main>
   );
 };
-export const PlaylistsContainer = styled.div`
-  max-width: 120rem;
-  margin: auto;
-  width: 100%;
-`;
 
 export default PlaylistsAcademy;
