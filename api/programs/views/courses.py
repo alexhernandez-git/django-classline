@@ -38,6 +38,7 @@ class CourseViewSet(mixins.CreateModelMixin,
     lookup_field = 'pk'
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
+    page_size = 12
 
     def get_queryset(self):
         program = self.program
