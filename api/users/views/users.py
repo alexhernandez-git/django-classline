@@ -597,8 +597,8 @@ class UserViewSet(mixins.RetrieveModelMixin,
     @action(detail=False, methods=['get'])
     def get_profile(self, request, *args, **kwargs):
 
-        if request.user.created_account == True:
-            return HttpResponse(status=404)
+        # if request.user.created_account == True:
+        #     return HttpResponse(status=404)
         data = {
             'user': UserModelSerializer(request.user, many=False).data,
 

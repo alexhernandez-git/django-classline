@@ -32,10 +32,6 @@ const StudentsPrograms = () => {
     }).then((result) => {
       if (result.value) {
         handleUnsubscribe(program);
-        return Swal.fire({
-          icon: "success",
-          title: "Desactivado",
-        });
       }
     });
   };
@@ -89,11 +85,17 @@ const StudentsPrograms = () => {
           appContext.tokenConfig(appContext.userProfile)
         )
         .then((res) => {
-          console.log(res.data);
+          Swal.fire({
+            icon: "success",
+            title: "Desactivado",
+          });
           appContext.loadUser();
         })
         .catch((err) => {
-          console.log(err.response);
+          Swal.fire({
+            icon: "error",
+            title: err.response.data.message,
+          });
         });
     }
     // User Loading

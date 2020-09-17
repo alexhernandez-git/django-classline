@@ -570,10 +570,10 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 'Con esta cuenta no puedes acceder a classlineacademy.com')
 
-        if not user.created_account is None:
-            if user.created_account:
-                raise serializers.ValidationError(
-                    'Con esta cuenta no puedes acceder a classlineacademy.com')
+        # if not user.created_account is None:
+        #     if user.created_account:
+        #         raise serializers.ValidationError(
+        #             'Con esta cuenta no puedes acceder a classlineacademy.com')
 
         if not user.is_verified:
             raise serializers.ValidationError(

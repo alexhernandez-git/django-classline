@@ -354,39 +354,47 @@ class ProgramViewSet(mixins.CreateModelMixin,
         #         cancel_subscription.save()
         # except:
         #     pass
-        cancel_subscription = profile.subscriptions.filter(
-            user=request.user, program=program, active=True)[0]
 
-        if cancel_subscription:
-            subscription_deleted = stripe.Subscription.delete(
-                cancel_subscription.subscription_id,
-                prorate=False,
-                invoice_now=True
-            )
-            if not profile.subscriptions.filter(user=request.user, program=program, active=False).exists():
+        if not profile.subscriptions.filter(
+                user=request.user, program=program, active=True).exists() and user.created_account:
+            return Response(data={'message': 'No puedes darte de baja de esta academia'}, status=status.HTTP_400_BAD_REQUEST)
 
-                invoice = stripe.Invoice.retrieve(
-                    subscription_deleted['latest_invoice'])
-                if invoice['amount_paid'] >= 1:
-                    stripe.CreditNote.create(
-                        invoice=invoice.id,
-                        lines=[
-                            {
-                                "type": "invoice_line_item",
-                                "invoice_line_item": invoice['lines']['data'][0]['id'],
-                                "quantity": "1"
-                            }
-                        ],
-                        refund_amount=str(invoice['amount_paid'])
-                    )
+        else:
+            cancel_subscription = profile.subscriptions.filter(
+                user=request.user, program=program, active=True)[0]
 
-            student = cancel_subscription.user
-            program = cancel_subscription.program
-            program.students.remove(student)
-            cancel_subscription.active = False
-            cancel_subscription.save()
+            if cancel_subscription:
+                subscription_deleted = stripe.Subscription.delete(
+                    cancel_subscription.subscription_id,
+                    prorate=False,
+                    invoice_now=True
+                )
+                if not profile.subscriptions.filter(user=request.user, program=program, active=False).exists():
 
-        return Response(status=status.HTTP_204_NO_CONTENT)
+                    invoice = stripe.Invoice.retrieve(
+                        subscription_deleted['latest_invoice'])
+                    if invoice['amount_paid'] >= 1:
+                        stripe.CreditNote.create(
+                            invoice=invoice.id,
+                            lines=[
+                                {
+                                    "type": "invoice_line_item",
+                                    "invoice_line_item": invoice['lines']['data'][0]['id'],
+                                    "quantity": "1"
+                                }
+                            ],
+                            refund_amount=str(invoice['amount_paid'])
+                        )
+
+                student = cancel_subscription.user
+                program = cancel_subscription.program
+                program.students.remove(student)
+                cancel_subscription.active = False
+                cancel_subscription.save()
+
+                return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['patch'])
     def restore_subscription(self, request, *args, **kwargs):
