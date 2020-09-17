@@ -6,6 +6,4 @@ export const textEllipsis = css`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 30px;
-  text-align: right;
 `;

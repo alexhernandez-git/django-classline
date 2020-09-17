@@ -6,25 +6,18 @@ const Video = (props) => {
   const { pathname } = useLocation();
   const { program } = useParams();
   const { id, title, picture, duration } = props.video;
-  function msToHMS(secconds) {
-    // 1- Convert to seconds:
-    var seconds = secconds / 1000;
-    // 2- Extract hours:
-    var hours = parseInt(secconds / 3600); // 3,600 seconds in 1 hour
-    secconds = secconds % 3600; // seconds remaining after extracting hours
-    // 3- Extract minutes:
-    var minutes = parseInt(secconds / 60); // 60 seconds in 1 minute
-    // 4- Keep only seconds not extracted to minutes:
-    secconds = secconds % 60;
-    let hms;
-    console.log(hours);
-    if (hours !== 0) {
-      console.log("entra");
-      hms = hours + ":" + minutes + ":" + Math.floor(secconds);
-    } else {
-      hms = minutes + ":" + Math.floor(secconds);
+  function msToHMS(seconds) {
+    if (isNaN(seconds)) {
+      return "00:00";
     }
-    return hms;
+    const date = new Date(seconds * 1000);
+    const hh = date.getUTCHours();
+    const mm = date.getUTCMinutes();
+    const ss = date.getUTCSeconds().toString().padStart(2, "0");
+    if (hh) {
+      return `${hh}:${mm.toString().padStart(2, "0")}:${ss}`;
+    }
+    return `${mm}:${ss}`;
   }
   return (
     <Link
@@ -45,7 +38,15 @@ const Video = (props) => {
           />
           <div className="d-flex justify-content-between video-text">
             <span css={textEllipsis}>{title}</span>
-            <small css={textEllipsis}>{msToHMS(duration)}</small>
+            <small
+              css={textEllipsis}
+              style={{
+                minWidth: "40px",
+                textAlign: "right",
+              }}
+            >
+              {msToHMS(duration)}
+            </small>
           </div>
         </div>
       </VideoContent>
