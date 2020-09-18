@@ -66,6 +66,7 @@ export default function TeachersMenu() {
                 <small className="text-white">Precios</small>
               </div>
             </Link>
+
             {/* {
               // appContext.userProfile.user.profile.is_teacher ?
               appContext.userProfile.is_authenticated &&

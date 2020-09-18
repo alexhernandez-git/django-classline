@@ -12,6 +12,7 @@ import TeachersZone from "src/containers/TeachersZone";
 import Teaches from "src/containers/Teaches";
 import Payments from "src/containers/Payments";
 import ResetPassword from "../containers/ResetPassword";
+import DemoRequest from "../containers/DemoRequest";
 const App = () => {
   return (
     <>
@@ -26,6 +27,7 @@ const App = () => {
             path="/reset-password/:token?"
             component={ResetPassword}
           />
+          <Route path="/demo-request" component={DemoRequest} />
 
           {/* <Route exact path="/courses" component={Courses} />
                     <Route path="/courses/:id" component={Courses} />

@@ -228,7 +228,14 @@ export default function Header() {
               </>
             )}
             <Navbar.Collapse id="basic-navbar-nav" ref={navbar}>
-              <Nav className="ml-auto mr-3">
+              <Nav className="header-nav ml-auto mr-3">
+                <Link
+                  to="/demo-request"
+                  className="d-flex align-self-center text-grey text-center header-btn font-weight-light p-2"
+                >
+                  Solicitar una demo
+                </Link>
+
                 <Link
                   to="/myzone/instructor/pricing"
                   className="d-flex align-self-center text-grey text-center header-btn font-weight-light p-2"
