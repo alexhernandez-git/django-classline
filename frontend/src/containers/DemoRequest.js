@@ -97,12 +97,13 @@ const DemoRequest = (props) => {
                 </div>
               </div>
             </div>
-            <button className="btn-outline-green py-2 px-3 h5 mt-4 mb-0">
+            <button className="btn-outline-green py-2 px-3 h5 mt-4 mb-0 bg-white shadow">
               Submit
             </button>
           </div>
         </div>
       </div>
+      <div className="m-3 d-block d-md-none"></div>
     </div>
   );
 };

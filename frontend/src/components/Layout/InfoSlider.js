@@ -257,27 +257,11 @@ const InfoSlider = () => {
                         </span>
                         <span className="text-grey"> Te esperamos</span>
                         <div className=" mt-3">
-                          {appContext.userProfile.is_authenticated ? (
-                            <Link to="/myzone/instructor">
-                              <span className="btn-green py-2 px-3 text-white h5">
-                                Ir a instructor
-                              </span>
-                            </Link>
-                          ) : (
-                            <span
-                              className="btn-green py-2 px-3 text-white h5 cursor-pointer"
-                              onClick={() => {
-                                Swal.fire({
-                                  text:
-                                    "Para acceder a la zona de instructor primero debes estar logueado",
-                                  icon: "warning",
-                                  confirmButtonText: "Ok",
-                                });
-                              }}
-                            >
-                              Ir a instructor
+                          <Link to="/demo-request">
+                            <span className="btn-green py-2 px-3 text-white h5">
+                              Solicita una Demo
                             </span>
-                          )}
+                          </Link>
                         </div>
                       </div>
                     </div>

@@ -228,32 +228,17 @@ export default function Header() {
               </>
             )}
             <Navbar.Collapse id="basic-navbar-nav" ref={navbar}>
-              <Nav className="header-nav ml-auto mr-3">
+              <Nav className="ml-auto mr-3">
                 <Link
                   to="/demo-request"
                   className="d-flex align-self-center text-grey text-center header-btn font-weight-light p-2"
+                  style={{ minWidth: "140.78px" }}
                 >
                   Solicitar una demo
                 </Link>
-
-                <Link
-                  to="/myzone/instructor/pricing"
-                  className="d-flex align-self-center text-grey text-center header-btn font-weight-light p-2"
-                >
-                  <IconContext.Provider
-                    value={{
-                      className: "global-class-name mr-2",
-                      size: "20px",
-                    }}
-                  >
-                    <IoMdPricetag />
-                  </IconContext.Provider>
-                  Precios
-                </Link>
-
-                {appContext.userProfile.is_authenticated ? (
+                <div className="d-block m-auto d-md-none d-lg-flex">
                   <Link
-                    to="/myzone/instructor"
+                    to="/myzone/instructor/pricing"
                     className="d-flex align-self-center text-grey text-center header-btn font-weight-light p-2"
                   >
                     <IconContext.Provider
@@ -262,26 +247,43 @@ export default function Header() {
                         size: "20px",
                       }}
                     >
-                      <FaChalkboardTeacher />
+                      <IoMdPricetag />
                     </IconContext.Provider>
-                    Instructor
+                    Precios
                   </Link>
-                ) : (
-                  <span
-                    className="d-flex cursor-pointer align-self-center text-grey text-center header-btn font-weight-light p-2"
-                    onClick={handleShowRegister}
-                  >
-                    <IconContext.Provider
-                      value={{
-                        className: "global-class-name mr-2",
-                        size: "20px",
-                      }}
+
+                  {appContext.userProfile.is_authenticated ? (
+                    <Link
+                      to="/myzone/instructor"
+                      className="d-flex align-self-center text-grey text-center header-btn font-weight-light p-2"
                     >
-                      <FaChalkboardTeacher />
-                    </IconContext.Provider>
-                    Instructor
-                  </span>
-                )}
+                      <IconContext.Provider
+                        value={{
+                          className: "global-class-name mr-2",
+                          size: "20px",
+                        }}
+                      >
+                        <FaChalkboardTeacher />
+                      </IconContext.Provider>
+                      Instructor
+                    </Link>
+                  ) : (
+                    <span
+                      className="d-flex cursor-pointer align-self-center text-grey text-center header-btn font-weight-light p-2"
+                      onClick={handleShowRegister}
+                    >
+                      <IconContext.Provider
+                        value={{
+                          className: "global-class-name mr-2",
+                          size: "20px",
+                        }}
+                      >
+                        <FaChalkboardTeacher />
+                      </IconContext.Provider>
+                      Instructor
+                    </span>
+                  )}
+                </div>
                 {appContext.userProfile.is_authenticated ? (
                   <>
                     <div className="ml-3 d-none d-md-block"></div>
