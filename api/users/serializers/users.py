@@ -103,7 +103,6 @@ def send_request_demo(data):
     content = render_to_string(
         'emails/users/request_demo.html',
         {
-            'email': data['email'],
             'first_name': data['first_name'],
             'last_name': data['last_name'],
             'company_name': data['company_name'],
@@ -112,7 +111,7 @@ def send_request_demo(data):
         }
     )
 
-    msg = EmailMultiAlternatives(subject, content, from_email, [to_email])
+    msg = EmailMultiAlternatives(subject, content, data['email'], [to_email])
     msg.attach_alternative(content, "text/html")
     msg.send()
 
