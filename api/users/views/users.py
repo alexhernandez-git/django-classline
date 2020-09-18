@@ -1,5 +1,10 @@
 """Users views."""
 
+# Django
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+
+
 # Django REST Framework
 from api.users.models import User, Profile, Subscription, Commercial, Payment
 from api.programs.models import Program, Rating, Student
@@ -108,10 +113,25 @@ class UserViewSet(mixins.RetrieveModelMixin,
             request.data['phone_number'] = "No hay numero"
         if not 'message' in request.data or request.data['message'] == "":
             request.data['message'] = "No hay mensage"
-        serializer = DemoRequestSerializer(
-            data=request.data,
+        subject = 'Soy {} y quiero una demo para mi empresa que se llama {}!'.format(
+            request.data['first_name'], request.data['company_name'])
+        from_email = 'Classline Academy <no-reply@classlineacademy.com>'
+        to_email = 'ah30456@gmail.com'
+        content = render_to_string(
+            'emails/users/request_demo.html',
+            {
+                'email': request.data['email'],
+                'first_name': request.data['first_name'],
+                'last_name': request.data['last_name'],
+                'company_name': request.data['company_name'],
+                'message': request.data['message'],
+                'phone_number': request.data['phone_number'],
+            }
         )
-        serializer.is_valid(raise_exception=True)
+
+        msg = EmailMultiAlternatives(subject, content, from_email, [to_email])
+        msg.attach_alternative(content, "text/html")
+        msg.send()
         return Response(status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'])
