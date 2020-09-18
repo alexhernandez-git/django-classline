@@ -26,7 +26,8 @@ from api.users.serializers import (
     UserCommercialModelSerializer,
     CommercialModelSerializer,
     UserTeacherCreatedByCommercialModelSerializer,
-    PaymentModelSerializer
+    PaymentModelSerializer,
+    DemoRequestSerializer
 )
 from django.core.exceptions import ObjectDoesNotExist
 from api.programs.serializers import AccountCreatedModelSerializer, ProgramModifyModelSerializer
@@ -100,6 +101,18 @@ class UserViewSet(mixins.RetrieveModelMixin,
         elif self.action == 'change_password':
             return ChangePasswordSerializer
         return UserModelSerializer
+
+    @action(detail=False, methods=['post'])
+    def demo_request(self, request):
+        if not 'phone_number' in request.data or request.data['phone_number'] == "":
+            request.data['phone_number'] = "No hay numero"
+        if not 'message' in request.data or request.data['message'] == "":
+            request.data['message'] = "No hay mensage"
+        serializer = DemoRequestSerializer(
+            data=request.data,
+        )
+        serializer.is_valid(raise_exception=True)
+        return Response(status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'])
     def login(self, request):

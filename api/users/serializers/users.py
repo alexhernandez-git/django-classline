@@ -94,6 +94,29 @@ def send_reset_password(user, token):
     msg.send()
 
 
+def send_request_demo(data):
+    """Send account verification link to given user."""
+    subject = 'Soy {} y quiero una demo para mi empresa que se llama {}!'.format(
+        data['first_name'], data['company_name'])
+    from_email = 'Classline Academy <no-reply@classlineacademy.com>'
+    to_email = 'Classline Academy <no-reply@classlineacademy.com>'
+    content = render_to_string(
+        'emails/users/request_demo.html',
+        {
+            'email': data['email'],
+            'first_name': data['first_name'],
+            'last_name': data['last_name'],
+            'company_name': data['company_name'],
+            'message': data['message'],
+            'phone_number': data['phone_number'],
+        }
+    )
+
+    msg = EmailMultiAlternatives(subject, content, from_email, [to_email])
+    msg.attach_alternative(content, "text/html")
+    msg.send()
+
+
 class UserModelSerializer(serializers.ModelSerializer):
     """User model serializer."""
 
@@ -423,6 +446,20 @@ class UserSharedModelSerializer(serializers.ModelSerializer):
             'id',
             'username',
         )
+
+
+class DemoRequestSerializer(serializers.Serializer):
+    email = serializers.CharField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    company_name = serializers.CharField()
+    message = serializers.CharField(required=None, default="")
+    phone_number = serializers.CharField(required=None, default="")
+
+    def validate(self, data):
+
+        send_request_demo(data)
+        return data
 
 
 class UserSignUpSerializer(serializers.Serializer):

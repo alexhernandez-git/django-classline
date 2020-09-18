@@ -83,7 +83,7 @@ const WelcomeLayout = () => {
                 </Form>
 
                 <span className="mt-3 text-light h4 font-weight-light text-shadow">
-                  Academias online
+                  Accede a nuestras academias publicadas en nuestro marketplace
                 </span>
               </div>
               <div className="col-md-6 p-5">
