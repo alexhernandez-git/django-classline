@@ -116,7 +116,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         subject = 'Soy {} y quiero una demo para mi empresa que se llama {}!'.format(
             request.data['first_name'], request.data['company_name'])
         from_email = 'Classline Academy <no-reply@classlineacademy.com>'
-        to_email = 'support@classlineacademy.com'
+        to_email = 'vlexhndz@gmail.com'
         content = render_to_string(
             'emails/users/request_demo.html',
             {
