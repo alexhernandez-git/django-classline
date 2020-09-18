@@ -211,7 +211,7 @@ const DemoRequest = (props) => {
                               for="exampleInputEmail1"
                               className="text-white"
                             >
-                              <small>Message</small>
+                              <small>MESSAGE</small>
                             </label>
                             <Field
                               component="textarea"
@@ -244,7 +244,7 @@ const DemoRequest = (props) => {
           </Formik>
         </div>
       </div>
-      <div className="m-3 d-block d-md-none"></div>
+      <div className="m-3"></div>
     </div>
   );
 };
