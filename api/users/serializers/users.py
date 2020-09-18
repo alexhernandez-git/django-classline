@@ -99,7 +99,7 @@ def send_request_demo(data):
     subject = 'Soy {} y quiero una demo para mi empresa que se llama {}!'.format(
         data['first_name'], data['company_name'])
     from_email = 'Classline Academy <no-reply@classlineacademy.com>'
-    to_email = 'Classline Academy <no-reply@classlineacademy.com>'
+    to_email = 'support@classlineacademy.com'
     content = render_to_string(
         'emails/users/request_demo.html',
         {
