@@ -86,150 +86,6 @@ const WelcomeLayout = () => {
                   Accede a nuestras academias publicadas en nuestro marketplace
                 </span>
               </div>
-              <div className="col-md-6 p-5">
-                <span className="d-block d-md-none m-3"></span>
-                <div
-                  className="position-relative  cursor-pointer"
-                  onClick={handleOpenVideo}
-                >
-                  <img
-                    className="w-100"
-                    src="../../../static/assets/img/snapshotlaptop.png"
-                    alt="screenshot"
-                  />
-                  <div className="card-img-container text-white">
-                    <IconContext.Provider
-                      value={{
-                        className: "position-absolute h1",
-                        style: {
-                          left: "0",
-                          right: "0",
-                          top: "0",
-                          bottom: "0",
-                          margin: "auto",
-                          fontSize: "4rem",
-                          zIndex: "100",
-                        },
-                      }}
-                    >
-                      <div>
-                        <FaRegPlayCircle />
-                      </div>
-                    </IconContext.Provider>
-                    <IconContext.Provider
-                      value={{
-                        className: "position-absolute h1 text-dark",
-                        style: {
-                          left: "0",
-                          right: "0",
-                          top: "0",
-                          bottom: "0",
-                          margin: "auto",
-                          fontSize: "3.8rem",
-                          opacity: "0.8",
-                        },
-                      }}
-                    >
-                      <div>
-                        <FaCircle />
-                      </div>
-                    </IconContext.Provider>
-                  </div>
-                </div>{" "}
-                <div
-                  className="position-fixed"
-                  style={{
-                    webkitTransition: "all 0.25s linear",
-                    oTransition: "all 0.25s linear",
-                    transition: "all 0.25s linear",
-                    zIndex: 1000000,
-                    width: "100%",
-                    maxWidth: "1200px",
-                    maxHeight: "300px",
-                    transform: actived ? "scale(1)" : "scale(0)",
-                    opacity: actived ? 1 : 0,
-                    margin:
-                      "5% auto" /* Will not center vertically and won't work in IE6/7. */,
-                    left: 0,
-                    right: 0,
-                    padding: "5%",
-                    top: 0,
-                  }}
-                >
-                  <div className="position-relative">
-                    <IconContext.Provider
-                      value={{
-                        className: "cursor-pointer",
-                        color: "#fff",
-                        size: "30px",
-                      }}
-                    >
-                      <MdClose
-                        onClick={handleCloseVideo}
-                        style={{
-                          zIndex: 510,
-                          position: "absolute",
-                          top: "-30px",
-                          right: 0,
-                        }}
-                      />
-                    </IconContext.Provider>
-                    <div
-                      style={{
-                        position: "absolute",
-                        zIndex: 100000,
-                        background: "#000",
-                        width: "77%",
-                        height: "80%",
-                        margin: "auto",
-                        left: 0,
-                        top: "5%",
-                        right: 0,
-                      }}
-                    ></div>
-                    <video
-                      ref={videoPresentation}
-                      style={{
-                        position: "absolute",
-                        zIndex: 1000000,
-                        width: "77%",
-
-                        height: "80%",
-                        margin: "auto",
-                        left: 0,
-                        top: "5%",
-                        right: 0,
-                      }}
-                      controls
-                      controlsList="nodownload"
-                      src="../../../static/assets/videos/screencastweb2.mp4"
-                    ></video>
-                    <img
-                      className="w-100"
-                      src="../../../static/assets/img/screenshotvideos.png"
-                      alt="screenshot"
-                    />
-                  </div>
-                </div>
-                {/* <Slider {...settings2}>
-                <img
-                  className="w-100"
-                  src="../../../static/assets/img/screenshotvideos.png"
-                  alt="screenshot"
-                />
-                <img
-                  className="w-100"
-                  src="../../../static/assets/img/snapshotlaptop2.png"
-                  alt="screenshot"
-                />
-                <img
-                  className="w-100"
-                  src="../../../static/assets/img/screenshotvideo3.png"
-                  alt="screenshot"
-                />
-              </Slider> */}
-                {/* <Blackboard /> */}
-              </div>
             </div>
           </div>
         </div>
@@ -269,3 +125,148 @@ const WelcomeLayout = () => {
 };
 
 export default WelcomeLayout;
+
+// <div className="col-md-6 p-5">
+//   <span className="d-block d-md-none m-3"></span>
+//   <div
+//     className="position-relative  cursor-pointer"
+//     onClick={handleOpenVideo}
+//   >
+//     <img
+//       className="w-100"
+//       src="../../../static/assets/img/snapshotlaptop.png"
+//       alt="screenshot"
+//     />
+//     <div className="card-img-container text-white">
+//       <IconContext.Provider
+//         value={{
+//           className: "position-absolute h1",
+//           style: {
+//             left: "0",
+//             right: "0",
+//             top: "0",
+//             bottom: "0",
+//             margin: "auto",
+//             fontSize: "4rem",
+//             zIndex: "100",
+//           },
+//         }}
+//       >
+//         <div>
+//           <FaRegPlayCircle />
+//         </div>
+//       </IconContext.Provider>
+//       <IconContext.Provider
+//         value={{
+//           className: "position-absolute h1 text-dark",
+//           style: {
+//             left: "0",
+//             right: "0",
+//             top: "0",
+//             bottom: "0",
+//             margin: "auto",
+//             fontSize: "3.8rem",
+//             opacity: "0.8",
+//           },
+//         }}
+//       >
+//         <div>
+//           <FaCircle />
+//         </div>
+//       </IconContext.Provider>
+//     </div>
+//   </div>{" "}
+//   <div
+//     className="position-fixed"
+//     style={{
+//       webkitTransition: "all 0.25s linear",
+//       oTransition: "all 0.25s linear",
+//       transition: "all 0.25s linear",
+//       zIndex: 1000000,
+//       width: "100%",
+//       maxWidth: "1200px",
+//       maxHeight: "300px",
+//       transform: actived ? "scale(1)" : "scale(0)",
+//       opacity: actived ? 1 : 0,
+//       margin:
+//         "5% auto" /* Will not center vertically and won't work in IE6/7. */,
+//       left: 0,
+//       right: 0,
+//       padding: "5%",
+//       top: 0,
+//     }}
+//   >
+//     <div className="position-relative">
+//       <IconContext.Provider
+//         value={{
+//           className: "cursor-pointer",
+//           color: "#fff",
+//           size: "30px",
+//         }}
+//       >
+//         <MdClose
+//           onClick={handleCloseVideo}
+//           style={{
+//             zIndex: 510,
+//             position: "absolute",
+//             top: "-30px",
+//             right: 0,
+//           }}
+//         />
+//       </IconContext.Provider>
+//       <div
+//         style={{
+//           position: "absolute",
+//           zIndex: 100000,
+//           background: "#000",
+//           width: "77%",
+//           height: "80%",
+//           margin: "auto",
+//           left: 0,
+//           top: "5%",
+//           right: 0,
+//         }}
+//       ></div>
+//       <video
+//         ref={videoPresentation}
+//         style={{
+//           position: "absolute",
+//           zIndex: 1000000,
+//           width: "77%",
+
+//           height: "80%",
+//           margin: "auto",
+//           left: 0,
+//           top: "5%",
+//           right: 0,
+//         }}
+//         controls
+//         controlsList="nodownload"
+//         src="../../../static/assets/videos/screencastweb2.mp4"
+//       ></video>
+//       <img
+//         className="w-100"
+//         src="../../../static/assets/img/screenshotvideos.png"
+//         alt="screenshot"
+//       />
+//     </div>
+//   </div>
+//   {/* <Slider {...settings2}>
+//   <img
+//     className="w-100"
+//     src="../../../static/assets/img/screenshotvideos.png"
+//     alt="screenshot"
+//   />
+//   <img
+//     className="w-100"
+//     src="../../../static/assets/img/snapshotlaptop2.png"
+//     alt="screenshot"
+//   />
+//   <img
+//     className="w-100"
+//     src="../../../static/assets/img/screenshotvideo3.png"
+//     alt="screenshot"
+//   />
+// </Slider> */}
+//   {/* <Blackboard /> */}
+// </div>
