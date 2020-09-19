@@ -82,8 +82,7 @@ def send_change_email(user, email):
 def send_reset_password(user, token):
     """Send account verification link to given user."""
 
-    subject = 'Bienvenido @{}! Verifica tu cuenta para empezar a usar Classline Academy'.format(
-        user.username)
+    subject = 'Resetea la contraseña'
     from_email = 'Classline Academy <no-reply@classlineacademy.com>'
     content = render_to_string(
         'emails/users/reset_password.html',
