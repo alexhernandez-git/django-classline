@@ -126,8 +126,8 @@ const InfoSlider = () => {
                       <div className="d-block d-lg-none m-2 order-2"></div>
                       <div className="col-lg-5 order-1">
                         <span className="h5 text-dark d-block">
-                          Donde podrás acceder a classes online, videos, cursos
-                          ,podcasts y recursos
+                          Donde podrás acceder a classes online, videos, cursos,
+                          podcasts y recursos
                         </span>
                         <span className="text-grey">
                           Te vamos a demostrar que con nuestras academias puedes
@@ -170,7 +170,22 @@ const InfoSlider = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="w-100 align-items-center mb-3">
+                    <div className="row w-100 align-items-center">
+                      <div className="col">
+                        <span className="h5 text-dark d-block">
+                          ¡Conviertete en instructor ya!
+                        </span>
+                        <span className="text-grey"> Te esperamos</span>
+                        <div className=" mt-3">
+                          <Link to="/demo-request">
+                            <span className="btn-green py-2 px-3 text-white h5">
+                              Solicita una Demo
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                    {/* <div className="w-100 align-items-center mb-3">
                       <div className="col">
                         <span className="h5 text-dark d-block">
                           ¡Mira nuestras academias!
@@ -184,7 +199,7 @@ const InfoSlider = () => {
                           </Link>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="info-slider slick-element text-center p-4 font-weight-normal">
                     <div className="row w-100 align-items-center mb-5">

@@ -65,7 +65,7 @@ const WelcomeLayout = () => {
                 <span className="mt-3 text-light h4 font-weight-light text-shadow">
                   Bienvenido a <h2 className="h2 mb-4">Classline Academy</h2>
                 </span>
-                <Form onSubmit={handleSubmit}>
+                {/* <Form onSubmit={handleSubmit}>
                   <Form.Control
                     className="mb-2"
                     type="text"
@@ -80,10 +80,10 @@ const WelcomeLayout = () => {
                       }}
                     />
                   )}
-                </Form>
+                </Form> */}
 
                 <span className="mt-3 text-light h4 font-weight-light text-shadow">
-                  Accede a nuestras academias publicadas en nuestro marketplace
+                  Crea tu propia academia online
                 </span>
               </div>
               <div className="col-md-6 p-5">

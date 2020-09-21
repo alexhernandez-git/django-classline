@@ -183,7 +183,7 @@ export default function Header() {
             {/* <Nav className="ml-auto mr-3 d-none d-md-block">
                             <Nav.Link className="align-self-center text-center text-grey">Categories</Nav.Link>
                         </Nav> */}
-            <Form
+            {/* <Form
               inline
               id="form-search"
               className="position-relative form-search-parent border-left"
@@ -209,7 +209,7 @@ export default function Header() {
                   <FaSearch />
                 </IconContext.Provider>
               </div>
-            </Form>
+            </Form> */}
             {send > 0 && (
               <>
                 {/* {/\/teachers/.test(location.pathname) ?
