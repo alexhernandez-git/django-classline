@@ -173,7 +173,7 @@ const InfoSlider = () => {
                     <div className="row w-100 align-items-center">
                       <div className="col">
                         <span className="h5 text-dark d-block">
-                          ¡Conviertete en instructor ya!
+                          ¡Consigue tu propia Academia Online Ya!
                         </span>
                         <span className="text-grey"> Te esperamos</span>
                         <div className=" mt-3">
@@ -268,7 +268,7 @@ const InfoSlider = () => {
                     <div className="row w-100 align-items-center">
                       <div className="col">
                         <span className="h5 text-dark d-block">
-                          ¡Conviertete en instructor ya!
+                          ¡Consigue tu propia Academia Online Ya!
                         </span>
                         <span className="text-grey"> Te esperamos</span>
                         <div className=" mt-3">
