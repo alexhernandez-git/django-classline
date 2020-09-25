@@ -124,7 +124,7 @@ const Academy = () => {
               exact
               path="/academy/:program/courses:search?"
               component={
-                programReducer.program.are_courses
+                programReducer.program.are_playlists
                   ? CoursesAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
@@ -133,7 +133,7 @@ const Academy = () => {
               exact
               path="/academy/:program/course/:id/:track?"
               component={
-                programReducer.program.are_courses
+                programReducer.program.are_playlists
                   ? CourseAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }

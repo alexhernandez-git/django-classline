@@ -83,8 +83,8 @@ const CoursesAdmin = () => {
   return (
     <Main padding ref={main}>
       <Filters
-        title="Cursos"
-        placeholder="Buscar Curso"
+        title="Playlists"
+        placeholder="Buscar playlists"
         search={{ search: search, setSearch: setSearch }}
         onSubmit={handleSubmitSearch}
       />
@@ -92,7 +92,7 @@ const CoursesAdmin = () => {
         <div className="d-flex justify-content-end mb-3">
           <Link to={`/academy/${program}/admin/form/course`}>
             <ButtonCustom onClick={handleDeleteEditPlaylist}>
-              Nuevo Curso
+              Nueva Playlist
             </ButtonCustom>
           </Link>
         </div>

@@ -59,9 +59,9 @@ const Caracteristics = () => {
               </IconContext.Provider>
             </div>
           )}
-          {programReducer.program.are_courses && (
+          {programReducer.program.are_playlists && (
             <div className="position-relative">
-              Cursos
+              Playlists
               <IconContext.Provider
                 value={{
                   style: {
@@ -108,9 +108,9 @@ const Caracteristics = () => {
               Podcasts: {programReducer.program.podcasts}
             </div>
           )}
-          {programReducer.program.are_courses && (
+          {programReducer.program.are_playlists && (
             <div className="position-relative">
-              Cursos: {programReducer.program.courses}
+              Playlists: {programReducer.program.courses}
             </div>
           )}
           {programReducer.program.are_docs && (

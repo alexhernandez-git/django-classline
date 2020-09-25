@@ -364,27 +364,30 @@ class ProgramViewSet(mixins.CreateModelMixin,
                 user=request.user, program=program, active=True)[0]
 
             if cancel_subscription:
-                subscription_deleted = stripe.Subscription.delete(
-                    cancel_subscription.subscription_id,
-                    prorate=False,
-                    invoice_now=True
-                )
-                if not profile.subscriptions.filter(user=request.user, program=program, active=False).exists():
+                # Reembolso
 
-                    invoice = stripe.Invoice.retrieve(
-                        subscription_deleted['latest_invoice'])
-                    if invoice['amount_paid'] >= 1:
-                        stripe.CreditNote.create(
-                            invoice=invoice.id,
-                            lines=[
-                                {
-                                    "type": "invoice_line_item",
-                                    "invoice_line_item": invoice['lines']['data'][0]['id'],
-                                    "quantity": "1"
-                                }
-                            ],
-                            refund_amount=str(invoice['amount_paid'])
-                        )
+                # subscription_deleted = stripe.Subscription.delete(
+                #     cancel_subscription.subscription_id,
+                #     prorate=False,
+                #     invoice_now=True
+                # )
+
+                # if not profile.subscriptions.filter(user=request.user, program=program, active=False).exists():
+
+                #     invoice = stripe.Invoice.retrieve(
+                #         subscription_deleted['latest_invoice'])
+                #     if invoice['amount_paid'] >= 1:
+                #         stripe.CreditNote.create(
+                #             invoice=invoice.id,
+                #             lines=[
+                #                 {
+                #                     "type": "invoice_line_item",
+                #                     "invoice_line_item": invoice['lines']['data'][0]['id'],
+                #                     "quantity": "1"
+                #                 }
+                #             ],
+                #             refund_amount=str(invoice['amount_paid'])
+                #         )
 
                 student = cancel_subscription.user
                 program = cancel_subscription.program

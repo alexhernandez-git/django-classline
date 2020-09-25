@@ -148,7 +148,7 @@ const InformationCourse = () => {
                 </div>
               </div>
             )}
-            {programContext.programState.program.are_courses && (
+            {programContext.programState.program.are_playlists && (
               <div className="row pr-3 pl-3 mt-3">
                 <div className="col-sm-6 d-flex align-items-center">
                   <IconContext.Provider
@@ -160,7 +160,7 @@ const InformationCourse = () => {
                     <FaListUl />
                   </IconContext.Provider>
                   <span className="m-0 text-center text-primary font-weight-normal">
-                    Cursos
+                    Playlists
                   </span>
                 </div>
                 <div className="col-sm-6 col-lg-6">

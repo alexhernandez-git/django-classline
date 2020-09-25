@@ -6,6 +6,7 @@ from .programs import Program
 from .videos import Video
 from .podcasts import Podcast
 from .playlists import Playlist, PlaylistTrack
+from .playlists_admin import PlaylistAdmin, PlaylistAdminTrack
 from .courses import Course, CourseTrack
 from .students import Student
 from .accounts_created import AccountCreated

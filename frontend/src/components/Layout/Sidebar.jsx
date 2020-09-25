@@ -20,8 +20,7 @@ const Sidebar = (props) => {
             </IconContext.Provider>
           </p>
           <small className="text-info">
-            Los pagos son 100% seguros, y con garantia de devolución del último
-            pago, si es la primera vez que te subscribes a esa academia
+            Los pagos son 100% seguros gracias a Stripe
           </small>
         </div>
       </div>

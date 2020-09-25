@@ -40,8 +40,8 @@ const playlists = () => {
   return (
     <Main padding ref={main}>
       <Filters
-        title="Cursos"
-        placeholder={"Buscar cursos"}
+        title="Playlists"
+        placeholder={"Buscar playlists"}
         search={{ search: search, setSearch: setSearch }}
         onSubmit={handleSubmitSearch}
       />

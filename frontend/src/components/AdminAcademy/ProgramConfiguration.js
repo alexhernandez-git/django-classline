@@ -119,7 +119,7 @@ const ProgramConfiguration = (props) => {
             lg={{ offset: 1, span: 6 }}
             className="d-flex justify-content-center d-lg-block"
           >
-            <Checkbox name="are_courses" />
+            <Checkbox name="are_playlists" />
           </Col>
         </Row>
 

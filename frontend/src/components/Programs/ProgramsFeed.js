@@ -125,7 +125,7 @@ export default function ProfessorFeed(props) {
                 <div className="row">
                   <div className="col-12">
                     <small className="font-weight-bold text-info mb-2">
-                      Cursos: {program.playlists}
+                      Playlists: {program.courses}
                     </small>
                   </div>
                 </div>

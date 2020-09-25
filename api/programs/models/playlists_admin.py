@@ -10,19 +10,19 @@ import random
 import string
 
 
-class AdminPlaylist(CLineModel):
+class PlaylistAdmin(CLineModel):
     code = models.CharField(max_length=10, blank=True, null=True)
     picture = models.ImageField(
         'profile picture',
-        upload_to='programs/courses/pictures/',
+        upload_to='programs/playlists/pictures/',
         blank=True, null=True,
         max_length=500
     )
     name = models.CharField(max_length=100)
     tracks = models.ManyToManyField(
-        'programs.Video', through='AdminPlaylistTrack')
+        'programs.Video', through='PlaylistAdminTrack')
     program = models.ForeignKey(
-        'programs.Program', on_delete=models.CASCADE, related_name='program_admin_playlist')
+        'programs.Program', on_delete=models.CASCADE, related_name='program_playlist_admin')
 
     def __str__(self):
         """Return description."""
@@ -30,7 +30,7 @@ class AdminPlaylist(CLineModel):
 
     def save(self, **kwargs):
         try:
-            this = AdminPlaylist.objects.get(id=self.id)
+            this = PlaylistAdmin.objects.get(id=self.id)
             if this.picture != self.picture:
                 this.picture.delete(save=False)
         except:
@@ -39,17 +39,17 @@ class AdminPlaylist(CLineModel):
             while True:
                 slug_name = ''.join(random.choice(
                     string.ascii_letters + string.digits) for _ in range(10))
-                if not AdminPlaylist.objects.filter(code=slug_name).exists():
+                if not PlaylistAdmin.objects.filter(code=slug_name).exists():
                     self.code = slug_name
                     break
 
-        super(AdminPlaylist, self).save(**kwargs)
+        super(PlaylistAdmin, self).save(**kwargs)
 
 
-class AdminPlaylistTrack(CLineModel):
+class PlaylistAdminTrack(CLineModel):
     code = models.CharField(max_length=10, blank=True, null=True)
-    course = models.ForeignKey(
-        'programs.AdminPlaylist', on_delete=models.CASCADE)
+    playlist = models.ForeignKey(
+        'programs.PlaylistAdmin', on_delete=models.CASCADE)
     video = models.ForeignKey('programs.Video', on_delete=models.CASCADE)
     position = models.IntegerField()
 
@@ -58,7 +58,7 @@ class AdminPlaylistTrack(CLineModel):
 
     def __str__(self):
         """Return description."""
-        return '{}'.format(self.course)
+        return '{}'.format(self.playlist)
 
     def save(self, **kwargs):
 
@@ -66,8 +66,8 @@ class AdminPlaylistTrack(CLineModel):
             while True:
                 slug_name = ''.join(random.choice(
                     string.ascii_letters + string.digits) for _ in range(10))
-                if not AdminPlaylistTrack.objects.filter(code=slug_name).exists():
+                if not PlaylistAdminTrack.objects.filter(code=slug_name).exists():
                     self.code = slug_name
                     break
 
-        super(AdminPlaylistTrack, self).save(**kwargs)
+        super(PlaylistAdminTrack, self).save(**kwargs)

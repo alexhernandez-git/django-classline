@@ -22,7 +22,8 @@ from api.programs.models import (
     Video,
     Podcast,
     Rating,
-    File
+    File,
+    PlaylistAdmin
 )
 
 
@@ -97,7 +98,7 @@ class ProgramModifyModelSerializer(serializers.ModelSerializer):
             'instructor',
             'are_meetups',
             'are_videos',
-            'are_courses',
+            'are_playlists',
             'are_podcasts',
             'are_docs',
             'accounts_to_create_left',
@@ -191,7 +192,7 @@ class ProgramBasicModelSerializer(serializers.ModelSerializer):
             'subtitle',
             'are_meetups',
             'are_videos',
-            'are_courses',
+            'are_playlists',
             'are_podcasts',
             'are_docs',
             'accounts_to_create_left',
@@ -278,7 +279,7 @@ class ProgramModelSerializer(serializers.ModelSerializer):
             'docs',
             'are_meetups',
             'are_videos',
-            'are_courses',
+            'are_playlists',
             'are_podcasts',
             'are_docs',
             'accounts_to_create_left',
@@ -305,7 +306,7 @@ class ProgramModelSerializer(serializers.ModelSerializer):
         return len(events)
 
     def get_courses(self, obj):
-        courses = Course.objects.filter(program=obj.id).count()
+        courses = PlaylistAdmin.objects.filter(program=obj.id).count()
         return courses
 
     def get_videos(self, obj):
@@ -395,7 +396,7 @@ class ProgramListModelSerializer(serializers.ModelSerializer):
             'docs',
             'are_meetups',
             'are_videos',
-            'are_courses',
+            'are_playlists',
             'are_podcasts',
             'are_docs',
             'accounts_to_create_left',
@@ -430,7 +431,7 @@ class ProgramListModelSerializer(serializers.ModelSerializer):
         return UserTeacherCountModelSerializer(obj.user).data
 
     def get_courses(self, obj):
-        courses = Course.objects.filter(program=obj.id).count()
+        courses = PlaylistAdmin.objects.filter(program=obj.id).count()
         return courses
 
     def get_videos(self, obj):

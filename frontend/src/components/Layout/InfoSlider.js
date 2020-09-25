@@ -126,8 +126,8 @@ const InfoSlider = () => {
                       <div className="d-block d-lg-none m-2 order-2"></div>
                       <div className="col-lg-5 order-1">
                         <span className="h5 text-dark d-block">
-                          Donde podrás acceder a classes online, videos, cursos,
-                          podcasts y recursos
+                          Donde podrás acceder a classes online, videos,
+                          playlists, podcasts y recursos
                         </span>
                         <span className="text-grey">
                           Te vamos a demostrar que con nuestras academias puedes

@@ -13,7 +13,7 @@ from api.programs.views.events import EventViewSet
 from api.programs.views.students import StudentViewSet
 from api.programs.views.accounts_created import AccountCreatedViewSet
 from api.programs.views.ratings import RatingViewSet
-from api.programs.views.courses import CourseViewSet
+from api.programs.views.playlists_admin import PlaylistAdminViewSet
 from api.programs.views.files import FileViewSet
 from api.programs.views.folders import FolderViewSet
 from api.programs.views.public_files import PublicFileViewSet
@@ -62,7 +62,7 @@ router.register(
 )
 router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/courses',
-    CourseViewSet,
+    PlaylistAdminViewSet,
     basename='courses'
 )
 router.register(

@@ -86,7 +86,7 @@ const Sidebar = (props) => {
               >
                 <FaListUl />
               </IconContext.Provider>{" "}
-              Cursos
+              Playlists
             </SecctionLink>
           </Link>
           <Link to={`/academy/${program}/admin/podcasts`}>
@@ -176,7 +176,7 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
-          {programReducer.program.are_courses && (
+          {programReducer.program.are_playlists && (
             <Link
               to={`${
                 /\/demo\/?/.test(pathname) ? "/demo" : ""
@@ -190,7 +190,7 @@ const Sidebar = (props) => {
                 >
                   <FaListUl />
                 </IconContext.Provider>{" "}
-                Cursos
+                Playlists
               </SecctionLink>
             </Link>
           )}
