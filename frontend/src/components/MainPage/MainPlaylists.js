@@ -53,8 +53,8 @@ const MainPlaylists = () => {
           <Link
             to={
               !/\/demo\//.test(pathname)
-                ? `/academy/${program}/playlists`
-                : `/demo/academy/${program}/playlists`
+                ? `/academy/${program}/courses`
+                : `/demo/academy/${program}/courses`
             }
           >
             <span className="cursor-pointer">Ver más</span>
