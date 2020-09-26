@@ -35,6 +35,7 @@ class Program(CLineModel):
     are_playlists = models.BooleanField(default=True)
     are_podcasts = models.BooleanField(default=True)
     are_docs = models.BooleanField(default=True)
+    are_forum = models.BooleanField(default=True)
 
     # accounts
 

@@ -14,3 +14,5 @@ from .ratings import Rating
 from .subscriptions import Subscription
 from .files import File
 from .folders import Folder
+from .posts import Post
+from .comments import Comment

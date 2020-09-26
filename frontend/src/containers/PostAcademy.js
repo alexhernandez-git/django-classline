@@ -29,7 +29,7 @@ import ContainerWrapper from "src/components/ui/Container";
 
 import * as Yup from "yup";
 import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import Post from "../components/ui/Post";
 import Comment from "../components/ui/Comment";
 
@@ -42,6 +42,8 @@ const VideoSchema = Yup.object().shape({
 
 const PostAcademy = () => {
   const MySwal = withReactContent(Swal);
+  const history = useHistory();
+  const { program } = useParams();
 
   const main = useRef();
   const [show, setShow] = useState(false);
@@ -91,6 +93,7 @@ const PostAcademy = () => {
 
   const handleSubmitSearch = (e) => {
     e.preventDefault();
+    history.push(`/academy/${program}/forum`);
     const dispatchFetchVideos = (search) => dispatch(fetchVideos(search));
     dispatchFetchVideos(search);
   };
