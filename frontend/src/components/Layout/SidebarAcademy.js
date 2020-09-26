@@ -11,7 +11,7 @@ import {
   FaVideo,
 } from "react-icons/fa";
 import { BsFillCollectionPlayFill, BsFillChatDotsFill } from "react-icons/bs";
-import { MdFolderShared, MdFolder } from "react-icons/md";
+import { MdFolderShared, MdFolder, MdForum } from "react-icons/md";
 
 import { IconContext } from "react-icons";
 import { Link, useLocation, useParams } from "react-router-dom";
@@ -30,7 +30,7 @@ const Sidebar = (props) => {
       {/\/admin\/?/.test(pathname) ? (
         <>
           <Link to={`/academy/${program}/admin`}>
-            <SecctionLink active={/\/admin\/?$/.test(pathname) && true}>
+            <SecctionLink active={/\/admin\/?$/.test(pathname)}>
               <IconContext.Provider
                 value={{
                   className: "sidebar-icon",
@@ -42,7 +42,7 @@ const Sidebar = (props) => {
             </SecctionLink>
           </Link>
           <Link to={`/academy/${program}/admin/accounts`}>
-            <SecctionLink active={/\/accounts\/?$/.test(pathname) && true}>
+            <SecctionLink active={/\/accounts\/?$/.test(pathname)}>
               <IconContext.Provider
                 value={{
                   className: "sidebar-icon",
@@ -54,7 +54,7 @@ const Sidebar = (props) => {
             </SecctionLink>
           </Link>
           <Link to={`/academy/${program}/admin/users`}>
-            <SecctionLink active={/\/users\/?$/.test(pathname) && true}>
+            <SecctionLink active={/\/users\/?$/.test(pathname)}>
               <IconContext.Provider
                 value={{
                   className: "sidebar-icon",
@@ -66,7 +66,7 @@ const Sidebar = (props) => {
             </SecctionLink>
           </Link>
           <Link to={`/academy/${program}/admin/videos`}>
-            <SecctionLink active={/\/videos\/?$/.test(pathname) && true}>
+            <SecctionLink active={/\/videos\/?$/.test(pathname)}>
               <IconContext.Provider
                 value={{
                   className: "sidebar-icon",
@@ -78,7 +78,7 @@ const Sidebar = (props) => {
             </SecctionLink>
           </Link>
           <Link to={`/academy/${program}/admin/courses`}>
-            <SecctionLink active={/\/courses\/?$/.test(pathname) && true}>
+            <SecctionLink active={/\/courses\/?$/.test(pathname)}>
               <IconContext.Provider
                 value={{
                   className: "sidebar-icon",
@@ -90,7 +90,7 @@ const Sidebar = (props) => {
             </SecctionLink>
           </Link>
           <Link to={`/academy/${program}/admin/podcasts`}>
-            <SecctionLink active={/\/podcasts\/?$/.test(pathname) && true}>
+            <SecctionLink active={/\/podcasts\/?$/.test(pathname)}>
               <IconContext.Provider
                 value={{
                   className: "sidebar-icon",
@@ -103,7 +103,7 @@ const Sidebar = (props) => {
           </Link>
 
           <Link to={`/academy/${program}/admin/meetups`}>
-            <SecctionLink active={/\/meetups\/?$/.test(pathname) && true}>
+            <SecctionLink active={/\/meetups\/?$/.test(pathname)}>
               <IconContext.Provider
                 value={{
                   className: "sidebar-icon",
@@ -115,7 +115,7 @@ const Sidebar = (props) => {
             </SecctionLink>
           </Link>
           <Link to={`/academy/${program}/admin/docs`}>
-            <SecctionLink active={/\/docs\/?$/.test(pathname) && true}>
+            <SecctionLink active={/\/docs\/?$/.test(pathname)}>
               <IconContext.Provider
                 value={{
                   className: "sidebar-icon",
@@ -147,7 +147,7 @@ const Sidebar = (props) => {
               /\/demo\/?/.test(pathname) ? "/demo" : ""
             }/academy/${program}/home`}
           >
-            <SecctionLink active={/\/home\/?$/.test(pathname) && true}>
+            <SecctionLink active={/\/home\/?$/.test(pathname)}>
               <IconContext.Provider
                 value={{
                   className: "sidebar-icon",
@@ -164,7 +164,7 @@ const Sidebar = (props) => {
                 /\/demo\/?/.test(pathname) ? "/demo" : ""
               }/academy/${program}/videos`}
             >
-              <SecctionLink active={/\/videos\/?$/.test(pathname) && true}>
+              <SecctionLink active={/\/videos\/?$/.test(pathname)}>
                 <IconContext.Provider
                   value={{
                     className: "sidebar-icon",
@@ -182,7 +182,7 @@ const Sidebar = (props) => {
                 /\/demo\/?/.test(pathname) ? "/demo" : ""
               }/academy/${program}/courses`}
             >
-              <SecctionLink active={/\/courses\/?$/.test(pathname) && true}>
+              <SecctionLink active={/\/courses\/?$/.test(pathname)}>
                 <IconContext.Provider
                   value={{
                     className: "sidebar-icon",
@@ -200,7 +200,7 @@ const Sidebar = (props) => {
                 /\/demo\/?/.test(pathname) ? "/demo" : ""
               }/academy/${program}/podcasts`}
             >
-              <SecctionLink active={/\/podcasts\/?$/.test(pathname) && true}>
+              <SecctionLink active={/\/podcasts\/?$/.test(pathname)}>
                 <IconContext.Provider
                   value={{
                     className: "sidebar-icon",
@@ -218,7 +218,7 @@ const Sidebar = (props) => {
                 /\/demo\/?/.test(pathname) ? "/demo" : ""
               }/academy/${program}/meetups`}
             >
-              <SecctionLink active={/\/meetups\/?$/.test(pathname) && true}>
+              <SecctionLink active={/\/meetups\/?$/.test(pathname)}>
                 <IconContext.Provider
                   value={{
                     className: "sidebar-icon",
@@ -236,7 +236,7 @@ const Sidebar = (props) => {
                 /\/demo\/?/.test(pathname) ? "/demo" : ""
               }/academy/${program}/docs`}
             >
-              <SecctionLink active={/\/docs\/?$/.test(pathname) && true}>
+              <SecctionLink active={/\/docs\/?$/.test(pathname)}>
                 <IconContext.Provider
                   value={{
                     className: "sidebar-icon",
@@ -250,13 +250,30 @@ const Sidebar = (props) => {
             </Link>
           )}
           <hr />
+          <Link
+            to={`${
+              /\/demo\/?/.test(pathname) ? "/demo" : ""
+            }/academy/${program}/forum`}
+          >
+            <SecctionLink active={/\/forum\/?$/.test(pathname)}>
+              <IconContext.Provider
+                value={{
+                  className: "sidebar-icon",
+                  size: 25,
+                }}
+              >
+                <MdForum />
+              </IconContext.Provider>{" "}
+              Foro
+            </SecctionLink>
+          </Link>
           {programReducer.program.are_videos && !/\/demo\/?/.test(pathname) && (
             <Link
               to={`${
                 /\/demo\/?/.test(pathname) ? "/demo" : ""
               }/academy/${program}/playlists`}
             >
-              <SecctionLink active={/\/playlists\/?$/.test(pathname) && true}>
+              <SecctionLink active={/\/playlists\/?$/.test(pathname)}>
                 <IconContext.Provider
                   value={{
                     className: "sidebar-icon",
@@ -264,7 +281,7 @@ const Sidebar = (props) => {
                 >
                   <FaListUl />
                 </IconContext.Provider>{" "}
-                Listas de reproducción
+                Mis playlists
               </SecctionLink>
             </Link>
           )}
@@ -274,7 +291,7 @@ const Sidebar = (props) => {
                 /\/demo\/?/.test(pathname) ? "/demo" : ""
               }/academy/${program}/shared-docs`}
             >
-              <SecctionLink active={/\/shared-docs\/?$/.test(pathname) && true}>
+              <SecctionLink active={/\/shared-docs\/?$/.test(pathname)}>
                 <IconContext.Provider
                   value={{
                     className: "sidebar-icon",
@@ -302,14 +319,16 @@ const ContainerSidebar = styled.div`
   width: 90px;
   background: #fff;
   grid-area: menu;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  top: 60px !important;
+
+  height: calc(100vh - 60px);
   @media screen and (min-width: 768px) {
     top: 60px !important;
   }
 
   @media screen and (min-width: 576px) {
-    top: 60px !important;
-
     &:hover {
       width: 300px;
     }
@@ -318,7 +337,7 @@ const ContainerSidebar = styled.div`
   @media screen and (max-width: 576px) {
     /* top: 145px; */
     top: 60px !important;
-
+    overflow-y: scroll;
     width: 0;
     ${(props) =>
       props.sidebarActive &&

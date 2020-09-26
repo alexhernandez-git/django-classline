@@ -55,7 +55,7 @@ const DemoRequest = (props) => {
               message: "",
             }}
             validationSchema={FormSchema}
-            onSubmit={(values) => {
+            onSubmit={(values, { resetForm }) => {
               Axios.post("/api/users/demo_request/", values)
                 .then((res) => {
                   Swal.fire({
@@ -64,6 +64,7 @@ const DemoRequest = (props) => {
                     icon: "success",
                     confirmButtonText: "Ok",
                   });
+                  resetForm({});
                 })
                 .catch((err) => {
                   Swal.fire({

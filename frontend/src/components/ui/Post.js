@@ -1,139 +1,73 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { IconContext } from "react-icons";
-import { FaRegHeart, FaRegComment } from "react-icons/fa";
+import { BiCommentDetail, BiTime } from "react-icons/bi";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 const Post = () => {
+  const { pathname } = useLocation();
+  const { program } = useParams();
   return (
-    <div className="card mb-5">
-      <Link to={`/${Math.random()}/user/${Math.random()}`}>
-        <div className="card-header d-flex align-items-center cursor-pointer border-0">
-          <ProfileImageDiv>
-            <img
-              src={"https://image.flaticon.com/icons/svg/194/194938.svg"}
-              alt="Avatar"
-            />
-          </ProfileImageDiv>
-
-          <small className="ml-2 font-weight-bold">Yoga & Yoga</small>
-        </div>
-      </Link>
-      {/* <div className="card-body p-0">
-                <img src="https://source.unsplash.com/random" className="card-img-top" alt="..." />
-            </div> */}
-      <div className="card-footer border-0">
-        <div>
-          <small className="font-weight-bold">Yoga & Yoga</small>{" "}
-          <small>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Consequuntur eos minus odio reprehenderit a quos ullam veniam iusto?
-            Ad, explicabo consequatur deleniti praesentium architecto non.
-            Aspernatur et itaque reiciendis dolor.
-          </small>
-        </div>
-        <div className="mt-2 d-flex">
+    <Link
+      to={
+        !/\/demo\//.test(pathname) ? `/academy/${program}/post/:id` : pathname
+      }
+    >
+      <div className="card mb-4">
+        <div className="card-header">
           <div className="d-flex align-items-center">
-            <IconContext.Provider
-              value={{
-                size: 18,
-                className: "global-class-name",
-              }}
-            >
-              <FaRegHeart />
-            </IconContext.Provider>
-            <span className="ml-2">32 Me gusta</span>
-          </div>
-
-          <div className="d-flex align-items-center ml-3">
-            <IconContext.Provider
-              value={{
-                size: 18,
-                className: "global-class-name",
-              }}
-            >
-              <FaRegComment />
-            </IconContext.Provider>
-            <span className="ml-2">32 Comentarios</span>
+            <Avatar>
+              <img
+                src="https://image.flaticon.com/icons/svg/194/194938.svg"
+                alt=""
+              />
+            </Avatar>
+            <span className="h5 mb-0 ml-3">Alex Hernandez</span>
           </div>
         </div>
-        <div className="my-4 border-top">
-          {/* <Comment className="my-4 clearfix">
-                        <ProfileImageDiv className="div-img float-left mr-3">
-                            <img src={'https://image.flaticon.com/icons/svg/194/194938.svg'} alt="Avatar" />
-                        </ProfileImageDiv>
-                        <div className="div-comment float-right">
-                            <small className="font-weight-bold">Espai de tai chi</small>
-                            <small className="ml-2">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem ab veritatis ipsa sunt dolores unde earum iste fugit sit quaerat asperiores deserunt sequi eos quisquam, obcaecati id! Esse, et adipisci!</small>
-                        </div>
-                    </Comment>
-                    <Comment className="my-4 clearfix">
-                        <ProfileImageDiv className="div-img float-left mr-3">
-                            <img src={'https://image.flaticon.com/icons/svg/194/194938.svg'} alt="Avatar" />
-                        </ProfileImageDiv>
-                        <div className="div-comment float-right">
-                            <small className="font-weight-bold">Espai de tai chi</small>
-                            <small className="ml-2">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem ab veritatis ipsa sunt dolores unde earum iste fugit sit quaerat asperiores deserunt sequi eos quisquam, obcaecati id! Esse, et adipisci!</small>
-                        </div>
-                    </Comment>
-                    <Comment className="my-4 clearfix">
-                        <ProfileImageDiv className="div-img float-left mr-3">
-                            <img src={'https://image.flaticon.com/icons/svg/194/194938.svg'} alt="Avatar" />
-                        </ProfileImageDiv>
-                        <div className="div-comment float-right">
-                            <small className="font-weight-bold">Espai de tai chi</small>
-                            <small className="ml-2">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem ab veritatis ipsa sunt dolores unde earum iste fugit sit quaerat asperiores deserunt sequi eos quisquam, obcaecati id! Esse, et adipisci!</small>
-                        </div>
-                    </Comment> */}
+        <div className="card-body text-dark">
+          <p className="card-text new-line">
+            Hola!
+            <br />
+            Tengo una pregunta ¿por qué hay diferentes formas de instalar
+            WordPress? influye en algo?
+          </p>
         </div>
-        <FormComment action="" className="my-2 w-100">
-          <input
-            type="text"
-            placeholder="Añade un comentario..."
-            className=""
-          />
-          <button className="text-primary">Publicar</button>
-        </FormComment>
-        <small className="text-muted d-block d-flex justify-content-end">
-          2 hace dos dias
-        </small>
+        <div className="text-grey mx-3 mb-3">
+          <div className="d-flex justify-content-between">
+            <div>
+              <IconContext.Provider
+                value={{
+                  size: 20,
+                }}
+              >
+                <BiCommentDetail />
+              </IconContext.Provider>{" "}
+              0
+            </div>
+            <div>
+              <IconContext.Provider
+                value={{
+                  size: 20,
+                }}
+              >
+                <BiTime />
+              </IconContext.Provider>{" "}
+              Hace 4 horas
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
-const ProfileImageDiv = styled.div`
-  width: 35px;
-  height: 35px;
+const Avatar = styled.div`
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   overflow: hidden;
-  .img {
-    width: 35px;
-    height: 35px;
-  }
-`;
-const FormComment = styled.form`
-  input {
-    width: calc(100% - 100px);
-    border: none;
-    border-radius: 1rem 0 0 1rem;
-    padding: 0.5rem;
-  }
-  button {
-    width: 100px;
-    border: none;
-    background: white;
-    border-radius: 0 1rem 1rem 0;
-
-    padding: 0.5rem;
-  }
-`;
-const Comment = styled.div`
-  .div-img {
-    width: 35px;
-    min-width: 35px;
-  }
-  .div-comment {
-    width: calc(100% - 45px);
+  img {
+    width: 100%;
   }
 `;
 export default Post;

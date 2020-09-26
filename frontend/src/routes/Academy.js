@@ -36,10 +36,13 @@ import { Helmet } from "react-helmet";
 import CoursesAdmin from "../containers/admin/CoursesAdmin";
 import CourseFormAdmin from "../containers/admin/CourseFormAdmin";
 import PlaylistsAcademy from "../containers/PlaylistsAcademy";
+import ForumAcademy from "../containers/ForumAcademy";
+
 import PlaylistFormAcademy from "../containers/PlaylistFormAcademy";
 import PlaylistAcademy from "../containers/PlaylistAcademy";
 import SharedDocsAcademy from "../containers/SharedDocsAcademy";
 import DocsAdmin from "../containers/admin/DocsAdmin";
+import PostAcademy from "../containers/PostAcademy";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -122,7 +125,7 @@ const Academy = () => {
             />
             <Route
               exact
-              path="/academy/:program/courses:search?"
+              path="/academy/:program/courses/:search?"
               component={
                 programReducer.program.are_playlists
                   ? CoursesAcademy
@@ -140,7 +143,7 @@ const Academy = () => {
             />
             <Route
               exact
-              path="/academy/:program/podcasts:search?"
+              path="/academy/:program/podcasts/:search?"
               component={
                 programReducer.program.are_podcasts
                   ? PodcastsAcademy
@@ -193,13 +196,23 @@ const Academy = () => {
             )}
             <Route
               exact
-              path="/academy/:program/playlists:search?"
+              path="/academy/:program/playlists/:search?"
               component={PlaylistsAcademy}
             />
             <Route
               exact
               path="/academy/:program/form/playlist"
               component={PlaylistFormAcademy}
+            />
+            <Route
+              exact
+              path="/academy/:program/forum"
+              component={ForumAcademy}
+            />
+            <Route
+              exact
+              path="/academy/:program/post/:id"
+              component={PostAcademy}
             />
             {authReducer.user && isInstructor() ? (
               <>
@@ -210,23 +223,23 @@ const Academy = () => {
                 />
                 <Route
                   exact
-                  path="/academy/:program/admin/users:search?"
+                  path="/academy/:program/admin/users/:search?"
                   component={UsersAdmin}
                 />
                 <Route
                   exact
-                  path="/academy/:program/admin/accounts:search?"
+                  path="/academy/:program/admin/accounts/:search?"
                   component={AccountsAdmin}
                 />
                 <Route
                   exact
-                  path="/academy/:program/admin/videos:search?"
+                  path="/academy/:program/admin/videos/:search?"
                   component={VideosAdmin}
                 />
 
                 <Route
                   exact
-                  path="/academy/:program/admin/courses:search?"
+                  path="/academy/:program/admin/courses/:search?"
                   component={CoursesAdmin}
                 />
                 <Route
@@ -236,7 +249,7 @@ const Academy = () => {
                 />
                 <Route
                   exact
-                  path="/academy/:program/admin/podcasts:search?"
+                  path="/academy/:program/admin/podcasts/:search?"
                   component={PodcastsAdmin}
                 />
                 <Route
