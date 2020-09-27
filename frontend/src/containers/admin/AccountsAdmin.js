@@ -63,7 +63,7 @@ const Students = () => {
   };
   return (
     <Main padding ref={main}>
-      {areDiscount && authReducer.user && !authReducer.user.teacher.discount && (
+      {/* {areDiscount && authReducer.user && !authReducer.user.teacher.discount && (
         <Promotion>
           {infoOpen && (
             <div className="info">
@@ -84,7 +84,7 @@ const Students = () => {
             </IconContext.Provider>
           </div>
         </Promotion>
-      )}
+      )} */}
       <Filters title="Alumnos" />
       <ContainerTabs className="container">
         <Tab.Container
