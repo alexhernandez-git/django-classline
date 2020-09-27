@@ -38,7 +38,9 @@ const Comment = (props) => {
               >
                 <BiTime />
               </IconContext.Provider>{" "}
-              <small>{moment(comment.created).fromNow()}</small>
+              <small>
+                {moment(comment.created).subtract(1, "seconds").fromNow()}
+              </small>
             </div>
           </div>
           <p className="text-dark">

@@ -13,6 +13,7 @@ import { createPlaylist, editPlaylist } from "src/redux/actions/playlists";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
+import ContainerWrapper from "src/components/ui/Container";
 
 const PlaylistSchema = Yup.object().shape({
   name: Yup.string()
@@ -74,15 +75,16 @@ const PlaylistFormAcademy = () => {
                     </ButtonCustom>
                   }
                 />
-
-                <PlaylistForm
-                  values={props.values}
-                  setFieldValue={props.setFieldValue}
-                  videoCards={tracks}
-                  setVideoCards={setVideoCards}
-                  errors={props.errors}
-                  touched={props.touched}
-                />
+                <ContainerWrapper>
+                  <PlaylistForm
+                    values={props.values}
+                    setFieldValue={props.setFieldValue}
+                    videoCards={tracks}
+                    setVideoCards={setVideoCards}
+                    errors={props.errors}
+                    touched={props.touched}
+                  />
+                </ContainerWrapper>
               </FormFormik>
             </>
           );

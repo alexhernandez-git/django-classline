@@ -91,6 +91,22 @@ const Caracteristics = () => {
               </IconContext.Provider>
             </div>
           )}
+          {programReducer.program.are_forum && (
+            <div className="position-relative">
+              Foro
+              <IconContext.Provider
+                value={{
+                  style: {
+                    top: "2px",
+                  },
+                  className: "mr-3 text-primary position-absolute",
+                  size: "20px",
+                }}
+              >
+                <IoMdCheckmark />{" "}
+              </IconContext.Provider>
+            </div>
+          )}
         </div>
         <div className="col-md-4">
           {programReducer.program.are_meetups && (

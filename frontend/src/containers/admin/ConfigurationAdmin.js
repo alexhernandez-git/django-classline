@@ -44,6 +44,8 @@ const index = (props) => {
     program_language: "",
     instructor: {},
     is_published: false,
+    are_docs: true,
+    are_forum: true,
   });
   useEffect(() => {
     if (program) {
@@ -61,6 +63,7 @@ const index = (props) => {
         courses: program.courses,
         are_podcasts: program.are_podcasts,
         are_docs: program.are_docs,
+        are_forum: program.are_forum,
         podcasts: program.podcasts,
         students: program.students,
         program_price: program.program_price,

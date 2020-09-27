@@ -59,7 +59,7 @@ const Post = (props) => {
               >
                 <BiTime />
               </IconContext.Provider>{" "}
-              {moment(post.created).fromNow()}
+              {moment(post.created).subtract(1, "seconds").fromNow()}
             </div>
           </div>
         </div>

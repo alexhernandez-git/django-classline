@@ -249,24 +249,26 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
+          {programReducer.program.are_forum && !/\/demo\/?/.test(pathname) && (
+            <Link
+              to={`${
+                /\/demo\/?/.test(pathname) ? "/demo" : ""
+              }/academy/${program}/forum`}
+            >
+              <SecctionLink active={/\/forum\/?$/.test(pathname)}>
+                <IconContext.Provider
+                  value={{
+                    className: "sidebar-icon",
+                    size: 25,
+                  }}
+                >
+                  <MdForum />
+                </IconContext.Provider>{" "}
+                Foro
+              </SecctionLink>
+            </Link>
+          )}
           <hr />
-          <Link
-            to={`${
-              /\/demo\/?/.test(pathname) ? "/demo" : ""
-            }/academy/${program}/forum`}
-          >
-            <SecctionLink active={/\/forum\/?$/.test(pathname)}>
-              <IconContext.Provider
-                value={{
-                  className: "sidebar-icon",
-                  size: 25,
-                }}
-              >
-                <MdForum />
-              </IconContext.Provider>{" "}
-              Foro
-            </SecctionLink>
-          </Link>
           {programReducer.program.are_videos && !/\/demo\/?/.test(pathname) && (
             <Link
               to={`${
