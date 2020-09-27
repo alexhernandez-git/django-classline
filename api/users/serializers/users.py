@@ -415,6 +415,7 @@ class UserSharedModelSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'email',
+            'created_account',
             'profile',
         )
 

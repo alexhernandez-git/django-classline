@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "@emotion/styled";
 import moment from "moment";
 const StudentRow = (props) => {
+  console.log(props);
   const {
     id,
     avatar,
