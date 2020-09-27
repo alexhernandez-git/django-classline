@@ -4,7 +4,7 @@
 from rest_framework import serializers
 
 # Models
-from api.programs.models import Post
+from api.programs.models import Post, Comment
 
 
 from datetime import timedelta
@@ -12,6 +12,8 @@ from datetime import timedelta
 
 class PostModelSerializer(serializers.ModelSerializer):
     """Profile model serializer."""
+    comments = serializers.SerializerMethodField(read_only=True)
+    user = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         """Meta class."""
@@ -19,14 +21,24 @@ class PostModelSerializer(serializers.ModelSerializer):
         model = Post
         fields = (
             'id',
+            'code',
             'title',
             'message',
+            'user',
+            'comments',
             'created',
         )
-        # extra_kwargs = {'end': {'required': False}}
         read_only_fields = (
             'id',
         )
+
+    def get_comments(self, obj):
+        posts = Comment.objects.filter(post=obj)
+        return posts.count()
+
+    def get_user(self, obj):
+        from api.users.serializers.users import UserSharedModelSerializer
+        return UserSharedModelSerializer(obj.user, read_only=True).data
 
     def validate(self, attrs):
         if len(attrs['title']) == 0:

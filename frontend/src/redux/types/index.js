@@ -336,3 +336,26 @@ export const MOVE_FOLDER_FAIL = "MOVE_FOLDER_FAIL";
 export const MOVE_FILE = "MOVE_FILE";
 export const MOVE_FILE_SUCCESS = "MOVE_FILE_SUCCESS";
 export const MOVE_FILE_FAIL = "MOVE_FILE_FAIL";
+
+// Posts
+
+export const POSTS_FETCH = "POSTS_FETCH";
+export const POSTS_SUCCESS = "POSTS_SUCCESS";
+export const POSTS_FAIL = "POSTS_FAIL";
+export const SET_POST_EDIT = "SET_POST_EDIT";
+export const DELETE_POST_EDIT = "DELETE_POST_EDIT";
+export const EDIT_POST = "EDIT_POST";
+export const EDIT_POST_SUCCESS = "EDIT_POST_SUCCESS";
+export const EDIT_POST_FAIL = "EDIT_POST_FAIL";
+export const CREATE_POST = "CREATE_POST";
+export const CREATE_POST_SUCCESS = "CREATE_POST_SUCCESS";
+export const CREATE_POST_FAIL = "CREATE_POST_FAIL";
+export const DELETE_POST = "DELETE_POST";
+export const DELETE_POST_SUCCESS = "DELETE_POST_SUCCESS";
+export const DELETE_POST_FAIL = "DELETE_POST_FAIL";
+
+// Post
+
+export const POST_FETCH = "POST_FETCH";
+export const POST_SUCCESS = "POST_LOADED";
+export const POST_FAIL = "POST_FAIL";

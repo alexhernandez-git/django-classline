@@ -42,7 +42,7 @@ import PlaylistFormAcademy from "../containers/PlaylistFormAcademy";
 import PlaylistAcademy from "../containers/PlaylistAcademy";
 import SharedDocsAcademy from "../containers/SharedDocsAcademy";
 import DocsAdmin from "../containers/admin/DocsAdmin";
-import PostAcademy from "../containers/PostAcademy";
+import PostAcademy from "../containers/PostsAcademy";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();

@@ -12,3 +12,4 @@ from .accounts_created import *
 from .ratings import *
 from .folders import *
 from .files import *
+from .posts import *

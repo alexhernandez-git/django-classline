@@ -7,17 +7,16 @@ import { ButtonCustom } from "src/components/ui/ButtonCustom";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 
 import { IconContext } from "react-icons";
-import VideoCard from "src/components/AdminAcademy/VideoCard";
 import PostForm from "src/components/AdminAcademy/PostForm";
 import {
-  fetchVideos,
-  setVideoEdit,
-  editVideo,
-  deleteVideoEdit,
-  createVideo,
-  deleteVideo,
-  fetchVideosPagination,
-} from "src/redux/actions/videos";
+  fetchPosts,
+  setPostEdit,
+  editPost,
+  deletePostEdit,
+  createPost,
+  deletePost,
+  fetchPostsPagination,
+} from "src/redux/actions/posts";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Formik, Form as FormFormik } from "formik";
@@ -31,7 +30,7 @@ import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import Post from "../components/ui/Post";
 
-const VideoSchema = Yup.object().shape({
+const PostSchema = Yup.object().shape({
   title: Yup.string()
     .min(2, "El titulo es muy corto")
     .max(100, "El titulo es muy largo")
@@ -49,30 +48,30 @@ const ForumAcademy = () => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
-    const dispatchDeleteVideoEdit = () => dispatch(deleteVideoEdit());
-    dispatchDeleteVideoEdit();
+    const dispatchDeletePostEdit = () => dispatch(deletePostEdit());
+    dispatchDeletePostEdit();
     setShow(false);
   };
-  const handleShow = (video = null) => {
-    if (video) {
-      const dispatchSetVideoEdit = (video) => dispatch(setVideoEdit(video));
-      dispatchSetVideoEdit(video);
+  const handleShow = (post = null) => {
+    if (post) {
+      const dispatchSetPostEdit = (post) => dispatch(setPostEdit(post));
+      dispatchSetPostEdit(post);
     }
 
     setShow(true);
   };
   const dispatch = useDispatch();
-  const videosReducer = useSelector((state) => state.videosReducer);
+  const postsReducer = useSelector((state) => state.postsReducer);
   const programReducer = useSelector((state) => state.programReducer);
 
   useEffect(() => {
     if (!programReducer.isLoading) {
-      const dispatchFetchVideos = () => dispatch(fetchVideos());
-      dispatchFetchVideos();
+      const dispatchFetchPosts = () => dispatch(fetchPosts());
+      dispatchFetchPosts();
     }
   }, [programReducer.program]);
 
-  const handleVideoDelete = (id) => {
+  const handlePostDelete = (id) => {
     MySwal.fire({
       title: "Estas seguro?",
       icon: "warning",
@@ -83,8 +82,8 @@ const ForumAcademy = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        const dispatchDeleteVideo = (id) => dispatch(deleteVideo(id));
-        dispatchDeleteVideo(id);
+        const dispatchDeletePost = (id) => dispatch(deletePost(id));
+        dispatchDeletePost(id);
       }
     });
   };
@@ -93,15 +92,15 @@ const ForumAcademy = () => {
 
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    const dispatchFetchVideos = (search) => dispatch(fetchVideos(search));
-    dispatchFetchVideos(search);
+    const dispatchFetchPosts = (search) => dispatch(fetchPosts(search));
+    dispatchFetchPosts(search);
   };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
 
-    const dispatchFetchVideosPagination = (url) =>
-      dispatch(fetchVideosPagination(url));
-    dispatchFetchVideosPagination(url);
+    const dispatchFetchPostsPagination = (url) =>
+      dispatch(fetchPostsPagination(url));
+    dispatchFetchPostsPagination(url);
   };
 
   return (
@@ -118,30 +117,25 @@ const ForumAcademy = () => {
         <ContainerWrapper>
           <div className="d-flex justify-content-between mb-3">
             <div>
-              {videosReducer.video_creating && (
-                <span>Subiendo video, por favor espera...</span>
+              {postsReducer.post_creating && (
+                <span>Subiendo post, por favor espera...</span>
               )}
-              {videosReducer.video_editing && (
-                <span>Editando video, por favor espera...</span>
+              {postsReducer.post_editing && (
+                <span>Editando post, por favor espera...</span>
               )}
             </div>
             <ButtonCustom onClick={() => handleShow()}>Nuevo Post</ButtonCustom>
           </div>
 
-          {videosReducer.videos &&
-            videosReducer.videos.results.map((video) => (
-              <>
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-              </>
+          {postsReducer.posts &&
+            postsReducer.posts.results.map((post) => (
+              <Post post={post} key={post.id} />
             ))}
-          {videosReducer.isLoading && <span>Cargando...</span>}
-          {videosReducer.videos &&
-            (videosReducer.videos.previous || videosReducer.videos.next) && (
+          {postsReducer.isLoading && <span>Cargando...</span>}
+          {postsReducer.posts &&
+            (postsReducer.posts.previous || postsReducer.posts.next) && (
               <div className="d-flex justify-content-center my-5">
-                {videosReducer.videos.previous ? (
+                {postsReducer.posts.previous ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -150,7 +144,7 @@ const ForumAcademy = () => {
                   >
                     <IoIosArrowDropleft
                       onClick={() =>
-                        handleChangePage(videosReducer.videos.previous)
+                        handleChangePage(postsReducer.posts.previous)
                       }
                     />
                   </IconContext.Provider>
@@ -164,7 +158,7 @@ const ForumAcademy = () => {
                     <IoIosArrowDropleft />
                   </IconContext.Provider>
                 )}
-                {videosReducer.videos.next ? (
+                {postsReducer.posts.next ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -172,9 +166,7 @@ const ForumAcademy = () => {
                     }}
                   >
                     <IoIosArrowDropright
-                      onClick={() =>
-                        handleChangePage(videosReducer.videos.next)
-                      }
+                      onClick={() => handleChangePage(postsReducer.posts.next)}
                     />
                   </IconContext.Provider>
                 ) : (
@@ -195,22 +187,22 @@ const ForumAcademy = () => {
         <Formik
           enableReinitialize={true}
           initialValues={
-            videosReducer.video_edit
-              ? videosReducer.video_edit
+            postsReducer.post_edit
+              ? postsReducer.post_edit
               : {
                   title: "",
                   message: "",
                 }
           }
-          validationSchema={VideoSchema}
+          validationSchema={PostSchema}
           onSubmit={(values) => {
-            if (videosReducer.video_edit) {
-              const dispatchEditVideo = (values) => dispatch(editVideo(values));
-              dispatchEditVideo(values);
+            if (postsReducer.post_edit) {
+              const dispatchEditPost = (values) => dispatch(editPost(values));
+              dispatchEditPost(values);
             } else {
-              const dispatchCreateVideo = (values) =>
-                dispatch(createVideo(values));
-              dispatchCreateVideo(values);
+              const dispatchCreatePost = (values) =>
+                dispatch(createPost(values));
+              dispatchCreatePost(values);
             }
 
             handleClose();
@@ -227,7 +219,7 @@ const ForumAcademy = () => {
                   <PostForm
                     values={props.values}
                     setFieldValue={props.setFieldValue}
-                    isEdit={videosReducer.video_edit ? true : false}
+                    isEdit={postsReducer.post_edit ? true : false}
                     errors={props.errors}
                     touched={props.touched}
                   />

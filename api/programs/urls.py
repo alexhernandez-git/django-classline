@@ -20,6 +20,7 @@ from api.programs.views.public_files import PublicFileViewSet
 from api.programs.views.public_folders import PublicFolderViewSet
 from api.programs.views.shared_files import SharedFileViewSet
 from api.programs.views.shared_folders import SharedFolderViewSet
+from api.programs.views.posts import PostViewSet
 
 router = DefaultRouter()
 
@@ -94,6 +95,11 @@ router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/shared-folders',
     SharedFolderViewSet,
     basename='shared-folders'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/posts',
+    PostViewSet,
+    basename='posts'
 )
 urlpatterns = [
     path('', include(router.urls))

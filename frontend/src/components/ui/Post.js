@@ -2,15 +2,19 @@ import React from "react";
 import styled from "@emotion/styled";
 import { IconContext } from "react-icons";
 import { BiCommentDetail, BiTime } from "react-icons/bi";
-
+import moment from "moment";
 import { Link, useLocation, useParams } from "react-router-dom";
-const Post = () => {
+const Post = (props) => {
   const { pathname } = useLocation();
   const { program } = useParams();
+  const { post } = props;
+  moment.locale("es");
   return (
     <Link
       to={
-        !/\/demo\//.test(pathname) ? `/academy/${program}/post/:id` : pathname
+        !/\/demo\//.test(pathname)
+          ? `/academy/${program}/post/${post.code}`
+          : pathname
       }
     >
       <div className="card mb-4">
@@ -18,20 +22,22 @@ const Post = () => {
           <div className="d-flex align-items-center">
             <Avatar>
               <img
-                src="https://image.flaticon.com/icons/svg/194/194938.svg"
+                src={
+                  post.user.profile.picture
+                    ? post.user.profile.picture
+                    : "../../../static/assets/img/avatar.png"
+                }
                 alt=""
               />
             </Avatar>
-            <span className="h5 mb-0 ml-3">Alex Hernandez</span>
+            <span className="h5 mb-0 ml-3">
+              {post.user.first_name} {post.user.last_name}
+            </span>
           </div>
         </div>
         <div className="card-body text-dark">
-          <p className="card-text new-line">
-            Hola!
-            <br />
-            Tengo una pregunta ¿por qué hay diferentes formas de instalar
-            WordPress? influye en algo?
-          </p>
+          <p className="card-text new-line">{post.title}</p>
+          <p className="card-text new-line">{post.message}</p>
         </div>
         <div className="text-grey mx-3 mb-3">
           <div className="d-flex justify-content-between">
@@ -43,7 +49,7 @@ const Post = () => {
               >
                 <BiCommentDetail />
               </IconContext.Provider>{" "}
-              0
+              {post.comments}
             </div>
             <div>
               <IconContext.Provider
@@ -53,7 +59,7 @@ const Post = () => {
               >
                 <BiTime />
               </IconContext.Provider>{" "}
-              Hace 4 horas
+              {moment(post.created).fromNow()}
             </div>
           </div>
         </div>
