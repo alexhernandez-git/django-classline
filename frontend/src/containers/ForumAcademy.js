@@ -106,14 +106,12 @@ const ForumAcademy = () => {
   return (
     <>
       <Main padding ref={main}>
-        <form>
-          <Filters
-            title="Foro"
-            placeholder="Buscar en el foro"
-            search={{ search: search, setSearch: setSearch }}
-            onSubmit={handleSubmitSearch}
-          />
-        </form>
+        <Filters
+          title="Foro"
+          placeholder="Buscar en el foro"
+          search={{ search: search, setSearch: setSearch }}
+          onSubmit={handleSubmitSearch}
+        />
         <ContainerWrapper>
           <div className="d-flex justify-content-between mb-3">
             <div>

@@ -7,20 +7,19 @@ import { ButtonCustom } from "src/components/ui/ButtonCustom";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 
 import { IconContext } from "react-icons";
-import VideoCard from "src/components/AdminAcademy/VideoCard";
 import PostForm from "src/components/AdminAcademy/PostForm";
 import { AdminForm } from "src/components/ui/AdminForm";
 
 import { Formik, Form as FormFormik, Field } from "formik";
 import {
-  fetchVideos,
-  setVideoEdit,
-  editVideo,
-  deleteVideoEdit,
-  createVideo,
-  deleteVideo,
-  fetchVideosPagination,
-} from "src/redux/actions/videos";
+  fetchComments,
+  setCommentEdit,
+  editComment,
+  deleteCommentEdit,
+  createComment,
+  deleteComment,
+  fetchCommentsPagination,
+} from "src/redux/actions/comments";
 import { useDispatch, useSelector } from "react-redux";
 
 import Swal from "sweetalert2";
@@ -33,10 +32,10 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import Post from "../components/ui/Post";
 import Comment from "../components/ui/Comment";
 import { fetchPost } from "../redux/actions/post";
-import postReducer from "../redux/reducers/postReducer";
+import { fetchPosts } from "../redux/actions/posts";
 
-const VideoSchema = Yup.object().shape({
-  comment: Yup.string()
+const CommentSchema = Yup.object().shape({
+  message: Yup.string()
     .min(2, "El comentario es muy corto")
     .max(1000, "El comentario es muy largo")
     .required("Este campo es obligatorio"),
@@ -51,33 +50,33 @@ const PostAcademy = () => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
-    const dispatchDeleteVideoEdit = () => dispatch(deleteVideoEdit());
-    dispatchDeleteVideoEdit();
+    const dispatchDeleteCommentEdit = () => dispatch(deleteCommentEdit());
+    dispatchDeleteCommentEdit();
     setShow(false);
   };
   const handleShow = (video = null) => {
     if (video) {
-      const dispatchSetVideoEdit = (video) => dispatch(setVideoEdit(video));
-      dispatchSetVideoEdit(video);
+      const dispatchSetCommentEdit = (video) => dispatch(setCommentEdit(video));
+      dispatchSetCommentEdit(video);
     }
 
     setShow(true);
   };
   const dispatch = useDispatch();
-  const videosReducer = useSelector((state) => state.videosReducer);
+  const commentsReducer = useSelector((state) => state.commentsReducer);
   const postReducer = useSelector((state) => state.postReducer);
   const programReducer = useSelector((state) => state.programReducer);
 
   useEffect(() => {
     if (!programReducer.isLoading) {
-      const dispatchFetchVideos = () => dispatch(fetchVideos());
-      dispatchFetchVideos();
+      const dispatchFetchComments = (id) => dispatch(fetchComments(id));
+      dispatchFetchComments(id);
       const dispatchFetchPost = (id) => dispatch(fetchPost(id));
       dispatchFetchPost(id);
     }
   }, [programReducer.program]);
 
-  const handleVideoDelete = (id) => {
+  const handleCommentDelete = (id) => {
     MySwal.fire({
       title: "Estas seguro?",
       icon: "warning",
@@ -88,39 +87,25 @@ const PostAcademy = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        const dispatchDeleteVideo = (id) => dispatch(deleteVideo(id));
-        dispatchDeleteVideo(id);
+        const dispatchDeleteComment = (id) => dispatch(deleteComment(id));
+        dispatchDeleteComment(id);
       }
     });
   };
 
   const [search, setSearch] = useState();
 
-  const handleSubmitSearch = (e) => {
-    e.preventDefault();
-    history.push(`/academy/${program}/forum`);
-    const dispatchFetchVideos = (search) => dispatch(fetchVideos(search));
-    dispatchFetchVideos(search);
-  };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
 
-    const dispatchFetchVideosPagination = (url) =>
-      dispatch(fetchVideosPagination(url));
-    dispatchFetchVideosPagination(url);
+    const dispatchFetchCommentsPagination = (url) =>
+      dispatch(fetchCommentsPagination(url));
+    dispatchFetchCommentsPagination(url);
   };
 
   return (
     <>
       <Main padding ref={main}>
-        <form>
-          <Filters
-            title="Foro"
-            placeholder="Buscar en el foro"
-            search={{ search: search, setSearch: setSearch }}
-            onSubmit={handleSubmitSearch}
-          />
-        </form>
         <ContainerWrapper>
           {!postReducer.isLoading && <Post post={postReducer.post} />}
           {!postReducer.isLoading && postReducer.error}
@@ -129,21 +114,15 @@ const PostAcademy = () => {
               <Formik
                 enableReinitialize={true}
                 initialValues={{
-                  comment: "",
+                  message: "",
                 }}
-                validationSchema={VideoSchema}
-                onSubmit={(values) => {
-                  if (videosReducer.video_edit) {
-                    const dispatchEditVideo = (values) =>
-                      dispatch(editVideo(values));
-                    dispatchEditVideo(values);
-                  } else {
-                    const dispatchCreateVideo = (values) =>
-                      dispatch(createVideo(values));
-                    dispatchCreateVideo(values);
-                  }
-
-                  handleClose();
+                validationSchema={CommentSchema}
+                onSubmit={(values, { resetForm }) => {
+                  console.log("submit");
+                  const dispatchCreateComment = (id, values) =>
+                    dispatch(createComment(id, values));
+                  dispatchCreateComment(id, values);
+                  resetForm({});
                 }}
               >
                 {({ errors, touched }) => {
@@ -154,7 +133,7 @@ const PostAcademy = () => {
                           <div className="d-md-flex">
                             <Field
                               component="textarea"
-                              name="comment"
+                              name="message"
                               type="text"
                               placeholder="Comentario"
                               style={{ height: "36px" }}
@@ -167,9 +146,9 @@ const PostAcademy = () => {
                               Comentar
                             </ButtonCustom>
                           </div>
-                          {errors.comment && touched.comment ? (
+                          {errors.message && touched.message ? (
                             <small className="d-block text-red">
-                              {errors.comment}
+                              {errors.message}
                             </small>
                           ) : null}
                         </AdminForm>
@@ -179,23 +158,17 @@ const PostAcademy = () => {
                 }}
               </Formik>
             </div>
-            <Comment />
-            <Comment />
-            <Comment />
-            {videosReducer.videos &&
-              videosReducer.videos.results.map((video) => (
-                <>
-                  <Comment />
-                  <Comment />
-                  <Comment />
-                </>
+            {commentsReducer.comments &&
+              commentsReducer.comments.results.map((comment) => (
+                <Comment comment={comment} key={comment.code} />
               ))}
           </div>
-          {videosReducer.isLoading && <span>Cargando...</span>}
-          {videosReducer.videos &&
-            (videosReducer.videos.previous || videosReducer.videos.next) && (
+          {commentsReducer.isLoading && <span>Cargando...</span>}
+          {commentsReducer.comments &&
+            (commentsReducer.comments.previous ||
+              commentsReducer.comments.next) && (
               <div className="d-flex justify-content-center my-5">
-                {videosReducer.videos.previous ? (
+                {commentsReducer.comments.previous ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -204,7 +177,7 @@ const PostAcademy = () => {
                   >
                     <IoIosArrowDropleft
                       onClick={() =>
-                        handleChangePage(videosReducer.videos.previous)
+                        handleChangePage(commentsReducer.comments.previous)
                       }
                     />
                   </IconContext.Provider>
@@ -218,7 +191,7 @@ const PostAcademy = () => {
                     <IoIosArrowDropleft />
                   </IconContext.Provider>
                 )}
-                {videosReducer.videos.next ? (
+                {commentsReducer.comments.next ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -227,7 +200,7 @@ const PostAcademy = () => {
                   >
                     <IoIosArrowDropright
                       onClick={() =>
-                        handleChangePage(videosReducer.videos.next)
+                        handleChangePage(commentsReducer.comments.next)
                       }
                     />
                   </IconContext.Provider>

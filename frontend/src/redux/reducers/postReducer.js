@@ -1,4 +1,9 @@
-import { POST_FETCH, POST_SUCCESS, POST_FAIL } from "../types";
+import {
+  POST_FETCH,
+  POST_SUCCESS,
+  POST_FAIL,
+  INCREASE_COMMENT,
+} from "../types";
 
 const initialState = {
   isLoading: true,
@@ -26,6 +31,14 @@ export default function (state = initialState, action) {
         post: null,
         isLoading: false,
         error: action.payload,
+      };
+    case INCREASE_COMMENT:
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          comments: ++state.post.comments,
+        },
       };
     default:
       return state;

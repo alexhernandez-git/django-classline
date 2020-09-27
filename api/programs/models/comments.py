@@ -17,7 +17,8 @@ class Comment(CLineModel):
     """
     code = models.CharField(max_length=10, blank=True, null=True)
     message = models.TextField(max_length=1000)
-
+    user = models.ForeignKey(
+        'users.User', on_delete=models.CASCADE, related_name='comment_user')
     post = models.ForeignKey(
         'programs.Post', on_delete=models.CASCADE, related_name='post_comments')
 

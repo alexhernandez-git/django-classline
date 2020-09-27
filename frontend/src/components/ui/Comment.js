@@ -2,9 +2,13 @@ import React from "react";
 import styled from "@emotion/styled";
 import { IconContext } from "react-icons";
 import { BiCommentDetail, BiTime } from "react-icons/bi";
+import moment from "moment";
 
 import { Link } from "react-router-dom";
-const Comment = () => {
+const Comment = (props) => {
+  const { comment } = props;
+  moment.locale("es");
+
   return (
     <div className="mb-4">
       <div>
@@ -13,11 +17,17 @@ const Comment = () => {
             <div className="d-flex align-items-center">
               <Avatar>
                 <img
-                  src="https://image.flaticon.com/icons/svg/194/194938.svg"
+                  src={
+                    comment.user.profile.picture
+                      ? comment.user.profile.picture
+                      : "../../../static/assets/img/avatar.png"
+                  }
                   alt=""
                 />
               </Avatar>
-              <span className="h5 mb-0 ml-3">Alex Hernandez</span>
+              <span className="h5 mb-0 ml-3">
+                {comment.user.first_name} {comment.user.last_name}
+              </span>
             </div>
 
             <div>
@@ -28,19 +38,15 @@ const Comment = () => {
               >
                 <BiTime />
               </IconContext.Provider>{" "}
-              <small>Hace 4 horas</small>
+              <small>{moment(comment.created).fromNow()}</small>
             </div>
           </div>
           <p className="text-dark">
-            <small className="new-line">
-              hola la función del type es básicamente solo definir que lo que
-              habrá dentro de la etiqueta lo cual sera el código o texto del
-              lenguaje de programación como javascript por eso se coloca
-              “type=text/javascript”
-            </small>
+            <small className="new-line">{comment.message}</small>
           </p>
         </div>
       </div>
+      <hr />
     </div>
   );
 };

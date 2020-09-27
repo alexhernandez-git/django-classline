@@ -21,6 +21,7 @@ from api.programs.views.public_folders import PublicFolderViewSet
 from api.programs.views.shared_files import SharedFileViewSet
 from api.programs.views.shared_folders import SharedFolderViewSet
 from api.programs.views.posts import PostViewSet
+from api.programs.views.comments import CommentViewSet
 
 router = DefaultRouter()
 
@@ -100,6 +101,21 @@ router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/posts',
     PostViewSet,
     basename='posts'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/posts/(?P<post_id>[-a-zA-Z0-9_]+)/users/(?P<user_id>[-a-zA-Z0-9_]+)/comments',
+    CommentViewSet,
+    basename='comments'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/posts/(?P<post_id>[-a-zA-Z0-9_]+)/comments',
+    CommentViewSet,
+    basename='comments'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/comments',
+    CommentViewSet,
+    basename='comments'
 )
 urlpatterns = [
     path('', include(router.urls))

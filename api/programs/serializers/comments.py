@@ -12,6 +12,7 @@ from datetime import timedelta
 
 class CommentModelSerializer(serializers.ModelSerializer):
     """Profile model serializer."""
+    user = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         """Meta class."""
@@ -19,6 +20,7 @@ class CommentModelSerializer(serializers.ModelSerializer):
         model = Comment
         fields = (
             'id',
+            'user',
             'message',
             'created',
         )
@@ -26,6 +28,10 @@ class CommentModelSerializer(serializers.ModelSerializer):
         read_only_fields = (
             'id',
         )
+
+    def get_user(self, obj):
+        from api.users.serializers.users import UserSharedModelSerializer
+        return UserSharedModelSerializer(obj.user, read_only=True).data
 
     def validate(self, attrs):
         if len(attrs['message']) == 0:
@@ -36,5 +42,6 @@ class CommentModelSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
 
         validated_data['post'] = self.context['post']
+        validated_data['user'] = self.context['user']
 
         return super().create(validated_data)

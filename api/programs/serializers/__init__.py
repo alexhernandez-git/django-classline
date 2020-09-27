@@ -13,3 +13,4 @@ from .ratings import *
 from .folders import *
 from .files import *
 from .posts import *
+from .comments import *

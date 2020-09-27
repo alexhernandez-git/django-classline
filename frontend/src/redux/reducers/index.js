@@ -30,6 +30,7 @@ import sharedFoldersReducer from "./sharedFoldersReducer";
 import moveFoldersReducer from "./moveFoldersReducer";
 import postsReducer from "./postsReducer";
 import postReducer from "./postReducer";
+import commentsReducer from "./commentsReducer";
 
 export default combineReducers({
   authReducer,
@@ -59,6 +60,7 @@ export default combineReducers({
   moveFoldersReducer,
   postsReducer,
   postReducer,
+  commentsReducer,
 
   // Commercials reducers
   authCommercialsReducer,
