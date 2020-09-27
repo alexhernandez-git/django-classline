@@ -94,7 +94,7 @@ const WelcomeLayout = () => {
                 >
                   <img
                     className="w-100"
-                    src="../../../static/assets/img/snapshotlaptop.png"
+                    src="../../../static/assets/img/ShapeItApp (1).png"
                     alt="screenshot"
                   />
                   <div className="card-img-container text-white">
@@ -202,7 +202,7 @@ const WelcomeLayout = () => {
                       }}
                       controls
                       controlsList="nodownload"
-                      src="../../../static/assets/videos/screencastweb2.mp4"
+                      src="../../../static/assets/videos/classline main video (1).mp4"
                     ></video>
                     <img
                       className="w-100"

@@ -92,7 +92,7 @@ const InfoSlider = () => {
                       <div className="col-lg-7">
                         <img
                           className="rounded shadow"
-                          src="static/assets/img/main-page-pictures/main-page-platform.png"
+                          src="static/assets/img/Webp.net-resizeimage.png"
                           alt=""
                         />
                       </div>
@@ -119,7 +119,7 @@ const InfoSlider = () => {
                       <div className="col-lg-7 order-3">
                         <img
                           className="rounded shadow"
-                          src="static/assets/img/main-page-pictures/main-page.png"
+                          src="static/assets/img/Webp.net-resizeimage (1).png"
                           alt=""
                         />
                       </div>
