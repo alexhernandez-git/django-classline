@@ -146,7 +146,7 @@ const WelcomeLayout = () => {
                     webkitTransition: "all 0.25s linear",
                     oTransition: "all 0.25s linear",
                     transition: "all 0.25s linear",
-                    zIndex: actived ? 1000000 : 0,
+                    zIndex: actived ? 1000000 : "-1",
                     width: "100%",
                     maxWidth: "800px",
                     transform: actived ? "scale(1)" : "scale(0)",
