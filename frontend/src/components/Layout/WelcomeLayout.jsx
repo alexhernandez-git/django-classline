@@ -27,6 +27,7 @@ const WelcomeLayout = () => {
   };
   const handleOpenVideo = () => {
     videoPresentation.current.play();
+    console.log("entra");
     setActived(true);
   };
   const handleWindowClick = (e) => {
@@ -55,6 +56,9 @@ const WelcomeLayout = () => {
     };
   });
   const [areDiscount, fetchDiscount] = useCheckAreDiscount();
+  useEffect(() => {
+    console.log(actived);
+  }, [actived]);
   return (
     <>
       <div className=" bg-gradient-green shadow">
@@ -142,19 +146,18 @@ const WelcomeLayout = () => {
                     webkitTransition: "all 0.25s linear",
                     oTransition: "all 0.25s linear",
                     transition: "all 0.25s linear",
-                    zIndex: 1000000,
+                    zIndex: actived ? 1000000 : 0,
                     width: "100%",
-                    maxWidth: "1200px",
-                    maxHeight: "300px",
+                    maxWidth: "800px",
                     transform: actived ? "scale(1)" : "scale(0)",
                     opacity: actived ? 1 : 0,
-                    margin:
-                      "5% auto" /* Will not center vertically and won't work in IE6/7. */,
-                    left: 0,
-                    right: 0,
-                    padding: "5%",
-                    top: 0,
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
                   }}
+                  // width: 100%;
+                  // position: fixed;
+                  // max-width: 80rem;
                 >
                   <div className="position-relative">
                     <IconContext.Provider

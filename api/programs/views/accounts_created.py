@@ -18,7 +18,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 # Models
-from api.programs.models import Program, AccountCreated, Rating
+from api.programs.models import Program, AccountCreated, Rating, Student
 from api.users.models import User
 
 # Serializers
@@ -42,7 +42,8 @@ class AccountCreatedViewSet(mixins.ListModelMixin,
     def get_queryset(self):
         program = self.program
 
-        queryset = AccountCreated.objects.filter(program=program)
+        queryset = AccountCreated.objects.filter(
+            program=program, user__is_active=True)
 
         return queryset
 
@@ -59,7 +60,6 @@ class AccountCreatedViewSet(mixins.ListModelMixin,
         if program.accounts_to_create_left > program.current_accounts:
             program.accounts_to_create_left = program.current_accounts
 
-        instance.user.delete()
         self.perform_destroy(instance)
         # import pdb; pdb.set_trace()
         if Rating.objects.filter(
@@ -88,3 +88,9 @@ class AccountCreatedViewSet(mixins.ListModelMixin,
         data = ProgramModifyModelSerializer(program).data
 
         return Response(data, status=status.HTTP_200_OK)
+
+    def perform_destroy(self, instance):
+
+        Student.objects.filter(
+            user=instance.user, program=self.program).delete()
+        instance.delete()

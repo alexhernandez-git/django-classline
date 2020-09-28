@@ -519,24 +519,20 @@ const ProgramVideo = styled.div`
   /* background: rgba(0,0,0,.7); */
   ${(props) => (props.openVideo ? "opacity: 1;" : "  opacity: 0;")}
   ${(props) =>
-    props.openVideo
-      ? "transform: scale(1);"
-      : "  transform: scale(0);"}
+    props.openVideo ? "transform: scale(1);" : "  transform: scale(0);"}
 
       .video-div {
     -webkit-transition: all 0.25s linear;
     -o-transition: all 0.25s linear;
     transition: all 0.25s linear;
     opacity: 1;
-
+    width: 100%;
     position: fixed;
-    max-width: 1000px;
-    max-height: 200px;
-    margin: 10% auto; /* Will not center vertically and won't work in IE6/7. */
-    left: 0;
-    right: 0;
+    max-width: 80rem;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     padding: 5%;
-    top: 0;
   }
   .icon-close {
     z-index: 999;
