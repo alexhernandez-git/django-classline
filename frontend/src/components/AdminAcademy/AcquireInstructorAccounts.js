@@ -15,11 +15,38 @@ const AcquireInstructorAccounts = (props) => {
       <div className="d-sm-flex justify-content-between align-items-center">
         <div>
           <span className="font-weight-bold h2 d-block mb-0">
-            ADQUIRIR CUENTAS DE INSTRUCTOR
+            ADQUIERE CUENTAS DE INSTRUCTORES
           </span>
-          <small>Consigue cuentas para tus instructores</small>
+          <small>Consigue cuentas para tus instructors</small>
         </div>
         <div className="d-block m-3 d-sm-none"></div>
+        <div className="d-sm-flex justify-content-center align-items-center flex-column font-weight-bold">
+          {/* <span>Tu Saldo</span> */}
+          {!level_pro ? (
+            current_accounts > 0 ? (
+              <>
+                <span className="h2 mb-0 font-weight-bold  d-block text-info">
+                  {current_accounts}
+                </span>
+                <span className="text-info">Cuentas</span>
+              </>
+            ) : (
+              <>
+                <span className="text-info">No tienes cuentas</span>
+              </>
+            )
+          ) : (
+            <>
+              <span className="h2 mb-0 font-weight-bold  d-block">
+                Nivel PRO
+              </span>
+              <span className="h2 mb-0 font-weight-bold  d-block text-info">
+                {current_accounts}
+              </span>
+              <span className="text-info">Cuentas</span>
+            </>
+          )}
+        </div>
       </div>
       <div className="my-5 mb-4">
         <CheckoutInstructorAccounts
