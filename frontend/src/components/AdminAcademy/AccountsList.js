@@ -26,7 +26,7 @@ import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-const AccountsList = ({ main }) => {
+const InstructorAccountsList = ({ main }) => {
   const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
@@ -219,4 +219,4 @@ const AccountsList = ({ main }) => {
   );
 };
 
-export default AccountsList;
+export default InstructorAccountsList;

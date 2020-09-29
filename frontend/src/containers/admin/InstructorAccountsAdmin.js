@@ -4,7 +4,7 @@ import { Main } from "src/components/ui/Main";
 import Filters from "src/components/Layout/Filters";
 import { Tab, Nav, Col, Row } from "react-bootstrap";
 import styled from "@emotion/styled";
-import AccountsList from "src/components/AdminAcademy/AccountsList";
+import InstructorAccountsList from "src/components/AdminAcademy/InstructorAccountsList";
 import AcquireAccounts from "src/components/AdminAcademy/AcquireAccounts";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPricing } from "src/redux/actions/pricing";
@@ -123,7 +123,7 @@ const InstructorAccountsAdmin = () => {
             <Col className="pl-3 pr-3 pb-5">
               <Tab.Content>
                 <Tab.Pane eventKey={0}>
-                  <AccountsList main={main} />
+                  <InstructorAccountsList main={main} />
                 </Tab.Pane>
                 <Tab.Pane eventKey={1}>
                   {!programReducer.isLoading && programReducer.program && (

@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import bootstrapPlugin from "@fullcalendar/bootstrap";
+import allLocales from "@fullcalendar/core/locales-all";
 import { Main } from "src/components/ui/Main";
-import Layout from "src/components/Layout/Layout";
 import Filters from "src/components/Layout/Filters";
-import { IconContext } from "react-icons";
-import { IoMdCheckmark } from "react-icons/io";
 import { Modal } from "react-bootstrap";
-import { IoMdClose } from "react-icons/io";
 import styled from "@emotion/styled";
 import { fetchMeetups } from "src/redux/actions/meetups";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { useParams, useLocation } from "react-router-dom";
-import allLocales from "@fullcalendar/core/locales-all";
 const meetups = () => {
   const { pathname } = useLocation();
 
@@ -74,29 +69,7 @@ const meetups = () => {
       setRecurringMeetups(newMeetups);
     }
   }, [meetupsReducer.isLoading, meetupsReducer.meetups]);
-  useEffect(() => {}, [recurringMeetups]);
-  const [state, setstate] = useState([
-    {
-      groupId: "blueEvents", // recurrent events in this group move together
-      daysOfWeek: ["4"],
-      startTime: "10:45:00",
-      endTime: "12:45:00",
-    },
-    {
-      daysOfWeek: ["3"], // these recurrent events move separately
-      startTime: "11:00:00",
-      endTime: "11:30:00",
-      color: "red",
-    },
-    {
-      id: "BoHPJDhlh6",
-      title: "Nuevo evento",
-      daysOfWeek: ["5"],
-      startTime: "08:00:00",
-      endTime: "05:00:00",
-      color: "#4caf50",
-    },
-  ]);
+
   return (
     <Main padding>
       <Filters title="Clases online" className="border-bottom" />
