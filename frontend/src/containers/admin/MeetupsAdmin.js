@@ -24,6 +24,7 @@ import {
   deleteMeetup,
 } from "src/redux/actions/meetups";
 import styled from "@emotion/styled";
+import moment from "moment";
 const meetups = () => {
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
@@ -57,7 +58,7 @@ const meetups = () => {
     description: "",
     videoconference: "",
     backgroundColor: "",
-    recurrent: true,
+    recurrent: false,
   });
 
   useEffect(() => {
@@ -76,13 +77,20 @@ const meetups = () => {
           args.videoconference != null
             ? args.videoconference
             : args.extendedProps.videoconference,
-        recurrent: true,
+        recurrent:
+          args.recurrent != null
+            ? args.recurrent
+            : args.extendedProps.recurrent,
       });
     }
   }, [args]);
+  useEffect(() => {
+    console.log(classData);
+  }, [classData]);
 
   const handleSave = (e) => {
     e.preventDefault();
+    console.log(classData);
     updateEvent(classData);
     handleClose();
   };
@@ -138,7 +146,7 @@ const meetups = () => {
       description: args.event.extendedProps.description,
       videoconference: args.event.extendedProps.videoconference,
       day_of_week: args.event.extendedProps.day_of_week,
-      recurrent: true,
+      recurrent: args.event.extendedProps.recurrent,
     });
   };
   const handleEventDrop = (args) => {
@@ -154,7 +162,7 @@ const meetups = () => {
       description: args.event.extendedProps.description,
       videoconference: args.event.extendedProps.videoconference,
       day_of_week: args.event.extendedProps.day_of_week,
-      recurrent: true,
+      recurrent: args.event.extendedProps.recurrent,
     });
   };
 
@@ -187,28 +195,59 @@ const meetups = () => {
       }
     });
   };
+  const [recurringMeetups, setRecurringMeetups] = useState([]);
+  useEffect(() => {
+    if (!meetupsReducer.isLoading && meetupsReducer.meetups) {
+      const newMeetups = meetupsReducer.meetups.map((meetup) => {
+        if (meetup.recurrent) {
+          const date = moment(meetup.start);
+          const dow = date.day();
+          return {
+            id: meetup.id,
+            title: meetup.title && meetup.title,
+            description: meetup.description && meetup.description,
+            daysOfWeek: [dow],
+            startTime: moment(meetup.start).format("HH:mm:ss"),
+            endTime: moment(meetup.end).format("HH:mm:ss"),
+            color: meetup.backgroundColor && meetup.backgroundColor,
+            videoconference: meetup.videoconference && meetup.videoconference,
+            recurrent: meetup.recurrent && meetup.recurrent,
+          };
+        } else {
+          return {
+            id: meetup.id,
+            title: meetup.title && meetup.title,
+            description: meetup.description && meetup.description,
+            start: meetup.start,
+            end: meetup.end,
+            color: meetup.backgroundColor && meetup.backgroundColor,
+            videoconference: meetup.videoconference && meetup.videoconference,
+            recurrent: meetup.recurrent && meetup.recurrent,
+          };
+        }
+      });
+      setRecurringMeetups(newMeetups);
+    }
+  }, [meetupsReducer.isLoading, meetupsReducer.meetups]);
+  useEffect(() => {
+    console.log(recurringMeetups);
+  }, [recurringMeetups]);
   return (
     <Main padding>
       <Filters title="Clases online" className="border-bottom" />
-      <ContainerCalendar className="container">
+      <ContainerCalendar className="container mt-2">
         <div className="calendar">
           <FullCalendar
             plugins={[timeGridPlugin, interactionPlugin]}
             locales={allLocales}
             view={"timeGridWeek"}
             defaultView={"timeGridWeek"}
-            header={{
-              left: "",
-              center: "",
-              right: "",
-            }}
-            defaultDate="2000-01-01"
             weekends={true}
             themeSystem="bootstrap"
             timeZone="local"
             locale="es"
             allDaySlot={false}
-            slotDuration="00:30:00"
+            slotDuration="00:15:00"
             // slotLabelInterval='00:60:00'
             slotLabelFormat={{
               hour: "numeric",
@@ -217,10 +256,10 @@ const meetups = () => {
               hour12: false,
               meridiem: "short",
             }}
-            minTime="06:00:00"
-            maxTime="24:00:00"
+            minTime="07:00:00"
+            maxTime="23:00:00"
             contentHeight="auto"
-            events={meetupsReducer.meetups}
+            events={recurringMeetups}
             eventBorderColor={"#fff"}
             eventConstraint="businessHours"
             longPressDelay={0}

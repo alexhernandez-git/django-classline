@@ -4,6 +4,8 @@ import withReactContent from "sweetalert2-react-content";
 import { Form } from "react-bootstrap";
 import { CirclePicker } from "react-color";
 import { AdminForm } from "src/components/ui/AdminForm";
+import Checkbox from "src/components/ui/Checkbox";
+import { CheckboxCustom } from "../ui/Checkbox";
 
 export default function EventForm(props) {
   const { classData, setClassData, args, setArgs, isEdit } = props;
@@ -11,9 +13,12 @@ export default function EventForm(props) {
 
   const handleChangeComplete = (color) => {
     if (isEdit) {
-      setClassData({ ...classData, backgroundColor: color.hex, recurrent: true });
+      setClassData({
+        ...classData,
+        backgroundColor: color.hex,
+      });
     } else {
-      setArgs({ ...args, backgroundColor: color.hex, recurrent: true });
+      setArgs({ ...args, backgroundColor: color.hex });
     }
   };
   return (
@@ -52,6 +57,20 @@ export default function EventForm(props) {
               : setArgs({ ...args, videoconference: e.target.value })
           }
         />
+        <label className="mt-4">Evento recurrente</label>
+
+        <CheckboxCustom className="mb-5">
+          <input
+            type="checkbox"
+            checked={classData.recurrent}
+            onChange={(e) => {
+              isEdit
+                ? setClassData({ ...classData, recurrent: e.target.checked })
+                : setArgs({ ...args, recurrent: e.target.checked });
+            }}
+          />
+          <span className="checkmark"></span>
+        </CheckboxCustom>
         <label className="mt-4">Color del evento</label>
         <CirclePicker
           color={classData.backgroundColor}

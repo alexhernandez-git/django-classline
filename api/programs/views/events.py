@@ -41,7 +41,7 @@ class EventViewSet(mixins.CreateModelMixin,
     def get_queryset(self):
         """Restrict list to public-only."""
 
-        queryset = Event.objects.filter(program=self.program, recurrent=True)
+        queryset = Event.objects.filter(program=self.program)
 
         return queryset
 

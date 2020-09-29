@@ -44,22 +44,36 @@ const meetups = () => {
   useEffect(() => {
     if (!meetupsReducer.isLoading && meetupsReducer.meetups) {
       const newMeetups = meetupsReducer.meetups.map((meetup) => {
-        const date = moment(meetup.start);
-        const dow = date.day();
-        return {
-          id: meetup.id,
-          title: meetup.title && meetup.title,
-          description: meetup.description && meetup.description,
-          daysOfWeek: [dow],
-          startTime: moment(meetup.start).format("HH:mm:ss"),
-          endTime: moment(meetup.end).format("HH:mm:ss"),
-          color: meetup.backgroundColor && meetup.backgroundColor,
-          videoconference: meetup.videoconference && meetup.videoconference,
-        };
+        if (meetup.recurrent) {
+          const date = moment(meetup.start);
+          const dow = date.day();
+          return {
+            id: meetup.id,
+            title: meetup.title && meetup.title,
+            description: meetup.description && meetup.description,
+            daysOfWeek: [dow],
+            startTime: moment(meetup.start).format("HH:mm:ss"),
+            endTime: moment(meetup.end).format("HH:mm:ss"),
+            color: meetup.backgroundColor && meetup.backgroundColor,
+            videoconference: meetup.videoconference && meetup.videoconference,
+            recurrent: meetup.recurrent && meetup.recurrent,
+          };
+        } else {
+          return {
+            id: meetup.id,
+            title: meetup.title && meetup.title,
+            description: meetup.description && meetup.description,
+            start: meetup.start,
+            end: meetup.end,
+            color: meetup.backgroundColor && meetup.backgroundColor,
+            videoconference: meetup.videoconference && meetup.videoconference,
+            recurrent: meetup.recurrent && meetup.recurrent,
+          };
+        }
       });
       setRecurringMeetups(newMeetups);
     }
-  }, [meetupsReducer.isLoading]);
+  }, [meetupsReducer.isLoading, meetupsReducer.meetups]);
   useEffect(() => {}, [recurringMeetups]);
   const [state, setstate] = useState([
     {
@@ -86,18 +100,17 @@ const meetups = () => {
   return (
     <Main padding>
       <Filters title="Clases online" className="border-bottom" />
-      <ContainerCalendar className="container">
+      <ContainerCalendar className="container mt-2">
         <div className="calendar">
           <FullCalendar
             view={"timeGridWeek"}
             defaultView={"timeGridWeek"}
             plugins={[timeGridPlugin]}
-            header={{
-              left: "",
-              center: "",
-              right: "",
-            }}
-            defaultDate="2000-01-01"
+            // header={{
+            //   left: "",
+            //   center: "",
+            //   right: "",
+            // }}
             weekends={true}
             themeSystem="bootstrap"
             timeZone="local"
@@ -113,8 +126,8 @@ const meetups = () => {
               hour12: false,
               meridiem: "short",
             }}
-            minTime="06:00:00"
-            maxTime="24:00:00"
+            minTime="07:00:00"
+            maxTime="23:00:00"
             contentHeight="auto"
             events={recurringMeetups}
             eventBorderColor={"#fff"}
