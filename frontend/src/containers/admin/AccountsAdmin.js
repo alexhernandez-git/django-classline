@@ -29,9 +29,7 @@ const Students = () => {
   const handleToggleInfoOpen = () => {
     setInfoOpen(!infoOpen);
   };
-  useEffect(() => {
-    console.log(areDiscount);
-  }, [areDiscount]);
+
   // useEffect(() => {
   //   if (!programReducer.isLoading) {
   //     const dispatchFetchPricing = () => dispatch(fetchPricing());

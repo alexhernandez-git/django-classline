@@ -43,6 +43,7 @@ import PlaylistAcademy from "../containers/PlaylistAcademy";
 import SharedDocsAcademy from "../containers/SharedDocsAcademy";
 import DocsAdmin from "../containers/admin/DocsAdmin";
 import PostAcademy from "../containers/PostAcademy";
+import InstructorAccountsAdmin from "../containers/admin/InstructorAccountsAdmin";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -230,6 +231,11 @@ const Academy = () => {
                   exact
                   path="/academy/:program/admin/accounts/:search?"
                   component={AccountsAdmin}
+                />
+                <Route
+                  exact
+                  path="/academy/:program/admin/instructors/:search?"
+                  component={InstructorAccountsAdmin}
                 />
                 <Route
                   exact

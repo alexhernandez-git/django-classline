@@ -9,6 +9,7 @@ import {
   FaArrowLeft,
   FaListUl,
   FaVideo,
+  FaChalkboardTeacher,
 } from "react-icons/fa";
 import { BsFillCollectionPlayFill, BsFillChatDotsFill } from "react-icons/bs";
 import { MdFolderShared, MdFolder, MdForum } from "react-icons/md";
@@ -39,6 +40,18 @@ const Sidebar = (props) => {
                 <FaCog />
               </IconContext.Provider>{" "}
               Academia
+            </SecctionLink>
+          </Link>
+          <Link to={`/academy/${program}/admin/instructors`}>
+            <SecctionLink active={/\/instructors\/?$/.test(pathname)}>
+              <IconContext.Provider
+                value={{
+                  className: "sidebar-icon",
+                }}
+              >
+                <FaChalkboardTeacher />
+              </IconContext.Provider>{" "}
+              Instructores
             </SecctionLink>
           </Link>
           <Link to={`/academy/${program}/admin/accounts`}>

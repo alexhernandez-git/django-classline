@@ -308,7 +308,8 @@ class ProgramViewSet(mixins.CreateModelMixin,
             to_be_cancelled=False,
             cancelled=False,
             payment_issue=False,
-            current_period_end=subscription.current_period_end
+            current_period_end=subscription.current_period_end,
+            is_user_to_program_subscription=True
         )
         new_subscription.save()
         profile.subscriptions.add(
@@ -719,7 +720,8 @@ class ProgramViewSet(mixins.CreateModelMixin,
                     to_be_cancelled=False,
                     cancelled=False,
                     payment_issue=False,
-                    current_period_end=subscription.current_period_end
+                    current_period_end=subscription.current_period_end,
+                    is_student_accounts_subscription=True
                 )
                 teacher.subscriptions.add(sub)
                 teacher.save()

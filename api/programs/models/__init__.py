@@ -16,3 +16,5 @@ from .files import File
 from .folders import Folder
 from .posts import Post
 from .comments import Comment
+from .instructors import Instructor
+from .allowed_programs import AllowedProgram

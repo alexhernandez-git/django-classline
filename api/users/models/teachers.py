@@ -20,7 +20,13 @@ class Teacher(CLineModel):
     discount = models.OneToOneField(
         'users.Coupon', related_name='teacher_coupons', on_delete=models.SET_NULL, null=True, blank=True)
     subscriptions = models.ManyToManyField(
-        'users.Subscription', related_name='instructor_subscriptions', blank=True)
+        'users.Subscription', related_name='create_accounts_subscription', blank=True)
+
+    instructors = models.ManyToManyField(
+        'programs.Instructor', related_name='instructors_programs', blank=True)
+
+    current_accounts = models.PositiveIntegerField(default=0)
+    accounts_to_create_left = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         """Return price."""

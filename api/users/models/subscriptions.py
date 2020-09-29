@@ -22,12 +22,23 @@ class Subscription(CLineModel):
     current_period_end = models.IntegerField(blank=True, default=0)
     user = models.ForeignKey(
         'users.User', on_delete=models.SET_NULL, null=True, blank=True)
+
     program = models.ForeignKey(
         'programs.Program', on_delete=models.SET_NULL, null=True, blank=True)
+
     product = models.CharField(max_length=100, null=True, blank=True)
-    active = models.BooleanField(default=True)
+
     payments = models.ManyToManyField(
         'users.Payment', related_name='subscription_payments', blank=True)
+
+    admin = models.ForeignKey(
+        'users.User', related_name="admin_user", on_delete=models.SET_NULL, null=True, blank=True)
+
+    active = models.BooleanField(default=True)
+
+    is_user_to_program_subscription = models.BooleanField(default=False)
+    is_student_accounts_subscription = models.BooleanField(default=False)
+    is_instructor_accounts_subscription = models.BooleanField(default=False)
 
     def __str__(self):
         """Return description."""
