@@ -6,7 +6,8 @@ import CheckoutInstructorAccounts from "./CheckoutInstructorAccounts";
 
 const AcquireInstructorAccounts = (props) => {
   const programReducer = useSelector((state) => state.programReducer);
-  const { level_adquired, current_accounts, level_pro } = props.program;
+  const authReducer = useSelector((state) => state.authReducer);
+  const { current_accounts } = authReducer.user.teacher;
   const { areDiscount, fetchDiscount } = props.useCheckAreDiscount;
   const { handleAddAcquireAccounts, handleCancelAcquireAccounts } = props;
 
@@ -22,28 +23,16 @@ const AcquireInstructorAccounts = (props) => {
         <div className="d-block m-3 d-sm-none"></div>
         <div className="d-sm-flex justify-content-center align-items-center flex-column font-weight-bold">
           {/* <span>Tu Saldo</span> */}
-          {!level_pro ? (
-            current_accounts > 0 ? (
-              <>
-                <span className="h2 mb-0 font-weight-bold  d-block text-info">
-                  {current_accounts}
-                </span>
-                <span className="text-info">Cuentas</span>
-              </>
-            ) : (
-              <>
-                <span className="text-info">No tienes cuentas</span>
-              </>
-            )
-          ) : (
+          {current_accounts > 0 ? (
             <>
-              <span className="h2 mb-0 font-weight-bold  d-block">
-                Nivel PRO
-              </span>
               <span className="h2 mb-0 font-weight-bold  d-block text-info">
                 {current_accounts}
               </span>
               <span className="text-info">Cuentas</span>
+            </>
+          ) : (
+            <>
+              <span className="text-info">No tienes cuentas</span>
             </>
           )}
         </div>
@@ -57,33 +46,31 @@ const AcquireInstructorAccounts = (props) => {
           useCheckAreDiscount={{ areDiscount, fetchDiscount }}
         />
       </div>
-      {programReducer.cancel_accounts_error &&
-        programReducer.cancel_accounts_error.data.non_field_errors &&
-        programReducer.cancel_accounts_error.data.non_field_errors.map(
+      {authReducer.cancel_accounts_error &&
+        authReducer.cancel_accounts_error.data.non_field_errors &&
+        authReducer.cancel_accounts_error.data.non_field_errors.map((error) => (
+          <span className="d-block text-red text-center">{error}</span>
+        ))}
+      {authReducer.adquire_accounts_error &&
+        authReducer.adquire_accounts_error.data.non_field_errors &&
+        authReducer.adquire_accounts_error.data.non_field_errors.map(
           (error) => (
             <span className="d-block text-red text-center">{error}</span>
           )
         )}
-      {programReducer.adquire_accounts_error &&
-        programReducer.adquire_accounts_error.data.non_field_errors &&
-        programReducer.adquire_accounts_error.data.non_field_errors.map(
-          (error) => (
-            <span className="d-block text-red text-center">{error}</span>
-          )
-        )}
-      {programReducer.adquire_accounts_error &&
-        programReducer.adquire_accounts_error.data.message && (
+      {authReducer.adquire_accounts_error &&
+        authReducer.adquire_accounts_error.data.message && (
           <span className="d-block text-red text-center">
-            {programReducer.adquire_accounts_error.data.message}
+            {authReducer.adquire_accounts_error.data.message}
           </span>
         )}
-      {programReducer.cancel_accounts_error &&
-        programReducer.cancel_accounts_error.data.message && (
+      {authReducer.cancel_accounts_error &&
+        authReducer.cancel_accounts_error.data.message && (
           <span className="d-block text-red text-center">
-            {programReducer.cancel_accounts_error.data.message}
+            {authReducer.cancel_accounts_error.data.message}
           </span>
         )}
-      {programReducer.acquiring_accounts && (
+      {authReducer.acquiring_accounts && (
         <div className="d-flex justify-content-center">
           <span>...Adquiriendo cuentas...</span>
         </div>

@@ -25,8 +25,12 @@ class Teacher(CLineModel):
     instructors = models.ManyToManyField(
         'programs.Instructor', related_name='instructors_programs', blank=True)
 
+    # Instructor Accounts
     current_accounts = models.PositiveIntegerField(default=0)
     accounts_to_create_left = models.PositiveIntegerField(default=0)
+    currency = models.CharField(max_length=3, null=True, blank=True)
+    accounts_price = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0, null=True, blank=True)
 
     def __str__(self):
         """Return price."""

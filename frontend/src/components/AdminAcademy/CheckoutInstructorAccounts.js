@@ -21,18 +21,14 @@ import {
 } from "@stripe/react-stripe-js";
 import { AdminForm } from "../ui/AdminForm";
 import { useDispatch, useSelector } from "react-redux";
-import { addAcquireAccounts } from "../../redux/actions/program";
+import { addAcquireAccounts } from "../../redux/actions/auth";
 import axios from "axios";
 
 const CheckoutInstructorAccounts = (props) => {
   const authReducer = useSelector((state) => state.authReducer);
 
   const programReducer = useSelector((state) => state.programReducer);
-  const {
-    level_adquired,
-    current_accounts,
-    level_pro,
-  } = programReducer.program;
+  const { current_accounts } = authReducer.user.teacher;
   const { areDiscount, fetchDiscount } = props.useCheckAreDiscount;
   const { handleAddAcquireAccounts, handleCancelAcquireAccounts } = props;
   const dispatch = useDispatch();
@@ -46,22 +42,18 @@ const CheckoutInstructorAccounts = (props) => {
   const [showPro, setShowPro] = useState(false);
   const [pricingPro, setPricingPro] = useState({
     // Prod
-    id: "prod_Hs4SzrmKsWWX1y",
-    price_id: "price_1HIKJQIgGIa3w9CpFZZl6nJm",
-    level: 0,
-    accounts: level_pro ? current_accounts : 1,
+    id: "prod_I6x0S58lBtNNFL",
+    price_id: "price_1HWj6lIgGIa3w9CpsR0ycgae",
+    accounts: current_accounts ? current_accounts : 1,
     description: "Accounts Volume Pricing",
-    level_pro: true,
     price: null,
     currency: "EUR",
     // ------------------------------------------------------
     // Dev
-    // id: "prod_HqaU1ykblf4gX6",
-    // price_id: "price_1HGtJaIgGIa3w9Cpd7Q2ObG4",
-    // level: 0,
-    // accounts: level_pro ? current_accounts : 75,
+    // id: "prod_I6x0tMIlfJAOvQ",
+    // price_id: "price_1HWj6eIgGIa3w9Cp8qBV72yB",
+    // accounts: current_accounts ? current_accounts : 1,
     // description: "Accounts Volume Pricing",
-    // level_pro: true,
     // price: null,
     // currency: "EUR",
   });
@@ -197,106 +189,28 @@ const CheckoutInstructorAccounts = (props) => {
     } else {
       console.log("[PaymentMethod]", paymentMethod);
       console.log("[pricingSelected]", pricingSelected);
-      console.log("[pricingPro]", pricingPro);
       const paymentMethodId = paymentMethod.id;
       setCouponText("");
 
-      if (pricingSelected.level_pro) {
-        dispatch(addAcquireAccounts(pricingPro, paymentMethodId, promoCode));
-        handleClosePro();
-      } else {
-        dispatch(
-          addAcquireAccounts(pricingSelected, paymentMethodId, promoCode)
-        );
-        handleClose();
-      }
+      dispatch(addAcquireAccounts(pricingPro, paymentMethodId, promoCode));
+      handleClosePro();
     }
   };
+
   const handleSubscribeSaved = (payment_method) => {
     const paymentMethodId = payment_method;
     if (numErrors.maxAccount) {
       console.log("[error]", numErrors.maxAccount);
-    } else if (pricingSelected.level_pro) {
+    } else {
       console.log("promocode pro", promoCode);
       setCouponText("");
 
       dispatch(addAcquireAccounts(pricingPro, paymentMethodId, promoCode));
       handleClosePro();
-    } else {
-      setCouponText("");
-
-      console.log("promocode normal", promoCode);
-      dispatch(addAcquireAccounts(pricingSelected, paymentMethodId, promoCode));
-      handleClose();
     }
   };
   const [newCard, setNewCard] = useState(false);
-  // Dev
-  // const [pricingEur, setPricingEur] = useState([
-  //   {
-  //     id: "prod_HqrMoS5S5j3Eab",
-  //     price_id: "price_1HH9eAIgGIa3w9CpaGCfCDTF",
-  //     level: 1,
-  //     accounts: 10,
-  //     description: "10 Academy Accounts",
-  //     level_pro: false,
-  //     price: 19.99,
-  //     currency: "EUR",
-  //   },
-  //   {
-  //     id: "prod_HqrNx2F5IFtxc4",
-  //     price_id: "price_1HH9f6IgGIa3w9Cpfn5kT24j",
-  //     level: 2,
-  //     accounts: 25,
-  //     description: "20 Academy Accounts",
-  //     level_pro: false,
-  //     price: 49.99,
-  //     currency: "EUR",
-  //   },
-  //   {
-  //     id: "prod_HqrPff8wCoJawR",
-  //     price_id: "price_1HH9gHIgGIa3w9CpFxKr6Ix5",
-  //     level: 3,
-  //     accounts: 50,
-  //     level_pro: false,
-  //     description: "50 Academy Accounts",
-  //     price: 99.99,
-  //     currency: "EUR",
-  //   },
-  // ]);
-  // Prod
-  const [pricingEur, setPricingEur] = useState([
-    {
-      id: "prod_Hs4Rx29VRZNKDX",
-      price_id: "price_1HIKJ5IgGIa3w9Cpjm1QHRGU",
-      level: 1,
-      accounts: 10,
-      description: "10 Academy Accounts",
-      level_pro: false,
-      price: 19.99,
-      currency: "EUR",
-    },
-    {
-      id: "prod_Hs4Ry1Jg0W4obe",
-      price_id: "price_1HIKJ1IgGIa3w9CpfenoV54Y",
-      level: 2,
-      accounts: 25,
-      description: "20 Academy Accounts",
-      level_pro: false,
-      price: 49.99,
-      currency: "EUR",
-    },
-    {
-      id: "prod_Hs4Ulgt6V6c433",
-      price_id: "price_1HIKLkIgGIa3w9CpBmOw7sSD",
-      level: 3,
-      accounts: 50,
-      level_pro: false,
-      description: "50 Academy Accounts",
-      price: 99.99,
-      currency: "EUR",
-    },
-  ]);
+
   const [promoCode, setPromoCode] = useState(null);
 
   const [couponText, setCouponText] = useState("");
@@ -379,13 +293,13 @@ const CheckoutInstructorAccounts = (props) => {
               >
                 <IoIosPeople />
               </IconContext.Provider>
-              {level_pro ? (
+              {current_accounts ? (
                 <>
                   <ButtonCustom
                     className="w-100 mb-2"
                     onClick={() => handleShowPro(pricingPro)}
                   >
-                    Cambiar plan PRO
+                    Cambiar plan
                   </ButtonCustom>
                   <ButtonCustomError
                     className="w-100"

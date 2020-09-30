@@ -11,7 +11,7 @@ import { fetchPricing } from "src/redux/actions/pricing";
 import {
   addAcquireAccounts,
   cancelAcquireAccounts,
-} from "src/redux/actions/program";
+} from "src/redux/actions/auth";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { IoIosInformationCircleOutline } from "react-icons/io";

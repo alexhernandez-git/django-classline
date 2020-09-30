@@ -25,6 +25,12 @@ import {
   STRIPE_CONNECTED_FAIL,
   ADD_ACCOUNT,
   SUBSTRACT_ACCOUNT,
+  ACQUIRE_INSTRUCTOR_ACCOUNTS,
+  ACQUIRE_INSTRUCTOR_ACCOUNTS_SUCCESS,
+  ACQUIRE_INSTRUCTOR_ACCOUNTS_FAIL,
+  CANECEL_INSTRUCTOR_ACCOUNTS,
+  CANECEL_INSTRUCTOR_ACCOUNTS_SUCCESS,
+  CANECEL_INSTRUCTOR_ACCOUNTS_FAIL,
 } from "../types";
 const initialState = {
   auth_token: localStorage.getItem("auth_token"),
@@ -43,6 +49,12 @@ const initialState = {
   rating_create_error: null,
   stripe_connecting: false,
   stripe_connecting_error: null,
+  acquiring_accounts: false,
+  adquire_accounts: null,
+  adquire_accounts_error: null,
+  canceling_accounts: false,
+  cancel_accounts: null,
+  cancel_accounts_error: null,
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -240,6 +252,45 @@ export default function (state = initialState, action) {
             accounts_to_create_left: (state.user.teacher.accounts_to_create_left -= 1),
           },
         },
+      };
+    case ACQUIRE_INSTRUCTOR_ACCOUNTS:
+      return {
+        ...state,
+        acquiring_accounts: true,
+        adquire_accounts: action.payload,
+      };
+    case ACQUIRE_INSTRUCTOR_ACCOUNTS_SUCCESS:
+      return {
+        ...state,
+        user: action.payload,
+        adquire_accounts: null,
+        acquiring_accounts: false,
+        adquire_accounts_error: null,
+      };
+    case ACQUIRE_INSTRUCTOR_ACCOUNTS_FAIL:
+      return {
+        ...state,
+        adquire_accounts: null,
+        acquiring_accounts: false,
+
+        adquire_accounts_error: action.payload,
+      };
+    case CANECEL_INSTRUCTOR_ACCOUNTS:
+      return {
+        ...state,
+        canceling_accounts: true,
+      };
+    case CANECEL_INSTRUCTOR_ACCOUNTS_SUCCESS:
+      return {
+        ...state,
+        user: action.payload,
+        cancel_accounts_error: null,
+      };
+    case CANECEL_INSTRUCTOR_ACCOUNTS_FAIL:
+      return {
+        ...state,
+        cancel_accounts_error: action.payload,
+        canceling_accounts: false,
       };
     default:
       return state;

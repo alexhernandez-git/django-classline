@@ -19,6 +19,12 @@ import {
   STRIPE_CONNECTED,
   STRIPE_CONNECTED_SUCCESS,
   STRIPE_CONNECTED_FAIL,
+  ACQUIRE_INSTRUCTOR_ACCOUNTS,
+  ACQUIRE_INSTRUCTOR_ACCOUNTS_SUCCESS,
+  ACQUIRE_INSTRUCTOR_ACCOUNTS_FAIL,
+  CANECEL_INSTRUCTOR_ACCOUNTS,
+  CANECEL_INSTRUCTOR_ACCOUNTS_SUCCESS,
+  CANECEL_INSTRUCTOR_ACCOUNTS_FAIL,
 } from "../types";
 
 // SET TOKEN
@@ -163,6 +169,85 @@ export const connectStripe = (authCode) => (dispatch, getState) => {
     .catch((err) => {
       dispatch({
         type: STRIPE_CONNECTED_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const addAcquireAccounts = (
+  accounts_acquired,
+  paymentMethodId = null,
+  promotion_code = null
+) => (dispatch, getState) => {
+  const data = {
+    accounts_acquired: accounts_acquired,
+    payment_method_id: paymentMethodId,
+  };
+  if (promotion_code) {
+    if (promotion_code.is_discount) {
+      data.discount = promotion_code;
+    } else {
+      data.promotion_code = promotion_code;
+    }
+  }
+  dispatch({ type: ACQUIRE_INSTRUCTOR_ACCOUNTS, payload: accounts_acquired });
+
+  axios
+    .patch(
+      `/api/programs/${
+        getState().programReducer.program.code
+      }/add_instructor_accounts/`,
+      data,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log(res.data);
+
+      dispatch({
+        type: ACQUIRE_INSTRUCTOR_ACCOUNTS_SUCCESS,
+        payload: res.data,
+      });
+
+      Swal.fire({
+        title: "Cuentas adquiridas!",
+        icon: "success",
+        confirmButtonText: "Ok",
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: ACQUIRE_INSTRUCTOR_ACCOUNTS_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const cancelAcquireAccounts = () => (dispatch, getState) => {
+  dispatch({ type: CANECEL_INSTRUCTOR_ACCOUNTS });
+  axios
+    .patch(
+      `/api/programs/${
+        getState().programReducer.program.code
+      }/cancel_instructor_accounts/`,
+      {},
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log("canceldiscountresdata", res.data);
+      dispatch({
+        type: CANECEL_INSTRUCTOR_ACCOUNTS_SUCCESS,
+        payload: res.data,
+      });
+
+      Swal.fire({
+        title: "Cuentas canceladas",
+        icon: "success",
+        confirmButtonText: "Ok",
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: CANECEL_INSTRUCTOR_ACCOUNTS_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

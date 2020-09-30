@@ -8,7 +8,10 @@ from api.users.serializers import (
     UserWithoutTeacherModelSerializer,
     AccountsSubscriptionSignUpSerializer,
     AccountsSubscriptionModelSerializer,
-    CouponModelSerializer
+    CouponModelSerializer,
+    AddInstructorAccountsSerializer,
+    CancelInstructorAccountsSerializer,
+    UserModelSerializer
 )
 from api.users.serializers.subscriptions import(
     SubscriptionSignUpSerializer
@@ -800,6 +803,301 @@ class ProgramViewSet(mixins.CreateModelMixin,
 
         return Response(data, status=status.HTTP_200_OK)
 
+    def destroy(self, request, *args, **kwargs):
+        program = self.get_object()
+        students = program.students.all().count()
+        if students > 0:
+            return Response(data={'message': "No puedes eliminar una academia con alumnos"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        self.perform_destroy(program)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=True, methods=['patch'])
+    def add_instructor_accounts(self, request, *args, **kwargs):
+        program = self.get_object()
+        user = request.user
+        profile = user.profile
+        teacher = user.teacher
+        product = request.data['accounts_acquired']
+        promotion_code = None
+        if "promotion_code" in request.data:
+            promotion_code = request.data['promotion_code']
+
+        discount = None
+        if "discount" in request.data:
+            discount = request.data['discount']
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
+        customer_id = ''
+        # Validation
+
+        if product == None:
+            return Response({'message': 'No hay ningun pricing'}, status=status.HTTP_400_BAD_REQUEST)
+
+        accounts_already_created = teacher.instructors.all().count()
+
+        if accounts_already_created > int(product['accounts']):
+            return Response({'message': 'Tienes más de {} cuentas creadas'.format(product['accounts'])}, status=status.HTTP_400_BAD_REQUEST)
+        # End validation
+
+        try:
+            if discount and not teacher.discount:
+                discount = {
+                    'coupon_id': "50_OFF",
+                    'percent_off': 50,
+                    'duration': "forever"
+                }
+                teacher.discount = Coupon.objects.create(
+                    **discount)
+                teacher.save()
+
+            # payment_method = stripe.PaymentMethod.retrieve(
+            # request.data['payment_method_id'],
+            # )
+            if profile.stripe_customer_id == None or profile.stripe_customer_id == '':
+                newCustomer = stripe.Customer.create(
+                    description="claCustomer_"+user.first_name+'_'+user.last_name,
+                    name=user.first_name+' '+user.last_name,
+                    email=user.email,
+                    payment_method=request.data.get('payment_method_id'),
+                    invoice_settings={
+                        "default_payment_method": request.data.get('payment_method_id')
+                    }
+                )
+                # if User.objects.filter(profile__stripe_customer_id=, subscription_type="accounts-subscription", ).exists():
+
+                #     pass
+                stripe.PaymentMethod.attach(
+                    request.data.get('payment_method_id'),
+                    customer=newCustomer.id,
+                )
+                customer_id = newCustomer.id
+                profile.stripe_customer_id = customer_id
+                serializer = ProfileModelSerializer(
+                    profile,
+                    data=request.data,
+                )
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+            else:
+                customer_id = profile.stripe_customer_id
+                stripe.PaymentMethod.attach(
+                    request.data.get('payment_method_id'),
+                    customer=customer_id,
+                )
+                stripe.Customer.modify(
+                    customer_id,
+                    invoice_settings={
+                        "default_payment_method": request.data.get('payment_method_id')
+                    },
+                )
+
+            if teacher.subscriptions.filter(user=request.user, is_instructor_accounts_subscription=True, active=True).exists():
+                accounts_subscription = teacher.subscriptions.filter(
+                    user=request.user, is_instructor_accounts_subscription=True, active=True)[0]
+                subscription = stripe.Subscription.retrieve(
+                    accounts_subscription.subscription_id)
+                # upcoming_invoice = stripe.Invoice.upcoming(customer=customer_id)
+                # import pdb; pdb.set_trace()
+                # stripe.InvoiceItem.delete(
+                #     upcoming_invoice['lines']['data'][0].invoice_item,
+                # )
+
+                subscription_to_modify = stripe.Subscription.retrieve(
+                    subscription.id)
+                if subscription_to_modify['discount']:
+                    stripe.Subscription.delete_discount(subscription.id)
+
+                if teacher.discount:
+                    subscription_modified = stripe.Subscription.modify(
+                        subscription.id,
+                        cancel_at_period_end=False,
+                        prorate=False,
+                        items=[
+                            {
+                                'id': subscription['items']['data'][0].id,
+                                "price": request.data['accounts_acquired']['price_id'],
+                                "quantity":request.data['accounts_acquired']['accounts']
+                            },
+                        ],
+
+                        coupon=teacher.discount.coupon_id
+                    )
+                elif promotion_code:
+                    subscription_modified = stripe.Subscription.modify(
+                        subscription.id,
+                        cancel_at_period_end=False,
+                        prorate=False,
+                        items=[
+                            {
+                                'id': subscription['items']['data'][0].id,
+                                "price": request.data['accounts_acquired']['price_id'],
+                                "quantity":request.data['accounts_acquired']['accounts']
+                            },
+                        ],
+                        promotion_code=promotion_code["promotion_code_id"]
+                    )
+                else:
+                    subscription_modified = stripe.Subscription.modify(
+                        subscription.id,
+                        cancel_at_period_end=False,
+                        prorate=False,
+                        items=[
+                            {
+                                'id': subscription['items']['data'][0].id,
+                                "price": request.data['accounts_acquired']['price_id'],
+                                "quantity":request.data['accounts_acquired']['accounts']
+                            },
+                        ],
+
+                        promotion_code=None
+                    )
+
+                teacher_subscription = Subscription.objects.get(
+                    subscription_id=subscription.id, active=True)
+                teacher_subscription.subscription_id = subscription.id
+                teacher_subscription.user = user
+                teacher_subscription.product = product['id']
+                teacher_subscription.to_be_cancelled = False
+                teacher_subscription.payment_issue = False
+                teacher_subscription.current_period_end = subscription.current_period_end
+                teacher_subscription.is_instructor_accounts_subscription = True
+                teacher_subscription.save()
+                teacher.save()
+
+            else:
+
+                # Create the subscription
+
+                if teacher.discount:
+
+                    subscription = stripe.Subscription.create(
+                        customer=customer_id,
+                        items=[
+                            {
+                                "price": request.data['accounts_acquired']['price_id'],
+                                "quantity":request.data['accounts_acquired']['accounts']
+                            },
+                        ],
+                        coupon=teacher.discount.coupon_id,
+
+                    )
+
+                elif promotion_code:
+                    subscription = stripe.Subscription.create(
+                        customer=customer_id,
+                        items=[
+                            {
+                                "price": request.data['accounts_acquired']['price_id'],
+                                "quantity":request.data['accounts_acquired']['accounts']
+                            },
+                        ],
+                        promotion_code=promotion_code["promotion_code_id"],
+
+                    )
+                else:
+                    subscription = stripe.Subscription.create(
+                        customer=customer_id,
+                        items=[
+                            {
+                                "price": request.data['accounts_acquired']['price_id'],
+                                "quantity":request.data['accounts_acquired']['accounts']
+                            },
+                        ],
+                    )
+
+                sub = Subscription.objects.create(
+                    subscription_id=subscription.id,
+                    user=user,
+                    product=product['id'],
+                    to_be_cancelled=False,
+                    cancelled=False,
+                    payment_issue=False,
+                    current_period_end=subscription.current_period_end,
+                    is_instructor_accounts_subscription=True
+                )
+                teacher.subscriptions.add(sub)
+                teacher.save()
+
+        except Exception as e:
+            print(str(e))
+            return Response({'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer_class = self.get_serializer_class()
+        partial = request.method == 'PATCH'
+        # Cambiar a Add Instructor Accounts
+        serializer = AddInstructorAccountsSerializer(
+            user,
+            data=request.data,
+            context={
+                'accounts_acquired': request.data['accounts_acquired'],
+            },
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        data = UserModelSerializer(user, many=False).data
+        payment_methods = stripe.PaymentMethod.list(
+            customer=customer_id,
+            type="card"
+        )
+        data['profile']['payment_methods'] = payment_methods.data
+        data['profile']['stripe_customer_id'] = customer_id
+
+        return Response(data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['patch'])
+    def cancel_instructor_accounts(self, request, *args, **kwargs):
+
+        user = request.user
+        teacher = user.teacher
+
+        program = self.get_object()
+        if teacher.instructors.count() > 0:
+            return Response({'message': 'Borra tus cuentas creadas para cancelar'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer_class = self.get_serializer_class()
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
+        partial = request.method == 'PATCH'
+
+        serializer = CancelInstructorAccountsSerializer(
+            user,
+            data=request.data,
+            context={'user': user},
+            partial=partial
+        )
+        # if teacher.discount:
+        #     teacher.discount.delete()
+        serializer.is_valid(raise_exception=True)
+        if teacher.subscriptions.filter(user=request.user, is_instructor_accounts_subscription=True, active=True).exists():
+            try:
+                accounts_subscription = teacher.subscriptions.filter(
+                    user=request.user, is_instructor_accounts_subscription=True, active=True)[0]
+                subscription_deleted = stripe.Subscription.delete(
+                    accounts_subscription.subscription_id)
+                accounts_subscription.active = False
+                accounts_subscription.save()
+
+            except Exception as e:
+                return Response({'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = serializer.save()
+        data = UserModelSerializer(user, many=False).data
+        payment_methods = stripe.PaymentMethod.list(
+            customer=data['profile']['stripe_customer_id'],
+            type="card"
+        )
+        data['profile']['payment_methods'] = payment_methods.data
+
+        return Response(data, status=status.HTTP_200_OK)
+
     @action(detail=False, methods=['get'])
     def are_discount(self, request, *args, **kwargs):
         if Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 10:
@@ -855,13 +1153,3 @@ class ProgramViewSet(mixins.CreateModelMixin,
 
         data = serializer_class(program, many=False).data
         return Response(data, status=status.HTTP_201_CREATED)
-
-    def destroy(self, request, *args, **kwargs):
-        program = self.get_object()
-        students = program.students.all().count()
-        if students > 0:
-            return Response(data={'message': "No puedes eliminar una academia con alumnos"},
-                            status=status.HTTP_400_BAD_REQUEST)
-        self.perform_destroy(program)
-
-        return Response(status=status.HTTP_204_NO_CONTENT)
