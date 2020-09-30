@@ -293,6 +293,19 @@ const CheckoutInstructorAccounts = (props) => {
               >
                 <IoIosPeople />
               </IconContext.Provider>
+              <div className="mb-4 d-flex align-items-center flex-column">
+                <span className="font-weight-bold text-center ">
+                  {accountPrice}
+                </span>
+                {discount && (
+                  <small
+                    style={{ color: "green" }}
+                    className="text-center d-block align-self-center"
+                  >
+                    {discount}
+                  </small>
+                )}
+              </div>
               {current_accounts ? (
                 <>
                   <ButtonCustom
