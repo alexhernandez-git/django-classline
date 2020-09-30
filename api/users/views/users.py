@@ -35,7 +35,7 @@ from api.users.serializers import (
     DemoRequestSerializer
 )
 from django.core.exceptions import ObjectDoesNotExist
-from api.programs.serializers import AccountCreatedModelSerializer, ProgramModifyModelSerializer
+from api.programs.serializers import AccountCreatedModelSerializer, ProgramModifyModelSerializer, InstructorModelSerializer
 from rest_framework import status, viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.views import APIView
@@ -306,7 +306,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         request.data['username'] = request.data['email']
 
         serializer = UserSignUpSerializer(
-            data=request.data, context={'are_program': False, 'create_commercial': False, 'create_user_by_commercial': False})
+            data=request.data, context={'are_program': False, 'create_instructor': False, 'create_commercial': False, 'create_user_by_commercial': False})
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         data = UserModelSerializer(user).data
@@ -320,7 +320,11 @@ class UserViewSet(mixins.RetrieveModelMixin,
         request.data['first_password'] = request.data['password']
         program = get_object_or_404(Program, code=kwargs['code'])
         serializer = UserSignUpSerializer(data=request.data, context={
-                                          'program': program, 'are_program': True, 'create_commercial': True, 'create_user_by_commercial': False})
+                                          'program': program,
+                                          'are_program': True,
+                                          'create_instructor': False,
+                                          'create_commercial': True,
+                                          'create_user_by_commercial': False})
         serializer.is_valid(raise_exception=True)
         data = serializer.save()
         account_data = AccountCreatedModelSerializer(data['user']).data
@@ -329,6 +333,27 @@ class UserViewSet(mixins.RetrieveModelMixin,
             'user': account_data,
             'program': program
         }
+        return Response(data, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=['post'])
+    def create_instructor_account(self, request, *args, **kwargs):
+        """User sign up."""
+        request.data['created_account'] = True
+        request.data['username'] = request.data['email']
+        request.data['first_password'] = request.data['password']
+        program = get_object_or_404(Program, code=kwargs['code'])
+        serializer = UserSignUpSerializer(data=request.data, context={
+                                          'admin': request.user,
+                                          'program': program,
+                                          'create_instructor': True,
+                                          'are_program': True,
+                                          'create_commercial': False,
+                                          'create_user_by_commercial': False
+                                          })
+        serializer.is_valid(raise_exception=True)
+        data = serializer.save()
+
+        data = InstructorModelSerializer(data).data
         return Response(data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['post'])
@@ -348,6 +373,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
         serializer = UserSignUpSerializer(data=request.data, context={
             'are_program': False,
+            'create_instructor': False,
             'create_commercial': True,
             'create_user_by_commercial': False,
             'user': request.user,
@@ -369,6 +395,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         serializer = UserSignUpSerializer(data=request.data, context={
             'user': request.user,
             'are_program': False,
+            'create_instructor': False,
             'create_commercial': False,
             'create_user_by_commercial': True
         })

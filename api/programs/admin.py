@@ -5,8 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 # Models
-from api.programs.models import Program
-from api.programs.models import Student
+from api.programs.models import Program, Student, Instructor, AllowedProgram
 
 
 @admin.register(Program)
@@ -23,3 +22,15 @@ class Program(admin.ModelAdmin):
 class Student(admin.ModelAdmin):
     """Profile model admin."""
     list_display = ('user', 'program')
+
+
+@admin.register(Instructor)
+class Instructor(admin.ModelAdmin):
+    """Profile model admin."""
+    list_display = ('user', 'admin')
+
+
+@admin.register(AllowedProgram)
+class AllowedProgram(admin.ModelAdmin):
+    """Profile model admin."""
+    list_display = ('program', 'is_admin')

@@ -17,7 +17,7 @@ from rest_framework.validators import UniqueValidator
 # Models
 from api.users.models import Profile, User, Teacher, Commercial
 
-from api.programs.models import Program, AccountCreated, Student
+from api.programs.models import Program, AccountCreated, Student, Instructor, AllowedProgram
 
 
 # Serializers
@@ -506,7 +506,7 @@ class UserSignUpSerializer(serializers.Serializer):
 
         data.pop('password_confirmation')
 
-        if self.context['are_program'] or self.context['create_user_by_commercial']:
+        if self.context['are_program'] or self.context['create_user_by_commercial'] or self.context['create_instructor']:
             user = User.objects.create_user(
                 **data, is_verified=True, is_client=True)
         elif self.context['create_commercial']:
@@ -532,7 +532,7 @@ class UserSignUpSerializer(serializers.Serializer):
             user.user_created_by = self.context['user']
             user.save()
 
-        if self.context['are_program']:
+        if self.context['are_program'] and not self.context['create_instructor']:
             program = self.context['program']
             program.students.add(user)
             program.created_accounts.add(user)
@@ -544,6 +544,15 @@ class UserSignUpSerializer(serializers.Serializer):
             }
         elif self.context['create_commercial'] or self.context['create_user_by_commercial']:
             return user
+        elif self.context['create_instructor'] and 'admin' in self.context and self.context['are_program']:
+            new_instructor = Instructor.objects.create(
+                user=user,
+                admin=self.context['admin']
+            )
+            new_instructor.allowed_programs.add(
+                AllowedProgram.objects.get_or_create(program=self.context['program']))
+
+            return new_instructor
         else:
             send_confirmation_email(user_pk=user.pk)
             return user

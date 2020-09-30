@@ -484,7 +484,6 @@ class ProgramViewSet(mixins.CreateModelMixin,
                     invoice_settings={
                         "default_payment_method": request.data.get('payment_method_id')
                     }
-
                 )
                 # if User.objects.filter(profile__stripe_customer_id=, subscription_type="accounts-subscription", ).exists():
 

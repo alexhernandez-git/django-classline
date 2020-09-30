@@ -14,3 +14,5 @@ from .folders import *
 from .files import *
 from .posts import *
 from .comments import *
+from .instructors import *
+from .allowed_programs import *

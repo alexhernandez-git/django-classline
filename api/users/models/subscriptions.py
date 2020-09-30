@@ -31,9 +31,6 @@ class Subscription(CLineModel):
     payments = models.ManyToManyField(
         'users.Payment', related_name='subscription_payments', blank=True)
 
-    admin = models.ForeignKey(
-        'users.User', related_name="admin_user", on_delete=models.SET_NULL, null=True, blank=True)
-
     active = models.BooleanField(default=True)
 
     is_user_to_program_subscription = models.BooleanField(default=False)
