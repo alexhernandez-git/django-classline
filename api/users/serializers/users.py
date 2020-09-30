@@ -914,3 +914,52 @@ class ResetPasswordSerializer(serializers.Serializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class AddAccountsSerializer(serializers.Serializer):
+    def validate(self, data):
+        program = self.instance
+        accounts_acquired = self.context['accounts_acquired']
+        data = {
+            'accounts_acquired': accounts_acquired,
+        }
+        return data
+
+    def update(self, instance, validated_data):
+
+        accounts_acquired = validated_data['accounts_acquired']
+
+        instance.current_accounts = accounts_acquired['accounts']
+        instance.accounts_to_create_left = int(
+            accounts_acquired['accounts']) - instance.created_accounts.count()
+        instance.level_adquired = accounts_acquired['level']
+        instance.currency = accounts_acquired['currency']
+        instance.accounts_price = accounts_acquired['price']
+
+        instance.level_pro = accounts_acquired['level_pro']
+        print(accounts_acquired['level_pro'])
+
+        instance.save()
+        return instance
+
+
+class CancelAccountsSerializer(serializers.Serializer):
+    def validate(self, data):
+
+        return data
+
+    def update(self, instance, validated_data):
+        program = self.context['program']
+
+        instance.accounts_acquired = None
+        instance.accounts_to_create_left = 0
+        instance.level_pro = False
+        instance.level_adquired = None
+        instance.accounts_subscription_id = None
+        instance.pro_price = 0
+        instance.current_accounts = 0
+        instance.currency = None
+
+        instance.save()
+
+        return instance
