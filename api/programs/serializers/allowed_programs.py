@@ -12,6 +12,7 @@ from datetime import timedelta
 
 class AllowedProgramModelSerializer(serializers.ModelSerializer):
     """Profile model serializer."""
+    program = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         """Meta class."""
@@ -27,6 +28,9 @@ class AllowedProgramModelSerializer(serializers.ModelSerializer):
             'id',
         )
 
+    def get_program(self, obj):
+        from api.programs.serializers.programs import ProgramMainInfoModelSerializer
+        return ProgramMainInfoModelSerializer(obj.program, many=False).data
     # def validate(self, attrs):
     #     if len(attrs['title']) == 0:
     #         raise serializers.ValidationError('El titulo no puede estar vacio')

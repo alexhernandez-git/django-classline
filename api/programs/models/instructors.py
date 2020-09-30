@@ -18,7 +18,10 @@ class Instructor(CLineModel):
         'users.User', on_delete=models.CASCADE, related_name="instructor_user")
     admin = models.ForeignKey(
         'users.User', on_delete=models.CASCADE, related_name="instructor_creator")
-    allowed_programs = models.ManyToManyField(AllowedProgram)
+    allowed_programs = models.ManyToManyField(
+        'programs.Program',
+        through='programs.AllowedProgram'
+    )
     is_active = models.BooleanField(null=False, blank=False, default=True)
 
     def __str__(self):

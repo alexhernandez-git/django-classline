@@ -7,6 +7,7 @@ import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { ButtonCustomError, ButtonCustom } from "../ui/ButtonCustom";
 import moment from "moment";
 const AccountRow = (props) => {
+  console.log("accountRow", props);
   const {
     username,
     password,

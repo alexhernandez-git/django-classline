@@ -37,6 +37,25 @@ from .events import EventModelSerializer
 from datetime import timedelta
 
 
+class ProgramMainInfoModelSerializer(serializers.ModelSerializer):
+    """Profile model serializer."""
+
+    class Meta:
+        """Meta class."""
+
+        model = Program
+        fields = (
+            'id',
+            'code',
+            'title',
+            'subtitle',
+        )
+
+        read_only_fields = (
+            'id',
+        )
+
+
 class ProgramCreateModelSerializer(serializers.ModelSerializer):
     """Profile model serializer."""
 

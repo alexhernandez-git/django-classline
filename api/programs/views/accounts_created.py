@@ -59,11 +59,8 @@ class AccountCreatedViewSet(mixins.ListModelMixin,
         program.accounts_to_create_left += 1
         if program.accounts_to_create_left > program.current_accounts:
             program.accounts_to_create_left = program.current_accounts
-
         self.perform_destroy(instance)
-        # import pdb; pdb.set_trace()
         if Rating.objects.filter(
-            # rating_user=self.context['request'].user,
             rated_program=program
         ).exists():
             program_avg = round(

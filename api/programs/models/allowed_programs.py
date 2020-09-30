@@ -15,6 +15,8 @@ class AllowedProgram(CLineModel):
 
     is_admin = models.BooleanField(default=False)
     program = models.ForeignKey('programs.Program', on_delete=models.CASCADE)
+    instructor = models.ForeignKey(
+        'programs.Instructor', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         """Return description."""

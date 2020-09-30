@@ -23,6 +23,8 @@ import {
   STRIPE_CONNECTED,
   STRIPE_CONNECTED_SUCCESS,
   STRIPE_CONNECTED_FAIL,
+  ADD_ACCOUNT,
+  SUBSTRACT_ACCOUNT,
 } from "../types";
 const initialState = {
   auth_token: localStorage.getItem("auth_token"),
@@ -216,6 +218,28 @@ export default function (state = initialState, action) {
         ...state,
         stripe_connecting: false,
         stripe_connecting_error: action.payload,
+      };
+    case SUBSTRACT_ACCOUNT:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          teacher: {
+            ...state.user.teacher,
+            accounts_to_create_left: (state.user.teacher.accounts_to_create_left += 1),
+          },
+        },
+      };
+    case ADD_ACCOUNT:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          teacher: {
+            ...state.user.teacher,
+            accounts_to_create_left: (state.user.teacher.accounts_to_create_left -= 1),
+          },
+        },
       };
     default:
       return state;

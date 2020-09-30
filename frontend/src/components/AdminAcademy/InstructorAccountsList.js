@@ -18,9 +18,9 @@ import {
   deleteAccount,
   resetAccountCreate,
   fetchAccountsPagination,
-} from "src/redux/actions/accounts";
+} from "src/redux/actions/instructorAccounts";
 import { Formik, Form as FormFormik } from "formik";
-import accountsReducer from "src/redux/reducers/accountsReducer";
+import instructorAccountsReducer from "src/redux/reducers/instructorAccountsReducer";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 
 import Swal from "sweetalert2";
@@ -30,13 +30,16 @@ const AccountsList = ({ main }) => {
   const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
+  const authReducer = useSelector((state) => state.authReducer);
   useEffect(() => {
     if (!programReducer.isLoading) {
       const dispatchFetchAccount = () => dispatch(fetchAccounts());
       dispatchFetchAccount();
     }
   }, [programReducer.isLoading]);
-  const accountsReducer = useSelector((state) => state.accountsReducer);
+  const instructorAccountsReducer = useSelector(
+    (state) => state.instructorAccountsReducer
+  );
 
   const [show, setShow] = useState(false);
 
@@ -87,7 +90,7 @@ const AccountsList = ({ main }) => {
       <div className="d-sm-flex justify-content-between mb-2 align-items-end mb-3">
         <span className="d-block text-center">
           Cuentas disponibles para crear:{" "}
-          {programReducer.program.accounts_to_create_left}
+          {authReducer.user.teacher.accounts_to_create_left}
         </span>
         <span className="d-block m-2 d-sm-none"></span>
         <ButtonCustom className="" onClick={handleShow}>
@@ -112,8 +115,8 @@ const AccountsList = ({ main }) => {
             </tr>
           </thead>
           <tbody>
-            {accountsReducer.accounts &&
-              accountsReducer.accounts.results.map((account) => (
+            {instructorAccountsReducer.accounts &&
+              instructorAccountsReducer.accounts.results.map((account) => (
                 <CountRow
                   handleShow={handleShow}
                   account={account}
@@ -123,12 +126,12 @@ const AccountsList = ({ main }) => {
               ))}
           </tbody>
         </table>
-        {accountsReducer.isLoading && <span>Cargando...</span>}
-        {accountsReducer.accounts &&
-          (accountsReducer.accounts.previous ||
-            accountsReducer.accounts.next) && (
+        {instructorAccountsReducer.isLoading && <span>Cargando...</span>}
+        {instructorAccountsReducer.accounts &&
+          (instructorAccountsReducer.accounts.previous ||
+            instructorAccountsReducer.accounts.next) && (
             <div className="d-flex justify-content-center my-5">
-              {accountsReducer.accounts.previous ? (
+              {instructorAccountsReducer.accounts.previous ? (
                 <IconContext.Provider
                   value={{
                     size: 50,
@@ -137,7 +140,9 @@ const AccountsList = ({ main }) => {
                 >
                   <IoIosArrowDropleft
                     onClick={() =>
-                      handleChangePage(accountsReducer.accounts.previous)
+                      handleChangePage(
+                        instructorAccountsReducer.accounts.previous
+                      )
                     }
                   />
                 </IconContext.Provider>
@@ -151,7 +156,7 @@ const AccountsList = ({ main }) => {
                   <IoIosArrowDropleft />
                 </IconContext.Provider>
               )}
-              {accountsReducer.accounts.next ? (
+              {instructorAccountsReducer.accounts.next ? (
                 <IconContext.Provider
                   value={{
                     size: 50,
@@ -160,7 +165,7 @@ const AccountsList = ({ main }) => {
                 >
                   <IoIosArrowDropright
                     onClick={() =>
-                      handleChangePage(accountsReducer.accounts.next)
+                      handleChangePage(instructorAccountsReducer.accounts.next)
                     }
                   />
                 </IconContext.Provider>

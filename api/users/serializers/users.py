@@ -495,8 +495,8 @@ class UserSignUpSerializer(serializers.Serializer):
         if passwd != passwd_conf:
             raise serializers.ValidationError('Las contraseñas no coinciden')
         password_validation.validate_password(passwd)
-        if self.context['are_program']:
-            if self.context['program'].accounts_to_create_left == 0:
+        if self.context['create_instructor']:
+            if self.context['admin'].teacher.accounts_to_create_left == 0:
                 raise serializers.ValidationError('No te quedan cuentas')
 
         return data
@@ -545,12 +545,18 @@ class UserSignUpSerializer(serializers.Serializer):
         elif self.context['create_commercial'] or self.context['create_user_by_commercial']:
             return user
         elif self.context['create_instructor'] and 'admin' in self.context and self.context['are_program']:
+            admin = self.context['admin']
             new_instructor = Instructor.objects.create(
                 user=user,
-                admin=self.context['admin']
+                admin=admin
             )
-            new_instructor.allowed_programs.add(
-                AllowedProgram.objects.get_or_create(program=self.context['program']))
+            admin.teacher.instructors.add(new_instructor)
+
+            admin.teacher.accounts_to_create_left -= 1
+            admin.teacher.save()
+
+            AllowedProgram.objects.create(
+                program=self.context['program'], is_admin=False, instructor=new_instructor)
 
             return new_instructor
         else:

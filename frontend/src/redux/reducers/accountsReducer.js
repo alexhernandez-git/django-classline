@@ -54,7 +54,6 @@ export default function (state = initialState, action) {
         account_creating: true,
       };
     case CREATE_ACCOUNT_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         account_creating: false,
