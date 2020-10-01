@@ -17,7 +17,6 @@ from api.programs.models import (
     ProgramPrice,
     Event,
     ProgramLanguage,
-    Course,
     Playlist,
     Video,
     Podcast,
@@ -267,7 +266,6 @@ class ProgramModelSerializer(serializers.ModelSerializer):
     benefits = serializers.SerializerMethodField(read_only=True)
     events = serializers.SerializerMethodField(read_only=True)
     videos = serializers.SerializerMethodField(read_only=True)
-    courses = serializers.SerializerMethodField(read_only=True)
     podcasts = serializers.SerializerMethodField(read_only=True)
     docs = serializers.SerializerMethodField(read_only=True)
     ratings = serializers.SerializerMethodField(read_only=True)
@@ -295,7 +293,6 @@ class ProgramModelSerializer(serializers.ModelSerializer):
             'students',
             'events',
             'videos',
-            'courses',
             'podcasts',
             'docs',
             'are_meetups',
@@ -326,10 +323,6 @@ class ProgramModelSerializer(serializers.ModelSerializer):
     def get_events(self, obj):
         events = Event.objects.filter(program=obj.id)
         return len(events)
-
-    def get_courses(self, obj):
-        courses = PlaylistAdmin.objects.filter(program=obj.id).count()
-        return courses
 
     def get_videos(self, obj):
         videos = Video.objects.filter(program=obj.id).count()
@@ -386,7 +379,6 @@ class ProgramListModelSerializer(serializers.ModelSerializer):
     benefits = serializers.SerializerMethodField(read_only=True)
     events = serializers.SerializerMethodField(read_only=True)
     videos = serializers.SerializerMethodField(read_only=True)
-    courses = serializers.SerializerMethodField(read_only=True)
     podcasts = serializers.SerializerMethodField(read_only=True)
     docs = serializers.SerializerMethodField(read_only=True)
     ratings = serializers.SerializerMethodField(read_only=True)
@@ -413,7 +405,6 @@ class ProgramListModelSerializer(serializers.ModelSerializer):
             'events',
             'students',
             'videos',
-            'courses',
             'podcasts',
             'docs',
             'are_meetups',
@@ -452,10 +443,6 @@ class ProgramListModelSerializer(serializers.ModelSerializer):
     def get_instructor(self, obj):
         from api.users.serializers.users import UserTeacherCountModelSerializer
         return UserTeacherCountModelSerializer(obj.user).data
-
-    def get_courses(self, obj):
-        courses = PlaylistAdmin.objects.filter(program=obj.id).count()
-        return courses
 
     def get_videos(self, obj):
         videos = Video.objects.filter(program=obj.id).count()

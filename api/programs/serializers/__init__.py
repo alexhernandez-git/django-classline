@@ -6,7 +6,7 @@ from .videos import *
 from .podcasts import *
 from .playlists import *
 from .playlists_admin import *
-from .courses import *
+# from .courses import *
 from .students import *
 from .accounts_created import *
 from .ratings import *

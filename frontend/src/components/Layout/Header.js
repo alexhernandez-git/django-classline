@@ -239,7 +239,7 @@ export default function Header() {
                   </Link>
                   <Link
                     to="/myzone/instructor/pricing"
-                    className="d-flex align-self-center text-grey text-center header-btn font-weight-light p-2"
+                    className="d-flex justify-content-center align-self-center text-grey text-center header-btn font-weight-light p-2"
                   >
                     <IconContext.Provider
                       value={{

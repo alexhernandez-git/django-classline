@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import dayGridPlugin from "@fullcalendar/daygrid";
+
 import { Main } from "src/components/ui/Main";
 import Layout from "src/components/Layout/Layout";
 import Filters from "src/components/Layout/Filters";
@@ -238,10 +240,15 @@ const meetups = () => {
       <ContainerCalendar className="container mt-2">
         <div className="calendar">
           <FullCalendar
-            plugins={[timeGridPlugin, interactionPlugin]}
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             locales={allLocales}
             view={"timeGridWeek"}
             defaultView={"timeGridWeek"}
+            header={{
+              left: "prev,next today",
+              center: "title",
+              right: "timeGridWeek,timeGridDay",
+            }}
             weekends={true}
             themeSystem="bootstrap"
             timeZone="local"

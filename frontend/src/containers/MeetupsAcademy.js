@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import dayGridPlugin from "@fullcalendar/daygrid";
+
 import allLocales from "@fullcalendar/core/locales-all";
 import { Main } from "src/components/ui/Main";
 import Filters from "src/components/Layout/Filters";
@@ -10,6 +12,7 @@ import { fetchMeetups } from "src/redux/actions/meetups";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { useParams, useLocation } from "react-router-dom";
+import { ButtonCustom } from "../components/ui/ButtonCustom";
 const meetups = () => {
   const { pathname } = useLocation();
 
@@ -78,12 +81,12 @@ const meetups = () => {
           <FullCalendar
             view={"timeGridWeek"}
             defaultView={"timeGridWeek"}
-            plugins={[timeGridPlugin]}
-            // header={{
-            //   left: "",
-            //   center: "",
-            //   right: "",
-            // }}
+            plugins={[timeGridPlugin, dayGridPlugin]}
+            header={{
+              left: "prev,next today",
+              center: "title",
+              right: "timeGridWeek,timeGridDay",
+            }}
             weekends={true}
             themeSystem="bootstrap"
             timeZone="local"
@@ -140,26 +143,45 @@ const meetups = () => {
             </Modal.Header>
             <Modal.Body className="border-0 rounded bg-white text-dark">
               <div>
-                <div className="text-grey">
+                <div className="text-center">
                   <div className="new-line">
                     {args.event.extendedProps.description.length > 0 ? (
-                      <small>{args.event.extendedProps.description}</small>
+                      <span>{args.event.extendedProps.description}</span>
                     ) : (
-                      <small>No hay descripción</small>
+                      <span>No hay descripción</span>
                     )}
                   </div>
+                  {console.log(args.event.start)}
                   <div className="mt-3">
-                    {args.event.extendedProps.videoconference.length > 0 ? (
+                    <div>
                       <small>
+                        Inicio:{" "}
+                        {moment(args.event.start).format("M/D/Y hh:mm:ss")}
+                      </small>
+                    </div>
+                    <div>
+                      <small>
+                        Fin:{" "}
+                        {args.event.end
+                          ? moment(args.event.end).format("M/D/Y hh:mm:ss")
+                          : moment(args.event.start)
+                              .add(1, "hours")
+                              .format("M/D/Y hh:mm:ss")}
+                      </small>
+                    </div>
+                  </div>
+                  <div className="mt-3 d-flex justify-content-center">
+                    {args.event.extendedProps.videoconference.length > 0 ? (
+                      <ButtonCustom>
                         <LinkVideconference
                           target="_blank"
                           href={args.event.extendedProps.videoconference}
                         >
                           Ir a la videoconferencia
                         </LinkVideconference>
-                      </small>
+                      </ButtonCustom>
                     ) : (
-                      <small>No hay videoconferencia</small>
+                      <span>No hay videoconferencia</span>
                     )}
                   </div>
                 </div>
@@ -174,9 +196,7 @@ const meetups = () => {
   );
 };
 const LinkVideconference = styled.a`
-  &:hover {
-    color: #000 !important;
-  }
+  color: #fff !important;
 `;
 const ContainerCalendar = styled.div`
   overflow: hidden;
