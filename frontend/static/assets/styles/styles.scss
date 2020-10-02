@@ -389,8 +389,11 @@ button:disabled {
     justify-content: center;
   }
 }
-.fc-day.fc-widget-content.fc-today {
+.fc-view-container {
   background: #fff !important;
+}
+.fc-day.fc-widget-content.fc-today {
+  background: #eeeeee !important;
   border: none !important;
   border-top: 1px solid #ddd !important;
   font-weight: bold;
