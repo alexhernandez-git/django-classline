@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { useParams, useLocation } from "react-router-dom";
 import { ButtonCustom } from "../components/ui/ButtonCustom";
-const meetups = () => {
+const MeetupsAcademy = () => {
   const { pathname } = useLocation();
 
   const meetupsReducer = useSelector((state) => state.meetupsReducer);
@@ -207,4 +207,4 @@ const ContainerCalendar = styled.div`
     overflow-x: auto;
   }
 `;
-export default meetups;
+export default MeetupsAcademy;

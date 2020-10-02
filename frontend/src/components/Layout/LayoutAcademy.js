@@ -104,14 +104,6 @@ const Layout = (props) => {
             border-left-color: rgb(0, 0, 0) !important;
             border-right-color: rgb(0, 0, 0) !important;
           }
-          .fc-time-grid-event.fc-event.fc-start.fc-end {
-            color: #fff !important;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            cursor: pointer;
-          }
         `}
       />
 
@@ -125,21 +117,22 @@ const Layout = (props) => {
   );
 };
 const MainContainer = styled.div`
-    width: 100%;
-    min-height: 100vh;
-    margin: 0 auto;
-    display: grid;
-    grid-template-rows: 60px auto;
-    grid-template-columns:minmax(90px, 90px) auto;
-    grid-template-areas: "header header"
-                         "menu content";
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: 60px auto;
+  grid-template-columns: minmax(90px, 90px) auto;
+  grid-template-areas:
+    "header header"
+    "menu content";
 
-    @media screen and (max-width: 576px){
-        grid-template-areas:
-        "header header"
-        "content content";
+  @media screen and (max-width: 576px) {
+    grid-template-areas:
+      "header header"
+      "content content";
     grid-template-columns: 100% auto;
-    }
+  }
   /* ${(props) =>
     props.sidebarActive &&
     "grid-template-columns: minmax(300px, 18%) auto!important"} */

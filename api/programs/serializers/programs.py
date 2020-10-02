@@ -95,6 +95,11 @@ class ProgramModifyModelSerializer(serializers.ModelSerializer):
     instructor = serializers.SerializerMethodField(read_only=True)
     ratings = serializers.SerializerMethodField(read_only=True)
     is_subscribed = serializers.SerializerMethodField(read_only=True)
+    events = serializers.SerializerMethodField(read_only=True)
+    playlists = serializers.SerializerMethodField(read_only=True)
+    videos = serializers.SerializerMethodField(read_only=True)
+    podcasts = serializers.SerializerMethodField(read_only=True)
+    docs = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         """Meta class."""
@@ -112,11 +117,16 @@ class ProgramModifyModelSerializer(serializers.ModelSerializer):
             'program_language',
             'picture',
             'video_presentation',
+            'events',
+            'playlists',
+            'videos',
+            'podcasts',
+            'docs',
             'students',
             'instructor',
             'are_meetups',
             'are_videos',
-            'are_playlists',
+            'are_admin_playlists',
             'are_podcasts',
             'are_docs',
             'are_forum',
@@ -137,6 +147,26 @@ class ProgramModifyModelSerializer(serializers.ModelSerializer):
     def get_benefits(self, obj):
         benefits = Benefit.objects.filter(program=obj.id)
         return BenefitModelSerializer(benefits, many=True).data
+
+    def get_events(self, obj):
+        events = Event.objects.filter(program=obj.id)
+        return len(events)
+
+    def get_videos(self, obj):
+        videos = Video.objects.filter(program=obj.id).count()
+        return videos
+
+    def get_playlists(self, obj):
+        playlists = PlaylistAdmin.objects.filter(program=obj.id).count()
+        return playlists
+
+    def get_podcasts(self, obj):
+        podcasts = Podcast.objects.filter(program=obj.id).count()
+        return podcasts
+
+    def get_docs(self, obj):
+        files = File.objects.filter(program=obj.id, is_private=False).count()
+        return files
 
     def get_students(self, obj):
         from api.users.serializers.users import UserTeacherCountModelSerializer
@@ -211,8 +241,10 @@ class ProgramBasicModelSerializer(serializers.ModelSerializer):
             'subtitle',
             'are_meetups',
             'are_videos',
-            'are_playlists',
+            'are_admin_playlists',
             'are_podcasts',
+            'are_admin_playlists',
+
             'are_docs',
             'are_forum',
             'accounts_to_create_left',
@@ -266,6 +298,7 @@ class ProgramModelSerializer(serializers.ModelSerializer):
     benefits = serializers.SerializerMethodField(read_only=True)
     events = serializers.SerializerMethodField(read_only=True)
     videos = serializers.SerializerMethodField(read_only=True)
+    playlists = serializers.SerializerMethodField(read_only=True)
     podcasts = serializers.SerializerMethodField(read_only=True)
     docs = serializers.SerializerMethodField(read_only=True)
     ratings = serializers.SerializerMethodField(read_only=True)
@@ -293,11 +326,12 @@ class ProgramModelSerializer(serializers.ModelSerializer):
             'students',
             'events',
             'videos',
+            'playlists',
             'podcasts',
             'docs',
             'are_meetups',
             'are_videos',
-            'are_playlists',
+            'are_admin_playlists',
             'are_podcasts',
             'are_docs',
             'are_forum',
@@ -327,6 +361,10 @@ class ProgramModelSerializer(serializers.ModelSerializer):
     def get_videos(self, obj):
         videos = Video.objects.filter(program=obj.id).count()
         return videos
+
+    def get_playlists(self, obj):
+        playlists = PlaylistAdmin.objects.filter(program=obj.id).count()
+        return playlists
 
     def get_podcasts(self, obj):
         podcasts = Podcast.objects.filter(program=obj.id).count()
@@ -409,7 +447,9 @@ class ProgramListModelSerializer(serializers.ModelSerializer):
             'docs',
             'are_meetups',
             'are_videos',
-            'are_playlists',
+            'are_admin_playlists',
+
+            'are_admin_playlists',
             'are_podcasts',
             'are_docs',
             'are_forum',

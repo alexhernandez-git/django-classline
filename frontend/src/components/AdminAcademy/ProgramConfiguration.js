@@ -119,7 +119,7 @@ const ProgramConfiguration = (props) => {
             lg={{ offset: 1, span: 6 }}
             className="d-flex justify-content-center d-lg-block"
           >
-            <Checkbox name="are_playlists" />
+            <Checkbox name="are_admin_playlists" />
           </Col>
         </Row>
 
@@ -254,7 +254,46 @@ const ProgramConfiguration = (props) => {
       </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Acciones</span>
+        <Row className="mb-4">
+          <Col
+            sm={{ span: 4 }}
+            className="text-center d-sm-flex justify-content-end align-items-center"
+          >
+            <span className="m-0 font-weight-normal">
+              Activar la reserva de eventos
+            </span>
+          </Col>
 
+          <Col sm={{ offset: 1, span: 6 }}>
+            {programReducer.program && programReducer.program.published ? (
+              <div className="d-sm-flex justify-content-between d-block">
+                <span className="text-secondary mr-3 font-weight-bold text-center d-block d-sm-inline">
+                  Activada
+                </span>
+                <ButtonCustomError
+                  type="button"
+                  onClick={handleCancelPublishedProgram}
+                >
+                  Desactivar
+                </ButtonCustomError>
+              </div>
+            ) : (
+              <ButtonCustomSuccess type="button" onClick={handlePublishProgram}>
+                Activar
+              </ButtonCustomSuccess>
+            )}
+            {programReducer.publish_error &&
+              programReducer.publish_error.data.non_field_errors &&
+              programReducer.publish_error.data.non_field_errors.map(
+                (error) => <small className="d-block text-red">{error}</small>
+              )}
+            {programReducer.canceling_published_error &&
+              programReducer.canceling_published_error.data.non_field_errors &&
+              programReducer.canceling_published_error.data.non_field_errors.map(
+                (error) => <small className="d-block text-red">{error}</small>
+              )}
+          </Col>
+        </Row>
         <Row className="mb-4">
           <Col
             sm={{ span: 4 }}

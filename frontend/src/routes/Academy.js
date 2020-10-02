@@ -44,6 +44,7 @@ import SharedDocsAcademy from "../containers/SharedDocsAcademy";
 import DocsAdmin from "../containers/admin/DocsAdmin";
 import PostAcademy from "../containers/PostAcademy";
 import InstructorAccountsAdmin from "../containers/admin/InstructorAccountsAdmin";
+import CheckoutOnlineClass from "../containers/CheckoutOnlineClass";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -97,6 +98,11 @@ const Academy = () => {
 
       <Switch>
         <Route exact path="/academy/:program" component={IndexAcademy} />
+        <Route
+          exact
+          path="/academy/:program/book-class"
+          component={CheckoutOnlineClass}
+        />
         {authReducer.isLoading ? (
           "Cargando..."
         ) : authReducer.isAuthenticated && haveAccess() ? (
@@ -128,7 +134,7 @@ const Academy = () => {
               exact
               path="/academy/:program/courses/:search?"
               component={
-                programReducer.program.are_playlists
+                programReducer.program.are_admin_playlists
                   ? CoursesAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
@@ -137,7 +143,7 @@ const Academy = () => {
               exact
               path="/academy/:program/course/:id/:track?"
               component={
-                programReducer.program.are_playlists
+                programReducer.program.are_admin_playlists
                   ? CourseAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }

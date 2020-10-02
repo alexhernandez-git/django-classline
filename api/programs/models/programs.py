@@ -33,6 +33,7 @@ class Program(CLineModel):
     are_videos = models.BooleanField(default=True)
     are_courses = models.BooleanField(default=True)
     are_playlists = models.BooleanField(default=True)
+    are_admin_playlists = models.BooleanField(default=True)
     are_podcasts = models.BooleanField(default=True)
     are_docs = models.BooleanField(default=True)
     are_forum = models.BooleanField(default=True)

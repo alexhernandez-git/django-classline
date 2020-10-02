@@ -398,6 +398,20 @@ button:disabled {
   border-top: 1px solid #ddd !important;
   font-weight: bold;
 }
+.fc-event {
+  cursor: pointer;
+}
+.fc-time-grid-event.fc-event.fc-start.fc-end {
+  color: #fff !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+}
+.fc-event-container {
+  margin: 0 !important;
+}
 @import "~@fullcalendar/core/main.css";
 @import "~@fullcalendar/daygrid/main.css";
 @import "~@fullcalendar/timegrid/main.css";

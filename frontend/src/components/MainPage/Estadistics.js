@@ -124,9 +124,9 @@ const Caracteristics = () => {
               Podcasts: {programReducer.program.podcasts}
             </div>
           )}
-          {programReducer.program.are_playlists && (
+          {programReducer.program.are_admin_playlists && (
             <div className="position-relative">
-              Playlists: {programReducer.program.courses}
+              Playlists: {programReducer.program.playlists}
             </div>
           )}
           {programReducer.program.are_docs && (

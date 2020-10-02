@@ -148,7 +148,7 @@ const InformationCourse = () => {
                 </div>
               </div>
             )}
-            {programContext.programState.program.are_playlists && (
+            {programContext.programState.program.are_admin_playlists && (
               <div className="row pr-3 pl-3 mt-3">
                 <div className="col-sm-6 d-flex align-items-center">
                   <IconContext.Provider
@@ -164,7 +164,7 @@ const InformationCourse = () => {
                   </span>
                 </div>
                 <div className="col-sm-6 col-lg-6">
-                  {programContext.programState.program.courses}
+                  {programContext.programState.program.playlists}
                 </div>
               </div>
             )}

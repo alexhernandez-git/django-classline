@@ -15,6 +15,7 @@ import { Formik, Form as FormFormik, Field } from "formik";
 import { login } from "src/redux/actions/auth";
 import StarRating from "src/components/Layout/StarRatings";
 import axios from "axios";
+import BookMeetups from "src/components/ui/BookMeetups";
 const index = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -300,6 +301,9 @@ const index = () => {
       <Separation className="p-3 shadow"></Separation>
 
       <div className="container my-5 mx-auto w-auto">
+        <div className="row mx-2">
+          <BookMeetups />
+        </div>
         <div className="row mx-2">
           <ProgramInfo className="text-grey">
             <div className="d-sm-flex justify-content-between text-dark">

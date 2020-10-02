@@ -2,9 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import moment from "moment";
 import ReactPlayer from "react-player";
-import { IconContext } from "react-icons/lib";
-import { FaBackward, FaForward, FaPlay, FaVolumeUp } from "react-icons/fa";
-import { RiFullscreenFill } from "react-icons/ri";
+
 import Slider, { Range } from "rc-slider";
 import "static/assets/styles/components/Layout/rc-slider.scss";
 import PlayerControls from "./PlayerControls";
