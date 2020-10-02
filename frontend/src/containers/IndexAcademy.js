@@ -25,7 +25,7 @@ const index = () => {
   useEffect(() => {
     if (authReducer.isAuthenticated && authReducer.haveAccess)
       history.push(`/academy/${program}/home/`);
-  }, [authReducer.isAuthenticated]);
+  }, [authReducer.isAuthenticated, authReducer.haveAccess]);
   const programVideoRef = useRef();
   const video = useRef();
   const [accessOpen, setAccessOpen] = useState(false);

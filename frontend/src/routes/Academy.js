@@ -28,7 +28,7 @@ import AccountsAdmin from "src/containers/admin/AccountsAdmin";
 import "static/assets/styles/styles.scss";
 import ScrollToTop from "src/utils/ScrollToTop";
 import { useDispatch, useSelector } from "react-redux";
-import { loadUser } from "../redux/actions/auth";
+import { loadUser, resetAuthErrors } from "../redux/actions/auth";
 import { fetchProgram } from "../redux/actions/program";
 import IndexAcademy from "src/containers/IndexAcademy";
 import { fetchProgramRating } from "../redux/actions/rating";
@@ -52,6 +52,9 @@ const Academy = () => {
   const programId = router.program;
   const programReducer = useSelector((state) => state.programReducer);
   const authReducer = useSelector((state) => state.authReducer);
+  useEffect(() => {
+    dispatch(resetAuthErrors());
+  }, [history.location]);
 
   useEffect(() => {
     if (programId) {

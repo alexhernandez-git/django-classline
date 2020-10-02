@@ -32,6 +32,7 @@ import {
   CANECEL_INSTRUCTOR_ACCOUNTS_SUCCESS,
   CANECEL_INSTRUCTOR_ACCOUNTS_FAIL,
   REGISTER_WITH_TOKEN_SUCCESS,
+  RESET_AUTH_ERRORS,
 } from "../types";
 const initialState = {
   auth_token: localStorage.getItem("auth_token"),
@@ -111,6 +112,11 @@ export default function (state = initialState, action) {
         isAuthenticated: false,
         isLoading: false,
         error: action.payload,
+      };
+    case RESET_AUTH_ERRORS:
+      return {
+        ...state,
+        error: null,
       };
     case UPDATE_PROFILE:
       return {

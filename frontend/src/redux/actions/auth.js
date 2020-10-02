@@ -25,8 +25,8 @@ import {
   CANECEL_INSTRUCTOR_ACCOUNTS,
   CANECEL_INSTRUCTOR_ACCOUNTS_SUCCESS,
   CANECEL_INSTRUCTOR_ACCOUNTS_FAIL,
-  REGISTER_WITH_TOKEN,
   REGISTER_WITH_TOKEN_SUCCESS,
+  RESET_AUTH_ERRORS,
 } from "../types";
 
 // SET TOKEN
@@ -276,6 +276,12 @@ export const cancelAcquireAccounts = () => (dispatch, getState) => {
         payload: { data: err.response.data, status: err.response.status },
       });
     });
+};
+
+export const resetAuthErrors = () => (dispatch, getState) => {
+  dispatch({
+    type: RESET_AUTH_ERRORS,
+  });
 };
 
 // Setup config with token - helper function
