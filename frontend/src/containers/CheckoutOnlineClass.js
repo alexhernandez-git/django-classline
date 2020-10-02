@@ -7,7 +7,11 @@ import { FaArrowLeft } from "react-icons/fa";
 import styled from "@emotion/styled";
 import { Formik, Form as FormFormik, Field } from "formik";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { login, registerCheckoutClass } from "../redux/actions/auth";
+import {
+  login,
+  registerCheckoutClass,
+  resetAuthErrors,
+} from "../redux/actions/auth";
 const CheckoutOnlineClass = () => {
   const programReducer = useSelector((state) => state.programReducer);
   const { program } = useParams();
@@ -45,10 +49,8 @@ const CheckoutOnlineClass = () => {
     }
   };
   useEffect(() => {
-    if (authReducer.error && authReducer.error.data.email) {
-      console.log(authReducer.error.data.email[0]);
-    }
-  }, [authReducer.error]);
+    dispatch(resetAuthErrors());
+  }, [isRegister]);
   return programReducer.isLoading ? (
     "Cargando..."
   ) : (

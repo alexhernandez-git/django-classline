@@ -645,14 +645,13 @@ class UserLoginPlatformSerializer(serializers.Serializer):
                 email = user_request.username
             # Check if user set email
         user = authenticate(username=email, password=password)
+        if not user:
+            raise serializers.ValidationError('Credenciales invalidas')
         # import pdb; pdb.set_trace()
         program = self.context['program']
         if user.is_commercial:
             raise serializers.ValidationError(
                 'Con esta cuenta no puedes acceder a classlineacademy.com')
-
-        if not user:
-            raise serializers.ValidationError('Credenciales invalidas')
 
         # if not user.is_verified:
         #     raise serializers.ValidationError('Esta cuenta no esta verificada')
