@@ -99,6 +99,7 @@ export default function (state = initialState, action) {
         auth_token: action.payload.access_token,
         isAuthenticated: true,
         isLoading: false,
+        haveAccess: action.payload.have_access,
       };
     case AUTH_ERROR:
     case LOGIN_FAIL:
