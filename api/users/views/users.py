@@ -309,10 +309,29 @@ class UserViewSet(mixins.RetrieveModelMixin,
         request.data['username'] = request.data['email']
 
         serializer = UserSignUpSerializer(
-            data=request.data, context={'are_program': False, 'create_instructor': False, 'create_commercial': False, 'create_user_by_commercial': False})
+            data=request.data, context={'are_program': False,
+                                        'with_token': False, 'create_instructor': False, 'create_commercial': False, 'create_user_by_commercial': False})
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         data = UserModelSerializer(user).data
+        return Response(data, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['post'])
+    def signup_with_token(self, request):
+        """User sign up."""
+        request.data['created_account'] = False
+
+        request.data['username'] = request.data['email']
+
+        serializer = UserSignUpSerializer(
+            data=request.data, context={'are_program': False,
+                                        'with_token': True, 'create_instructor': False, 'create_commercial': False, 'create_user_by_commercial': False})
+        serializer.is_valid(raise_exception=True)
+        user, token = serializer.save()
+        data = {
+            'user': UserModelSerializer(user).data,
+            'access_token': token,
+        }
         return Response(data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=['post'])
@@ -325,6 +344,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         serializer = UserSignUpSerializer(data=request.data, context={
                                           'program': program,
                                           'are_program': True,
+                                          'with_token': False,
                                           'create_instructor': False,
                                           'create_commercial': True,
                                           'create_user_by_commercial': False})
@@ -350,6 +370,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
                                           'program': program,
                                           'create_instructor': True,
                                           'are_program': True,
+                                          'with_token': False,
                                           'create_commercial': False,
                                           'create_user_by_commercial': False
                                           })
@@ -376,6 +397,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
         serializer = UserSignUpSerializer(data=request.data, context={
             'are_program': False,
+            'with_token': False,
             'create_instructor': False,
             'create_commercial': True,
             'create_user_by_commercial': False,
@@ -398,6 +420,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         serializer = UserSignUpSerializer(data=request.data, context={
             'user': request.user,
             'are_program': False,
+            'with_token': False,
             'create_instructor': False,
             'create_commercial': False,
             'create_user_by_commercial': True
