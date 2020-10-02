@@ -72,6 +72,24 @@ export const login = (data) => (dispatch, getState) => {
       });
     });
 };
+export const loginCheckoutOnlineClass = (data) => (dispatch, getState) => {
+  console.log(data);
+  axios
+    .post(`/api/users/login/`, data)
+    .then((res) => {
+      console.log(res.data);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: AUTH_ERROR,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
 
 export const logout = () => (dispatch, getState) => {
   dispatch({ type: LOGOUT_SUCCESS });

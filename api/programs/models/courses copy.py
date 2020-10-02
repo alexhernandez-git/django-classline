@@ -108,9 +108,9 @@ class BlockTrack(CLineModel):
     class Meta:
         ordering = ['position']
 
-    # def __str__(self):
-    #     """Return description."""
-    #     return '{}'.format(self.course_block)
+    def __str__(self):
+        """Return description."""
+        return '{}'.format(self.course_block)
 
     def save(self, **kwargs):
 

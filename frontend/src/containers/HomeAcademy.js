@@ -61,7 +61,7 @@ export default function Home() {
                 <hr />
               </>
             )}
-            {programReducer.program.are_playlists && (
+            {programReducer.program.are_admin_playlists && (
               <>
                 <div className="mb-4">
                   <MainPlaylists />
