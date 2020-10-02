@@ -25,6 +25,8 @@ import {
   CANECEL_INSTRUCTOR_ACCOUNTS,
   CANECEL_INSTRUCTOR_ACCOUNTS_SUCCESS,
   CANECEL_INSTRUCTOR_ACCOUNTS_FAIL,
+  REGISTER_WITH_TOKEN,
+  REGISTER_WITH_TOKEN_SUCCESS,
 } from "../types";
 
 // SET TOKEN
@@ -47,7 +49,12 @@ export const loadUser = () => (dispatch, getState) => {
         payload: res.data,
       });
     })
-    .catch((err) => {});
+    .catch((err) => {
+      dispatch({
+        type: AUTH_ERROR,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
 };
 export const login = (data) => (dispatch, getState) => {
   console.log(data);
@@ -72,14 +79,14 @@ export const login = (data) => (dispatch, getState) => {
       });
     });
 };
-export const loginCheckoutOnlineClass = (data) => (dispatch, getState) => {
-  console.log(data);
+
+export const registerCheckoutClass = (data) => (dispatch, getState) => {
   axios
-    .post(`/api/users/login/`, data)
+    .post(`/api/users/signup_with_token/`, data)
     .then((res) => {
-      console.log(res.data);
+      console.log("res.data, resfwe", res.data);
       dispatch({
-        type: LOGIN_SUCCESS,
+        type: REGISTER_WITH_TOKEN_SUCCESS,
         payload: res.data,
       });
     })

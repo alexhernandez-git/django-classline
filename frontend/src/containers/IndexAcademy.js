@@ -23,7 +23,8 @@ const index = () => {
   const programReducer = useSelector((state) => state.programReducer);
   const authReducer = useSelector((state) => state.authReducer);
   useEffect(() => {
-    if (authReducer.isAuthenticated) history.push(`/academy/${program}/home/`);
+    if (authReducer.isAuthenticated && authReducer.haveAccess)
+      history.push(`/academy/${program}/home/`);
   }, [authReducer.isAuthenticated]);
   const programVideoRef = useRef();
   const video = useRef();

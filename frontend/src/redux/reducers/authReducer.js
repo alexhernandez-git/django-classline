@@ -31,10 +31,12 @@ import {
   CANECEL_INSTRUCTOR_ACCOUNTS,
   CANECEL_INSTRUCTOR_ACCOUNTS_SUCCESS,
   CANECEL_INSTRUCTOR_ACCOUNTS_FAIL,
+  REGISTER_WITH_TOKEN_SUCCESS,
 } from "../types";
 const initialState = {
   auth_token: localStorage.getItem("auth_token"),
   isAuthenticated: null,
+  have_access: false,
   isLoading: true,
   user: null,
   error: null,
@@ -65,11 +67,13 @@ export default function (state = initialState, action) {
       };
     case USER_LOADED:
       //   console.log(action.payload);
-
+      console.log(action.payload);
       return {
         ...state,
         isAuthenticated: true,
         isLoading: false,
+        haveAccess: action.payload.have_access,
+
         ...action.payload,
       };
     case LOGIN_SUCCESS:
@@ -78,6 +82,19 @@ export default function (state = initialState, action) {
         ...state,
         user: action.payload.user,
         rating: action.payload.rating,
+        auth_token: action.payload.access_token,
+        isAuthenticated: true,
+        isLoading: false,
+        haveAccess: action.payload.have_access,
+        error: !action.payload.have_access
+          ? { data: { detail: "No tienes acceso" } }
+          : null,
+      };
+    case REGISTER_WITH_TOKEN_SUCCESS:
+      localStorage.setItem("auth_token", action.payload.access_token);
+      return {
+        ...state,
+        user: action.payload.user,
         auth_token: action.payload.access_token,
         isAuthenticated: true,
         isLoading: false,

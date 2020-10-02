@@ -72,10 +72,10 @@ const Academy = () => {
   }, [programReducer.isLoading]);
   const haveAccess = () => {
     const isStudent = authReducer.user.programs.find(
-      (program) => program.code == programId
+      (program) => program.code == programId && authReducer.haveAccess
     );
     const isInstructor = authReducer.user.teacher.programs.find(
-      (program) => program.code == programId
+      (program) => program.code == programId && authReducer.haveAccess
     );
     if (isStudent || isInstructor) {
       return true;

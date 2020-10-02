@@ -654,9 +654,6 @@ class UserLoginPlatformSerializer(serializers.Serializer):
         if not user:
             raise serializers.ValidationError('Credenciales invalidas')
 
-        if not user in program.students.all() and user != program.user:
-            raise serializers.ValidationError('No perteneces a esta academia')
-
         # if not user.is_verified:
         #     raise serializers.ValidationError('Esta cuenta no esta verificada')
         self.context['user'] = user

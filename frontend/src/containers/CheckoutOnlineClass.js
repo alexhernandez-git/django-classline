@@ -6,8 +6,8 @@ import { IconContext } from "react-icons/lib";
 import { FaArrowLeft } from "react-icons/fa";
 import styled from "@emotion/styled";
 import { Formik, Form as FormFormik, Field } from "formik";
-import { loginCheckoutOnlineClass } from "src/redux/actions/auth";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { login, registerCheckoutClass } from "../redux/actions/auth";
 const CheckoutOnlineClass = () => {
   const programReducer = useSelector((state) => state.programReducer);
   const { program } = useParams();
@@ -118,9 +118,9 @@ const CheckoutOnlineClass = () => {
             </div>
 
             <div className="my-4"></div>
-            {!authReducer.isLoading &&
-            authReducer.isAuthenticated &&
-            authReducer.user ? (
+            {authReducer.isLoading ? (
+              "Cargando..."
+            ) : authReducer.isAuthenticated && authReducer.user ? (
               <>
                 <span>
                   Hola,
@@ -175,10 +175,17 @@ const CheckoutOnlineClass = () => {
                       <Formik
                         enableReinitialize={true}
                         initialValues={{
+                          first_name: "",
+                          last_name: "",
                           email: "",
                           password: "",
+                          password_confirmation: "",
                         }}
-                        onSubmit={(values) => {}}
+                        onSubmit={(values) => {
+                          const dispatchLogin = (values) =>
+                            dispatch(registerCheckoutClass(values));
+                          dispatchLogin(values);
+                        }}
                       >
                         {(props) => {
                           return (
@@ -206,7 +213,7 @@ const CheckoutOnlineClass = () => {
                                     placeholder="Contraseña"
                                   />
                                   <Field
-                                    name="confirm_password"
+                                    name="password_confirmation"
                                     type="password"
                                     placeholder="Confirmar contraseña"
                                   />
@@ -252,7 +259,7 @@ const CheckoutOnlineClass = () => {
                         }}
                         onSubmit={(values) => {
                           const dispatchLogin = (values) =>
-                            dispatch(loginCheckoutOnlineClass(values));
+                            dispatch(login(values));
                           dispatchLogin(values);
                         }}
                       >

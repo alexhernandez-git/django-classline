@@ -197,6 +197,15 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
         serializer.is_valid(raise_exception=True)
         user, token = serializer.save()
+        have_access = True
+
+        if not user in program.students.all() and user != program.user:
+            # response = {
+            #     'message': 'No perteneces a esta academia'
+            # }
+            # return Response(response, status=404)
+            have_access = False
+
         user_data = UserModelSerializer(user, many=False).data
         stripe_customer_id = user_data.get(
             'profile').get('stripe_customer_id')
@@ -215,13 +224,15 @@ class UserViewSet(mixins.RetrieveModelMixin,
             data = {
                 'user': user_data,
                 'access_token': token,
-                'rating': RatingModelSerializer(rating, many=False).data
+                'rating': RatingModelSerializer(rating, many=False).data,
+                'have_access': have_access
             }
         except ObjectDoesNotExist:
             data = {
                 'user':  UserModelSerializer(user, many=False).data,
                 'access_token': token,
-                'rating': None
+                'rating': None,
+                'have_access': have_access
             }
 
         return Response(data, status=status.HTTP_201_CREATED)
@@ -317,8 +328,9 @@ class UserViewSet(mixins.RetrieveModelMixin,
         return Response(data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['post'])
-    def signup_with_token(self, request):
+    def signup_with_token(self, request, *args, **kwargs):
         """User sign up."""
+
         request.data['created_account'] = False
 
         request.data['username'] = request.data['email']
@@ -328,10 +340,13 @@ class UserViewSet(mixins.RetrieveModelMixin,
                                         'with_token': True, 'create_instructor': False, 'create_commercial': False, 'create_user_by_commercial': False})
         serializer.is_valid(raise_exception=True)
         user, token = serializer.save()
+
         data = {
             'user': UserModelSerializer(user).data,
             'access_token': token,
+            'have_access': False
         }
+
         return Response(data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=['post'])
@@ -725,23 +740,28 @@ class UserViewSet(mixins.RetrieveModelMixin,
             Program,
             code=kwargs['code']
         )
-
+        have_access = True
         if not request.user in program.students.all() and request.user != program.user:
-            response = {
-                'message': 'No perteneces a esta academia'
-            }
-            return Response(response, status=404)
+            # response = {
+            #     'message': 'No perteneces a esta academia'
+            # }
+            # return Response(response, status=404)
+            have_access = False
+
         try:
             rating = Rating.objects.get(
                 rated_program=program, rating_user=request.user)
             data = {
                 'user':  UserModelSerializer(request.user, many=False).data,
-                'rating': RatingModelSerializer(rating, many=False).data
+                'rating': RatingModelSerializer(rating, many=False).data,
+                'have_access': have_access
             }
         except ObjectDoesNotExist:
             data = {
                 'user':  UserModelSerializer(request.user, many=False).data,
-                'rating': None
+                'rating': None,
+                'have_access': have_access
+
             }
 
         if 'STRIPE_API_KEY' in os.environ:
