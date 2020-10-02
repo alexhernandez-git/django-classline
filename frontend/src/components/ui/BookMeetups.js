@@ -75,7 +75,10 @@ const BookMeetups = () => {
 
   return (
     <ContainerCalendarDiv>
-      <div className="mb-4">
+      <div
+        className="mb-5 pb-5"
+        style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
+      >
         <Filters
           title="Aqui puedes conseguir acceso tus clases online sin necesidad de ser alumno"
           className="border-bottom"

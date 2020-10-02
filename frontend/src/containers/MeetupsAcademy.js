@@ -76,7 +76,7 @@ const MeetupsAcademy = () => {
   return (
     <Main padding>
       <Filters title="Clases online" className="border-bottom" />
-      <ContainerCalendar className="container mt-2">
+      <ContainerCalendar className="container mt-4">
         <div className="calendar">
           <FullCalendar
             view={"timeGridWeek"}

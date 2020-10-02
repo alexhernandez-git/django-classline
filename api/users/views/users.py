@@ -740,55 +740,58 @@ class UserViewSet(mixins.RetrieveModelMixin,
             Program,
             code=kwargs['code']
         )
-        have_access = True
-        if not request.user in program.students.all() and request.user != program.user:
-            # response = {
-            #     'message': 'No perteneces a esta academia'
-            # }
-            # return Response(response, status=404)
-            have_access = False
+        if request.user.id != None:
+            have_access = True
+            if not request.user in program.students.all() and request.user != program.user:
+                # response = {
+                #     'message': 'No perteneces a esta academia'
+                # }
+                # return Response(response, status=404)
+                have_access = False
 
-        try:
-            rating = Rating.objects.get(
-                rated_program=program, rating_user=request.user)
-            data = {
-                'user':  UserModelSerializer(request.user, many=False).data,
-                'rating': RatingModelSerializer(rating, many=False).data,
-                'have_access': have_access
-            }
-        except ObjectDoesNotExist:
-            data = {
-                'user':  UserModelSerializer(request.user, many=False).data,
-                'rating': None,
-                'have_access': have_access
+            try:
+                rating = Rating.objects.get(
+                    rated_program=program, rating_user=request.user)
+                data = {
+                    'user':  UserModelSerializer(request.user, many=False).data,
+                    'rating': RatingModelSerializer(rating, many=False).data,
+                    'have_access': have_access
+                }
+            except ObjectDoesNotExist:
+                data = {
+                    'user':  UserModelSerializer(request.user, many=False).data,
+                    'rating': None,
+                    'have_access': have_access
 
-            }
+                }
 
-        if 'STRIPE_API_KEY' in os.environ:
-            stripe.api_key = os.environ['STRIPE_API_KEY']
+            if 'STRIPE_API_KEY' in os.environ:
+                stripe.api_key = os.environ['STRIPE_API_KEY']
+            else:
+                stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
+            stripe_account_id = data.get('user').get(
+                'profile').get('stripe_account_id')
+            stripe_customer_id = data.get('user').get(
+                'profile').get('stripe_customer_id')
+            if stripe_account_id != None and stripe_account_id != '':
+                stripe_dashboard_url = stripe.Account.create_login_link(
+                    data.get('user').get('profile').get('stripe_account_id')
+                )
+                data['user']['profile']['stripe_dashboard_url'] = stripe_dashboard_url['url']
+
+            if stripe_customer_id != None and stripe_customer_id != '':
+                payment_methods = stripe.PaymentMethod.list(
+                    customer=stripe_customer_id,
+                    type="card"
+                )
+                data['user']['profile']['payment_methods'] = payment_methods.data
+            else:
+                data['user']['profile']['payment_methods'] = None
+
+            return Response(data)
         else:
-            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
-
-        stripe_account_id = data.get('user').get(
-            'profile').get('stripe_account_id')
-        stripe_customer_id = data.get('user').get(
-            'profile').get('stripe_customer_id')
-        if stripe_account_id != None and stripe_account_id != '':
-            stripe_dashboard_url = stripe.Account.create_login_link(
-                data.get('user').get('profile').get('stripe_account_id')
-            )
-            data['user']['profile']['stripe_dashboard_url'] = stripe_dashboard_url['url']
-
-        if stripe_customer_id != None and stripe_customer_id != '':
-            payment_methods = stripe.PaymentMethod.list(
-                customer=stripe_customer_id,
-                type="card"
-            )
-            data['user']['profile']['payment_methods'] = payment_methods.data
-        else:
-            data['user']['profile']['payment_methods'] = None
-
-        return Response(data)
+            return Response(status=404)
 
     @action(detail=False, methods=['get'])
     def get_profile_app(self, request, *args, **kwargs):

@@ -44,7 +44,14 @@ const CheckoutOnlineClass = () => {
       console.log("[PaymentMethod]", paymentMethod);
     }
   };
-  return (
+  useEffect(() => {
+    if (authReducer.error && authReducer.error.data.email) {
+      console.log(authReducer.error.data.email[0]);
+    }
+  }, [authReducer.error]);
+  return programReducer.isLoading ? (
+    "Cargando..."
+  ) : (
     <CheckoutOnlineClassDiv>
       <div className="mt-5 text-grey container instructor">
         <Link
@@ -197,26 +204,73 @@ const CheckoutOnlineClass = () => {
                                     type="text"
                                     placeholder="Nombre"
                                   />
+                                  {authReducer.error &&
+                                    authReducer.error.data.first_name &&
+                                    authReducer.error.data.first_name.map(
+                                      (error) => (
+                                        <small className="d-block text-red">
+                                          {error}
+                                        </small>
+                                      )
+                                    )}
                                   <Field
                                     name="last_name"
                                     type="text"
                                     placeholder="Apellidos"
                                   />
+
+                                  {authReducer.error &&
+                                    authReducer.error.data.last_name &&
+                                    authReducer.error.data.last_name.map(
+                                      (error) => (
+                                        <small className="d-block text-red">
+                                          {error}
+                                        </small>
+                                      )
+                                    )}
                                   <Field
                                     name="email"
                                     type="text"
                                     placeholder="Email or Username"
                                   />
+                                  {authReducer.error &&
+                                    authReducer.error.data.email &&
+                                    authReducer.error.data.email.map(
+                                      (error) => (
+                                        <small className="d-block text-red">
+                                          {error}
+                                        </small>
+                                      )
+                                    )}
                                   <Field
                                     name="password"
                                     type="password"
                                     placeholder="Contraseña"
                                   />
+                                  {authReducer.error &&
+                                    authReducer.error.data.password &&
+                                    authReducer.error.data.password.map(
+                                      (error) => (
+                                        <small className="d-block text-red">
+                                          {error}
+                                        </small>
+                                      )
+                                    )}
                                   <Field
                                     name="password_confirmation"
                                     type="password"
                                     placeholder="Confirmar contraseña"
                                   />
+                                  {authReducer.error &&
+                                    authReducer.error.data
+                                      .password_confirmation &&
+                                    authReducer.error.data.password_confirmation.map(
+                                      (error) => (
+                                        <small className="d-block text-red">
+                                          {error}
+                                        </small>
+                                      )
+                                    )}
                                   <div className="m-1"></div>
 
                                   <button
