@@ -47,4 +47,7 @@ export const SlickSlider = styled.div`
   .slick-slide div:focus {
     outline: none !important;
   }
+  .slick-track {
+    height: auto !important;
+  }
 `;

@@ -28,8 +28,14 @@ const FavouritePodcasts = () => {
   if (!popularPodcastsReducer.isLoading) {
     settings = {
       infinite: popularPodcastsReducer.podcasts.length > 2,
-      slidesToShow: 2,
-      slidesToScroll: 2,
+      slidesToShow:
+        popularPodcastsReducer.podcasts.length < 2
+          ? popularPodcastsReducer.podcasts.length
+          : 2,
+      slidesToScroll:
+        popularPodcastsReducer.podcasts.length < 2
+          ? popularPodcastsReducer.podcasts.length
+          : 2,
       draggable: true,
       vertical: true,
       verticalSwiping: true,

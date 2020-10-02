@@ -7,6 +7,7 @@ import ProgramBenefits from "src/components/MainPage/ProgramBenefits";
 import FavouriteVideos from "src/components/MainPage/FavouriteVideos";
 import FavouritePodcasts from "src/components/MainPage/FavouritePodcasts";
 import MainPlaylists from "src/components/MainPage/MainPlaylists";
+import ThisWeekMeetups from "src/components/MainPage/ThisWeekMeetups";
 import { useDispatch } from "react-redux";
 import { fetchPopularVideos } from "src/redux/actions/popularVideos";
 import { fetchPopularPlaylists } from "src/redux/actions/popularPlaylists";
@@ -68,7 +69,15 @@ export default function Home() {
                 <hr />
               </>
             )}
-            {programReducer.program.are_podcasts && <FavouritePodcasts />}
+            {programReducer.program.are_podcasts && (
+              <>
+                <div className="mb-4">
+                  <FavouritePodcasts />
+                </div>
+                <hr />
+              </>
+            )}
+            {programReducer.program.are_meetups && <ThisWeekMeetups />}
           </div>
         </Main>
       </>
