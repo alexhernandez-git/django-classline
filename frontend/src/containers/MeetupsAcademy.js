@@ -156,17 +156,17 @@ const MeetupsAcademy = () => {
                     <div>
                       <small>
                         Inicio:{" "}
-                        {moment(args.event.start).format("M/D/Y hh:mm:ss")}
+                        {moment(args.event.start).format("D/M/Y hh:mm:ss")}
                       </small>
                     </div>
                     <div>
                       <small>
                         Fin:{" "}
                         {args.event.end
-                          ? moment(args.event.end).format("M/D/Y hh:mm:ss")
+                          ? moment(args.event.end).format("D/M/Y hh:mm:ss")
                           : moment(args.event.start)
                               .add(1, "hours")
-                              .format("M/D/Y hh:mm:ss")}
+                              .format("D/M/Y hh:mm:ss")}
                       </small>
                     </div>
                   </div>

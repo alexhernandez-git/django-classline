@@ -103,7 +103,7 @@ const CheckoutOnlineClass = () => {
               {programReducer.program.instructor.last_name}
             </div>
             <div>
-              <div className="h4 mb-0 mt-4 text-dark">Descripción</div>
+              <div className="h4 mt-4 text-dark">Descripción</div>
               <span>
                 {bookEventsReducer.selected_event.extendedProps?.description}
               </span>
@@ -122,7 +122,7 @@ const CheckoutOnlineClass = () => {
                 </span>
                 <span className="font-weight-bolder">
                   {moment(bookEventsReducer.selected_event.start).format(
-                    "M/D/Y hh:mm:ss"
+                    "D/M/Y hh:mm:ss"
                   )}
                 </span>
               </div>
@@ -134,11 +134,11 @@ const CheckoutOnlineClass = () => {
                 <span className="font-weight-bolder">
                   {bookEventsReducer.selected_event.end
                     ? moment(bookEventsReducer.selected_event.end).format(
-                        "M/D/Y hh:mm:ss"
+                        "D/M/Y hh:mm:ss"
                       )
                     : moment(bookEventsReducer.selected_event.start)
                         .add(1, "hours")
-                        .format("M/D/Y hh:mm:ss")}
+                        .format("D/M/Y hh:mm:ss")}
                 </span>
               </div>
             </div>
