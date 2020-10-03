@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Redirect, useParams } from "react-router-dom";
 import "static/assets/styles/containers/Instructor.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { IconContext } from "react-icons/lib";
@@ -12,11 +12,14 @@ import {
   registerCheckoutClass,
   resetAuthErrors,
 } from "../redux/actions/auth";
+import moment from "moment";
+
 const CheckoutOnlineClass = () => {
   const programReducer = useSelector((state) => state.programReducer);
   const { program } = useParams();
   const [isRegister, setIsRegister] = useState(true);
   const authReducer = useSelector((state) => state.authReducer);
+  const bookEventsReducer = useSelector((state) => state.bookEventsReducer);
   const dispatch = useDispatch();
   const stripe = useStripe();
   const elements = useElements();
@@ -51,10 +54,13 @@ const CheckoutOnlineClass = () => {
   useEffect(() => {
     dispatch(resetAuthErrors());
   }, [isRegister]);
-  return programReducer.isLoading ? (
+  return bookEventsReducer.selected_event == null ? (
+    <Redirect to={`/academy/${program}`} />
+  ) : programReducer.isLoading ? (
     "Cargando..."
   ) : (
     <CheckoutOnlineClassDiv>
+      {console.log(bookEventsReducer.selected_event)}
       <div className="mt-5 text-grey container instructor">
         <Link
           className="text-grey d-flex align-items-center"
@@ -88,7 +94,9 @@ const CheckoutOnlineClass = () => {
               className="mr-2 rounded-circle d-block d-sm-none mb-3"
             />
             <div className="h5 m-0">{programReducer.program.title}</div>
-            <div className="h1 text-dark">Clase de yoga</div>
+            <div className="h1 text-dark">
+              {bookEventsReducer.selected_event.title}
+            </div>
             <div className="h6 m-0">
               <span className="text-dark">Instructor: </span>
               {programReducer.program.instructor.first_name}{" "}
@@ -97,10 +105,7 @@ const CheckoutOnlineClass = () => {
             <div>
               <div className="h4 mb-0 mt-4 text-dark">Descripción</div>
               <span>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ea
-                doloremque nobis a porro quia officiis, voluptatem accusantium
-                vel placeat! Reprehenderit aut, unde ullam atque voluptate
-                saepe! Ea mollitia nisi ipsam?
+                {bookEventsReducer.selected_event.extendedProps?.description}
               </span>
             </div>
             <div className="mt-4">
@@ -115,14 +120,26 @@ const CheckoutOnlineClass = () => {
                 <span className="text-dark  d-block h6 font-weight-bolder">
                   Fecha de inicio
                 </span>
-                <span className="font-weight-bolder">9/29/2020 09:15:00</span>
+                <span className="font-weight-bolder">
+                  {moment(bookEventsReducer.selected_event.start).format(
+                    "M/D/Y hh:mm:ss"
+                  )}
+                </span>
               </div>
               <div className="d-none d-sm-block m-2"></div>
               <div>
                 <span className="text-dark d-block h6 font-weight-bolder">
                   Fecha de fin
                 </span>
-                <span className="font-weight-bolder">9/29/2020 10:00:00</span>
+                <span className="font-weight-bolder">
+                  {bookEventsReducer.selected_event.end
+                    ? moment(bookEventsReducer.selected_event.end).format(
+                        "M/D/Y hh:mm:ss"
+                      )
+                    : moment(bookEventsReducer.selected_event.start)
+                        .add(1, "hours")
+                        .format("M/D/Y hh:mm:ss")}
+                </span>
               </div>
             </div>
 

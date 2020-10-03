@@ -12,6 +12,7 @@ import { fetchMeetups } from "src/redux/actions/meetups";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { useLocation, useHistory } from "react-router-dom";
+import { setSelectedEvent } from "../../redux/actions/bookEvents";
 const BookMeetups = () => {
   const { pathname } = useLocation();
   const { push } = useHistory();
@@ -36,6 +37,7 @@ const BookMeetups = () => {
   const [isOpen, setIsOpen] = useState(false);
   const handleEventClick = (args) => {
     setArgs(args);
+    dispatch(setSelectedEvent(args.event));
     push(`/academy/${programReducer.program.code}/book-class`);
   };
   const [recurringMeetups, setRecurringMeetups] = useState([]);
