@@ -9,7 +9,12 @@ export default function (state = initialState, action) {
     case SET_SELECTED_EVENT:
       return {
         ...state,
-        selected_event: action.payload,
+        selected_event: {
+          title: action.payload.title,
+          start: action.payload.start,
+          end: action.payload.end,
+          description: action.payload.extendedProps.description,
+        },
       };
     default:
       return state;
