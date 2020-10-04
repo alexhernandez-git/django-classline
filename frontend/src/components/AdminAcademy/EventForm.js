@@ -70,24 +70,30 @@ export default function EventForm(props) {
           />
           <span className="checkmark"></span>
         </CheckboxCustom>
+
+        <label className="mt-4">Color del evento</label>
+        <CirclePicker
+          color={classData.backgroundColor}
+          onChangeComplete={handleChangeComplete}
+        />
         <label className="mt-4">Evento reservable</label>
 
         <CheckboxCustom className="mb-5">
           <input
             type="checkbox"
-            checked={classData.can_be_booked}
+            checked={classData.bookable}
             onChange={(e) => {
               isEdit
                 ? setClassData({
                     ...classData,
-                    can_be_booked: e.target.checked,
+                    bookable: e.target.checked,
                   })
-                : setArgs({ ...args, can_be_booked: e.target.checked });
+                : setArgs({ ...args, bookable: e.target.checked });
             }}
           />
           <span className="checkmark"></span>
         </CheckboxCustom>
-        {classData.can_be_booked && (
+        {classData.bookable && (
           <>
             <label className="mt-4">Precio</label>
             <NumberFormat
@@ -101,18 +107,13 @@ export default function EventForm(props) {
                 isEdit
                   ? setClassData({
                       ...classData,
-                      price: String(newValue),
+                      price: value,
                     })
-                  : setArgs({ ...args, price: String(newValue) });
+                  : setArgs({ ...args, price: value });
               }}
             />
           </>
         )}
-        <label className="mt-4">Color del evento</label>
-        <CirclePicker
-          color={classData.backgroundColor}
-          onChangeComplete={handleChangeComplete}
-        />
       </AdminForm>
     </div>
   );

@@ -71,7 +71,7 @@ const BookMeetups = () => {
           };
         }
       });
-      setRecurringMeetups(newMeetups.filter((meetup) => meetup.can_be_booked));
+      setRecurringMeetups(newMeetups.filter((meetup) => meetup.bookable));
     }
   }, [meetupsReducer.isLoading, meetupsReducer.meetups]);
 
