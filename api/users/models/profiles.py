@@ -49,6 +49,9 @@ class Profile(CLineModel):
     subscriptions = models.ManyToManyField(
         'users.Subscription', related_name='student_subscriptions', blank=True)
 
+    purchased_items = models.ManyToManyField(
+        'users.PurchasedItem', related_name='student_purchased_items', blank=True)
+
     def __str__(self):
         """Return user's str representation."""
         return str(self.user)

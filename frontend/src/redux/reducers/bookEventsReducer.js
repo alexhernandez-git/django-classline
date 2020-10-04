@@ -10,6 +10,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         selected_event: {
+          id: action.payload.id,
           title: action.payload.title,
           start: action.payload.start,
           end: action.payload.end,

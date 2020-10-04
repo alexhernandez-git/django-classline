@@ -1,5 +1,6 @@
 """Circle views."""
-
+import os
+import stripe
 # Django REST Framework
 from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
@@ -17,10 +18,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 # Models
 from api.programs.models import Program, Event
-from api.users.models import User
+from api.users.models import User, PurchasedItem
 
 # Serializers
-from api.programs.serializers import EventModelSerializer
+from api.programs.serializers import EventModelSerializer, AddEventStudentSerializer
+from api.users.serializers import ProfileModelSerializer
 
 # Utils
 from api.utils.permissions import AddProgramMixin
@@ -90,3 +92,159 @@ class EventViewSet(mixins.CreateModelMixin,
 
         data = EventModelSerializer(event).data
         return Response(data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['patch'])
+    def purchase_event(self, request, *args, **kwargs):
+        """Call by owners to finish a ride."""
+
+        event = self.get_object()
+        program = self.program
+        user = request.user
+        profile = user.profile
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
+        customer_id = ''
+        if Event.objects.filter(
+            program__user=user
+        ) == event:
+            return Response({'message': 'Ya has comprado este evento'}, status=status.HTTP_400_BAD_REQUEST)
+
+        event_info = event
+
+        serialized_event = EventModelSerializer(
+            event_info, many=False).data
+
+        if not serialized_event['can_be_booked']:
+            return Response({'message', 'Este evento no esta en venta'}, status=status.HTTP_400_BAD_REQUEST)
+        if serialized_event['price'] == 0:
+            return Response({'message', 'Este evento no tiene un precio válido'}, status=status.HTTP_400_BAD_REQUEST)
+
+        subscription_product = stripe.Product.create(
+            name=serialized_event.get('title'))
+
+        price = stripe.Price.create(
+            currency=serialized_event.get('currency'),
+            product=subscription_product.get('id'),
+            nickname=serialized_event.get('description'),
+            unit_amount=int(serialized_event.get(
+                'price')*100),
+        )
+        if profile.stripe_customer_id == None or profile.stripe_customer_id == '':
+            newCustomer = stripe.Customer.create(
+                description="claCustomer_"+user.first_name+'_'+user.last_name,
+                name=user.first_name+' '+user.last_name,
+                email=user.email,
+                payment_method=request.data.get('payment_method'),
+                invoice_settings={
+                    "default_payment_method": request.data.get('payment_method')
+                }
+
+            )
+            customer_id = newCustomer.id
+            profile.stripe_customer_id = customer_id
+            serializer = ProfileModelSerializer(
+                profile,
+                data=request.data,
+            )
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+        else:
+            customer_id = profile.stripe_customer_id
+            stripe.PaymentMethod.attach(
+                request.data.get('payment_method'),
+                customer=customer_id,
+            )
+            stripe.Customer.modify(
+                customer_id,
+                invoice_settings={
+                    "default_payment_method": request.data.get('payment_method')
+                },
+            )
+
+        invoice_item = stripe.InvoiceItem.create(
+            customer=customer_id,
+            price=price.id,
+        )
+        invoice = stripe.Invoice.create(
+            customer="cus_4fdAW5ftNQow1a",
+            stripe_account=serialized_event['program']['instructor']['profile']['stripe_account_id'],
+        )
+
+        new_purchased_item = PurchasedItem(
+            invoice_item_id=invoice_item,
+            invoice_id=invoice,
+            user=user,
+            program=program,
+            event=event,
+            payment_issue=False,
+            is_a_purchased_event=True
+        )
+        new_purchased_item.save()
+        profile.purchased_items.add(
+            new_purchased_item
+        )
+        profile.save()
+
+        serializer = AddEventStudentSerializer(
+            event,
+            data=request.data,
+            context={'user': user, 'request': request},
+            partial=True
+        )
+
+        serializer.is_valid(raise_exception=True)
+        event = serializer.save()
+        data = EventModelSerializer(event, many=False).data
+
+        return Response(data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['delete'])
+    def cancel_event_purchase(self, request, *args, **kwargs):
+        """Call by owners to finish a ride."""
+
+        event = self.get_object()
+        user = request.user
+        profile = user.profile
+
+        # user = User.objects.get(pk=self.kwargs['pk'])
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
+
+        cancel_purchased_item = profile.purchased_items.filter(
+            user=request.user, event=event, active=True, is_a_purchased_event=True)[0]
+
+        if cancel_purchased_item:
+            # Reembolso
+
+            invoice = stripe.Invoice.retrieve(
+                cancel_purchased_item['invoice_id'])
+            if invoice['amount_paid'] >= 1:
+                stripe.CreditNote.create(
+                    invoice=invoice.id,
+                    lines=[
+                        {
+                            "type": "invoice_line_item",
+                            "invoice_line_item": invoice['lines']['data'][0]['id'],
+                            "quantity": invoice['lines']['data'][0]['quantity']
+                        }
+                    ],
+                    refund_amount=str(invoice['amount_paid'])
+                )
+
+            student = cancel_purchased_item.user
+            event = cancel_purchased_item.event
+            event.event_students.remove(student)
+            event.current_students -= 1
+            event.save()
+            cancel_purchased_item.active = False
+            cancel_purchased_item.refunded = True
+            cancel_purchased_item.save()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)

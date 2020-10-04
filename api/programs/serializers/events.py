@@ -24,7 +24,11 @@ class EventModelSerializer(serializers.ModelSerializer):
             'end',
             'backgroundColor',
             'videoconference',
-            'recurrent'
+            'recurrent',
+            'price',
+            'currency',
+            'can_be_booked'
+
         )
         # extra_kwargs = {'end': {'required': False}}
         read_only_fields = (

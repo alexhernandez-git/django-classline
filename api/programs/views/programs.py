@@ -347,18 +347,6 @@ class ProgramViewSet(mixins.CreateModelMixin,
         else:
             stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
 
-        # try:
-        #     cancel_subscription = Subscription.objects.get(user=request.user.code, program=program.code)
-        #     if cancel_subscription:
-        #         stripe.Subscription.modify(
-        #             cancel_subscription.subscription_id,
-        #             cancel_at_period_end=True
-        #         )
-        #         cancel_subscription.to_be_cancelled = True
-        #         cancel_subscription.save()
-        # except:
-        #     pass
-
         if not profile.subscriptions.filter(
                 user=request.user, program=program, active=True).exists() and user.created_account:
             return Response(data={'message': 'No puedes darte de baja de esta academia'}, status=status.HTTP_400_BAD_REQUEST)
@@ -366,7 +354,13 @@ class ProgramViewSet(mixins.CreateModelMixin,
         else:
             cancel_subscription = profile.subscriptions.filter(
                 user=request.user, program=program, active=True)[0]
-
+            try:
+                if cancel_subscription:
+                    stripe.Subscription.delete(
+                        cancel_subscription.subscription_id,
+                    )
+            except:
+                pass
             if cancel_subscription:
                 # Reembolso
 

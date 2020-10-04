@@ -17,3 +17,4 @@ from .posts import Post
 from .comments import Comment
 from .instructors import Instructor
 from .allowed_programs import AllowedProgram
+from .event_students import EventStudent

@@ -26,6 +26,17 @@ class Event(CLineModel):
     backgroundColor = models.CharField(max_length=50, blank=True, null=True)
     program = models.ForeignKey('programs.Program', on_delete=models.CASCADE)
     recurrent = models.BooleanField(default=False)
+    can_be_booked = models.BooleanField(default=False)
+    price = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0)
+    currency = models.CharField(max_length=3, null=True, blank=True)
+
+    current_students = models.PositiveIntegerField(null=True, blank=True)
+
+    event_students = models.ManyToManyField(
+        'users.User',
+        through='programs.EventStudent'
+    )
 
     def __str__(self):
         """Return price."""

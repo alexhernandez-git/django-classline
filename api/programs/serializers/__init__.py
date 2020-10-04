@@ -16,3 +16,5 @@ from .posts import *
 from .comments import *
 from .instructors import *
 from .allowed_programs import *
+from .events import *
+from .event_students import *
