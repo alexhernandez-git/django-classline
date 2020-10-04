@@ -61,6 +61,8 @@ const meetups = () => {
     videoconference: "",
     backgroundColor: "",
     recurrent: false,
+    can_be_booked: false,
+    price: 0,
   });
 
   useEffect(() => {
@@ -83,6 +85,11 @@ const meetups = () => {
           args.recurrent != null
             ? args.recurrent
             : args.extendedProps.recurrent,
+        can_be_booked:
+          args.can_be_booked != null
+            ? args.can_be_booked
+            : args.extendedProps.can_be_booked,
+        price: args.price != null ? args.price : args.extendedProps.price,
       });
     }
   }, [args]);
@@ -92,7 +99,6 @@ const meetups = () => {
 
   const handleSave = (e) => {
     e.preventDefault();
-    console.log(classData);
     updateEvent(classData);
     handleClose();
   };
@@ -132,6 +138,8 @@ const meetups = () => {
       videoconference: "",
       backgroundColor: "",
       recurrent: true,
+      can_be_booked: false,
+      price: 0,
     };
     setArgs(newEvent);
   };
@@ -149,6 +157,8 @@ const meetups = () => {
       videoconference: args.event.extendedProps.videoconference,
       day_of_week: args.event.extendedProps.day_of_week,
       recurrent: args.event.extendedProps.recurrent,
+      can_be_booked: args.event.extendedProps.can_be_booked,
+      price: args.event.extendedProps.price,
     });
   };
   const handleEventDrop = (args) => {
@@ -165,6 +175,8 @@ const meetups = () => {
       videoconference: args.event.extendedProps.videoconference,
       day_of_week: args.event.extendedProps.day_of_week,
       recurrent: args.event.extendedProps.recurrent,
+      can_be_booked: args.event.extendedProps.can_be_booked,
+      price: args.event.extendedProps.price,
     });
   };
 
@@ -214,6 +226,8 @@ const meetups = () => {
             color: meetup.backgroundColor && meetup.backgroundColor,
             videoconference: meetup.videoconference && meetup.videoconference,
             recurrent: meetup.recurrent && meetup.recurrent,
+            can_be_booked: meetup.can_be_booked && meetup.can_be_booked,
+            price: meetup.price && meetup.price,
           };
         } else {
           return {
@@ -225,6 +239,8 @@ const meetups = () => {
             color: meetup.backgroundColor && meetup.backgroundColor,
             videoconference: meetup.videoconference && meetup.videoconference,
             recurrent: meetup.recurrent && meetup.recurrent,
+            can_be_booked: meetup.can_be_booked && meetup.can_be_booked,
+            price: meetup.price && meetup.price,
           };
         }
       });

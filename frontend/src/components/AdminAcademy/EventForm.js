@@ -6,10 +6,9 @@ import { CirclePicker } from "react-color";
 import { AdminForm } from "src/components/ui/AdminForm";
 import Checkbox from "src/components/ui/Checkbox";
 import { CheckboxCustom } from "../ui/Checkbox";
-
+import NumberFormat from "react-number-format";
 export default function EventForm(props) {
   const { classData, setClassData, args, setArgs, isEdit } = props;
-  const MySwal = withReactContent(Swal);
 
   const handleChangeComplete = (color) => {
     if (isEdit) {
@@ -71,6 +70,44 @@ export default function EventForm(props) {
           />
           <span className="checkmark"></span>
         </CheckboxCustom>
+        <label className="mt-4">Evento reservable</label>
+
+        <CheckboxCustom className="mb-5">
+          <input
+            type="checkbox"
+            checked={classData.can_be_booked}
+            onChange={(e) => {
+              isEdit
+                ? setClassData({
+                    ...classData,
+                    can_be_booked: e.target.checked,
+                  })
+                : setArgs({ ...args, can_be_booked: e.target.checked });
+            }}
+          />
+          <span className="checkmark"></span>
+        </CheckboxCustom>
+        {classData.can_be_booked && (
+          <>
+            <label className="mt-4">Precio</label>
+            <NumberFormat
+              value={classData.price}
+              thousandSeparator={true}
+              prefix={"€"}
+              onValueChange={(values) => {
+                const { value } = values;
+                let newValue = Number(value).toFixed(2);
+
+                isEdit
+                  ? setClassData({
+                      ...classData,
+                      price: String(newValue),
+                    })
+                  : setArgs({ ...args, price: String(newValue) });
+              }}
+            />
+          </>
+        )}
         <label className="mt-4">Color del evento</label>
         <CirclePicker
           color={classData.backgroundColor}
