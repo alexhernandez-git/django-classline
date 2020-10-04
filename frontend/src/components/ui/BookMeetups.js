@@ -71,7 +71,7 @@ const BookMeetups = () => {
           };
         }
       });
-      setRecurringMeetups(newMeetups);
+      setRecurringMeetups(newMeetups.filter((meetup) => meetup.can_be_booked));
     }
   }, [meetupsReducer.isLoading, meetupsReducer.meetups]);
 
@@ -136,6 +136,7 @@ const BookMeetups = () => {
               selectAllow={function (selectInfo) {
                 return moment().diff(selectInfo.start) <= 0;
               }}
+              firstDay={moment().day()}
             />
           </div>
         </ContainerCalendar>

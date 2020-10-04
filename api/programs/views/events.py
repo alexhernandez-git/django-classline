@@ -118,9 +118,9 @@ class EventViewSet(mixins.CreateModelMixin,
             event_info, many=False).data
 
         if not serialized_event['can_be_booked']:
-            return Response({'message', 'Este evento no esta en venta'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'Este evento no esta en venta'}, status=status.HTTP_400_BAD_REQUEST)
         if serialized_event['price'] == 0:
-            return Response({'message', 'Este evento no tiene un precio válido'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'Este evento no tiene un precio válido'}, status=status.HTTP_400_BAD_REQUEST)
 
         subscription_product = stripe.Product.create(
             name=serialized_event.get('title'))
