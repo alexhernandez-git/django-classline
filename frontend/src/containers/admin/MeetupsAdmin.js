@@ -41,6 +41,7 @@ const meetups = () => {
 
   const [show, setShow] = useState(false);
   const [args, setArgs] = useState(null);
+  const [price, setPrice] = useState(null);
 
   const handleClose = () => {
     setIsEdit(false);
@@ -87,13 +88,10 @@ const meetups = () => {
             : args.extendedProps.recurrent,
         bookable:
           args.bookable != null ? args.bookable : args.extendedProps.bookable,
-        price: args.price != null ? args.price : args.extendedProps.price,
+        // price: args.price != null ? args.price : args.extendedProps.price,
       });
     }
   }, [args]);
-  useEffect(() => {
-    console.log(classData);
-  }, [classData]);
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -102,14 +100,14 @@ const meetups = () => {
   };
   const addEvent = () => {
     const dispatchCreateMeetup = (args) => dispatch(createMeetup(args));
-    dispatchCreateMeetup(args);
+    dispatchCreateMeetup({ ...args, price: price });
     // setEvents((events) => [...events, args]);
     handleClose();
   };
   const updateEvent = (event) => {
     setIsEdit(false);
     const dispatchEditMeetup = (event) => dispatch(editMeetup(event));
-    dispatchEditMeetup(event);
+    dispatchEditMeetup({ ...event, price: price });
     // setEvents((events) =>
     //   events.map((e) => (e.id == event.id ? { ...e, ...event } : e))
     // );
@@ -123,6 +121,7 @@ const meetups = () => {
   const handleEventClick = (args) => {
     setIsEdit(true);
     setArgs(args.event);
+    setPrice(args.event.extendedProps.price);
     handleShow();
   };
   const handleDateClick = (arg) => {
@@ -137,9 +136,9 @@ const meetups = () => {
       backgroundColor: "",
       recurrent: true,
       bookable: false,
-      price: 0,
     };
     setArgs(newEvent);
+    setPrice(0);
   };
   const handleEventResize = (args) => {
     updateEvent({
@@ -319,6 +318,8 @@ const meetups = () => {
           handleSave={handleSave}
           classData={classData}
           setClassData={setClassData}
+          price={price}
+          setPrice={setPrice}
         />
         <Modal.Footer>
           {isEdit ? (

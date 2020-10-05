@@ -8,7 +8,15 @@ import Checkbox from "src/components/ui/Checkbox";
 import { CheckboxCustom } from "../ui/Checkbox";
 import NumberFormat from "react-number-format";
 export default function EventForm(props) {
-  const { classData, setClassData, args, setArgs, isEdit } = props;
+  const {
+    classData,
+    setClassData,
+    args,
+    setArgs,
+    isEdit,
+    price,
+    setPrice,
+  } = props;
 
   const handleChangeComplete = (color) => {
     if (isEdit) {
@@ -97,19 +105,12 @@ export default function EventForm(props) {
           <>
             <label className="mt-4">Precio</label>
             <NumberFormat
-              value={classData.price}
+              value={price}
               thousandSeparator={true}
               prefix={"€"}
               onValueChange={(values) => {
-                const { value } = values;
-                let newValue = Number(value).toFixed(2);
-                newValue = String(newValue);
-                isEdit
-                  ? setClassData({
-                      ...classData,
-                      price: newValue,
-                    })
-                  : setArgs({ ...args, price: newValue });
+                const { value, floatValue } = values;
+                setPrice(floatValue.toFixed(2));
               }}
             />
           </>

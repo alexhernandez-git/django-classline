@@ -180,6 +180,7 @@ class EventViewSet(mixins.CreateModelMixin,
             stripe_account=event.program.user.profile.stripe_account_id,
         )
 
+        stripe.Invoice.pay(invoice['id'])
         new_purchased_item = PurchasedItem(
             invoice_item_id=invoice_item,
             invoice_id=invoice,
