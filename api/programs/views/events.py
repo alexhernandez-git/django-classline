@@ -44,7 +44,9 @@ class EventViewSet(mixins.CreateModelMixin,
         """Restrict list to public-only."""
 
         queryset = Event.objects.filter(program=self.program)
-
+        if self.action == 'list_events_booked':
+            queryset = Event.objects.filter(
+                event_students=self.request.user)
         return queryset
 
     def get_permissions(self):
@@ -92,6 +94,13 @@ class EventViewSet(mixins.CreateModelMixin,
 
         data = EventModelSerializer(event).data
         return Response(data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'])
+    def list_events_booked(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     @action(detail=True, methods=['patch'])
     def purchase_event(self, request, *args, **kwargs):

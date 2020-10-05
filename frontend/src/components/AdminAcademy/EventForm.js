@@ -103,6 +103,7 @@ export default function EventForm(props) {
         </CheckboxCustom>
         {classData.bookable && (
           <>
+            {console.log(classData)}
             <label className="mt-4">Precio</label>
             <NumberFormat
               value={price}
@@ -110,7 +111,10 @@ export default function EventForm(props) {
               prefix={"€"}
               onValueChange={(values) => {
                 const { value, floatValue } = values;
-                setPrice(floatValue.toFixed(2));
+
+                if (floatValue > 0 && floatValue) {
+                  setPrice(floatValue.toFixed(2));
+                }
               }}
             />
           </>

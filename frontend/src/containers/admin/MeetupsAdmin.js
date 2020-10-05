@@ -104,10 +104,14 @@ const meetups = () => {
     // setEvents((events) => [...events, args]);
     handleClose();
   };
-  const updateEvent = (event) => {
+  const updateEvent = (event, newPrice = null) => {
     setIsEdit(false);
     const dispatchEditMeetup = (event) => dispatch(editMeetup(event));
-    dispatchEditMeetup({ ...event, price: price });
+    if (newPrice) {
+      dispatchEditMeetup({ ...event, newPrice: price });
+    } else {
+      dispatchEditMeetup({ ...event, price: price });
+    }
     // setEvents((events) =>
     //   events.map((e) => (e.id == event.id ? { ...e, ...event } : e))
     // );
@@ -141,40 +145,47 @@ const meetups = () => {
     setPrice(0);
   };
   const handleEventResize = (args) => {
-    updateEvent({
-      id: args.event.id,
-      title: args.event.title,
-      start: args.event.start,
-      end: args.event.end,
-      backgroundColor:
-        args.event.backgroundColor != undefined
-          ? args.event.backgroundColor
-          : "",
-      description: args.event.extendedProps.description,
-      videoconference: args.event.extendedProps.videoconference,
-      day_of_week: args.event.extendedProps.day_of_week,
-      recurrent: args.event.extendedProps.recurrent,
-      bookable: args.event.extendedProps.bookable,
-      price: args.event.extendedProps.price,
-    });
+    updateEvent(
+      {
+        id: args.event.id,
+        title: args.event.title,
+        start: args.event.start,
+        end: args.event.end,
+        backgroundColor:
+          args.event.backgroundColor != undefined
+            ? args.event.backgroundColor
+            : "",
+        description: args.event.extendedProps.description,
+        videoconference: args.event.extendedProps.videoconference,
+        day_of_week: args.event.extendedProps.day_of_week,
+        recurrent: args.event.extendedProps.recurrent,
+        bookable: args.event.extendedProps.bookable,
+        price: args.event.extendedProps.price,
+      },
+      args.event.extendedProps.price
+    );
+    setPrice(args.event.extendedProps.price);
   };
   const handleEventDrop = (args) => {
-    updateEvent({
-      id: args.event.id,
-      title: args.event.title,
-      start: args.event.start,
-      end: args.event.end,
-      backgroundColor:
-        args.event.backgroundColor != undefined
-          ? args.event.backgroundColor
-          : "",
-      description: args.event.extendedProps.description,
-      videoconference: args.event.extendedProps.videoconference,
-      day_of_week: args.event.extendedProps.day_of_week,
-      recurrent: args.event.extendedProps.recurrent,
-      bookable: args.event.extendedProps.bookable,
-      price: args.event.extendedProps.price,
-    });
+    updateEvent(
+      {
+        id: args.event.id,
+        title: args.event.title,
+        start: args.event.start,
+        end: args.event.end,
+        backgroundColor:
+          args.event.backgroundColor != undefined
+            ? args.event.backgroundColor
+            : "",
+        description: args.event.extendedProps.description,
+        videoconference: args.event.extendedProps.videoconference,
+        day_of_week: args.event.extendedProps.day_of_week,
+        recurrent: args.event.extendedProps.recurrent,
+        bookable: args.event.extendedProps.bookable,
+        price: args.event.extendedProps.price,
+      },
+      args.event.extendedProps.price
+    );
   };
 
   // const handleEventClick = (args) => {

@@ -123,6 +123,7 @@ router.register(
     InstructorViewSet,
     basename='instructors'
 )
+
 urlpatterns = [
     path('', include(router.urls))
 ]

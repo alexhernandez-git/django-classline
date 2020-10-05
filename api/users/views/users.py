@@ -184,7 +184,10 @@ class UserViewSet(mixins.RetrieveModelMixin,
     @action(detail=True, methods=['post'])
     def login_from_platform(self, request, *args, **kwargs):
         """User login."""
-
+        if 'STRIPE_API_KEY' in os.environ:
+            stripe.api_key = os.environ['STRIPE_API_KEY']
+        else:
+            stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
         program = get_object_or_404(
             Program,
             code=kwargs['code']
@@ -218,6 +221,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
             user_data['profile']['payment_methods'] = payment_methods.data
         else:
             user_data['profile']['payment_methods'] = None
+
         try:
             rating = Rating.objects.get(
                 rated_program=program, rating_user=user)
@@ -228,8 +232,9 @@ class UserViewSet(mixins.RetrieveModelMixin,
                 'have_access': have_access
             }
         except ObjectDoesNotExist:
+
             data = {
-                'user':  UserModelSerializer(user, many=False).data,
+                'user': user_data,
                 'access_token': token,
                 'rating': None,
                 'have_access': have_access

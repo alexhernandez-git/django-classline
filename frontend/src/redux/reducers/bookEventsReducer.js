@@ -2,6 +2,9 @@ import {
   BOOK_EVENT,
   BOOK_EVENT_FAIL,
   BOOK_EVENT_SUCCESS,
+  FETCH_EVENTS_BOOKED,
+  FETCH_EVENTS_BOOKED_FAIL,
+  FETCH_EVENTS_BOOKED_SUCCESS,
   SET_SELECTED_EVENT,
 } from "../types";
 
@@ -11,6 +14,7 @@ const initialState = {
   event_booking: false,
   events: [],
   error: null,
+  event_booking_error: null,
 };
 
 export default function (state = initialState, action) {
@@ -43,6 +47,25 @@ export default function (state = initialState, action) {
       return {
         ...state,
         event_booking: false,
+        event_booking_error: action.payload,
+      };
+    case FETCH_EVENTS_BOOKED:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case FETCH_EVENTS_BOOKED_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        events: action.payload,
+      };
+
+    case FETCH_EVENTS_BOOKED_FAIL:
+      return {
+        ...state,
+        events: null,
+        isLoading: false,
         error: action.payload,
       };
     default:

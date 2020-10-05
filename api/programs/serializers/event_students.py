@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
 # Models
-from api.programs.models import Student
+from api.programs.models import EventStudent
 from api.users.models import User
 
 
@@ -19,10 +19,11 @@ class EventStudentModelSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class."""
 
-        model = Student
+        model = EventStudent
         fields = (
             'id',
             'user',
+            'event',
             'created'
         )
         # extra_kwargs = {'end': {'required': False}}
@@ -42,10 +43,12 @@ class EventStudentListModelSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class."""
 
-        model = Student
+        model = EventStudent
         fields = (
             'id',
             'user',
+            'event',
+
             'created'
         )
         # extra_kwargs = {'end': {'required': False}}

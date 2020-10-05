@@ -72,7 +72,21 @@ const CheckoutOnlineClass = (props) => {
     dispatch(bookEvent(bookEventsReducer.selected_event, paymentMethodId));
   };
   const [newCard, setNewCard] = useState(false);
-
+  const [isMyEvent, setIsMyEvent] = useState({
+    loading: true,
+    isMyEvent: false,
+  });
+  useEffect(() => {
+    console.log("entra");
+    if (bookEventsReducer.selected_event) {
+      console.log(bookEventsReducer.selected_event);
+      console.log(bookEventsReducer.events);
+      const result = bookEventsReducer.events.some(
+        (event) => event.id == bookEventsReducer.selected_event.id
+      );
+      setIsMyEvent({ loading: false, isMyEvent: result });
+    }
+  }, [bookEventsReducer.selected_event, bookEventsReducer.events]);
   return bookEventsReducer.selected_event == null ? (
     /\/checkout-class-academy\/?$/.test(pathname) ? (
       <Redirect to={`/academy/${program}`} />
@@ -168,360 +182,373 @@ const CheckoutOnlineClass = (props) => {
             </div>
 
             <div className="my-4"></div>
-            {authReducer.isLoading ? (
+            {isMyEvent.loading ? (
               "Cargando..."
-            ) : authReducer.isAuthenticated && authReducer.user ? (
+            ) : isMyEvent.isMyEvent ? (
+              <></>
+            ) : (
               <>
-                <span>
-                  Hola,
-                  <br />
-                  <span className="font-weight-bold">
-                    {authReducer.user.first_name} {authReducer.user.last_name}
-                  </span>
-                </span>
-                <form onSubmit={handleSubmit}>
-                  {(newCard ||
-                    authReducer.user.profile.payment_methods == null ||
-                    authReducer.user.profile.payment_methods.length == 0) && (
-                    <>
-                      <CardElement />
-                    </>
-                  )}
+                {authReducer.isLoading ? (
+                  "Cargando..."
+                ) : authReducer.isAuthenticated && authReducer.user ? (
+                  <>
+                    <span>
+                      Hola,
+                      <br />
+                      <span className="font-weight-bold">
+                        {authReducer.user.first_name}{" "}
+                        {authReducer.user.last_name}
+                      </span>
+                    </span>
+                    <form onSubmit={handleSubmit}>
+                      {(newCard ||
+                        authReducer.user.profile.payment_methods == null ||
+                        authReducer.user.profile.payment_methods.length ==
+                          0) && (
+                        <>
+                          <CardElement />
+                        </>
+                      )}
 
-                  {(newCard ||
-                    authReducer.user.profile.payment_methods == null ||
-                    authReducer.user.profile.payment_methods.length == 0) && (
-                    <>
-                      <button
-                        type="submit"
-                        className="d-flex align-items-center w-100 justify-content-center my-button"
-                        disabled={!stripe}
-                      >
-                        {programReducer.program.is_subscribed ? (
-                          <>Cambiar Plan</>
-                        ) : (
+                      {(newCard ||
+                        authReducer.user.profile.payment_methods == null ||
+                        authReducer.user.profile.payment_methods.length ==
+                          0) && (
+                        <>
+                          <button
+                            type="submit"
+                            className="d-flex align-items-center w-100 justify-content-center my-button"
+                            disabled={!stripe}
+                          >
+                            {programReducer.program.is_subscribed ? (
+                              <>Cambiar Plan</>
+                            ) : (
+                              <>
+                                Pagar
+                                <IconContext.Provider
+                                  value={{
+                                    size: 20,
+                                    className: "global-class-name ml-2",
+                                  }}
+                                >
+                                  <RiSecurePaymentLine />
+                                </IconContext.Provider>
+                              </>
+                            )}
+                          </button>
+                        </>
+                      )}
+                      {authReducer.user.profile.payment_methods != undefined &&
+                        authReducer.user.profile.payment_methods.length > 0 &&
+                        !newCard && (
                           <>
-                            Pagar
-                            <IconContext.Provider
-                              value={{
-                                size: 20,
-                                className: "global-class-name ml-2",
+                            <button
+                              type="button"
+                              className="d-flex align-items-center w-100 justify-content-center my-button mt-3"
+                              disabled={!stripe}
+                              onClick={() => {
+                                handleBookSaved(
+                                  authReducer.user.profile.payment_methods[0].id
+                                );
                               }}
                             >
-                              <RiSecurePaymentLine />
-                            </IconContext.Provider>
+                              {programReducer.program.is_subscribed ? (
+                                <>Cambiar Plan</>
+                              ) : (
+                                <>
+                                  Pague con tarjeta que termina con{" "}
+                                  {
+                                    authReducer.user.profile.payment_methods[0]
+                                      .card.last4
+                                  }
+                                  <IconContext.Provider
+                                    value={{
+                                      size: 20,
+                                      className:
+                                        "global-class-name ml-2 text-white",
+                                    }}
+                                  >
+                                    <RiSecurePaymentLine />
+                                  </IconContext.Provider>
+                                </>
+                              )}
+                            </button>
+                            {!programReducer.program.is_subscribed && (
+                              <button
+                                type="button"
+                                className="d-flex align-items-center w-100 justify-content-center mt-3 my-button "
+                                disabled={!stripe}
+                                onClick={() => setNewCard(true)}
+                              >
+                                Añadir un metodo de pago
+                                <IconContext.Provider
+                                  value={{
+                                    size: 20,
+                                    className:
+                                      "global-class-name ml-2 text-white",
+                                  }}
+                                >
+                                  <FaCreditCard />
+                                </IconContext.Provider>
+                              </button>
+                            )}
                           </>
                         )}
-                      </button>
-                    </>
-                  )}
-                  {authReducer.user.profile.payment_methods != undefined &&
-                    authReducer.user.profile.payment_methods.length > 0 &&
-                    !newCard && (
-                      <>
-                        <button
-                          type="button"
-                          className="d-flex align-items-center w-100 justify-content-center my-button mt-3"
-                          disabled={!stripe}
+                    </form>
+                  </>
+                ) : (
+                  <div>
+                    <div className="d-flex justify-content-center">
+                      <div>
+                        <span
+                          className="h5 mb-0 font-weight-normal cursor-pointer underline"
                           onClick={() => {
-                            handleBookSaved(
-                              authReducer.user.profile.payment_methods[0].id
-                            );
+                            setIsRegister(true);
                           }}
                         >
-                          {programReducer.program.is_subscribed ? (
-                            <>Cambiar Plan</>
-                          ) : (
-                            <>
-                              Pague con tarjeta que termina con{" "}
-                              {
-                                authReducer.user.profile.payment_methods[0].card
-                                  .last4
-                              }
-                              <IconContext.Provider
-                                value={{
-                                  size: 20,
-                                  className:
-                                    "global-class-name ml-2 text-white",
+                          Registrate
+                        </span>{" "}
+                        o{" "}
+                        <span
+                          className="h5 mb-0 font-weight-normal cursor-pointer underline"
+                          onClick={() => {
+                            setIsRegister(false);
+                          }}
+                        >
+                          Inicia sesión
+                        </span>
+                      </div>
+                    </div>
+                    <div className="d-flex justify-content-center">
+                      para adquirir la clase
+                    </div>
+                    <LoginRegisterContainer>
+                      {isRegister ? (
+                        <div>
+                          <div className="h5 mb-3 font-weight-normal d-flex justify-content-center">
+                            <span>Registrate</span>
+                          </div>
+                          <Formik
+                            enableReinitialize={true}
+                            initialValues={{
+                              first_name: "",
+                              last_name: "",
+                              email: "",
+                              password: "",
+                              password_confirmation: "",
+                            }}
+                            onSubmit={(values) => {
+                              const dispatchLogin = (values) =>
+                                dispatch(registerCheckoutClass(values));
+                              dispatchLogin(values);
+                            }}
+                          >
+                            {(props) => {
+                              return (
+                                <>
+                                  <FormFormik>
+                                    <Form>
+                                      <Field
+                                        name="first_name"
+                                        type="text"
+                                        placeholder="Nombre"
+                                      />
+                                      {authReducer.error &&
+                                        authReducer.error.data.first_name &&
+                                        authReducer.error.data.first_name.map(
+                                          (error) => (
+                                            <small className="d-block text-red">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <Field
+                                        name="last_name"
+                                        type="text"
+                                        placeholder="Apellidos"
+                                      />
+
+                                      {authReducer.error &&
+                                        authReducer.error.data.last_name &&
+                                        authReducer.error.data.last_name.map(
+                                          (error) => (
+                                            <small className="d-block text-red">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <Field
+                                        name="email"
+                                        type="text"
+                                        placeholder="Email or Username"
+                                      />
+                                      {authReducer.error &&
+                                        authReducer.error.data.email &&
+                                        authReducer.error.data.email.map(
+                                          (error) => (
+                                            <small className="d-block text-red">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <Field
+                                        name="password"
+                                        type="password"
+                                        placeholder="Contraseña"
+                                      />
+                                      {authReducer.error &&
+                                        authReducer.error.data.password &&
+                                        authReducer.error.data.password.map(
+                                          (error) => (
+                                            <small className="d-block text-red">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <Field
+                                        name="password_confirmation"
+                                        type="password"
+                                        placeholder="Confirmar contraseña"
+                                      />
+                                      {authReducer.error &&
+                                        authReducer.error.data
+                                          .password_confirmation &&
+                                        authReducer.error.data.password_confirmation.map(
+                                          (error) => (
+                                            <small className="d-block text-red">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <div className="m-1"></div>
+
+                                      <button
+                                        className="shadow"
+                                        className="my-button"
+                                        type="submit"
+                                      >
+                                        Registrarse
+                                      </button>
+                                    </Form>
+                                  </FormFormik>
+                                </>
+                              );
+                            }}
+                          </Formik>
+                          <div className="mt-2 d-sm-flex justify-content-end">
+                            <small>
+                              ¿Ya tienes una cuenta de Classline Academy?{" "}
+                              <span
+                                className="cursor-pointer underline"
+                                onClick={() => {
+                                  setIsRegister(false);
                                 }}
                               >
-                                <RiSecurePaymentLine />
-                              </IconContext.Provider>
-                            </>
-                          )}
-                        </button>
-                        {!programReducer.program.is_subscribed && (
-                          <button
-                            type="button"
-                            className="d-flex align-items-center w-100 justify-content-center mt-3 my-button "
-                            disabled={!stripe}
-                            onClick={() => setNewCard(true)}
+                                Clica aqui
+                              </span>
+                            </small>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <div className="h5 mb-3 font-weight-normal d-flex justify-content-center">
+                            <span>Inicia Sesión</span>
+                          </div>
+                          <Formik
+                            enableReinitialize={true}
+                            initialValues={{
+                              email: "",
+                              password: "",
+                            }}
+                            onSubmit={(values) => {
+                              const dispatchLogin = (values) =>
+                                dispatch(login(values));
+                              dispatchLogin(values);
+                            }}
                           >
-                            Añadir un metodo de pago
-                            <IconContext.Provider
-                              value={{
-                                size: 20,
-                                className: "global-class-name ml-2 text-white",
-                              }}
-                            >
-                              <FaCreditCard />
-                            </IconContext.Provider>
-                          </button>
-                        )}
-                      </>
-                    )}
-                </form>
-              </>
-            ) : (
-              <div>
-                <div className="d-flex justify-content-center">
-                  <div>
-                    <span
-                      className="h5 mb-0 font-weight-normal cursor-pointer underline"
-                      onClick={() => {
-                        setIsRegister(true);
-                      }}
-                    >
-                      Registrate
-                    </span>{" "}
-                    o{" "}
-                    <span
-                      className="h5 mb-0 font-weight-normal cursor-pointer underline"
-                      onClick={() => {
-                        setIsRegister(false);
-                      }}
-                    >
-                      Inicia sesión
-                    </span>
+                            {(props) => {
+                              return (
+                                <>
+                                  <FormFormik>
+                                    <Form>
+                                      {authReducer.error &&
+                                        authReducer.error.data.detail && (
+                                          <small className="d-block text-red text-center mb-2">
+                                            {authReducer.error.data.detail}
+                                          </small>
+                                        )}
+
+                                      {authReducer.error &&
+                                        authReducer.error.data
+                                          .non_field_errors &&
+                                        authReducer.error.data.non_field_errors.map(
+                                          (error) => (
+                                            <small className="d-block text-red text-center mb-2">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <Field
+                                        name="email"
+                                        type="text"
+                                        placeholder="Email or Username"
+                                      />
+                                      {authReducer.error &&
+                                        authReducer.error.data.email &&
+                                        authReducer.error.data.email.map(
+                                          (error) => (
+                                            <small className="d-block text-red">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <Field
+                                        name="password"
+                                        type="password"
+                                        placeholder="Contraseña"
+                                      />
+                                      {authReducer.error &&
+                                        authReducer.error.data.password &&
+                                        authReducer.error.data.password.map(
+                                          (error) => (
+                                            <small className="d-block text-red">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <div className="m-1"></div>
+                                      <button
+                                        className="shadow"
+                                        className="my-button"
+                                        type="submit"
+                                      >
+                                        Iniciar sesión
+                                      </button>
+                                    </Form>
+                                  </FormFormik>
+                                </>
+                              );
+                            }}
+                          </Formik>
+                          <div className="mt-2 d-sm-flex justify-content-end">
+                            <small>
+                              ¿No tienes una cuenta de Classline Academy?{" "}
+                              <span
+                                className="cursor-pointer underline"
+                                onClick={() => {
+                                  setIsRegister(true);
+                                }}
+                              >
+                                Clica aqui
+                              </span>
+                            </small>
+                          </div>
+                        </div>
+                      )}
+                    </LoginRegisterContainer>
                   </div>
-                </div>
-                <div className="d-flex justify-content-center">
-                  para adquirir la clase
-                </div>
-                <LoginRegisterContainer>
-                  {isRegister ? (
-                    <div>
-                      <div className="h5 mb-3 font-weight-normal d-flex justify-content-center">
-                        <span>Registrate</span>
-                      </div>
-                      <Formik
-                        enableReinitialize={true}
-                        initialValues={{
-                          first_name: "",
-                          last_name: "",
-                          email: "",
-                          password: "",
-                          password_confirmation: "",
-                        }}
-                        onSubmit={(values) => {
-                          const dispatchLogin = (values) =>
-                            dispatch(registerCheckoutClass(values));
-                          dispatchLogin(values);
-                        }}
-                      >
-                        {(props) => {
-                          return (
-                            <>
-                              <FormFormik>
-                                <Form>
-                                  <Field
-                                    name="first_name"
-                                    type="text"
-                                    placeholder="Nombre"
-                                  />
-                                  {authReducer.error &&
-                                    authReducer.error.data.first_name &&
-                                    authReducer.error.data.first_name.map(
-                                      (error) => (
-                                        <small className="d-block text-red">
-                                          {error}
-                                        </small>
-                                      )
-                                    )}
-                                  <Field
-                                    name="last_name"
-                                    type="text"
-                                    placeholder="Apellidos"
-                                  />
-
-                                  {authReducer.error &&
-                                    authReducer.error.data.last_name &&
-                                    authReducer.error.data.last_name.map(
-                                      (error) => (
-                                        <small className="d-block text-red">
-                                          {error}
-                                        </small>
-                                      )
-                                    )}
-                                  <Field
-                                    name="email"
-                                    type="text"
-                                    placeholder="Email or Username"
-                                  />
-                                  {authReducer.error &&
-                                    authReducer.error.data.email &&
-                                    authReducer.error.data.email.map(
-                                      (error) => (
-                                        <small className="d-block text-red">
-                                          {error}
-                                        </small>
-                                      )
-                                    )}
-                                  <Field
-                                    name="password"
-                                    type="password"
-                                    placeholder="Contraseña"
-                                  />
-                                  {authReducer.error &&
-                                    authReducer.error.data.password &&
-                                    authReducer.error.data.password.map(
-                                      (error) => (
-                                        <small className="d-block text-red">
-                                          {error}
-                                        </small>
-                                      )
-                                    )}
-                                  <Field
-                                    name="password_confirmation"
-                                    type="password"
-                                    placeholder="Confirmar contraseña"
-                                  />
-                                  {authReducer.error &&
-                                    authReducer.error.data
-                                      .password_confirmation &&
-                                    authReducer.error.data.password_confirmation.map(
-                                      (error) => (
-                                        <small className="d-block text-red">
-                                          {error}
-                                        </small>
-                                      )
-                                    )}
-                                  <div className="m-1"></div>
-
-                                  <button
-                                    className="shadow"
-                                    className="my-button"
-                                    type="submit"
-                                  >
-                                    Registrarse
-                                  </button>
-                                </Form>
-                              </FormFormik>
-                            </>
-                          );
-                        }}
-                      </Formik>
-                      <div className="mt-2 d-sm-flex justify-content-end">
-                        <small>
-                          ¿Ya tienes una cuenta de Classline Academy?{" "}
-                          <span
-                            className="cursor-pointer underline"
-                            onClick={() => {
-                              setIsRegister(false);
-                            }}
-                          >
-                            Clica aqui
-                          </span>
-                        </small>
-                      </div>
-                    </div>
-                  ) : (
-                    <div>
-                      <div className="h5 mb-3 font-weight-normal d-flex justify-content-center">
-                        <span>Inicia Sesión</span>
-                      </div>
-                      <Formik
-                        enableReinitialize={true}
-                        initialValues={{
-                          email: "",
-                          password: "",
-                        }}
-                        onSubmit={(values) => {
-                          const dispatchLogin = (values) =>
-                            dispatch(login(values));
-                          dispatchLogin(values);
-                        }}
-                      >
-                        {(props) => {
-                          return (
-                            <>
-                              <FormFormik>
-                                <Form>
-                                  {authReducer.error &&
-                                    authReducer.error.data.detail && (
-                                      <small className="d-block text-red text-center mb-2">
-                                        {authReducer.error.data.detail}
-                                      </small>
-                                    )}
-
-                                  {authReducer.error &&
-                                    authReducer.error.data.non_field_errors &&
-                                    authReducer.error.data.non_field_errors.map(
-                                      (error) => (
-                                        <small className="d-block text-red text-center mb-2">
-                                          {error}
-                                        </small>
-                                      )
-                                    )}
-                                  <Field
-                                    name="email"
-                                    type="text"
-                                    placeholder="Email or Username"
-                                  />
-                                  {authReducer.error &&
-                                    authReducer.error.data.email &&
-                                    authReducer.error.data.email.map(
-                                      (error) => (
-                                        <small className="d-block text-red">
-                                          {error}
-                                        </small>
-                                      )
-                                    )}
-                                  <Field
-                                    name="password"
-                                    type="password"
-                                    placeholder="Contraseña"
-                                  />
-                                  {authReducer.error &&
-                                    authReducer.error.data.password &&
-                                    authReducer.error.data.password.map(
-                                      (error) => (
-                                        <small className="d-block text-red">
-                                          {error}
-                                        </small>
-                                      )
-                                    )}
-                                  <div className="m-1"></div>
-                                  <button
-                                    className="shadow"
-                                    className="my-button"
-                                    type="submit"
-                                  >
-                                    Iniciar sesión
-                                  </button>
-                                </Form>
-                              </FormFormik>
-                            </>
-                          );
-                        }}
-                      </Formik>
-                      <div className="mt-2 d-sm-flex justify-content-end">
-                        <small>
-                          ¿No tienes una cuenta de Classline Academy?{" "}
-                          <span
-                            className="cursor-pointer underline"
-                            onClick={() => {
-                              setIsRegister(true);
-                            }}
-                          >
-                            Clica aqui
-                          </span>
-                        </small>
-                      </div>
-                    </div>
-                  )}
-                </LoginRegisterContainer>
-              </div>
+                )}
+              </>
             )}
           </div>
           <div className="offset-sm-2 col-sm-4 offset-lg-0 col-lg-2 d-none d-sm-block">

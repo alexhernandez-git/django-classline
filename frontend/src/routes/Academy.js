@@ -46,6 +46,7 @@ import PostAcademy from "../containers/PostAcademy";
 import InstructorAccountsAdmin from "../containers/admin/InstructorAccountsAdmin";
 import CheckoutOnlineClass from "../containers/CheckoutOnlineClass";
 import BookClassContainer from "../containers/BookClassContainer";
+import { fetchEventsBooked } from "../redux/actions/bookEvents";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -63,7 +64,12 @@ const Academy = () => {
       dispatchFetchProgram(programId);
     }
   }, [programId]);
-
+  useEffect(() => {
+    if (programReducer.program && !authReducer.isLoading && authReducer.user) {
+      const dispatchEventsBooked = () => dispatch(fetchEventsBooked());
+      dispatchEventsBooked();
+    }
+  }, [authReducer.isLoading, authReducer.isAuthenticated]);
   useEffect(() => {
     if (
       !programReducer.isLoading &&

@@ -6,6 +6,9 @@ import {
   BOOK_EVENT,
   BOOK_EVENT_FAIL,
   BOOK_EVENT_SUCCESS,
+  FETCH_EVENTS_BOOKED,
+  FETCH_EVENTS_BOOKED_SUCCESS,
+  FETCH_EVENTS_BOOKED_FAIL,
 } from "../types";
 
 import { tokenConfig } from "./auth";
@@ -52,6 +55,32 @@ export const bookEvent = (
     .catch((err) => {
       dispatch({
         type: BOOK_EVENT_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+// CHECK TOKEN & LOAD USER
+export const fetchEventsBooked = () => (dispatch, getState) => {
+  // User Loading
+  dispatch({ type: FETCH_EVENTS_BOOKED });
+
+  axios
+    .get(
+      `/api/programs/${
+        getState().programReducer.program.code
+      }/events/list_events_booked/`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      dispatch({
+        type: FETCH_EVENTS_BOOKED_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: FETCH_EVENTS_BOOKED_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
