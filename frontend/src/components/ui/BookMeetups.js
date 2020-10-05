@@ -88,10 +88,13 @@ const BookMeetups = (props) => {
         className="mb-5 pb-5"
         style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
       >
-        <Filters
-          title="Aqui puedes conseguir acceso a tus clases online sin necesidad de ser alumno"
-          className="border-bottom"
-        />
+        <Filters title="Reservar clases online" className="border-bottom" />
+        <div className="mt-4 d-flex justify-content-end container">
+          <MyButton className="my-button button-1 selected">
+            Ver todas las clases
+          </MyButton>
+          <MyButton className="my-button button-2">Ver mis clases</MyButton>
+        </div>
         <ContainerCalendar className="container mt-4">
           <div className="calendar">
             <FullCalendar
@@ -101,7 +104,7 @@ const BookMeetups = (props) => {
               header={{
                 left: "prev,next today",
                 center: "title",
-                right: "timeGridWeek,timeGridDay",
+                right: "dayGridMonth,timeGridWeek,timeGridDay",
               }}
               weekends={true}
               themeSystem="bootstrap"
@@ -147,9 +150,6 @@ const BookMeetups = (props) => {
             />
           </div>
         </ContainerCalendar>
-        <div className="mt-5 d-flex justify-content-end container">
-          <MyButton className="my-button">Ir a mis clases adquiridas</MyButton>
-        </div>
       </div>
     </ContainerCalendarDiv>
   );
@@ -158,14 +158,24 @@ const MyButton = styled.span`
   text-align: center;
   cursor: pointer;
   border: 0;
-  padding: 0.5rem 1rem;
+  padding: 0.4em 0.65em;
+  font-size: 1em;
+  line-height: 1.5;
   background: var(--gradient);
   color: #fff;
-  border-radius: 0.7rem;
-  &:active {
+  &.button-1 {
+    border-radius: 0.25em 0 0 0.25em;
+  }
+  &.button-2 {
+    border-radius: 0 0.25em 0.25em 0;
+  }
+  &.selected {
+    opacity: 0.8;
+  }
+  /* &:active {
     position: relative;
     top: 1px;
-  }
+  } */
 `;
 const ContainerCalendar = styled.div`
   overflow: hidden;
@@ -183,6 +193,12 @@ const ContainerCalendar = styled.div`
   }
   .fc-button:focus {
     box-shadow: none !important;
+  }
+  .fc-button-active {
+    opacity: 0.8;
+  }
+  .fc-button-group > .fc-button:not(:first-child) {
+    margin-left: 0 !important;
   }
 `;
 const ContainerCalendarDiv = styled.div`

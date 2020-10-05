@@ -186,7 +186,9 @@ class EventViewSet(mixins.CreateModelMixin,
 
         invoice = stripe.Invoice.create(
             customer=customer_id,
+            application_fee_amount=10,
             stripe_account=event.program.user.profile.stripe_account_id,
+
         )
 
         stripe.Invoice.pay(invoice['id'])

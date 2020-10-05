@@ -77,7 +77,6 @@ const CheckoutOnlineClass = (props) => {
     isMyEvent: false,
   });
   useEffect(() => {
-    console.log("entra");
     if (bookEventsReducer.selected_event) {
       console.log(bookEventsReducer.selected_event);
       console.log(bookEventsReducer.events);
