@@ -121,7 +121,7 @@ const StripeConnect = (props) => {
               .commercial_stripe_account_id == undefined ? (
               <>
                 <a
-                  href="https://dashboard.stripe.com/oauth/authorize?response_type=code&client_id=ca_HmRkLTjyLDqt32B5GRlzOhlqeH4ry79e&scope=read_write&redirect_uri=https://classlineacademy.com/dashboard/profile"
+                  href="https://dashboard.stripe.com/oauth/authorize?response_type=code&client_id=ca_HmRky5LBHShFfC92Xzjsz0Mj82piwIiy&scope=read_write&redirect_uri=https://classlineacademy.com/dashboard/profile"
                   className="connect-button"
                 >
                   {/* prod */}
