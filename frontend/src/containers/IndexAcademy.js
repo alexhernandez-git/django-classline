@@ -303,7 +303,7 @@ const index = () => {
 
       <div className="container my-5 mx-auto w-auto">
         <div className="row mx-2">
-          <BookMeetups />
+          <BookMeetups isAcademy />
         </div>
         <div className="row mx-2">
           <ProgramInfo className="text-grey">

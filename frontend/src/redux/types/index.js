@@ -411,3 +411,6 @@ export const CANECEL_INSTRUCTOR_ACCOUNTS_FAIL =
 
 // Reservar eventos
 export const SET_SELECTED_EVENT = "SET_SELECTED_EVENT";
+export const BOOK_EVENT = "BOOK_EVENT";
+export const BOOK_EVENT_SUCCESS = "BOOK_EVENT_SUCCESS";
+export const BOOK_EVENT_FAIL = "BOOK_EVENT_FAIL";

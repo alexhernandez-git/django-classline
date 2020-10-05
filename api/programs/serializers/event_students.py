@@ -77,6 +77,7 @@ class AddEventStudentSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
 
         instance.event_students.add(validated_data['user'])
+
         instance.current_students += 1
         instance.save()
         return instance

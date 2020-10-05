@@ -11,9 +11,11 @@ import styled from "@emotion/styled";
 import { fetchMeetups } from "src/redux/actions/meetups";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useHistory, Link } from "react-router-dom";
 import { setSelectedEvent } from "../../redux/actions/bookEvents";
-const BookMeetups = () => {
+import { ButtonCustom } from "./ButtonCustom";
+const BookMeetups = (props) => {
+  const { isAcademy } = props;
   const { pathname } = useLocation();
   const { push } = useHistory();
 
@@ -30,15 +32,14 @@ const BookMeetups = () => {
   const [show, setShow] = useState(false);
   const [args, setArgs] = useState(null);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => {
-    !/\/demo\//.test(pathname) && setShow(true);
-  };
-  const [isOpen, setIsOpen] = useState(false);
   const handleEventClick = (args) => {
     setArgs(args);
     dispatch(setSelectedEvent(args.event));
-    push(`/academy/${programReducer.program.code}/book-class`);
+    if (isAcademy) {
+      push(`/academy/${programReducer.program.code}/checkout-class-academy`);
+    } else {
+      push(`/academy/${programReducer.program.code}/checkout-class`);
+    }
   };
   const [recurringMeetups, setRecurringMeetups] = useState([]);
   useEffect(() => {
@@ -57,6 +58,9 @@ const BookMeetups = () => {
             color: meetup.backgroundColor && meetup.backgroundColor,
             videoconference: meetup.videoconference && meetup.videoconference,
             recurrent: meetup.recurrent && meetup.recurrent,
+            price: meetup.price && meetup.price,
+            currency: meetup.currency && meetup.currency,
+            bookable: meetup.bookable && meetup.bookable,
           };
         } else {
           return {
@@ -68,6 +72,9 @@ const BookMeetups = () => {
             color: meetup.backgroundColor && meetup.backgroundColor,
             videoconference: meetup.videoconference && meetup.videoconference,
             recurrent: meetup.recurrent && meetup.recurrent,
+            price: meetup.price && meetup.price,
+            currency: meetup.currency && meetup.currency,
+            bookable: meetup.bookable && meetup.bookable,
           };
         }
       });
@@ -82,7 +89,7 @@ const BookMeetups = () => {
         style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
       >
         <Filters
-          title="Aqui puedes conseguir acceso tus clases online sin necesidad de ser alumno"
+          title="Aqui puedes conseguir acceso a tus clases online sin necesidad de ser alumno"
           className="border-bottom"
         />
         <ContainerCalendar className="container mt-4">
@@ -140,12 +147,25 @@ const BookMeetups = () => {
             />
           </div>
         </ContainerCalendar>
+        <div className="mt-5 d-flex justify-content-end container">
+          <MyButton className="my-button">Ir a mis clases adquiridas</MyButton>
+        </div>
       </div>
     </ContainerCalendarDiv>
   );
 };
-const LinkVideconference = styled.a`
-  color: #fff !important;
+const MyButton = styled.span`
+  text-align: center;
+  cursor: pointer;
+  border: 0;
+  padding: 0.5rem 1rem;
+  background: var(--gradient);
+  color: #fff;
+  border-radius: 0.7rem;
+  &:active {
+    position: relative;
+    top: 1px;
+  }
 `;
 const ContainerCalendar = styled.div`
   overflow: hidden;
@@ -154,6 +174,15 @@ const ContainerCalendar = styled.div`
     min-width: 90rem;
 
     overflow-x: auto;
+  }
+  .fc-button {
+    box-shadow: none !important;
+
+    background: var(--gradient) !important;
+    border: 0 !important;
+  }
+  .fc-button:focus {
+    box-shadow: none !important;
   }
 `;
 const ContainerCalendarDiv = styled.div`

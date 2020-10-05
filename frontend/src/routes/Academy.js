@@ -45,6 +45,7 @@ import DocsAdmin from "../containers/admin/DocsAdmin";
 import PostAcademy from "../containers/PostAcademy";
 import InstructorAccountsAdmin from "../containers/admin/InstructorAccountsAdmin";
 import CheckoutOnlineClass from "../containers/CheckoutOnlineClass";
+import BookClassContainer from "../containers/BookClassContainer";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -104,6 +105,16 @@ const Academy = () => {
         <Route
           exact
           path="/academy/:program/book-class"
+          component={BookClassContainer}
+        />
+        <Route
+          exact
+          path="/academy/:program/checkout-class-academy"
+          component={CheckoutOnlineClass}
+        />
+        <Route
+          exact
+          path="/academy/:program/checkout-class"
           component={CheckoutOnlineClass}
         />
         {authReducer.isLoading ? (

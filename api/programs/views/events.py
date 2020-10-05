@@ -17,7 +17,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 # Models
-from api.programs.models import Program, Event
+from api.programs.models import Program, Event, EventStudent
 from api.users.models import User, PurchasedItem
 
 # Serializers
@@ -117,21 +117,25 @@ class EventViewSet(mixins.CreateModelMixin,
         serialized_event = EventModelSerializer(
             event_info, many=False).data
 
-        if not serialized_event['can_be_booked']:
+        if not serialized_event['bookable']:
             return Response({'message': 'Este evento no esta en venta'}, status=status.HTTP_400_BAD_REQUEST)
         if serialized_event['price'] == 0:
             return Response({'message': 'Este evento no tiene un precio válido'}, status=status.HTTP_400_BAD_REQUEST)
+        if EventStudent.objects.filter(event=event, user=request.user).exists():
+            return Response({'message': 'Ya has adquirido esta clase'}, status=status.HTTP_400_BAD_REQUEST)
 
-        subscription_product = stripe.Product.create(
+        product = stripe.Product.create(
             name=serialized_event.get('title'))
+        if not 'currency' in serialized_event or serialized_event['currency'] == None:
+            serialized_event['currency'] = 'EUR'
 
         price = stripe.Price.create(
             currency=serialized_event.get('currency'),
-            product=subscription_product.get('id'),
+            product=product.get('id'),
             nickname=serialized_event.get('description'),
-            unit_amount=int(serialized_event.get(
-                'price')*100),
+            unit_amount=int(float(serialized_event['price'])*100),
         )
+
         if profile.stripe_customer_id == None or profile.stripe_customer_id == '':
             newCustomer = stripe.Customer.create(
                 description="claCustomer_"+user.first_name+'_'+user.last_name,
@@ -152,7 +156,9 @@ class EventViewSet(mixins.CreateModelMixin,
             serializer.is_valid(raise_exception=True)
             serializer.save()
         else:
+
             customer_id = profile.stripe_customer_id
+
             stripe.PaymentMethod.attach(
                 request.data.get('payment_method'),
                 customer=customer_id,
@@ -168,9 +174,10 @@ class EventViewSet(mixins.CreateModelMixin,
             customer=customer_id,
             price=price.id,
         )
+
         invoice = stripe.Invoice.create(
-            customer="cus_4fdAW5ftNQow1a",
-            stripe_account=serialized_event['program']['instructor']['profile']['stripe_account_id'],
+            customer=customer_id,
+            stripe_account=event.program.user.profile.stripe_account_id,
         )
 
         new_purchased_item = PurchasedItem(

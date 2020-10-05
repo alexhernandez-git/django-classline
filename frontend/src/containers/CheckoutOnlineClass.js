@@ -1,9 +1,16 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Link, Redirect, useParams } from "react-router-dom";
+import {
+  Link,
+  Redirect,
+  useHistory,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import "static/assets/styles/containers/Instructor.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { IconContext } from "react-icons/lib";
-import { FaArrowLeft } from "react-icons/fa";
+import { RiSecurePaymentLine } from "react-icons/ri";
+import { FaArrowLeft, FaCreditCard } from "react-icons/fa";
 import styled from "@emotion/styled";
 import { Formik, Form as FormFormik, Field } from "formik";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
@@ -13,8 +20,12 @@ import {
   resetAuthErrors,
 } from "../redux/actions/auth";
 import moment from "moment";
+import { bookEvent } from "../redux/actions/bookEvents";
 
-const CheckoutOnlineClass = () => {
+const CheckoutOnlineClass = (props) => {
+  const history = useHistory();
+  const { pathname } = useLocation();
+
   const programReducer = useSelector((state) => state.programReducer);
   const { program } = useParams();
   const [isRegister, setIsRegister] = useState(true);
@@ -49,22 +60,35 @@ const CheckoutOnlineClass = () => {
       console.log("[error]", error);
     } else {
       console.log("[PaymentMethod]", paymentMethod);
+      dispatch(bookEvent(bookEventsReducer.selected_event, paymentMethod.id));
     }
   };
   useEffect(() => {
     dispatch(resetAuthErrors());
   }, [isRegister]);
+  const handleBookSaved = (payment_method) => {
+    const paymentMethodId = payment_method;
+
+    dispatch(bookEvent(bookEventsReducer.selected_event, paymentMethodId));
+  };
+  const [newCard, setNewCard] = useState(false);
+
   return bookEventsReducer.selected_event == null ? (
-    <Redirect to={`/academy/${program}`} />
+    /\/checkout-class-academy\/?$/.test(pathname) ? (
+      <Redirect to={`/academy/${program}`} />
+    ) : (
+      <Redirect to={`/academy/${program}/book-class`} />
+    )
   ) : programReducer.isLoading ? (
     "Cargando..."
   ) : (
     <CheckoutOnlineClassDiv>
-      {console.log(bookEventsReducer.selected_event)}
       <div className="mt-5 text-grey container instructor">
-        <Link
-          className="text-grey d-flex align-items-center"
-          to={`/academy/${program}`}
+        <div
+          className="text-grey d-flex align-items-center cursor-pointer"
+          onClick={() => {
+            history.goBack();
+          }}
         >
           <IconContext.Provider
             value={{
@@ -76,7 +100,7 @@ const CheckoutOnlineClass = () => {
             <FaArrowLeft />
           </IconContext.Provider>
           Volver
-        </Link>
+        </div>
         <div className="row mt-3">
           <div className="offset-lg-2 col-sm-6">
             <img
@@ -104,16 +128,16 @@ const CheckoutOnlineClass = () => {
             </div>
             <div>
               <div className="h4 mt-4 text-dark">Descripción</div>
-              <span>
-                {bookEventsReducer.selected_event.extendedProps?.description}
-              </span>
+              <span>{bookEventsReducer.selected_event.description}</span>
             </div>
             <div className="mt-4">
               <div>
                 <span className="text-dark d-block h6 font-weight-bolder">
                   Precio
                 </span>
-                <span className="font-weight-bolder">10€</span>
+                <span className="font-weight-bolder">
+                  {bookEventsReducer.selected_event.price}€
+                </span>
               </div>
               <div className="d-none d-sm-block m-2"></div>
               <div>
@@ -156,14 +180,96 @@ const CheckoutOnlineClass = () => {
                   </span>
                 </span>
                 <form onSubmit={handleSubmit}>
-                  <CardElement />
-                  <button
-                    className="my-button"
-                    type="submit"
-                    disabled={!stripe}
-                  >
-                    Adquirir clase
-                  </button>
+                  {(newCard ||
+                    authReducer.user.profile.payment_methods == null ||
+                    authReducer.user.profile.payment_methods.length == 0) && (
+                    <>
+                      <CardElement />
+                    </>
+                  )}
+
+                  {(newCard ||
+                    authReducer.user.profile.payment_methods == null ||
+                    authReducer.user.profile.payment_methods.length == 0) && (
+                    <>
+                      <button
+                        type="submit"
+                        className="d-flex align-items-center w-100 justify-content-center my-button"
+                        disabled={!stripe}
+                      >
+                        {programReducer.program.is_subscribed ? (
+                          <>Cambiar Plan</>
+                        ) : (
+                          <>
+                            Pagar
+                            <IconContext.Provider
+                              value={{
+                                size: 20,
+                                className: "global-class-name ml-2",
+                              }}
+                            >
+                              <RiSecurePaymentLine />
+                            </IconContext.Provider>
+                          </>
+                        )}
+                      </button>
+                    </>
+                  )}
+                  {authReducer.user.profile.payment_methods != undefined &&
+                    authReducer.user.profile.payment_methods.length > 0 &&
+                    !newCard && (
+                      <>
+                        <button
+                          type="button"
+                          className="d-flex align-items-center w-100 justify-content-center my-button mt-3"
+                          disabled={!stripe}
+                          onClick={() => {
+                            handleBookSaved(
+                              authReducer.user.profile.payment_methods[0].id
+                            );
+                          }}
+                        >
+                          {programReducer.program.is_subscribed ? (
+                            <>Cambiar Plan</>
+                          ) : (
+                            <>
+                              Pague con tarjeta que termina con{" "}
+                              {
+                                authReducer.user.profile.payment_methods[0].card
+                                  .last4
+                              }
+                              <IconContext.Provider
+                                value={{
+                                  size: 20,
+                                  className:
+                                    "global-class-name ml-2 text-white",
+                                }}
+                              >
+                                <RiSecurePaymentLine />
+                              </IconContext.Provider>
+                            </>
+                          )}
+                        </button>
+                        {!programReducer.program.is_subscribed && (
+                          <button
+                            type="button"
+                            className="d-flex align-items-center w-100 justify-content-center mt-3 my-button "
+                            disabled={!stripe}
+                            onClick={() => setNewCard(true)}
+                          >
+                            Añadir un metodo de pago
+                            <IconContext.Provider
+                              value={{
+                                size: 20,
+                                className: "global-class-name ml-2 text-white",
+                              }}
+                            >
+                              <FaCreditCard />
+                            </IconContext.Provider>
+                          </button>
+                        )}
+                      </>
+                    )}
                 </form>
               </>
             ) : (

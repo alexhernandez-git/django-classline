@@ -31,7 +31,7 @@ class Event(CLineModel):
         max_digits=10, decimal_places=2, default=0)
     currency = models.CharField(max_length=3, null=True, blank=True)
 
-    current_students = models.PositiveIntegerField(null=True, blank=True)
+    current_students = models.PositiveIntegerField(default=0)
 
     event_students = models.ManyToManyField(
         'users.User',

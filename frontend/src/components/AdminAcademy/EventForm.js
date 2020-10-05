@@ -103,13 +103,13 @@ export default function EventForm(props) {
               onValueChange={(values) => {
                 const { value } = values;
                 let newValue = Number(value).toFixed(2);
-
+                newValue = String(newValue);
                 isEdit
                   ? setClassData({
                       ...classData,
-                      price: value,
+                      price: newValue,
                     })
-                  : setArgs({ ...args, price: value });
+                  : setArgs({ ...args, price: newValue });
               }}
             />
           </>
