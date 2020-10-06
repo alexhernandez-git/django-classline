@@ -72,7 +72,7 @@ const meetups = () => {
         id: args.id,
         title: args.title,
         start: args.start,
-        color: args.color != undefined ? args.color : "",
+        color: args.backgroundColor != undefined ? args.backgroundColor : "",
         description:
           args.description != null
             ? args.description
