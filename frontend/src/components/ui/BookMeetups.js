@@ -20,7 +20,9 @@ const BookMeetups = (props) => {
   const { push } = useHistory();
 
   const meetupsReducer = useSelector((state) => state.meetupsReducer);
+  const bookEventsReducer = useSelector((state) => state.bookEventsReducer);
   const programReducer = useSelector((state) => state.programReducer);
+  const authReducer = useSelector((state) => state.authReducer);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -55,7 +57,7 @@ const BookMeetups = (props) => {
             daysOfWeek: [dow],
             startTime: moment(meetup.start).format("HH:mm:ss"),
             endTime: moment(meetup.end).format("HH:mm:ss"),
-            color: meetup.backgroundColor && meetup.backgroundColor,
+            color: meetup.color && meetup.color,
             videoconference: meetup.videoconference && meetup.videoconference,
             recurrent: meetup.recurrent && meetup.recurrent,
             price: meetup.price && meetup.price,
@@ -69,7 +71,7 @@ const BookMeetups = (props) => {
             description: meetup.description && meetup.description,
             start: meetup.start,
             end: meetup.end,
-            color: meetup.backgroundColor && meetup.backgroundColor,
+            color: meetup.color && meetup.color,
             videoconference: meetup.videoconference && meetup.videoconference,
             recurrent: meetup.recurrent && meetup.recurrent,
             price: meetup.price && meetup.price,
@@ -81,77 +83,109 @@ const BookMeetups = (props) => {
       setRecurringMeetups(newMeetups.filter((meetup) => meetup.bookable));
     }
   }, [meetupsReducer.isLoading, meetupsReducer.meetups]);
+  const [showMyMeetups, setShowMyMeetups] = useState(false);
 
+  const handleGoToLogin = () => {
+    if (isAcademy) {
+      push(`/academy/${programReducer.program.code}/login-academy`);
+    } else {
+      push(`/academy/${programReducer.program.code}/login`);
+    }
+  };
   return (
-    <ContainerCalendarDiv>
-      <div
-        className="mb-5 pb-5"
-        style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
-      >
-        <Filters title="Reservar clases online" className="border-bottom" />
-        <div className="mt-4 d-flex justify-content-end container">
-          <MyButton className="my-button button-1 selected">
-            Ver todas las clases
-          </MyButton>
-          <MyButton className="my-button button-2">Ver mis clases</MyButton>
-        </div>
-        <ContainerCalendar className="container mt-4">
-          <div className="calendar">
-            <FullCalendar
-              view={"timeGridWeek"}
-              defaultView={"timeGridWeek"}
-              plugins={[timeGridPlugin, dayGridPlugin]}
-              header={{
-                left: "prev,next today",
-                center: "title",
-                right: "dayGridMonth,timeGridWeek,timeGridDay",
-              }}
-              weekends={true}
-              themeSystem="bootstrap"
-              timeZone="local"
-              locales={allLocales}
-              locale="es"
-              allDaySlot={false}
-              slotDuration="00:30:00"
-              // slotLabelInterval='00:60:00'
-              slotLabelFormat={{
-                hour: "numeric",
-                minute: "2-digit",
-                omitZeroMinute: false,
-                hour12: false,
-                meridiem: "short",
-              }}
-              minTime="07:00:00"
-              maxTime="23:00:00"
-              contentHeight="auto"
-              events={recurringMeetups}
-              eventBorderColor={"#fff"}
-              eventConstraint="businessHours"
-              longPressDelay={0}
-              businessHours={{
-                startTime: "06:00:00",
-                endTime: "24:00:00",
-                daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
-              }}
-              editable={false}
-              eventDurationEditable={false}
-              // ref={calendarComponentRef}
-              eventClick={handleEventClick}
-              eventLimit={true}
-              columnHeaderFormat={{ weekday: "long" }}
-              eventOverlap={false}
-              eventResizableFromStart={false}
-              displayEventTime={false}
-              eventResourceEditable={true}
-              selectAllow={function (selectInfo) {
-                return moment().diff(selectInfo.start) <= 0;
-              }}
-              firstDay={moment().day()}
-            />
+    <>
+      <ContainerCalendarDiv>
+        <div
+          className="mb-5 pb-5"
+          style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
+        >
+          <Filters title="Reservar clases online" className="border-bottom" />
+          <div className="mt-4 d-flex justify-content-end container">
+            <MyButton
+              className={
+                showMyMeetups
+                  ? "my-button button-1"
+                  : "my-button button-1 selected"
+              }
+              onClick={() => setShowMyMeetups(false)}
+            >
+              Ver todas las clases
+            </MyButton>
+            <MyButton
+              className={
+                showMyMeetups
+                  ? "my-button button-2 selected"
+                  : "my-button button-2"
+              }
+              onClick={() =>
+                authReducer.isAuthenticated
+                  ? setShowMyMeetups(true)
+                  : handleGoToLogin()
+              }
+            >
+              Ver mis clases
+            </MyButton>
           </div>
-        </ContainerCalendar>
-      </div>
-    </ContainerCalendarDiv>
+          <ContainerCalendar className="container mt-4">
+            <div className="calendar">
+              <FullCalendar
+                view={"timeGridWeek"}
+                defaultView={"timeGridWeek"}
+                plugins={[timeGridPlugin, dayGridPlugin]}
+                header={{
+                  left: "prev,next today",
+                  center: "title",
+                  right: "dayGridMonth,timeGridWeek,timeGridDay",
+                }}
+                weekends={true}
+                themeSystem="bootstrap"
+                timeZone="local"
+                locales={allLocales}
+                locale="es"
+                allDaySlot={false}
+                slotDuration="00:30:00"
+                // slotLabelInterval='00:60:00'
+                slotLabelFormat={{
+                  hour: "numeric",
+                  minute: "2-digit",
+                  omitZeroMinute: false,
+                  hour12: false,
+                  meridiem: "short",
+                }}
+                minTime="07:00:00"
+                maxTime="23:00:00"
+                contentHeight="auto"
+                events={
+                  showMyMeetups ? bookEventsReducer.events : recurringMeetups
+                }
+                eventBorderColor={"#fff"}
+                eventConstraint="businessHours"
+                longPressDelay={0}
+                businessHours={{
+                  startTime: "06:00:00",
+                  endTime: "24:00:00",
+                  daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+                }}
+                editable={false}
+                eventDurationEditable={false}
+                // ref={calendarComponentRef}
+                eventClick={handleEventClick}
+                eventLimit={true}
+                columnHeaderFormat={{ weekday: "long" }}
+                eventOverlap={false}
+                eventResizableFromStart={false}
+                displayEventTime={false}
+                eventResourceEditable={true}
+                selectAllow={function (selectInfo) {
+                  return moment().diff(selectInfo.start) <= 0;
+                }}
+                firstDay={moment().day()}
+              />
+            </div>
+          </ContainerCalendar>
+        </div>
+      </ContainerCalendarDiv>
+    </>
   );
 };
 const MyButton = styled.span`

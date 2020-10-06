@@ -116,22 +116,26 @@ class EventViewSet(mixins.CreateModelMixin,
             stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
 
         customer_id = ''
-        if Event.objects.filter(
-            program__user=user
-        ) == event:
-            return Response({'message': 'Ya has comprado este evento'}, status=status.HTTP_400_BAD_REQUEST)
+        # if Event.objects.filter(
+        #     program__user=user
+        # ) == event:
+        #     return Response({'message': 'Ya has comprado este evento'}, status=status.HTTP_400_BAD_REQUEST)
+        if EventStudent.objects.filter(event__start=request.data['event']['start'], user=request.user).exists():
+            return Response({'message': 'Ya has adquirido esta clase'}, status=status.HTTP_400_BAD_REQUEST)
 
-        event_info = event
+        del request.data['event']['id']
+        event_info = Event.objects.create(
+            **request.data['event'],
+            program=program,
+            event_buyed=True)
 
         serialized_event = EventModelSerializer(
-            event_info, many=False).data
+            event, many=False).data
 
         if not serialized_event['bookable']:
             return Response({'message': 'Este evento no esta en venta'}, status=status.HTTP_400_BAD_REQUEST)
         if serialized_event['price'] == 0:
             return Response({'message': 'Este evento no tiene un precio válido'}, status=status.HTTP_400_BAD_REQUEST)
-        if EventStudent.objects.filter(event=event, user=request.user).exists():
-            return Response({'message': 'Ya has adquirido esta clase'}, status=status.HTTP_400_BAD_REQUEST)
 
         product = stripe.Product.create(
             name=serialized_event.get('title'))
@@ -187,7 +191,7 @@ class EventViewSet(mixins.CreateModelMixin,
         invoice = stripe.Invoice.create(
             customer=customer_id,
             transfer_data={
-                "destination": event.program.user.profile.stripe_account_id,
+                "destination": event_info.program.user.profile.stripe_account_id,
             },
             application_fee_amount=int(
                 (float(serialized_event['price'])*100) * 10/100),
@@ -199,7 +203,7 @@ class EventViewSet(mixins.CreateModelMixin,
             invoice_id=invoice,
             user=user,
             program=program,
-            event=event,
+            event=event_info,
             payment_issue=False,
             is_a_purchased_event=True
         )
@@ -212,13 +216,15 @@ class EventViewSet(mixins.CreateModelMixin,
         serializer = AddEventStudentSerializer(
             event,
             data=request.data,
-            context={'user': user, 'request': request},
+            context={'user': user, 'request': request,
+                     'event_buyed': event_info},
             partial=True
         )
 
         serializer.is_valid(raise_exception=True)
         event = serializer.save()
-        data = EventModelSerializer(event, many=False).data
+
+        data = EventModelSerializer(event_info, many=False).data
 
         return Response(data, status=status.HTTP_200_OK)
 

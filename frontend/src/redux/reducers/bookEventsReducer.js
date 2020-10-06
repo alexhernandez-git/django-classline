@@ -27,9 +27,11 @@ export default function (state = initialState, action) {
           title: action.payload.title,
           start: action.payload.start,
           end: action.payload.end,
+          color: action.payload.backgroundColor,
           description: action.payload.extendedProps.description,
           price: action.payload.extendedProps.price,
           currency: action.payload.extendedProps.currency,
+          videoconference: action.payload.extendedProps.videoconference,
         },
       };
     case BOOK_EVENT:

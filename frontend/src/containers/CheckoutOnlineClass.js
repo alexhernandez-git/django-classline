@@ -80,9 +80,12 @@ const CheckoutOnlineClass = (props) => {
     if (bookEventsReducer.selected_event) {
       console.log(bookEventsReducer.selected_event);
       console.log(bookEventsReducer.events);
-      const result = bookEventsReducer.events.some(
-        (event) => event.id == bookEventsReducer.selected_event.id
-      );
+
+      const result = bookEventsReducer.events.some((event) => {
+        return moment(event.start).isSame(
+          moment(bookEventsReducer.selected_event.start)
+        );
+      });
       setIsMyEvent({ loading: false, isMyEvent: result });
     }
   }, [bookEventsReducer.selected_event, bookEventsReducer.events]);
@@ -184,7 +187,19 @@ const CheckoutOnlineClass = (props) => {
             {isMyEvent.loading ? (
               "Cargando..."
             ) : isMyEvent.isMyEvent ? (
-              <></>
+              <>
+                <button
+                  className="shadow"
+                  className="my-button disabled-button"
+                  type="submit"
+                >
+                  Ir a la clase
+                </button>
+                <div className="m-2 d-block"></div>
+                <span className="text-secondary">
+                  El enlace se activara una hora antes de que empiece la clase
+                </span>
+              </>
             ) : (
               <>
                 {authReducer.isLoading ? (
@@ -294,6 +309,11 @@ const CheckoutOnlineClass = (props) => {
                           </>
                         )}
                     </form>
+                    <span className="text-secondary">
+                      {bookEventsReducer.event_booking && (
+                        <div className="mt-3">Adquiriendo clase...</div>
+                      )}
+                    </span>
                   </>
                 ) : (
                   <div>
@@ -587,6 +607,16 @@ const CheckoutOnlineClassDiv = styled.div`
     position: relative;
     top: 1px;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+  }
+  .disabled-button {
+    opacity: 0.8;
+    box-shadow: none !important;
+    cursor: inherit;
+  }
+  .disabled-button:active {
+    position: relative;
+    top: auto;
+    box-shadow: none !important;
   }
 `;
 const LoginRegisterContainer = styled.div`

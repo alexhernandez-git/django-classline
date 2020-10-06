@@ -22,7 +22,7 @@ class EventModelSerializer(serializers.ModelSerializer):
             'description',
             'start',
             'end',
-            'backgroundColor',
+            'color',
             'videoconference',
             'recurrent',
             'price',

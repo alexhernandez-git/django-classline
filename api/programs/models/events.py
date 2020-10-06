@@ -23,7 +23,7 @@ class Event(CLineModel):
 
     start = models.DateTimeField()
     end = models.DateTimeField(blank=True, null=True)
-    backgroundColor = models.CharField(max_length=50, blank=True, null=True)
+    color = models.CharField(max_length=50, blank=True, null=True)
     program = models.ForeignKey('programs.Program', on_delete=models.CASCADE)
     recurrent = models.BooleanField(default=False)
     bookable = models.BooleanField(default=False)
@@ -37,6 +37,7 @@ class Event(CLineModel):
         'users.User',
         through='programs.EventStudent'
     )
+    event_buyed = models.BooleanField(default=False)
 
     def __str__(self):
         """Return price."""

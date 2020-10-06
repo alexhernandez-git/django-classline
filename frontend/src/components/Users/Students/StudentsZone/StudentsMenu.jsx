@@ -58,7 +58,7 @@ export default function StudentsMenu() {
           <small>Academias</small>
         </div>
       </Link>
-      <Link to="/myzone/student/events">
+      {/* <Link to="/myzone/student/events">
         <div className="seccion">
           <div
             className={
@@ -79,7 +79,7 @@ export default function StudentsMenu() {
 
           <small>Clases online</small>
         </div>
-      </Link>
+      </Link> */}
       {/* <Link to="/myzone/student/classes">
                 <div className="seccion">
                     <div className={/^\/myzone\/student\/classes\/?$/.test(location.pathname) ?

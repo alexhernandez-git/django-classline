@@ -60,7 +60,7 @@ const meetups = () => {
     start: null,
     description: "",
     videoconference: "",
-    backgroundColor: "",
+    color: "",
     recurrent: false,
     bookable: false,
     price: 0,
@@ -72,8 +72,7 @@ const meetups = () => {
         id: args.id,
         title: args.title,
         start: args.start,
-        backgroundColor:
-          args.backgroundColor != undefined ? args.backgroundColor : "",
+        color: args.color != undefined ? args.color : "",
         description:
           args.description != null
             ? args.description
@@ -137,7 +136,7 @@ const meetups = () => {
       end: null,
       description: "",
       videoconference: "",
-      backgroundColor: "",
+      color: "",
       recurrent: true,
       bookable: false,
     };
@@ -151,10 +150,7 @@ const meetups = () => {
         title: args.event.title,
         start: args.event.start,
         end: args.event.end,
-        backgroundColor:
-          args.event.backgroundColor != undefined
-            ? args.event.backgroundColor
-            : "",
+        color: args.event.color != undefined ? args.event.color : "",
         description: args.event.extendedProps.description,
         videoconference: args.event.extendedProps.videoconference,
         day_of_week: args.event.extendedProps.day_of_week,
@@ -173,10 +169,7 @@ const meetups = () => {
         title: args.event.title,
         start: args.event.start,
         end: args.event.end,
-        backgroundColor:
-          args.event.backgroundColor != undefined
-            ? args.event.backgroundColor
-            : "",
+        color: args.event.color != undefined ? args.event.color : "",
         description: args.event.extendedProps.description,
         videoconference: args.event.extendedProps.videoconference,
         day_of_week: args.event.extendedProps.day_of_week,
@@ -231,7 +224,7 @@ const meetups = () => {
             daysOfWeek: [dow],
             startTime: moment(meetup.start).format("HH:mm:ss"),
             endTime: moment(meetup.end).format("HH:mm:ss"),
-            color: meetup.backgroundColor && meetup.backgroundColor,
+            color: meetup.color && meetup.color,
             videoconference: meetup.videoconference && meetup.videoconference,
             recurrent: meetup.recurrent && meetup.recurrent,
             bookable: meetup.bookable && meetup.bookable,
@@ -244,7 +237,7 @@ const meetups = () => {
             description: meetup.description && meetup.description,
             start: meetup.start,
             end: meetup.end,
-            color: meetup.backgroundColor && meetup.backgroundColor,
+            color: meetup.color && meetup.color,
             videoconference: meetup.videoconference && meetup.videoconference,
             recurrent: meetup.recurrent && meetup.recurrent,
             bookable: meetup.bookable && meetup.bookable,

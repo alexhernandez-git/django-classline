@@ -47,6 +47,7 @@ import InstructorAccountsAdmin from "../containers/admin/InstructorAccountsAdmin
 import CheckoutOnlineClass from "../containers/CheckoutOnlineClass";
 import BookClassContainer from "../containers/BookClassContainer";
 import { fetchEventsBooked } from "../redux/actions/bookEvents";
+import LoginEventContainer from "../containers/LoginEventContainer";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -122,6 +123,16 @@ const Academy = () => {
           exact
           path="/academy/:program/checkout-class"
           component={CheckoutOnlineClass}
+        />
+        <Route
+          exact
+          path="/academy/:program/login"
+          component={LoginEventContainer}
+        />
+        <Route
+          exact
+          path="/academy/:program/login-academy"
+          component={LoginEventContainer}
         />
         {authReducer.isLoading ? (
           "Cargando..."

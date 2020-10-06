@@ -52,7 +52,7 @@ const MeetupsAcademy = () => {
             daysOfWeek: [dow],
             startTime: moment(meetup.start).format("HH:mm:ss"),
             endTime: moment(meetup.end).format("HH:mm:ss"),
-            color: meetup.backgroundColor && meetup.backgroundColor,
+            color: meetup.color && meetup.color,
             videoconference: meetup.videoconference && meetup.videoconference,
             recurrent: meetup.recurrent && meetup.recurrent,
           };
@@ -63,7 +63,7 @@ const MeetupsAcademy = () => {
             description: meetup.description && meetup.description,
             start: meetup.start,
             end: meetup.end,
-            color: meetup.backgroundColor && meetup.backgroundColor,
+            color: meetup.color && meetup.color,
             videoconference: meetup.videoconference && meetup.videoconference,
             recurrent: meetup.recurrent && meetup.recurrent,
           };

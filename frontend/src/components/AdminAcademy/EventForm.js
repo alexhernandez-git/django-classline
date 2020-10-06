@@ -22,10 +22,10 @@ export default function EventForm(props) {
     if (isEdit) {
       setClassData({
         ...classData,
-        backgroundColor: color.hex,
+        color: color.hex,
       });
     } else {
-      setArgs({ ...args, backgroundColor: color.hex });
+      setArgs({ ...args, color: color.hex });
     }
   };
   return (
@@ -81,7 +81,7 @@ export default function EventForm(props) {
 
         <label className="mt-4">Color del evento</label>
         <CirclePicker
-          color={classData.backgroundColor}
+          color={classData.color}
           onChangeComplete={handleChangeComplete}
         />
         <label className="mt-4">Evento reservable</label>
