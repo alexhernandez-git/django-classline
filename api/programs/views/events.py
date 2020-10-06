@@ -43,7 +43,8 @@ class EventViewSet(mixins.CreateModelMixin,
     def get_queryset(self):
         """Restrict list to public-only."""
 
-        queryset = Event.objects.filter(program=self.program)
+        queryset = Event.objects.filter(
+            program=self.program, event_buyed=False)
         if self.action == 'list_events_booked':
             queryset = Event.objects.filter(
                 event_students=self.request.user)
@@ -122,10 +123,11 @@ class EventViewSet(mixins.CreateModelMixin,
         #     return Response({'message': 'Ya has comprado este evento'}, status=status.HTTP_400_BAD_REQUEST)
         if EventStudent.objects.filter(event__start=request.data['event']['start'], user=request.user).exists():
             return Response({'message': 'Ya has adquirido esta clase'}, status=status.HTTP_400_BAD_REQUEST)
-
+        event_parent = Event.objects.get(id=request.data['event']['id'])
         del request.data['event']['id']
         event_info = Event.objects.create(
             **request.data['event'],
+            event_buyed_parent=event_parent,
             program=program,
             event_buyed=True)
 

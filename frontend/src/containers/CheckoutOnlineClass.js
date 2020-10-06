@@ -78,9 +78,6 @@ const CheckoutOnlineClass = (props) => {
   });
   useEffect(() => {
     if (bookEventsReducer.selected_event) {
-      console.log(bookEventsReducer.selected_event);
-      console.log(bookEventsReducer.events);
-
       const result = bookEventsReducer.events.some((event) => {
         return moment(event.start).isSame(
           moment(bookEventsReducer.selected_event.start)
@@ -89,6 +86,59 @@ const CheckoutOnlineClass = (props) => {
       setIsMyEvent({ loading: false, isMyEvent: result });
     }
   }, [bookEventsReducer.selected_event, bookEventsReducer.events]);
+  const [isTime, setIsTime] = useState(false);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (
+        moment(bookEventsReducer.selected_event.start)
+          .add(1, "hours")
+          .isSameOrBefore(moment())
+      ) {
+        setIsTime(true);
+      }
+    }, 300000);
+    return () => clearInterval(interval);
+  }, []);
+  useEffect(() => {
+    if (bookEventsReducer.selected_event) {
+      console.log("entra");
+      if (
+        moment(bookEventsReducer.selected_event.start)
+          .subtract(1, "hours")
+          .isSameOrBefore(moment())
+      ) {
+        setIsTime(true);
+      }
+    }
+  }, []);
+  useEffect(() => {
+    if (bookEventsReducer.selected_event) {
+      if (
+        moment(bookEventsReducer.selected_event.start)
+          .subtract(1, "hours")
+          .isSameOrBefore(moment())
+      ) {
+        setIsTime(true);
+      }
+    }
+  }, [bookEventsReducer.events]);
+  useEffect(() => {
+    if (bookEventsReducer.selected_event) {
+      console.log(
+        moment(bookEventsReducer.selected_event.start)
+          .subtract(1, "hours")
+          .format("D/M/Y hh:mm:ss")
+      );
+      console.log(moment().format("D/M/Y hh:mm:ss"));
+      if (
+        moment(bookEventsReducer.selected_event.start)
+          .subtract(1, "hours")
+          .isSameOrBefore(moment())
+      ) {
+        setIsTime(true);
+      }
+    }
+  }, [bookEventsReducer.selected_event]);
   return bookEventsReducer.selected_event == null ? (
     /\/checkout-class-academy\/?$/.test(pathname) ? (
       <Redirect to={`/academy/${program}`} />
@@ -188,17 +238,32 @@ const CheckoutOnlineClass = (props) => {
               "Cargando..."
             ) : isMyEvent.isMyEvent ? (
               <>
-                <button
-                  className="shadow"
-                  className="my-button disabled-button"
-                  type="submit"
-                >
-                  Ir a la clase
-                </button>
-                <div className="m-2 d-block"></div>
-                <span className="text-secondary">
-                  El enlace se activara una hora antes de que empiece la clase
-                </span>
+                <div className="mb-4">
+                  <span className="cursor-pointer">
+                    <u>Cancelar clase</u>
+                  </span>
+                </div>
+                {isTime ? (
+                  <a
+                    href={bookEventsReducer.selected_event.videoconference}
+                    className="my-button"
+                    target="_blank"
+                    type="submit"
+                  >
+                    Ir a la clase
+                  </a>
+                ) : (
+                  <>
+                    <button className="my-button disabled-button" type="submit">
+                      Ir a la clase
+                    </button>
+                    <div className="m-2 d-block"></div>
+                    <span className="text-secondary">
+                      El enlace se activara una hora antes de que empiece la
+                      clase
+                    </span>
+                  </>
+                )}
               </>
             ) : (
               <>
@@ -594,7 +659,7 @@ const CheckoutOnlineClassDiv = styled.div`
   }
   .my-button {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-
+    text-align: center;
     font-size: 1.2rem;
     border: 0;
     padding: 0.5rem 1rem;

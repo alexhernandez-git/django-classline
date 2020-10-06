@@ -38,6 +38,8 @@ class Event(CLineModel):
         through='programs.EventStudent'
     )
     event_buyed = models.BooleanField(default=False)
+    event_buyed_parent = models.ForeignKey(
+        'programs.Event', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         """Return price."""

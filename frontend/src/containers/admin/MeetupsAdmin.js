@@ -150,7 +150,10 @@ const meetups = () => {
         title: args.event.title,
         start: args.event.start,
         end: args.event.end,
-        color: args.event.color != undefined ? args.event.color : "",
+        color:
+          args.event.backgroundColor != undefined
+            ? args.event.backgroundColor
+            : "",
         description: args.event.extendedProps.description,
         videoconference: args.event.extendedProps.videoconference,
         day_of_week: args.event.extendedProps.day_of_week,
@@ -169,7 +172,10 @@ const meetups = () => {
         title: args.event.title,
         start: args.event.start,
         end: args.event.end,
-        color: args.event.color != undefined ? args.event.color : "",
+        color:
+          args.event.backgroundColor != undefined
+            ? args.event.backgroundColor
+            : "",
         description: args.event.extendedProps.description,
         videoconference: args.event.extendedProps.videoconference,
         day_of_week: args.event.extendedProps.day_of_week,

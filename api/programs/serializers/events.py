@@ -39,3 +39,16 @@ class EventModelSerializer(serializers.ModelSerializer):
         program = self.context['program']
         validated_data['program'] = program
         return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        event_parent = instance.event_buyed_parent
+
+        if event_parent:
+            events = Event.objects.filter(event_buyed_parent=event_parent)
+            if events.exists():
+                for e in events:
+                    e.start = instance.start
+                    e.end = instance.end
+                    e.save()
+
+        return super(EventModelSerializer, self).update(instance, validated_data)
