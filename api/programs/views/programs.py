@@ -30,6 +30,8 @@ from api.programs.serializers import (
     PublishProgramSerializer,
     CancelPublishProgramSerializer,
     CancelActiveProgramSerializer,
+    ActiveEventBookingProgramSerializer,
+    CancelEventBookingProgramSerializer
 
 )
 from rest_framework import mixins, viewsets, status
@@ -89,10 +91,15 @@ class ProgramViewSet(mixins.CreateModelMixin,
             return ActiveProgramSerializer
         elif self.action == 'publish':
             return PublishProgramSerializer
+
         elif self.action == 'cancel_active':
             return CancelActiveProgramSerializer
         elif self.action == 'cancel_publish':
             return CancelPublishProgramSerializer
+        elif self.action == 'active_booking':
+            return ActiveEventBookingProgramSerializer
+        elif self.action == 'cancel_booking':
+            return CancelEventBookingProgramSerializer
         return ProgramModelSerializer
 
     def get_permissions(self):
@@ -193,6 +200,44 @@ class ProgramViewSet(mixins.CreateModelMixin,
 
     @action(detail=True, methods=['put', 'patch'])
     def cancel_publish(self, request, *args, **kwargs):
+        program = self.get_object()
+        serializer_class = self.get_serializer_class()
+
+        partial = request.method == 'PATCH'
+
+        serializer = serializer_class(
+            program,
+            data=request.data,
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+
+        program = serializer.save()
+
+        data = ProgramModifyModelSerializer(program).data
+        return Response(data)
+
+    @action(detail=True, methods=['put', 'patch'])
+    def active_booking(self, request, *args, **kwargs):
+        program = self.get_object()
+        serializer_class = self.get_serializer_class()
+
+        partial = request.method == 'PATCH'
+
+        serializer = serializer_class(
+            program,
+            data=request.data,
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+
+        program = serializer.save()
+
+        data = ProgramModifyModelSerializer(program).data
+        return Response(data)
+
+    @action(detail=True, methods=['put', 'patch'])
+    def cancel_booking(self, request, *args, **kwargs):
         program = self.get_object()
         serializer_class = self.get_serializer_class()
 

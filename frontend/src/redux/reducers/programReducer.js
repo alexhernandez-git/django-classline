@@ -33,6 +33,12 @@ import {
   CANECEL_ACCOUNTS_SUCCESS,
   CANECEL_ACCOUNTS_FAIL,
   REFRESH_PROGRAM,
+  ACTIVE_BOOKING,
+  ACTIVE_BOOKING_SUCCESS,
+  ACTIVE_BOOKING_FAIL,
+  CANCEL_BOOKING,
+  CANCEL_BOOKING_SUCCESS,
+  CANCEL_BOOKING_FAIL,
 } from "../types";
 
 const initialState = {
@@ -61,6 +67,10 @@ const initialState = {
   canceling_accounts: false,
   cancel_accounts: null,
   cancel_accounts_error: null,
+  activating_booking: false,
+  active_booking_error: null,
+  canceling_booking: false,
+  canceling_booking_error: null,
 };
 
 export default function (state = initialState, action) {
@@ -284,6 +294,45 @@ export default function (state = initialState, action) {
       return {
         ...state,
         program: action.payload,
+      };
+    case ACTIVE_BOOKING:
+      return {
+        ...state,
+        activating_booking: true,
+      };
+    case ACTIVE_BOOKING_SUCCESS:
+      return {
+        ...state,
+        active_booking_error: null,
+
+        activating_booking: false,
+        program: action.payload,
+      };
+    case ACTIVE_BOOKING_FAIL:
+      return {
+        ...state,
+        activating_booking: false,
+        active_booking_error: action.payload,
+      };
+    case CANCEL_BOOKING:
+      return {
+        ...state,
+        canceling_booking: true,
+      };
+    case CANCEL_BOOKING_SUCCESS:
+      return {
+        ...state,
+
+        canceling_booking: false,
+        canceling_booking_error: null,
+
+        program: action.payload,
+      };
+    case CANCEL_BOOKING_FAIL:
+      return {
+        ...state,
+        canceling_booking: false,
+        canceling_booking_error: action.payload,
       };
     default:
       return state;

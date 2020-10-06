@@ -22,7 +22,8 @@ from api.programs.models import (
     Podcast,
     Rating,
     File,
-    PlaylistAdmin
+    PlaylistAdmin,
+    EventStudent
 )
 
 
@@ -137,7 +138,9 @@ class ProgramModifyModelSerializer(serializers.ModelSerializer):
             'published',
             'rating',
             'ratings',
-            'is_subscribed'
+            'is_subscribed',
+            'event_booking',
+            'event_booking_calendar'
         )
 
         read_only_fields = (
@@ -254,8 +257,9 @@ class ProgramBasicModelSerializer(serializers.ModelSerializer):
             'published',
             'rating',
             'ratings',
-            'is_subscribed'
-
+            'is_subscribed',
+            'event_booking',
+            'event_booking_calendar'
 
         )
 
@@ -342,7 +346,9 @@ class ProgramModelSerializer(serializers.ModelSerializer):
             'published',
             'rating',
             'ratings',
-            'is_subscribed'
+            'is_subscribed',
+            'event_booking',
+            'event_booking_calendar'
 
         )
         read_only_fields = (
@@ -460,7 +466,9 @@ class ProgramListModelSerializer(serializers.ModelSerializer):
             'published',
             'rating',
             'ratings',
-            'is_subscribed'
+            'is_subscribed',
+            'event_booking',
+            'event_booking_calendar'
 
         )
         read_only_fields = (
@@ -681,4 +689,45 @@ class CancelAccountsSerializer(serializers.Serializer):
 
         instance.save()
 
+        return instance
+
+
+class ActiveEventBookingProgramSerializer(serializers.Serializer):
+
+    def validate(self, data):
+        program = self.instance
+
+        if not program.user.profile.stripe_account_id:
+            raise serializers.ValidationError(
+                'Necesitas conectarte con stripe para poder recibir pagos')
+
+        return data
+
+    def update(self, instance, validated_data):
+
+        instance.event_booking = True
+        instance.save()
+        return instance
+
+
+class CancelEventBookingProgramSerializer(serializers.Serializer):
+
+    def validate(self, data):
+        program = self.instance
+
+        events = EventStudent.objects.filter(program=program)
+        if events.exists():
+            raise serializers.ValidationError(
+                'No puedes desactivar la reserva de eventos despues de usuario hayan reservado algun evento')
+
+        if program.published:
+            raise serializers.ValidationError(
+                'No puedes desactivar una academia publicado')
+
+        return data
+
+    def update(self, instance, validated_data):
+
+        instance.event_booking = False
+        instance.save()
         return instance

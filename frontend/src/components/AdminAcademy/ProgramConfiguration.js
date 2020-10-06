@@ -21,10 +21,14 @@ import {
 } from "src/redux/actions/program";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import {
+  activeBookingProgram,
+  cancelBookingProgram,
+} from "../../redux/actions/program";
 const ProgramConfiguration = (props) => {
   const MySwal = withReactContent(Swal);
-
+  const { program } = useParams();
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
   const authReducer = useSelector((state) => state.authReducer);
@@ -53,6 +57,10 @@ const ProgramConfiguration = (props) => {
     const dispatchPublishProgram = () => dispatch(publishProgram());
     dispatchPublishProgram();
   };
+  const handleActiveBooking = () => {
+    const dispatchActiveBooking = () => dispatch(activeBookingProgram());
+    dispatchActiveBooking();
+  };
   const handleCancelPublishedProgram = () => {
     MySwal.fire({
       title: "Estas seguro?",
@@ -67,6 +75,22 @@ const ProgramConfiguration = (props) => {
         const dispatchCancelPublishedProgram = () =>
           dispatch(cancelPublishedProgram());
         dispatchCancelPublishedProgram();
+      }
+    });
+  };
+  const handleCancelBooking = () => {
+    MySwal.fire({
+      title: "Estas seguro?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Desactivar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        const dispatchCancelBooking = () => dispatch(cancelBookingProgram());
+        dispatchCancelBooking();
       }
     });
   };
@@ -253,7 +277,7 @@ const ProgramConfiguration = (props) => {
         </Row>
       </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
-        <span className="d-none d-md-block">Acciones</span>
+        <span className="d-none d-md-block">Reserva de eventos</span>
         <Row className="mb-4">
           <Col
             sm={{ span: 4 }}
@@ -265,35 +289,71 @@ const ProgramConfiguration = (props) => {
           </Col>
 
           <Col sm={{ offset: 1, span: 6 }}>
-            {programReducer.program && programReducer.program.published ? (
+            {programReducer.program && programReducer.program.event_booking ? (
               <div className="d-sm-flex justify-content-between d-block">
                 <span className="text-secondary mr-3 font-weight-bold text-center d-block d-sm-inline">
                   Activada
                 </span>
-                <ButtonCustomError
-                  type="button"
-                  onClick={handleCancelPublishedProgram}
-                >
+                <ButtonCustomError type="button" onClick={handleCancelBooking}>
                   Desactivar
                 </ButtonCustomError>
               </div>
             ) : (
-              <ButtonCustomSuccess type="button" onClick={handlePublishProgram}>
+              <ButtonCustomSuccess type="button" onClick={handleActiveBooking}>
                 Activar
               </ButtonCustomSuccess>
             )}
-            {programReducer.publish_error &&
-              programReducer.publish_error.data.non_field_errors &&
-              programReducer.publish_error.data.non_field_errors.map(
+            {programReducer.active_booking_error &&
+              programReducer.active_booking_error.data.non_field_errors &&
+              programReducer.active_booking_error.data.non_field_errors.map(
                 (error) => <small className="d-block text-red">{error}</small>
               )}
-            {programReducer.canceling_published_error &&
-              programReducer.canceling_published_error.data.non_field_errors &&
-              programReducer.canceling_published_error.data.non_field_errors.map(
+            {programReducer.canceling_booking_error &&
+              programReducer.canceling_booking_error.data.non_field_errors &&
+              programReducer.canceling_booking_error.data.non_field_errors.map(
                 (error) => <small className="d-block text-red">{error}</small>
               )}
           </Col>
         </Row>
+        {programReducer.program && programReducer.program.event_booking && (
+          <>
+            <Row className="mb-4">
+              <Col
+                sm={{ span: 4 }}
+                className="text-center d-sm-flex justify-content-end align-items-center"
+              >
+                <span className="m-0 font-weight-normal">Enlace</span>
+              </Col>
+
+              <Col sm={{ offset: 1, span: 6 }} className="text-break">
+                <a target="_blank" href={`/academy/${program}/book-class/`}>
+                  https://classlineacademy.com/academy/{program}/book-class/
+                </a>
+              </Col>
+            </Row>
+            <Row className="mb-5">
+              <Col
+                lg={{ span: 4 }}
+                className="text-center d-lg-flex justify-content-end align-items-center"
+              >
+                <span className="m-0 font-weight-normal">
+                  Mostrar calendario en la pagina de acceso
+                </span>
+              </Col>
+
+              <Col
+                lg={{ offset: 1, span: 6 }}
+                className="d-flex justify-content-center d-lg-block"
+              >
+                <Checkbox name="event_booking_calendar" />
+              </Col>
+            </Row>
+          </>
+        )}
+      </div>
+      <div className="bg-white border p-3 rounded my-2 mb-4">
+        <span className="d-none d-md-block">Acciones</span>
+
         <Row className="mb-4">
           <Col
             sm={{ span: 4 }}

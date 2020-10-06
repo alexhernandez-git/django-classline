@@ -302,9 +302,12 @@ const index = () => {
       <Separation className="p-3 shadow"></Separation>
 
       <div className="container my-5 mx-auto w-auto">
-        <div className="row mx-2">
-          <BookMeetups isAcademy />
-        </div>
+        {!programReducer.isLoading &&
+          programReducer.program.event_booking_calendar && (
+            <div className="row mx-2">
+              <BookMeetups isAcademy />
+            </div>
+          )}
         <div className="row mx-2">
           <ProgramInfo className="text-grey">
             <div className="d-sm-flex justify-content-between text-dark">

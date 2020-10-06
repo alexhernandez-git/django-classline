@@ -135,7 +135,7 @@ const BookMeetups = (props) => {
                 header={{
                   left: "prev,next today",
                   center: "title",
-                  right: "dayGridMonth,timeGridWeek,timeGridDay",
+                  right: "timeGridWeek,timeGridDay",
                 }}
                 weekends={true}
                 themeSystem="bootstrap"

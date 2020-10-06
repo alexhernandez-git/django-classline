@@ -80,7 +80,7 @@ class AddEventStudentSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
 
         EventStudent.objects.create(
-            user=validated_data['user'], event=self.context['event_buyed'])
+            user=validated_data['user'], event=self.context['event_buyed'], program=self.context['program'])
 
         instance.current_students += 1
         instance.save()

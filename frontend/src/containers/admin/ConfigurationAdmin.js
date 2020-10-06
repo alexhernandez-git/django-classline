@@ -46,6 +46,8 @@ const index = (props) => {
     is_published: false,
     are_docs: true,
     are_forum: true,
+    event_booking: false,
+    event_booking_calendar: false,
   });
   useEffect(() => {
     if (program) {
@@ -70,6 +72,8 @@ const index = (props) => {
         program_language: program.program_language,
         instructor: program.instructor,
         is_published: program.is_published,
+        event_booking: program.event_booking,
+        event_booking_calendar: program.event_booking_calendar,
       });
     }
   }, [program]);

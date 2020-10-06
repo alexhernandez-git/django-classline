@@ -37,6 +37,12 @@ import {
   SET_STRIPE_CUSTOMER_DATA,
   SET_TEACHER_DISCOUNT,
   REMOVE_TEACHER_DISCOUNT,
+  ACTIVE_BOOKING,
+  ACTIVE_BOOKING_SUCCESS,
+  ACTIVE_BOOKING_FAIL,
+  CANCEL_BOOKING,
+  CANCEL_BOOKING_SUCCESS,
+  CANCEL_BOOKING_FAIL,
 } from "../types";
 
 import { tokenConfig } from "./auth";
@@ -360,6 +366,58 @@ export const cancelAcquireAccounts = () => (dispatch, getState) => {
     .catch((err) => {
       dispatch({
         type: CANECEL_ACCOUNTS_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const activeBookingProgram = () => (dispatch, getState) => {
+  dispatch({ type: ACTIVE_BOOKING });
+  axios
+    .patch(
+      `/api/programs/${getState().programReducer.program.code}/active_booking/`,
+      {},
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log(res);
+      Swal.fire({
+        title: "Activado!",
+        icon: "success",
+        confirmButtonText: "Ok",
+      });
+      dispatch({
+        type: ACTIVE_BOOKING_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: ACTIVE_BOOKING_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const cancelBookingProgram = () => (dispatch, getState) => {
+  dispatch({ type: CANCEL_BOOKING });
+
+  axios
+    .patch(
+      `/api/programs/${getState().programReducer.program.code}/cancel_booking/`,
+      {},
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log(res);
+      dispatch({
+        type: CANCEL_BOOKING_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: CANCEL_BOOKING_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

@@ -23,7 +23,6 @@ class Program(CLineModel):
     description = models.TextField(max_length=1000, blank=True, null=True)
     actived = models.BooleanField(default=False)
     published = models.BooleanField(default=False)
-    event_booking = models.BooleanField(default=False)
     user = models.ForeignKey(
         'users.User', on_delete=models.CASCADE, related_name='program_user')
     teacher = models.ForeignKey(
@@ -38,6 +37,9 @@ class Program(CLineModel):
     are_podcasts = models.BooleanField(default=True)
     are_docs = models.BooleanField(default=True)
     are_forum = models.BooleanField(default=True)
+
+    event_booking = models.BooleanField(default=False)
+    event_booking_calendar = models.BooleanField(default=False)
 
     # accounts
     level_pro = models.BooleanField(default=False)

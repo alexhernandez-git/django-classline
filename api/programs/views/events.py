@@ -219,7 +219,7 @@ class EventViewSet(mixins.CreateModelMixin,
             event,
             data=request.data,
             context={'user': user, 'request': request,
-                     'event_buyed': event_info},
+                     'event_buyed': event_info, 'program': program},
             partial=True
         )
 
