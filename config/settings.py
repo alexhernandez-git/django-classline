@@ -161,7 +161,7 @@ if 'STORAGE_BUCKET_NAME' in os.environ:
     AWS_REGION = "eu-west-3"
     AWS_S3_ADDRESSING_STYLE = "auto"
     AWS_QUERYSTRING_AUTH = False
-    AWS_DEFAULT_ACL = None
+    AWS_DEFAULT_ACL = True
     _AWS_EXPIRY = 60 * 60 * 24 * 7
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': f'max-age={_AWS_EXPIRY}, s-maxage={_AWS_EXPIRY}, must-revalidate',
