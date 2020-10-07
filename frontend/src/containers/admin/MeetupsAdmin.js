@@ -317,7 +317,7 @@ const meetups = () => {
         </div>
       </ContainerCalendar>
 
-      <Modal show={show} onHide={handleClose} size="md" centered>
+      <Modal show={show} onHide={handleClose} size="lg" centered>
         <Modal.Header closeButton>
           <Modal.Title>Creación del eventos</Modal.Title>
         </Modal.Header>

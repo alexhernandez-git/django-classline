@@ -50,6 +50,7 @@ class EventModelSerializer(serializers.ModelSerializer):
                 if e.start > now:
                     are_events_booked = True
                     validated_data.pop('start')
+                    validated_data.pop('recurrent')
                     if 'end' in validated_data:
                         validated_data.pop('end')
                     super(EventModelSerializer, self).update(e, validated_data)

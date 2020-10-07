@@ -57,14 +57,31 @@ export const editMeetup = (meetup) => (dispatch, getState) => {
     )
     .then((res) => {
       console.log(res.data);
+      console.log(meetup.recurrent);
+      console.log(res.data.event.recurrent);
+
       if (
         res.data.are_events_booked &&
-        !moment(meetup.start).isSame(moment(res.data.event.start))
+        !moment(meetup.start).isSame(
+          moment(res.data.event.start) ||
+            meetup.recurrent != res.data.event.recurrent
+        )
       ) {
         Swal.fire({
           title:
-            "No es posible actuaizar la hora porque tienes alumnos que ya han reservado la clase, puedes desactivar la reserva de clases y esperar a que no queden reservas",
-          icon: "error",
+            "No es posible actuaizar la hora porque tienes alumnos que ya han reservado la clase, puedes desactivar la reserva de clases y esperar a que no queden reservas o borrar la clase y se devolvera el dinero",
+          icon: "info",
+          confirmButtonText: "Ok",
+        });
+      }
+      if (
+        res.data.are_events_booked &&
+        meetup.recurrent != res.data.event.recurrent
+      ) {
+        Swal.fire({
+          title:
+            "No es posible actuaizar la recurrencia del evento porque tienes alumnos que ya han reservado la clase, puedes desactivar la reserva de clases y esperar a que no queden reservas o borrar la clase y se devolvera el dinero",
+          icon: "info",
           confirmButtonText: "Ok",
         });
       }
