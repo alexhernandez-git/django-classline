@@ -136,38 +136,23 @@ const InfoSlider = () => {
                         </span>
                       </div>
                     </div>
+
                     <div className="row w-100 align-items-center mb-5">
                       <div className="col-lg-5 order-1">
                         <span className="h5 text-dark d-block">
-                          Con nuestra propia aplicación móvil para android
+                          Podras reservar tus clases online
                         </span>
                         <span className="text-grey">
-                          Mira el contenido cuando y donde quieras con la
-                          flexibilidad que te aportará nuestra aplicación para
-                          android <br />
-                          (ios próximamente)
+                          Y acceder desde cualquier sitio
                         </span>
                       </div>
                       <div className="d-block d-lg-none m-2 order-2"></div>
                       <div className="col-lg-7 order-3">
-                        <div className="d-flex justify-content-between">
-                          <img
-                            src="static/assets/img/main-page-pictures/movil.PNG"
-                            alt=""
-                            className="shadow"
-                            style={{
-                              height: "252px",
-                              width: "auto",
-                              borderRadius: "1rem",
-                            }}
-                          />
-                          <img
-                            src="static/assets/img/main-page-pictures/tablet.PNG"
-                            alt=""
-                            className="rounded shadow d-none d-sm-block"
-                            style={{ height: "252px", width: "auto" }}
-                          />
-                        </div>
+                        <img
+                          className="rounded shadow"
+                          src="static/assets/img/Webp.net-resizeimage (2).png"
+                          alt=""
+                        />
                       </div>
                     </div>
                     <div className="row w-100 align-items-center">
