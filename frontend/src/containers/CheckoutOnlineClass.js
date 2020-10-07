@@ -9,7 +9,7 @@ import {
 import "static/assets/styles/containers/Instructor.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { IconContext } from "react-icons/lib";
-import { RiSecurePaymentLine } from "react-icons/ri";
+import { RiSecurePaymentFill, RiSecurePaymentLine } from "react-icons/ri";
 import { FaArrowLeft, FaCreditCard } from "react-icons/fa";
 import styled from "@emotion/styled";
 import { Formik, Form as FormFormik, Field } from "formik";
@@ -87,57 +87,48 @@ const CheckoutOnlineClass = (props) => {
     }
   }, [bookEventsReducer.selected_event, bookEventsReducer.events]);
   const [isTime, setIsTime] = useState(false);
-  useEffect(() => {
-    const interval = setInterval(() => {
+  const checkIsHour = () => {
+    if (bookEventsReducer.selected_event) {
+      console.log(
+        moment(bookEventsReducer.selected_event.start).format("D/M/Y hh:mm:ss")
+      );
+      console.log(moment().format("D/M/Y hh:mm:ss"));
       if (
-        moment(bookEventsReducer.selected_event.start)
+        moment()
           .add(1, "hours")
-          .isSameOrBefore(moment())
+          .isSameOrAfter(bookEventsReducer.selected_event.start)
       ) {
         setIsTime(true);
       }
+      if (bookEventsReducer.selected_event.end) {
+        if (moment().isAfter(moment(bookEventsReducer.selected_event.end))) {
+          setIsTime(false);
+        }
+      } else {
+        if (
+          moment().isAfter(
+            moment(bookEventsReducer.selected_event.start).add(1, "hours")
+          )
+        ) {
+          setIsTime(false);
+        }
+      }
+    }
+  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      checkIsHour();
     }, 300000);
     return () => clearInterval(interval);
   }, []);
   useEffect(() => {
-    if (bookEventsReducer.selected_event) {
-      console.log("entra");
-      if (
-        moment(bookEventsReducer.selected_event.start)
-          .subtract(1, "hours")
-          .isSameOrBefore(moment())
-      ) {
-        setIsTime(true);
-      }
-    }
+    checkIsHour();
   }, []);
   useEffect(() => {
-    if (bookEventsReducer.selected_event) {
-      if (
-        moment(bookEventsReducer.selected_event.start)
-          .subtract(1, "hours")
-          .isSameOrBefore(moment())
-      ) {
-        setIsTime(true);
-      }
-    }
+    checkIsHour();
   }, [bookEventsReducer.events]);
   useEffect(() => {
-    if (bookEventsReducer.selected_event) {
-      console.log(
-        moment(bookEventsReducer.selected_event.start)
-          .subtract(1, "hours")
-          .format("D/M/Y hh:mm:ss")
-      );
-      console.log(moment().format("D/M/Y hh:mm:ss"));
-      if (
-        moment(bookEventsReducer.selected_event.start)
-          .subtract(1, "hours")
-          .isSameOrBefore(moment())
-      ) {
-        setIsTime(true);
-      }
-    }
+    checkIsHour();
   }, [bookEventsReducer.selected_event]);
   return bookEventsReducer.selected_event == null ? (
     /\/checkout-class-academy\/?$/.test(pathname) ? (
@@ -644,10 +635,20 @@ const CheckoutOnlineClass = (props) => {
                   : "../../static/assets/img/avatar.png"
               }
               alt=""
-              className="mr-2 rounded-circle w-100 d-block"
+              className="mb-2 rounded-circle w-100 d-block"
             />
+            <span className="text-center d-block">
+              Pagos seguros con stripe
+              <IconContext.Provider
+                value={{
+                  size: 20,
+                  className: "global-class-name ml-2",
+                }}
+              >
+                <RiSecurePaymentFill />
+              </IconContext.Provider>
+            </span>
           </div>
-          {/* <Link to="/teacher/1" className="btn-green py-2 px-3 text-white btn-block mt-3 text-center">Clases</Link> */}
         </div>
       </div>
     </CheckoutOnlineClassDiv>

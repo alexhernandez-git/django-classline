@@ -104,7 +104,7 @@ const VideoForm = (props) => {
       };
     };
 
-    if (files[0].size > 500000000) {
+    if (files[0].size > 5000000000) {
       alert("El tamaño del video es muy grande");
     } else if (files[0].type != "video/mp4") {
       alert("El htmlFormato tiene que ser .mp4");
@@ -159,7 +159,10 @@ const VideoForm = (props) => {
             lg={{ span: 4 }}
             className="text-center d-lg-flex justify-content-end align-items-center"
           >
-            <span className="font-weight-normal">Video</span>
+            <div>
+              <span className="font-weight-normal d-block">Video</span>{" "}
+              <small className="font-weight-normal">(mp4, 5GB max)</small>
+            </div>
           </Col>
           <Col lg={{ offset: 1, span: 6 }}>
             <label htmlFor="video-upload" className="cursor-pointer w-100">

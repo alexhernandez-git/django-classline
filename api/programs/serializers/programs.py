@@ -720,10 +720,6 @@ class CancelEventBookingProgramSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 'No puedes desactivar la reserva de eventos despues de usuario hayan reservado algun evento')
 
-        if program.published:
-            raise serializers.ValidationError(
-                'No puedes desactivar una academia publicado')
-
         return data
 
     def update(self, instance, validated_data):
