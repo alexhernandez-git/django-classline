@@ -42,7 +42,6 @@ const VideoForm = (props) => {
       setSrcImage(reader.result);
       console.log(reader.result);
     };
-    console.log(files[0].size / 1024 / 1024);
 
     reader.readAsDataURL(files[0]);
   };
@@ -59,7 +58,7 @@ const VideoForm = (props) => {
       Math.random().toString(36) + fileName
     );
     console.log(file.size / 1024 / 1024);
-    if (file.size / 1024 / 1024 < 5) {
+    if (file.size / 1024 / 1024 / 1024 < 5) {
       setFieldValue("picture", file);
     } else {
       alert("Esta imágen no puede ser mayor a 5MB");
