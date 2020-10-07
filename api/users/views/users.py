@@ -212,6 +212,14 @@ class UserViewSet(mixins.RetrieveModelMixin,
         user_data = UserModelSerializer(user, many=False).data
         stripe_customer_id = user_data.get(
             'profile').get('stripe_customer_id')
+        stripe_account_id = user_data.get(
+            'profile').get('stripe_account_id')
+
+        if stripe_account_id != None and stripe_account_id != '':
+            stripe_dashboard_url = stripe.Account.create_login_link(
+                user_data.get('profile').get('stripe_account_id')
+            )
+            user_data['profile']['stripe_dashboard_url'] = stripe_dashboard_url['url']
 
         if stripe_customer_id != None and stripe_customer_id != '':
             payment_methods = stripe.PaymentMethod.list(
@@ -239,23 +247,6 @@ class UserViewSet(mixins.RetrieveModelMixin,
                 'rating': None,
                 'have_access': have_access
             }
-
-        return Response(data, status=status.HTTP_201_CREATED)
-
-    @action(detail=False, methods=['post'])
-    def login_from_app(self, request, *args, **kwargs):
-        """User login."""
-
-        serializer = UserLoginAppSerializer(
-            data=request.data,
-        )
-
-        serializer.is_valid(raise_exception=True)
-        user, token = serializer.save()
-        data = {
-            'user': UserModelSerializer(user, many=False).data,
-            'access_token': token,
-        }
 
         return Response(data, status=status.HTTP_201_CREATED)
 

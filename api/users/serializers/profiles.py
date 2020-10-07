@@ -25,7 +25,7 @@ class ProfileModelSerializer(serializers.ModelSerializer):
             'country',
             'stripe_account_id',
             'stripe_customer_id',
-            'subscriptions'
+            'subscriptions',
         )
 
     def get_subscriptions(self, obj):

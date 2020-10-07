@@ -91,9 +91,10 @@ class EventViewSet(mixins.CreateModelMixin,
         )
         serializer.is_valid(raise_exception=True)
 
-        event = serializer.save()
+        data = serializer.save()
 
-        data = EventModelSerializer(event).data
+        data = {'event': EventModelSerializer(
+            data['event']).data, 'are_events_booked': data['are_events_booked']}
         return Response(data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['get'])

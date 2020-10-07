@@ -1,5 +1,6 @@
 import axios from "axios";
-
+import Swal from "sweetalert2";
+import moment from "moment";
 import {
   MEETUPS_FETCH,
   MEETUPS_SUCCESS,
@@ -55,9 +56,21 @@ export const editMeetup = (meetup) => (dispatch, getState) => {
       tokenConfig(getState)
     )
     .then((res) => {
+      console.log(res.data);
+      if (
+        res.data.are_events_booked &&
+        !moment(meetup.start).isSame(moment(res.data.event.start))
+      ) {
+        Swal.fire({
+          title:
+            "No es posible actuaizar la hora porque tienes alumnos que ya han reservado la clase, puedes desactivar la reserva de clases y esperar a que no queden reservas",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
       dispatch({
         type: EDIT_MEETUP_SUCCESS,
-        payload: res.data,
+        payload: res.data.event,
       });
     })
     .catch((err) => {

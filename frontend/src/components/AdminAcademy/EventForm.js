@@ -27,7 +27,16 @@ export default function EventForm(props) {
     } else {
       setArgs({ ...args, color: color.hex });
     }
+    setColor(color.hex);
   };
+  const [color, setColor] = useState("");
+  useEffect(() => {
+    if (args && classData) {
+      setColor(isEdit ? classData.color : args.color);
+      console.log(color);
+    }
+  }, [args, classData]);
+
   return (
     <div className="p-4">
       <AdminForm>
@@ -80,10 +89,7 @@ export default function EventForm(props) {
         </CheckboxCustom>
 
         <label className="mt-4">Color del evento</label>
-        <CirclePicker
-          color={classData.color}
-          onChangeComplete={handleChangeComplete}
-        />
+        <CirclePicker color={color} onChangeComplete={handleChangeComplete} />
         <label className="mt-4">Evento reservable</label>
 
         <CheckboxCustom className="mb-5">
