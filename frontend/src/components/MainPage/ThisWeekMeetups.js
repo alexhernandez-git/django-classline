@@ -139,7 +139,7 @@ const ThisWeekMeetups = () => {
             selectAllow={function (selectInfo) {
               return moment().diff(selectInfo.start) <= 0;
             }}
-            firstDay={moment().day()}
+            // firstDay={moment().day()}
           />
         </div>
       </ContainerCalendar>
