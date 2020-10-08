@@ -90,6 +90,24 @@ const CheckoutOnlineClass = (props) => {
     }
   }, [bookEventsReducer.selected_event, bookEventsReducer.events]);
   const [isTime, setIsTime] = useState(false);
+  const [isLate, setIsLate] = useState(false);
+  const checkIsLate = () => {
+    if (bookEventsReducer.selected_event) {
+      if (bookEventsReducer.selected_event.end) {
+        if (moment().isAfter(moment(bookEventsReducer.selected_event.end))) {
+          setIsLate(true);
+        }
+      } else {
+        if (
+          moment().isAfter(
+            moment(bookEventsReducer.selected_event.start).add(1, "hours")
+          )
+        ) {
+          setIsLate(true);
+        }
+      }
+    }
+  };
   const checkIsHour = () => {
     if (bookEventsReducer.selected_event) {
       console.log(
@@ -121,19 +139,25 @@ const CheckoutOnlineClass = (props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       checkIsHour();
+      checkIsLate();
     }, 300000);
     return () => clearInterval(interval);
   }, []);
   useEffect(() => {
     checkIsHour();
+    checkIsLate();
   }, []);
   useEffect(() => {
     checkIsHour();
+    checkIsLate();
   }, [bookEventsReducer.events]);
   useEffect(() => {
     checkIsHour();
+    checkIsLate();
   }, [bookEventsReducer.selected_event]);
-
+  useEffect(() => {
+    console.log(isLate);
+  }, [isLate]);
   const handleCancelClass = (id) => {
     MySwal.fire({
       title: "Estas seguro?",
@@ -251,14 +275,6 @@ const CheckoutOnlineClass = (props) => {
               "Cargando..."
             ) : isMyEvent.event ? (
               <>
-                <div className="mb-4">
-                  <span
-                    className="cursor-pointer"
-                    onClick={() => handleCancelClass(isMyEvent.event.id)}
-                  >
-                    <u>Cancelar clase</u>
-                  </span>
-                </div>
                 {isTime ? (
                   <a
                     href={bookEventsReducer.selected_event.videoconference}
@@ -270,6 +286,16 @@ const CheckoutOnlineClass = (props) => {
                   </a>
                 ) : (
                   <>
+                    {!isLate && (
+                      <div className="mb-4">
+                        <span
+                          className="cursor-pointer"
+                          onClick={() => handleCancelClass(isMyEvent.event.id)}
+                        >
+                          <u>Cancelar clase</u>
+                        </span>
+                      </div>
+                    )}
                     <button className="my-button disabled-button" type="submit">
                       Ir a la clase
                     </button>

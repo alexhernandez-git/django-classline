@@ -27,6 +27,9 @@ from api.users.serializers import ProfileModelSerializer
 # Utils
 from api.utils.permissions import AddProgramMixin
 
+from datetime import datetime, timedelta
+import pytz
+
 
 class EventViewSet(mixins.CreateModelMixin,
                    mixins.ListModelMixin,
@@ -238,6 +241,15 @@ class EventViewSet(mixins.CreateModelMixin,
         """Call by owners to finish a ride."""
 
         event = self.get_object()
+        # import pdb
+        # pdb.set_trace()
+        start = event.start - timedelta(hours=1)
+        utc = pytz.UTC
+
+        now = utc.localize(datetime.now())
+
+        if start < now:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         user = request.user
         profile = user.profile
