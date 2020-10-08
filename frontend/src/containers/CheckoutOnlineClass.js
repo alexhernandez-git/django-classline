@@ -20,9 +20,12 @@ import {
   resetAuthErrors,
 } from "../redux/actions/auth";
 import moment from "moment";
-import { bookEvent } from "../redux/actions/bookEvents";
-
+import { bookEvent, cancelEvent } from "../redux/actions/bookEvents";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 const CheckoutOnlineClass = (props) => {
+  const MySwal = withReactContent(Swal);
+
   const history = useHistory();
   const { pathname } = useLocation();
 
@@ -74,16 +77,16 @@ const CheckoutOnlineClass = (props) => {
   const [newCard, setNewCard] = useState(false);
   const [isMyEvent, setIsMyEvent] = useState({
     loading: true,
-    isMyEvent: false,
+    event: false,
   });
   useEffect(() => {
     if (bookEventsReducer.selected_event) {
-      const result = bookEventsReducer.events.some((event) => {
+      const result = bookEventsReducer.events.find((event) => {
         return moment(event.start).isSame(
           moment(bookEventsReducer.selected_event.start)
         );
       });
-      setIsMyEvent({ loading: false, isMyEvent: result });
+      setIsMyEvent({ loading: false, event: result });
     }
   }, [bookEventsReducer.selected_event, bookEventsReducer.events]);
   const [isTime, setIsTime] = useState(false);
@@ -130,6 +133,25 @@ const CheckoutOnlineClass = (props) => {
   useEffect(() => {
     checkIsHour();
   }, [bookEventsReducer.selected_event]);
+
+  const handleCancelClass = (id) => {
+    MySwal.fire({
+      title: "Estas seguro?",
+      text: "Cuando canceles la clase se te devolverá tu dinero",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Cancelar",
+      cancelButtonText: "Atras",
+    }).then((result) => {
+      if (result.value) {
+        const dispatchCancelClass = (id) => dispatch(cancelEvent(id));
+        dispatchCancelClass(id);
+      }
+    });
+  };
+
   return bookEventsReducer.selected_event == null ? (
     /\/checkout-class-academy\/?$/.test(pathname) ? (
       <Redirect to={`/academy/${program}`} />
@@ -227,10 +249,13 @@ const CheckoutOnlineClass = (props) => {
             <div className="my-4"></div>
             {isMyEvent.loading ? (
               "Cargando..."
-            ) : isMyEvent.isMyEvent ? (
+            ) : isMyEvent.event ? (
               <>
                 <div className="mb-4">
-                  <span className="cursor-pointer">
+                  <span
+                    className="cursor-pointer"
+                    onClick={() => handleCancelClass(isMyEvent.event.id)}
+                  >
                     <u>Cancelar clase</u>
                   </span>
                 </div>

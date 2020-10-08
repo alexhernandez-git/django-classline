@@ -48,6 +48,9 @@ class EventViewSet(mixins.CreateModelMixin,
         if self.action == 'list_events_booked':
             queryset = Event.objects.filter(
                 event_students=self.request.user)
+        if self.action == 'cancel_event_purchase':
+            queryset = Event.objects.filter(
+                program=self.program, event_buyed=True)
         return queryset
 
     def get_permissions(self):
@@ -201,16 +204,15 @@ class EventViewSet(mixins.CreateModelMixin,
         )
 
         stripe.Invoice.pay(invoice['id'])
-        new_purchased_item = PurchasedItem(
-            invoice_item_id=invoice_item,
-            invoice_id=invoice,
+        new_purchased_item = PurchasedItem.objects.create(
+            invoice_item_id=invoice_item['id'],
+            invoice_id=invoice['id'],
             user=user,
             program=program,
             event=event_info,
             payment_issue=False,
             is_a_purchased_event=True
         )
-        new_purchased_item.save()
         profile.purchased_items.add(
             new_purchased_item
         )
@@ -236,15 +238,15 @@ class EventViewSet(mixins.CreateModelMixin,
         """Call by owners to finish a ride."""
 
         event = self.get_object()
+
         user = request.user
         profile = user.profile
-
+        program = self.program
         # user = User.objects.get(pk=self.kwargs['pk'])
         if 'STRIPE_API_KEY' in os.environ:
             stripe.api_key = os.environ['STRIPE_API_KEY']
         else:
             stripe.api_key = 'sk_test_51HCsUHIgGIa3w9CpMgSnYNk7ifsaahLoaD1kSpVHBCMKMueUb06dtKAWYGqhFEDb6zimiLmF8XwtLLeBt2hIvvW200YfRtDlPo'
-
         cancel_purchased_item = profile.purchased_items.filter(
             user=request.user, event=event, active=True, is_a_purchased_event=True)[0]
 
@@ -252,7 +254,7 @@ class EventViewSet(mixins.CreateModelMixin,
             # Reembolso
 
             invoice = stripe.Invoice.retrieve(
-                cancel_purchased_item['invoice_id'])
+                cancel_purchased_item.invoice_id)
             if invoice['amount_paid'] >= 1:
                 stripe.CreditNote.create(
                     invoice=invoice.id,
@@ -265,15 +267,18 @@ class EventViewSet(mixins.CreateModelMixin,
                     ],
                     refund_amount=str(invoice['amount_paid'])
                 )
-
             student = cancel_purchased_item.user
-            event = cancel_purchased_item.event
-            event.event_students.remove(student)
-            event.current_students -= 1
-            event.save()
+            event_parent = cancel_purchased_item.event.event_buyed_parent
+            event_parent.current_students -= 1
+            event_parent.save()
+            EventStudent.objects.get(
+                user=student, event=event, program=program).delete()
             cancel_purchased_item.active = False
             cancel_purchased_item.refunded = True
+
             cancel_purchased_item.save()
+
+            event.delete()
 
             return Response(status=status.HTTP_204_NO_CONTENT)
 

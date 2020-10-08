@@ -89,8 +89,6 @@ export default function (state = initialState, action) {
         video_creating: true,
       };
     case CREATE_VIDEO_SUCCESS:
-      console.log("action.payload", action.payload);
-
       return {
         ...state,
         video_creating: false,

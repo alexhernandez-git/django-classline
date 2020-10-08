@@ -9,6 +9,9 @@ import {
   FETCH_EVENTS_BOOKED,
   FETCH_EVENTS_BOOKED_SUCCESS,
   FETCH_EVENTS_BOOKED_FAIL,
+  CANCEL_EVENT,
+  CANCEL_EVENT_FAIL,
+  CANCEL_EVENT_SUCCESS,
 } from "../types";
 
 import { tokenConfig } from "./auth";
@@ -81,6 +84,37 @@ export const fetchEventsBooked = () => (dispatch, getState) => {
     .catch((err) => {
       dispatch({
         type: FETCH_EVENTS_BOOKED_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const cancelEvent = (id) => (dispatch, getState) => {
+  dispatch({ type: CANCEL_EVENT, payload: id });
+  console.log(id);
+  axios
+    .delete(
+      `/api/programs/${
+        getState().programReducer.program.code
+      }/events/${id}/cancel_event_purchase/`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      dispatch({
+        type: CANCEL_EVENT_SUCCESS,
+        payload: res.data,
+      });
+
+      Swal.fire({
+        title: "Clase cancelada!",
+        text: "En los próximos dias recibirás tu reembolso",
+        icon: "success",
+        confirmButtonText: "Ok",
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: CANCEL_EVENT_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
