@@ -252,10 +252,24 @@ class EventViewSet(mixins.CreateModelMixin,
 
         if cancel_purchased_item:
             # Reembolso
-
             invoice = stripe.Invoice.retrieve(
                 cancel_purchased_item.invoice_id)
             if invoice['amount_paid'] >= 1:
+
+                charge = stripe.Charge.retrieve(
+                    invoice['charge'],
+                )
+                transfer = stripe.Transfer.retrieve(
+                    charge['transfer']
+                )
+                try:
+                    stripe.Transfer.create_reversal(
+                        transfer['id'],
+                        amount=int(transfer['amount'] -
+                                   transfer['amount'] * 10 / 100),
+                    )
+                except:
+                    pass
                 stripe.CreditNote.create(
                     invoice=invoice.id,
                     lines=[
@@ -267,6 +281,7 @@ class EventViewSet(mixins.CreateModelMixin,
                     ],
                     refund_amount=str(invoice['amount_paid'])
                 )
+
             student = cancel_purchased_item.user
             event_parent = cancel_purchased_item.event.event_buyed_parent
             event_parent.current_students -= 1
