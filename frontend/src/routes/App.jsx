@@ -13,6 +13,7 @@ import Teaches from "src/containers/Teaches";
 import Payments from "src/containers/Payments";
 import ResetPassword from "../containers/ResetPassword";
 import DemoRequest from "../containers/DemoRequest";
+import PrivacyPolicy from "../containers/PrivacyPolicy";
 const App = () => {
   return (
     <>
@@ -42,6 +43,7 @@ const App = () => {
 
           <Route path="/teaches" component={Teaches} />
           <Route path="/cart/checkout/:id" component={Payments} />
+          <Route path="/privacy-policy" component={PrivacyPolicy} />
 
           <Route path="/myzone/student" component={StudentsZone} />
           <Route path="/myzone/student/**" component={StudentsZone} />

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../../../static/assets/styles/components/Layout/Footer.scss";
 
 const Footer = () => {
@@ -23,7 +24,7 @@ const Footer = () => {
           <nav className="nav-footer">
             <ul>
               <li>
-                <a href="#">Política de privacidad</a>
+                <Link to="/privacy-policy">Política de privacidad</Link>
               </li>
               <li>
                 <a href="#">Uso de cookies</a>

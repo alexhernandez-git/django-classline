@@ -228,7 +228,7 @@ const Payments = (props) => {
                     <br />
                     <small>
                       Al completar la compra, aceptas estas{" "}
-                      <Link to="/" className="font-weight-bold">
+                      <Link to="/privacy-policy" className="font-weight-bold">
                         Condiciones de uso
                       </Link>
                     </small>
