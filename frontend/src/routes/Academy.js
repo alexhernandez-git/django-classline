@@ -28,7 +28,7 @@ import AccountsAdmin from "src/containers/admin/AccountsAdmin";
 import "static/assets/styles/styles.scss";
 import ScrollToTop from "src/utils/ScrollToTop";
 import { useDispatch, useSelector } from "react-redux";
-import { loadUser, resetAuthErrors } from "../redux/actions/auth";
+import { loadUser, resetAuthErrors, setIsInstructor } from "../redux/actions/auth";
 import { fetchProgram } from "../redux/actions/program";
 import IndexAcademy from "src/containers/IndexAcademy";
 import { fetchProgramRating } from "../redux/actions/rating";
@@ -85,19 +85,29 @@ const Academy = () => {
     const isStudent = authReducer.user.programs.find(
       (program) => program.code == programId && authReducer.haveAccess
     );
-    const isInstructor = authReducer.user.teacher.programs.find(
+    const isAdmin = authReducer.user.teacher.programs.find(
       (program) => program.code == programId && authReducer.haveAccess
     );
-    if (isStudent || isInstructor) {
+    const isInstructor = authReducer.user.teacher.instructor_in.find(
+      (allowed_program) => allowed_program.program.code == programId && authReducer.haveAccess
+      );
+    if (isStudent || isAdmin|| isInstructor) {
       return true;
     } else {
       return false;
     }
   };
-  const isInstructor = () =>
-    authReducer.user.teacher.programs.some(
-      (program) => program.code == programId
-    );
+
+    const isInstructor = () => {
+      return  authReducer.user.teacher.instructor_in.some(
+          (allowed_program) =>allowed_program.program.code == programId
+          );
+    };
+    const isAdmin = () =>{
+     return authReducer.user.teacher.programs.some(
+        (program) => program.code == programId
+        ) 
+    }
   return programReducer.isLoading ? (
     "Cargando..."
   ) : (
@@ -136,7 +146,7 @@ const Academy = () => {
         />
         {authReducer.isLoading ? (
           "Cargando..."
-        ) : authReducer.isAuthenticated && haveAccess() ? (
+        ) : !authReducer.isAuthenticated ?<Redirect to={`/academy/${programId}`}/> :haveAccess() ? (
           <Layout>
             <Route
               exact
@@ -252,28 +262,33 @@ const Academy = () => {
               path="/academy/:program/post/:id"
               component={PostAcademy}
             />
-            {authReducer.user && isInstructor() ? (
+            {authReducer.user && isInstructor() ||isAdmin() ? (
               <>
+                {isAdmin() &&
+                <>
                 <Route
-                  exact
-                  path="/academy/:program/admin"
-                  component={ConfigurationAdmin}
+                exact
+                path="/academy/:program/admin"
+                component={ConfigurationAdmin}
                 />
-                <Route
-                  exact
-                  path="/academy/:program/admin/users/:search?"
-                  component={UsersAdmin}
-                />
-                <Route
-                  exact
-                  path="/academy/:program/admin/accounts/:search?"
-                  component={AccountsAdmin}
+                  <Route
+                exact
+                path="/academy/:program/admin/accounts/:search?"
+                component={AccountsAdmin}
                 />
                 <Route
                   exact
                   path="/academy/:program/admin/instructors/:search?"
                   component={InstructorAccountsAdmin}
                 />
+                </>
+              }
+                <Route
+                exact
+                path="/academy/:program/admin/users/:search?"
+                component={UsersAdmin}
+                />
+              
                 <Route
                   exact
                   path="/academy/:program/admin/videos/:search?"

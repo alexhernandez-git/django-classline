@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 
 # Django REST Framework
 from api.users.models import User, Profile, Subscription, Commercial, Payment
-from api.programs.models import Program, Rating, Student
+from api.programs.models import Program, Rating, Student, AllowedProgram
 import stripe
 import json
 import uuid
@@ -202,7 +202,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         user, token = serializer.save()
         have_access = True
 
-        if not user in program.students.all() and user != program.user:
+        if not user in program.students.all() and user != program.user and not AllowedProgram.objects.filter(instructor__user=user, program=program).exists():
             # response = {
             #     'message': 'No perteneces a esta academia'
             # }
@@ -738,7 +738,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         )
         if request.user.id != None:
             have_access = True
-            if not request.user in program.students.all() and request.user != program.user:
+            if not request.user in program.students.all() and request.user != program.user and not AllowedProgram.objects.filter(instructor__user=request.user, program=program).exists():
                 # response = {
                 #     'message': 'No perteneces a esta academia'
                 # }

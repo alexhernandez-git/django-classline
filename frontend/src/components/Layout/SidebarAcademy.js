@@ -23,13 +23,30 @@ const Sidebar = (props) => {
   const { pathname } = useLocation();
   const { program } = useParams();
   const programReducer = useSelector((state) => state.programReducer);
-
+  const authReducer = useSelector((state) => state.authReducer);
+  const isInstructorButNotAdmin = () =>{
+    if ( 
+      authReducer.user.teacher.instructor_in.some(
+        (allowed_program) =>allowed_program.program.code == program
+        )
+        &&
+        !authReducer.user.teacher.programs.some(
+          (program) => program.code == program
+          )
+    ){
+      return true
+    }else{
+      return false
+    }
+  }
   return programReducer.isLoading ? (
     "Cargando..."
   ) : (
     <ContainerSidebar sidebarActive={sidebarActive}>
       {/\/admin\/?/.test(pathname) ? (
         <>
+          {!isInstructorButNotAdmin() &&
+          <>
           <Link to={`/academy/${program}/admin`}>
             <SecctionLink active={/\/admin\/?$/.test(pathname)}>
               <IconContext.Provider
@@ -42,6 +59,7 @@ const Sidebar = (props) => {
               Academia
             </SecctionLink>
           </Link>
+          
           <Link to={`/academy/${program}/admin/instructors`}>
             <SecctionLink active={/\/instructors\/?$/.test(pathname)}>
               <IconContext.Provider
@@ -66,6 +84,8 @@ const Sidebar = (props) => {
               Cuentas
             </SecctionLink>
           </Link>
+          </>
+          }
           <Link to={`/academy/${program}/admin/users`}>
             <SecctionLink active={/\/users\/?$/.test(pathname)}>
               <IconContext.Provider
