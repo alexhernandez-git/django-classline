@@ -73,9 +73,7 @@ const Header = (props) => {
         );
   };
   const isAdmin = () =>{
-   return authReducer.user.teacher.programs.some(
-      (program) => program.code == program
-      ) 
+   return authReducer.user.teacher.programs.some(pro => pro.code == program)
   }
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
