@@ -7,3 +7,4 @@ from .promotion_codes import PromotionCode
 from .commercials import Commercial
 from .payments import Payment
 from .purchased_items import PurchasedItem
+from .users_login_activity import UserLoginActivity

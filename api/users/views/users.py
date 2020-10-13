@@ -22,7 +22,6 @@ from api.users.serializers import (
     UserTeacherModelSerializer,
     UserLoginPlatformSerializer,
     ChangePasswordSerializer,
-    UserLoginAppSerializer,
     ChangeEmailSerializer,
     ValidateChangeEmail,
     ForgetPasswordSerializer,
@@ -66,6 +65,7 @@ from api.users.serializers.subscriptions import(
 # Filters
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
+
 
 import os
 
@@ -140,13 +140,16 @@ class UserViewSet(mixins.RetrieveModelMixin,
     @action(detail=False, methods=['post'])
     def login(self, request):
         """User login."""
+
         serializer = UserLoginSerializer(
             data=request.data,
+            context={'request': request}
 
         )
 
         serializer.is_valid(raise_exception=True)
         user, token = serializer.save()
+
         data = {
             'user': UserModelSerializer(user).data,
             'access_token': token,
@@ -195,11 +198,12 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
         serializer = UserLoginPlatformSerializer(
             data=request.data,
-            context={'program': program}
+            context={'program': program, 'request': request}
         )
 
         serializer.is_valid(raise_exception=True)
         user, token = serializer.save()
+
         have_access = True
 
         if not user in program.students.all() and user != program.user and not AllowedProgram.objects.filter(instructor__user=user, program=program).exists():
@@ -337,6 +341,17 @@ class UserViewSet(mixins.RetrieveModelMixin,
         serializer.is_valid(raise_exception=True)
         user, token = serializer.save()
 
+        if user and token:
+            if UserLoginActivity.objects.filter(login_username=user.username).exists():
+                UserLoginActivity.objects.filter(
+                    login_username=user.username).delete()
+            user_agent_info = request.META.get(
+                'HTTP_USER_AGENT', '<unknown>')[:255],
+            user_login_activity_log = UserLoginActivity(login_IP=Functions.get_client_ip(request),
+                                                        login_username=user.username,
+                                                        user_agent_info=user_agent_info,
+                                                        status=UserLoginActivity.SUCCESS)
+            user_login_activity_log.save()
         data = {
             'user': UserModelSerializer(user).data,
             'access_token': token,

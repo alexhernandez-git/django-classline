@@ -15,7 +15,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.validators import UniqueValidator
 
 # Models
-from api.users.models import Profile, User, Teacher, Commercial
+from api.users.models import Profile, User, Teacher, Commercial, UserLoginActivity
 
 from api.programs.models import Program, AccountCreated, Student, Instructor, AllowedProgram
 
@@ -33,6 +33,7 @@ import re
 import jwt
 import time
 from datetime import timedelta
+from api.utils.functions import Functions
 
 
 def gen_verification_token(user):
@@ -580,6 +581,7 @@ class UserLoginSerializer(serializers.Serializer):
         # Validation with email or password
         email = data['email']
         password = data['password']
+        request = self.context['request']
         regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
         # for custom mails use: '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
         if email and password:
@@ -593,6 +595,7 @@ class UserLoginSerializer(serializers.Serializer):
             # Check if user set email
 
         user = authenticate(username=email, password=password)
+
         if not user:
             raise serializers.ValidationError(
                 'Las credenciales no son correctas')
@@ -609,12 +612,31 @@ class UserLoginSerializer(serializers.Serializer):
         # if not user.is_verified:
         #     raise serializers.ValidationError(
         #         'Esta cuenta no esta verificada, para verificar mira el correo y verifica la cuenta')
+        if user:
+            current_login_ip = Functions.get_client_ip(request)
 
+            if UserLoginActivity.objects.filter(login_username=user.username).exists():
+                user_login_activity = UserLoginActivity.objects.get(
+                    login_username=user.username)
+                if user_login_activity.login_IP != current_login_ip:
+                    last_token = Token.objects.get(user=self.context['user'])
+                    last_token.delete()
+            if UserLoginActivity.objects.filter(login_username=user.username).exists():
+                UserLoginActivity.objects.filter(
+                    login_username=user.username).delete()
+            user_agent_info = request.META.get(
+                'HTTP_USER_AGENT', '<unknown>')[:255],
+            user_login_activity_log = UserLoginActivity(login_IP=Functions.get_client_ip(request),
+                                                        login_username=user.username,
+                                                        user_agent_info=user_agent_info,
+                                                        status=UserLoginActivity.SUCCESS)
+            user_login_activity_log.save()
         self.context['user'] = user
         return data
 
     def create(self, data):
         """Generate or retrieve new token."""
+
         token, created = Token.objects.get_or_create(user=self.context['user'])
         return self.context['user'], token.key
 
@@ -633,6 +655,8 @@ class UserLoginPlatformSerializer(serializers.Serializer):
         # Validation with email or password
         email = data['email']
         password = data['password']
+        request = self.context['request']
+
         regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
         # for custom mails use: '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
         if email and password:
@@ -645,6 +669,7 @@ class UserLoginPlatformSerializer(serializers.Serializer):
                 email = user_request.username
             # Check if user set email
         user = authenticate(username=email, password=password)
+
         if not user:
             raise serializers.ValidationError('Credenciales invalidas')
         # import pdb; pdb.set_trace()
@@ -655,56 +680,25 @@ class UserLoginPlatformSerializer(serializers.Serializer):
 
         # if not user.is_verified:
         #     raise serializers.ValidationError('Esta cuenta no esta verificada')
-        self.context['user'] = user
-        return data
+        if user:
+            current_login_ip = Functions.get_client_ip(request)
+            if UserLoginActivity.objects.filter(login_username=user.username).exists():
+                user_login_activity = UserLoginActivity.objects.get(
+                    login_username=user.username)
+                if user_login_activity.login_IP != current_login_ip:
 
-    def create(self, data):
-        """Generate or retrieve new token."""
-        token, created = Token.objects.get_or_create(user=self.context['user'])
-        return self.context['user'], token.key
-
-
-class UserLoginAppSerializer(serializers.Serializer):
-    """User login serializer.
-
-    Handle the login request
-    """
-
-    email = serializers.CharField()
-    password = serializers.CharField()
-
-    def validate(self, data):
-        """Check credentials."""
-        # Validation with email or password
-        email = data['email']
-        password = data['password']
-        regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-        # for custom mails use: '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
-        if email and password:
-            if re.search(regex, email):
-                user_request = get_object_or_404(
-                    User,
-                    email=email
-                )
-                email = user_request.username
-            # Check if user set email
-        user = authenticate(username=email, password=password)
-        # import pdb; pdb.set_trace()
-        if not user:
-            raise serializers.ValidationError('Credenciales invalidas')
-
-        if user.is_commercial:
-            raise serializers.ValidationError(
-                'Con esta cuenta no puedes acceder a classlineacademy.com')
-
-        # if not user.is_verified:
-        #     raise serializers.ValidationError(
-        #         'Esta cuenta no esta verificada, para verificar mira el correo y verifica la cuenta')
-
-        if not Student.objects.filter(user=user).exists():
-            raise serializers.ValidationError(
-                'No perteneces a ninguna academia')
-
+                    last_token = Token.objects.get(user=self.context['user'])
+                    last_token.delete()
+            if UserLoginActivity.objects.filter(login_username=user.username).exists():
+                UserLoginActivity.objects.filter(
+                    login_username=user.username).delete()
+            user_agent_info = request.META.get(
+                'HTTP_USER_AGENT', '<unknown>')[:255],
+            user_login_activity_log = UserLoginActivity(login_IP=Functions.get_client_ip(request),
+                                                        login_username=user.username,
+                                                        user_agent_info=user_agent_info,
+                                                        status=UserLoginActivity.SUCCESS)
+            user_login_activity_log.save()
         self.context['user'] = user
         return data
 
@@ -884,7 +878,7 @@ class ForgetPasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError('Este email no existe')
 
         user = User.objects.filter(email=email).first()
-        token = Token.objects.get_or_create(user=user)
+        token = Token.objects.get(user=user)
 
         send_reset_password(user, token[0].key)
         return {'email': email, 'user': user}
