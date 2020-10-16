@@ -165,7 +165,7 @@ const PlayerControls = forwardRef((props, ref) => {
           <>
             <IconContext.Provider
             value={{
-              size: 20,
+              size: 15,
               color: "#a1a1a1",
               className: "cursor-pointer press-icon ml-4",
             }}
@@ -174,7 +174,7 @@ const PlayerControls = forwardRef((props, ref) => {
             </IconContext.Provider>
               <IconContext.Provider
               value={{
-                size: 20,
+                size: 15,
                 color: "#a1a1a1",
                 className: "cursor-pointer press-icon ml-3",
               }}

@@ -80,7 +80,7 @@ const PlaylistPage = (props) => {
                   >
                     <PlaylistVideo
                       className={
-                        track.id == trackId
+                        index == trackId
                           ? "active d-flex justify-content-between align-items-center cursor-pointer"
                           : "d-flex justify-content-between align-items-center cursor-pointer"
                       }
