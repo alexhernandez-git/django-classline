@@ -6,11 +6,12 @@ import styled from "@emotion/styled";
 import VideoPlayer from "src/components/ui/VideoPlayer";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useHistory } from "react-router-dom";
 import { fetchPlaylist } from "src/redux/actions/course";
+import { ButtonCustom } from "../components/ui/ButtonCustom";
 const PlaylistPage = (props) => {
   const dispatch = useDispatch();
-
+  const history = useHistory()
   const router = useParams();
   const programReducer = useSelector((state) => state.programReducer);
   const videoId = router.id;
@@ -23,6 +24,23 @@ const PlaylistPage = (props) => {
     }
   }, [videoId, programReducer.isLoading]);
   const courseReducer = useSelector((state) => state.courseReducer);
+  const goNext = () =>{
+    const newTrackId = Number(trackId)  + 1
+    const maxPlaylistTrack = courseReducer.playlist.tracks.length
+    if (newTrackId < maxPlaylistTrack) {
+      history.push({
+        pathname:`/academy/${programReducer.program.code}/course/${courseReducer.playlist.id}/${newTrackId}`, 
+      })
+    }
+  }
+  const goPrevious = () => {
+    const newTrackId = Number(trackId)  - 1
+    if (newTrackId >= 0) {
+    history.push({
+      pathname:`/academy/${programReducer.program.code}/course/${courseReducer.playlist.id}/${newTrackId}`, 
+    })
+  }
+  } 
   return (
     <Main padding>
       <div className="row">
@@ -32,6 +50,9 @@ const PlaylistPage = (props) => {
             courseReducer.playlist.tracks.length > 0 && (
               <VideoPlayer
                 video={courseReducer.playlist.tracks[trackId].video}
+                goNext={goNext}
+                goPrevious={goPrevious}
+                isPlaylist={true}
               />
             )}
           {courseReducer.isLoading && <span>Cargando...</span>}

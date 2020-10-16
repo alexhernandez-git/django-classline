@@ -15,7 +15,7 @@ import MeetupsAcademy from "src/containers/MeetupsAcademy";
 import PodcastsAcademy from "src/containers/PodcastsAcademy";
 import VideoAcademy from "src/containers/VideoAcademy";
 import CoursesAcademy from "src/containers/CoursesAcademy";
-import CourseAcademy from "src/containers/CourseAcademy";
+import PlaylistAdminAcademy from "src/containers/PlaylistAdminAcademy";
 import ProfileAcademy from "src/containers/ProfileAcademy";
 import ConfigurationAdmin from "src/containers/admin/ConfigurationAdmin";
 import VideosAdmin from "src/containers/admin/VideosAdmin";
@@ -185,7 +185,7 @@ const Academy = () => {
               path="/academy/:program/course/:id/:track?"
               component={
                 programReducer.program.are_admin_playlists
-                  ? CourseAcademy
+                  ? PlaylistAdminAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />

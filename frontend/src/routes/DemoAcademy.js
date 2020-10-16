@@ -13,7 +13,7 @@ import VideosAcademy from "src/containers/VideosAcademy";
 import MeetupsAcademy from "src/containers/MeetupsAcademy";
 import PodcastsAcademy from "src/containers/PodcastsAcademy";
 import CoursesAcademy from "src/containers/CoursesAcademy";
-import CourseAcademy from "src/containers/CourseAcademy";
+import PlaylistAdminAcademy from "src/containers/PlaylistAdminAcademy";
 
 import "static/assets/styles/styles.scss";
 import ScrollToTop from "src/utils/ScrollToTop";
@@ -101,7 +101,7 @@ const Academy = () => {
             path="/demo/academy/:program/playlist/:id/:track?"
             component={
               programReducer.program.are_admin_playlists
-                ? CourseAcademy
+                ? PlaylistAdminAcademy
                 : () => <Redirect to={`/academy/${programId}/home`} />
             }
           />

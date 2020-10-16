@@ -34,7 +34,7 @@ const VideoPlayer = (props) => {
     views,
     created,
   } = props.video;
-
+  const {goNext, goPrevious, isPlaylist} = props
   const playerContainerRef = useRef();
   const playerRef = useRef();
   const controlsRef = useRef();
@@ -163,6 +163,9 @@ const VideoPlayer = (props) => {
           played={played}
           elapsedTime={elapsedTime}
           totalDuration={totalDuration}
+          goNext={goNext}
+          goPrevious={goPrevious}
+          isPlaylist={isPlaylist}
         />
       </PlayerWrapper>
 

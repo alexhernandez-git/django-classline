@@ -10,7 +10,7 @@ import { useParams, Link } from "react-router-dom";
 import { fetchPlaylist } from "src/redux/actions/playlist";
 const PlaylistPage = (props) => {
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const router = useParams();
   const programReducer = useSelector((state) => state.programReducer);
   const videoId = router.id;
@@ -23,15 +23,20 @@ const PlaylistPage = (props) => {
     }
   }, [videoId, programReducer.isLoading]);
   const playlistReducer = useSelector((state) => state.playlistReducer);
+
+
+
   return (
     <Main padding>
       <div className="row">
+
         <div className="col-md-6 col-lg-8">
           {playlistReducer.playlist &&
             !playlistReducer.isLoading &&
             playlistReducer.playlist.tracks.length > 0 && (
               <VideoPlayer
                 video={playlistReducer.playlist.tracks[trackId].video}
+
               />
             )}
           {playlistReducer.isLoading && <span>Cargando...</span>}

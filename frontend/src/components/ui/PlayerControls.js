@@ -5,15 +5,20 @@ import ReactPlayer from "react-player";
 import { IconContext } from "react-icons/lib";
 import {
   FaBackward,
+  FaFastBackward,
+  FaFastForward,
   FaForward,
   FaPause,
   FaPlay,
+  FaStepBackward,
+  FaStepForward,
   FaVolumeMute,
   FaVolumeUp,
 } from "react-icons/fa";
 import { RiFullscreenFill } from "react-icons/ri";
 import Slider from "rc-slider";
 import "static/assets/styles/components/Layout/rc-slider.scss";
+import { IoMdSkipForward } from "react-icons/io";
 const PlayerControls = forwardRef((props, ref) => {
   const {
     id,
@@ -41,13 +46,16 @@ const PlayerControls = forwardRef((props, ref) => {
     played,
     elapsedTime,
     totalDuration,
+    goNext,
+    goPrevious,
+    isPlaylist
   } = props;
-
   return (
     <ControlsWrapper ref={ref}>
       <div className="click-zone" onClick={onPlayPause}></div>
       <div className="video-title">{title}</div>
       <div className="middle-controls">
+
         <IconContext.Provider
           value={{
             size: 20,
@@ -88,6 +96,7 @@ const PlayerControls = forwardRef((props, ref) => {
         >
           <FaForward onClick={onFastForward} />
         </IconContext.Provider>
+        
       </div>
       <div>
         <Slider
@@ -152,6 +161,28 @@ const PlayerControls = forwardRef((props, ref) => {
             <span className="text-white d-none d-sm-block">
               {elapsedTime}/{totalDuration}
             </span>
+          {isPlaylist && 
+          <>
+            <IconContext.Provider
+            value={{
+              size: 20,
+              color: "#a1a1a1",
+              className: "cursor-pointer press-icon ml-4",
+            }}
+            >
+              <FaStepBackward onClick={goPrevious} />
+            </IconContext.Provider>
+              <IconContext.Provider
+              value={{
+                size: 20,
+                color: "#a1a1a1",
+                className: "cursor-pointer press-icon ml-3",
+              }}
+              >
+                <FaStepForward onClick={goNext} />
+              </IconContext.Provider>
+              </>
+          }
           </div>
           <IconContext.Provider
             value={{
