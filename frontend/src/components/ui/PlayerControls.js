@@ -52,7 +52,7 @@ const PlayerControls = forwardRef((props, ref) => {
   } = props;
   return (
     <ControlsWrapper ref={ref}>
-      <div className="click-zone" onClick={onPlayPause}></div>
+      <div className="click-zone" onClick={onPlayPause} onDoubleClick={onToggleFullScreen}></div>
       <div className="video-title">{title}</div>
       <div className="middle-controls">
 
