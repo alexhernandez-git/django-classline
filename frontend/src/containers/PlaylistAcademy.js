@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Video from "src/components/ui/VideoList";
 import Layout from "src/components/Layout/Layout";
 import { Main } from "src/components/ui/Main";
@@ -6,7 +6,7 @@ import styled from "@emotion/styled";
 import VideoPlayer from "src/components/ui/VideoPlayer";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useHistory } from "react-router-dom";
 import { fetchPlaylist } from "src/redux/actions/playlist";
 const PlaylistPage = (props) => {
   const dispatch = useDispatch();
@@ -24,7 +24,30 @@ const PlaylistPage = (props) => {
   }, [videoId, programReducer.isLoading]);
   const playlistReducer = useSelector((state) => state.playlistReducer);
 
-
+  const goNext = () =>{
+    const newTrackId = Number(trackId)  + 1
+    const maxPlaylistTrack = playlistReducer.playlist.tracks.length
+    if (newTrackId < maxPlaylistTrack) {
+      history.push({
+        pathname:`/academy/${programReducer.program.code}/playlist/${playlistReducer.playlist.id}/${newTrackId}`, 
+      })
+    }
+  }
+  const goPrevious = () => {
+    const newTrackId = Number(trackId)  - 1
+    if (newTrackId >= 0) {
+    history.push({
+      pathname:`/academy/${programReducer.program.code}/playlist/${playlistReducer.playlist.id}/${newTrackId}`, 
+    })
+  }
+  } 
+  const playlistVideoRef = useRef(null)
+  useEffect(() => {
+    console.log(playlistVideoRef);
+    if (playlistVideoRef.current) {
+      playlistVideoRef.current.scrollIntoView();
+    }
+  }, [trackId])
 
   return (
     <Main padding>
@@ -36,7 +59,9 @@ const PlaylistPage = (props) => {
             playlistReducer.playlist.tracks.length > 0 && (
               <VideoPlayer
                 video={playlistReducer.playlist.tracks[trackId].video}
-
+                goNext={goNext}
+                goPrevious={goPrevious}
+                isPlaylist={true}
               />
             )}
           {playlistReducer.isLoading && <span>Cargando...</span>}
@@ -66,10 +91,11 @@ const PlaylistPage = (props) => {
                 >
                   <PlaylistVideo
                     className={
-                      track.id == trackId
+                      index == trackId
                         ? "active d-flex justify-content-between align-items-center cursor-pointer"
                         : "d-flex justify-content-between align-items-center cursor-pointer"
                     }
+                    ref={index == trackId ? playlistVideoRef : null}
                   >
                     <span className="mr-4">{index + 1}</span>
                     <Video video={track.video} />
