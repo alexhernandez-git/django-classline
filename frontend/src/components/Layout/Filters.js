@@ -12,7 +12,6 @@ const Filters = (props) => {
       className={props.className ? props.className : "border-bottom mb-4"}
     >
       <div className="d-md-flex justify-content-between mb-3 align-items-end">
-        {props.title && <Title>{props.title}</Title>}
         {props.back && (
           <>
             <BackButton onClick={() => history.goBack()}>
@@ -21,13 +20,14 @@ const Filters = (props) => {
                   size: 20,
                   className: "global-class-name mr-2",
                 }}
-              >
+                >
                 <FaArrowLeft />
               </IconContext.Provider>
               <>{props.back}</>
             </BackButton>
           </>
         )}
+        {props.title && <Title>{props.title}</Title>}
         <div>
           {props.placeholder && (
             <SearchBar

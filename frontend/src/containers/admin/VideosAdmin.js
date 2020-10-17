@@ -36,7 +36,7 @@ const VideoSchema = Yup.object().shape({
   video: Yup.mixed().required("Este campo es obligatorio"),
 });
 
-const videos = () => {
+const VideosAdmin = () => {
   const MySwal = withReactContent(Swal);
 
   const main = useRef();
@@ -243,4 +243,4 @@ const videos = () => {
   );
 };
 
-export default videos;
+export default VideosAdmin;

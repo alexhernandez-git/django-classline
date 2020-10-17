@@ -86,7 +86,7 @@ const playlists = () => {
       <div className="d-flex justify-content-end mb-3">
         <Link to={`/academy/${program}/admin/playlist/form`}>
           <ButtonCustom onClick={handleDeleteEditPlaylist}>
-            Nuevo Curso
+            Nueva Playlist
           </ButtonCustom>
         </Link>
       </div>

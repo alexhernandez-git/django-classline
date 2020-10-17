@@ -10,6 +10,7 @@ import {
   FaListUl,
   FaVideo,
   FaChalkboardTeacher,
+  FaPhotoVideo,
 } from "react-icons/fa";
 import { BsFillCollectionPlayFill, BsFillChatDotsFill } from "react-icons/bs";
 import { MdFolderShared, MdFolder, MdForum } from "react-icons/md";
@@ -57,6 +58,18 @@ const Sidebar = (props) => {
                 <FaCog />
               </IconContext.Provider>{" "}
               Academia
+            </SecctionLink>
+          </Link>
+          <Link to={`/academy/${program}/admin/packs`}>
+            <SecctionLink active={/\/packs\/?$/.test(pathname)}>
+              <IconContext.Provider
+                value={{
+                  className: "sidebar-icon",
+                }}
+              >
+                <FaPhotoVideo />
+              </IconContext.Provider>{" "}
+              Packs
             </SecctionLink>
           </Link>
           
@@ -282,11 +295,13 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
-          {programReducer.program.are_forum && !/\/demo\/?/.test(pathname) && (
+
+          <hr />
+          {programReducer.program.are_forum  && (
             <Link
-              to={`${
-                /\/demo\/?/.test(pathname) ? "/demo" : ""
-              }/academy/${program}/forum`}
+              to={
+                /\/demo\/?/.test(pathname) ? pathname :`/academy/${program}/forum`
+              }
             >
               <SecctionLink active={/\/forum\/?$/.test(pathname)}>
                 <IconContext.Provider
@@ -301,12 +316,11 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
-          <hr />
-          {programReducer.program.are_videos && !/\/demo\/?/.test(pathname) && (
+          {programReducer.program.are_videos  && (
             <Link
-              to={`${
-                /\/demo\/?/.test(pathname) ? "/demo" : ""
-              }/academy/${program}/playlists`}
+              to={            
+                /\/demo\/?/.test(pathname) ? pathname :`/academy/${program}/playlists`
+              }
             >
               <SecctionLink active={/\/playlists\/?$/.test(pathname)}>
                 <IconContext.Provider
@@ -320,11 +334,11 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
-          {programReducer.program.are_docs && !/\/demo\/?/.test(pathname) && (
+          {programReducer.program.are_docs  && (
             <Link
-              to={`${
-                /\/demo\/?/.test(pathname) ? "/demo" : ""
-              }/academy/${program}/shared-docs`}
+              to={
+                /\/demo\/?/.test(pathname) ? pathname :`/academy/${program}/shared-docs`
+              }
             >
               <SecctionLink active={/\/shared-docs\/?$/.test(pathname)}>
                 <IconContext.Provider

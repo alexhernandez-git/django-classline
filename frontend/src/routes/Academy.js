@@ -48,6 +48,8 @@ import CheckoutOnlineClass from "../containers/CheckoutOnlineClass";
 import BookClassContainer from "../containers/BookClassContainer";
 import { fetchEventsBooked } from "../redux/actions/bookEvents";
 import LoginEventContainer from "../containers/LoginEventContainer";
+import PacksAdmin from "../containers/admin/PacksAdmin";
+import ConfigurationPack from "../containers/admin/ConfigurationPack";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -271,10 +273,20 @@ const Academy = () => {
                 path="/academy/:program/admin"
                 component={ConfigurationAdmin}
                 />
-                  <Route
-                exact
-                path="/academy/:program/admin/accounts/:search?"
-                component={AccountsAdmin}
+                <Route
+                  exact
+                  path="/academy/:program/admin/packs"
+                  component={PacksAdmin}
+                />
+                <Route
+                  exact
+                  path="/academy/:program/admin/pack/:id"
+                  component={ConfigurationPack}
+                />
+                <Route
+                  exact
+                  path="/academy/:program/admin/accounts/:search?"
+                  component={AccountsAdmin}
                 />
                 <Route
                   exact

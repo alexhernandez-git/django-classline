@@ -35,6 +35,8 @@ class Video(CLineModel):
         max_length=500
     )
 
+    is_private = models.BooleanField(default=False)
+
     def __str__(self):
         """Return description."""
         return '{}'.format(self.description)

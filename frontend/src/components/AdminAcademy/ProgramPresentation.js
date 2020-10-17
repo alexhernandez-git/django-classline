@@ -219,7 +219,6 @@ const ProgramPresentation = (props) => {
 
       <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Creación del video</Modal.Title>
         </Modal.Header>
 
         <Cropper

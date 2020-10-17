@@ -52,7 +52,7 @@ const FavouriteVideos = () => {
     <>
       <SlickSlider>
         <div className="d-flex justify-content-between">
-          <span>Videos Populares</span>
+          <span>Videos</span>
           <Link
             to={
               !/\/demo\//.test(pathname)

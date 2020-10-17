@@ -96,6 +96,8 @@ const index = (props) => {
                 <div className="d-flex justify-content-end">
                   <ButtonCustom type="submit">Guardar</ButtonCustom>
                 </div>
+                <div className="d-block d-lg-none m-4"></div>
+
                 <Tab.Container
                   id="left-tabs-example"
                   activeKey={key}
@@ -156,6 +158,7 @@ const index = (props) => {
                             setFieldValue={props.setFieldValue}
                           />
                         </Tab.Pane>
+                        
                       </Tab.Content>
                     </Col>
                   </Row>

@@ -25,6 +25,8 @@ class Playlist(CLineModel):
     user = models.ForeignKey(
         'users.User', on_delete=models.CASCADE, related_name='user_playlist')
 
+    is_private = models.BooleanField(default=False)
+
     def __str__(self):
         """Return description."""
         return '{}'.format(self.name)
