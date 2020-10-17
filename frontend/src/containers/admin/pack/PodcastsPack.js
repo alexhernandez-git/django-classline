@@ -118,7 +118,7 @@ const PodcastsPack = () => {
               )}
             </div>
             <ButtonCustom onClick={() => handleShow()}>
-              Nuevo Podcast
+              Añadir Podcast
             </ButtonCustom>
           </div>
           {podcastsReducer.podcasts &&

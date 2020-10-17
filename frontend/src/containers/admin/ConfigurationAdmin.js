@@ -7,7 +7,6 @@ import styled from "@emotion/styled";
 import MainProgramInfo from "src/components/AdminAcademy/MainProgramInfo";
 import ProgramBenefitsForm from "src/components/AdminAcademy/ProgramBenefitsForm";
 import ProgramPresentation from "src/components/AdminAcademy/ProgramPresentation";
-import ProgramPricing from "src/components/AdminAcademy/ProgramPricing";
 import ProgramConfiguration from "src/components/AdminAcademy/ProgramConfiguration";
 import { ButtonCustom } from "src/components/ui/ButtonCustom";
 
@@ -16,7 +15,6 @@ import { useParams } from "react-router-dom";
 import { fetchProgram, saveProgram } from "src/redux/actions/program";
 
 import { Formik, Form } from "formik";
-import { connectStripe } from "../../redux/actions/auth";
 
 const index = (props) => {
   const [key, setKey] = useState(0);
@@ -122,14 +120,9 @@ const index = (props) => {
                             <span>INFORMACIÓN PRINCIPAL</span>
                           </Nav.Link>
                         </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link eventKey={1} className="text-grey">
-                            <span>PRECIO</span>
-                          </Nav.Link>
-                        </Nav.Item>
 
                         <Nav.Item>
-                          <Nav.Link eventKey={2} className="text-grey">
+                          <Nav.Link eventKey={1} className="text-grey">
                             <span>CONFIGURACIÓN</span>
                           </Nav.Link>
                         </Nav.Item>
@@ -148,11 +141,8 @@ const index = (props) => {
                           <ProgramBenefitsForm values={props.values} />
                           <ProgramPresentation />
                         </Tab.Pane>
-                        <Tab.Pane eventKey={1} className="text-grey">
-                          <ProgramPricing values={props.values} />
-                        </Tab.Pane>
 
-                        <Tab.Pane eventKey={2} className="text-grey">
+                        <Tab.Pane eventKey={1} className="text-grey">
                           <ProgramConfiguration
                             values={props.values}
                             setFieldValue={props.setFieldValue}

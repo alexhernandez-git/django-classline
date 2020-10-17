@@ -142,9 +142,8 @@ export default function DocsAdmin() {
     <>
       <Main padding ref={main}>
         <Filters
-          title="Documentos"
-          placeholder={"Buscar Documentos"}
-          title="Documentos"
+          title="Recursos"
+          placeholder={"Buscar Recursos"}
           search={{ search: search, setSearch: setSearch }}
           onSubmit={handleSubmitSearch}
         />
@@ -183,7 +182,7 @@ export default function DocsAdmin() {
                 >
                   <FaFolder />
                 </IconContext.Provider>
-                Nueva carpeta
+                Nueva Carpeta
               </ButtonCustom>
               <div className="d-block d-sm-none m-2"></div>
               <ButtonCustom
@@ -199,7 +198,7 @@ export default function DocsAdmin() {
                 >
                   <FaFile />
                 </IconContext.Provider>
-                Nuevo archivo
+                Nuevo Recurso
               </ButtonCustom>
             </div>
           </div>

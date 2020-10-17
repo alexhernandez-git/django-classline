@@ -7,7 +7,6 @@ import styled from "@emotion/styled";
 import MainProgramInfo from "src/components/PackAcademy/MainProgramInfo";
 import ProgramBenefitsForm from "src/components/PackAcademy/ProgramBenefitsForm";
 import ProgramPresentation from "src/components/PackAcademy/ProgramPresentation";
-import ProgramPricing from "src/components/PackAcademy/ProgramPricing";
 import ProgramConfiguration from "src/components/PackAcademy/ProgramConfiguration";
 import { ButtonCustom } from "src/components/ui/ButtonCustom";
 

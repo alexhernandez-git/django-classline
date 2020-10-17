@@ -26,6 +26,10 @@ import {
   activeBookingProgram,
   cancelBookingProgram,
 } from "../../redux/actions/program";
+import Prices from "static/data/prices/eur_prices_program";
+import { Field } from "formik";
+import SelectPrice from "./SelectPrice";
+
 const ProgramConfiguration = (props) => {
   const MySwal = withReactContent(Swal);
   const { program } = useParams();
@@ -218,6 +222,24 @@ const ProgramConfiguration = (props) => {
                     </Col>
                 </Row> */}
       </div>
+      <div className="bg-white border p-3 rounded my-2 mb-4">
+      <span className="d-none d-md-block">Ponle un precio a tu programa</span>
+
+      <Row className="">
+          <Col
+            lg={{ span: 4 }}
+            className="text-center d-lg-flex justify-content-end align-items-center"
+          >
+            <span className="m-0 font-weight-normal">Precio</span>
+          </Col>
+
+          <Col lg={{ offset: 1, span: 6 }}>
+            <Form.Group controlId="formGroupName">
+            <Field name="lang" options={Prices} component={SelectPrice} />
+            </Form.Group>
+          </Col>
+        </Row>
+        </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Conectar con stripe</span>
 
