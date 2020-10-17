@@ -78,7 +78,9 @@ const PackContent = styled.div`
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-
+  &:hover img {
+    transform: scale(1.03);
+  }
 ` 
 
 const PackImage = styled.span`
@@ -90,9 +92,7 @@ const PackImage = styled.span`
     transition: 0.5s ease;
     width: 100%;
   }
-  .video-content:hover img {
-    transform: scale(1.03);
-  }
+
   .video-content {
     position: relative;
   }

@@ -41,6 +41,10 @@ class Pack(CLineModel):
         max_length=500
     )
     students = models.ManyToManyField(
+        'users.User',
+        through='programs.StudentPack'
+    )
+    videos = models.ManyToManyField(
         'programs.Video',
         through='programs.VideoPack'
     )
