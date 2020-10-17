@@ -140,7 +140,7 @@ const ConfigurationPack = (props) => {
                             <span>VIDEOS</span>
                           </Nav.Link>
                         </Nav.Item>
-                        <Nav.Item>
+                        {/* <Nav.Item>
                           <Nav.Link eventKey={3} className="text-grey">
                             <span>PLAYLISTS</span>
                           </Nav.Link>
@@ -154,7 +154,7 @@ const ConfigurationPack = (props) => {
                           <Nav.Link eventKey={5} className="text-grey">
                             <span>RECURSOS</span>
                           </Nav.Link>
-                        </Nav.Item>
+                        </Nav.Item> */}
                       </Nav>
                     </Col>
                   </Row>
@@ -183,7 +183,7 @@ const ConfigurationPack = (props) => {
                             setFieldValue={props.setFieldValue}
                           />
                         </Tab.Pane>
-                        <Tab.Pane eventKey={3} className="text-grey">
+                        {/* <Tab.Pane eventKey={3} className="text-grey">
                           <PlaylistsPack
                             values={props.values}
                             setFieldValue={props.setFieldValue}
@@ -200,7 +200,7 @@ const ConfigurationPack = (props) => {
                             values={props.values}
                             setFieldValue={props.setFieldValue}
                           />
-                        </Tab.Pane>
+                        </Tab.Pane> */}
                       </Tab.Content>
                     </Col>
                   </Row>

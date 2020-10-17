@@ -5,6 +5,10 @@ import Filters from "src/components/Layout/Filters";
 import { Modal, Form, Row, Col, Button } from "react-bootstrap";
 import { ButtonCustom } from "src/components/ui/ButtonCustom";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
+import { MdPlaylistAdd, MdClose } from "react-icons/md";
+import VideoList from "src/components/ui/VideoList";
+import SearchBar from "src/components/ui/SearchBar";
+
 import { IconContext } from "react-icons";
 import VideoCard from "src/components/AdminAcademy/VideoCard";
 import VideoForm from "src/components/AdminAcademy/VideoForm";
@@ -26,6 +30,7 @@ import withReactContent from "sweetalert2-react-content";
 import ContainerWrapper from "src/components/ui/Container";
 
 import * as Yup from "yup";
+import styled from "@emotion/styled";
 
 const VideoSchema = Yup.object().shape({
   title: Yup.string()
@@ -66,6 +71,7 @@ const VideosPack = () => {
     }
   }, [programReducer.program]);
 
+
   const handleVideoDelete = (id) => {
     MySwal.fire({
       title: "Estas seguro?",
@@ -97,7 +103,10 @@ const VideosPack = () => {
       dispatch(fetchVideosPagination(url));
     dispatchFetchVideosPagination(url);
   };
-
+  const [isAddVideoOpen, setIsAddVideoOpen] = useState(false);
+  const handleToggleAddVideo = () => {
+    setIsAddVideoOpen((isAddVideoOpen) => (isAddVideoOpen ? false : true));
+  };
   return (
     <>
       <Main padding ref={main}>
@@ -110,6 +119,7 @@ const VideosPack = () => {
           />
         </form>
         <ContainerWrapper>
+        {videosReducer.video_editing && 
           <div className="d-flex justify-content-between mb-3">
             <div>
               {videosReducer.video_creating && (
@@ -119,10 +129,81 @@ const VideosPack = () => {
                 <span>Editando video, por favor espera...</span>
               )}
             </div>
-            <ButtonCustom onClick={() => handleShow()}>
-              Añadir Video
-            </ButtonCustom>
-          </div>
+            </div>
+            }
+ 
+            <div className="cursor-pointer  mb-3" onClick={handleToggleAddVideo}>
+
+              {isAddVideoOpen ? (
+                <div className="d-flex align-items-center">
+                  <IconContext.Provider
+                    value={{
+                      size: 22,
+                      className: "global-class-name mr-2",
+                    }}
+                    >
+                    {" "}
+                    <MdClose />
+                  </IconContext.Provider>
+                  Cerrar
+                </div>
+              ) : (
+                <>
+                  <IconContext.Provider
+                    value={{
+                      size: 22,
+                      className: "global-class-name mr-2",
+                    }}
+                    >
+                    {" "}
+                    <MdPlaylistAdd />
+                  </IconContext.Provider>
+                  Añadir video
+                </>
+              )}
+              </div>
+              {isAddVideoOpen && (
+              <div className="position-relative">
+                <VideosForm onSubmit={(e) => e.preventDefault()}>
+                  <SearchBar
+                    placeholder="Buscar Videos"
+                    search={{ search: search, setSearch: setSearch }}
+                    onSubmit={handleSubmitSearch}
+                  />
+                  <AddVideoList>
+                    {videosReducer.videos &&
+                      videosReducer.videos.results.map((video) => (
+                        <PlaylistVideo
+                          className="d-flex justify-content-between align-items-center"
+                          key={video.id}
+                        >
+                          <VideoList video={video} />
+                          <IconContext.Provider
+                            value={{
+                              size: 30,
+                              className: "global-class-name mr-2 cursor-pointer",
+                            }}
+                          >
+                            <MdPlaylistAdd onClick={() =>{}} />
+                          </IconContext.Provider>
+                        </PlaylistVideo>
+                      ))}
+                    {videosReducer.isLoading && <span>Cargando...</span>}
+                    {videosReducer.videos && videosReducer.videos.next && (
+                      <div className="d-flex justify-content-center">
+                        <ButtonCustom
+                          onClick={fetchMoreVideos}
+                          className="w-100"
+                          type="button"
+                        >
+                          Cargar más videos
+                        </ButtonCustom>
+                      </div>
+                    )}
+                  </AddVideoList>
+                </VideosForm>
+              </div>
+            )}
 
           {videosReducer.videos &&
             videosReducer.videos.results.map((video) => (
@@ -242,5 +323,25 @@ const VideosPack = () => {
     </>
   );
 };
+const VideosForm = styled.form`
+  position: absolute;
+  z-index: 10000;
+  background: #fff;
+  width: 50%;
+  @media only screen and (max-width: 768px) {
+    width: 100%;
 
+  }
+`;
+const PlaylistVideo = styled.div`
+  padding: 1rem;
+  &:hover {
+    background: #ececec;
+  }
+`;
+const AddVideoList = styled.div`
+  max-height: 40vh;
+  overflow: auto;
+  border: 1px solid #ccc;
+`;
 export default VideosPack;
