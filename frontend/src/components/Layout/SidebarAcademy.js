@@ -11,6 +11,7 @@ import {
   FaVideo,
   FaChalkboardTeacher,
   FaPhotoVideo,
+  FaBox,
 } from "react-icons/fa";
 import { BsFillCollectionPlayFill, BsFillChatDotsFill } from "react-icons/bs";
 import { MdFolderShared, MdFolder, MdForum } from "react-icons/md";
@@ -67,7 +68,7 @@ const Sidebar = (props) => {
                   className: "sidebar-icon",
                 }}
               >
-                <FaPhotoVideo />
+                <FaBox />
               </IconContext.Provider>{" "}
               Packs
             </SecctionLink>

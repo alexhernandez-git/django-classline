@@ -23,7 +23,7 @@ class ProgramPrice(CLineModel):
     label = models.CharField(max_length=40, blank=True, null=True)
 
     program = models.OneToOneField(
-        'programs.Program', on_delete=models.CASCADE)
+        'programs.Program', on_delete=models.CASCADE, related_name="program_price")
 
     def __str__(self):
         """Return price."""

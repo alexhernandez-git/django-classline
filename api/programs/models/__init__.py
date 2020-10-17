@@ -18,3 +18,8 @@ from .comments import Comment
 from .instructors import Instructor
 from .allowed_programs import AllowedProgram
 from .event_students import EventStudent
+from .packs import Pack
+from .packs_languages import PackLanguage
+from .packs_prices import PackPrice
+from .videos_pack import VideoPack
+from .students_pack import StudentPack
