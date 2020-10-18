@@ -6,7 +6,7 @@ const PackCard = (props) => {
   console.log(props)
   const { pathname } = useLocation();
   const { program } = useParams();
-  const { code, title, picture } = props.pack;
+  const { code, title, picture, videos, podcasts,are_videos,are_podcasts, pack_price } = props.pack;
   function msToHMS(seconds) {
     if (isNaN(seconds)) {
       return "00:00";
@@ -47,15 +47,21 @@ const PackCard = (props) => {
 
               <div className="py-2 d-flex justify-content-between">
                 <span css={textEllipsis}>{title ? title : "Nuevo pack" }</span>
-                <span css={textEllipsis} className="text-grey">23.99€</span>
+                {pack_price && 
+                  <span css={textEllipsis} className="text-grey">{pack_price.label}</span>
+                }
               </div>
               <div className="text-grey">
+                {are_videos && 
                 <div>
-                  <small css={textEllipsis}>Videos: 12</small>
+                  <small css={textEllipsis}>Videos: {videos}</small>
                 </div>
+                }
+                {are_podcasts && 
                 <div>
-                  <small css={textEllipsis}>Audios: 6</small>
+                  <small css={textEllipsis}>Audios: {podcasts}</small>
                 </div>
+                }
                 {/* <div>
                   <small css={textEllipsis}>Playlists: 2</small>
                 </div>
