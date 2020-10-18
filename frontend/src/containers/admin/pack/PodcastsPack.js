@@ -38,8 +38,9 @@ const PodcastSchema = Yup.object().shape({
   description: Yup.string().max(500, "La descripción es demasiado larga"),
   audio: Yup.mixed().required("Este campo es obligatorio"),
 });
-const PodcastsPack = () => {
+const PodcastsPack = (props) => {
   const MySwal = withReactContent(Swal);
+  const {infinite_height} = props
 
   const main = useRef();
   const dispatch = useDispatch();
@@ -115,7 +116,7 @@ const PodcastsPack = () => {
   };
   return (
     <>
-      <Main padding ref={main}>
+      <Main padding infinite_height={infinite_height} ref={main}>
         <Filters
           title="Podcasts"
           placeholder="Buscar Podcasts"

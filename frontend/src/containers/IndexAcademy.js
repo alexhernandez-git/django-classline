@@ -178,7 +178,7 @@ const index = () => {
                                   {authReducer.error &&
                                     authReducer.error.data.detail && (
                                       <small className="d-block text-red text-center mb-2">
-                                        {authReducer.error.data.detail}
+                                        {authReducer.error.data.detail != "Token inválido." && authReducer.error.data.detail}
                                       </small>
                                     )}
 

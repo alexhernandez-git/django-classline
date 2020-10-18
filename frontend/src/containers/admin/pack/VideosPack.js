@@ -34,9 +34,9 @@ import { addVideoPack, fetchVideosPack, fetchVideosPackIncrease, fetchVideosPack
 import { fetchVideosIncrease } from "../../../redux/actions/videos";
 
 
-const VideosPack = () => {
+const VideosPack = (props) => {
   const MySwal = withReactContent(Swal);
-
+  const {infinite_height} = props
   const main = useRef();
 
   const dispatch = useDispatch();
@@ -115,7 +115,7 @@ const VideosPack = () => {
   };
   return (
     <>
-      <Main padding ref={main}>
+      <Main padding infinite_height={infinite_height} ref={main}>
         <form>
           <Filters
             title="Videos"

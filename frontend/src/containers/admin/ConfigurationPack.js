@@ -171,12 +171,15 @@ const ConfigurationPack = (props) => {
                           <VideosPack
                             values={props.values}
                             setFieldValue={props.setFieldValue}
+                            infinite_height={true}
                           />
                         </Tab.Pane>
                         <Tab.Pane eventKey={3} className="text-grey">
                           <PodcastsPack
                             values={props.values}
                             setFieldValue={props.setFieldValue}
+                            infinite_height={true}
+
                           />
                         </Tab.Pane>
                         {/* <Tab.Pane eventKey={3} className="text-grey">
