@@ -31,6 +31,7 @@ import ContainerWrapper from "src/components/ui/Container";
 import * as Yup from "yup";
 import styled from "@emotion/styled";
 import { addVideoPack, fetchVideosPack, fetchVideosPackIncrease, fetchVideosPackPagination, removeVideoPack } from "../../../redux/actions/videosPack";
+import { fetchVideosIncrease } from "../../../redux/actions/videos";
 
 
 const VideosPack = () => {
@@ -108,7 +109,7 @@ const VideosPack = () => {
   const [limit, setLimit] = useState(12);
   const fetchMoreVideos = () => {
     const dispatchFetchVideosIncrease = (limit, search) =>
-      dispatch(fetchVideosPackIncrease(limit, search));
+      dispatch(fetchVideosIncrease(limit, search));
     dispatchFetchVideosIncrease(limit + 12, search);
     setLimit((limit) => limit + 12);
   };

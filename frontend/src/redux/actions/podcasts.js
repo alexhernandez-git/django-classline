@@ -64,6 +64,33 @@ export const fetchPodcastsPagination = (url) => (dispatch, getState) => {
       });
     });
 };
+export const fetchPodcastsIncrease = (limit, search = "") => (
+  dispatch,
+  getState
+) => {
+  // User Loading
+  dispatch({ type: PODCASTS_FETCH });
+
+  axios
+    .get(
+      `/api/programs/${
+        getState().programReducer.program.code
+      }/podcasts/?search=${search}&limit=${limit}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      dispatch({
+        type: PODCASTS_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: PODCASTS_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
 export const playPodcast = (podcast) => (dispatch) => {
   dispatch({
     type: PLAY_PODCAST,

@@ -28,6 +28,7 @@ import videosReducer from "src/redux/reducers/videosReducer";
 import * as Yup from "yup";
 import styled from "@emotion/styled";
 import { addPodcastPack, fetchPodcastsPack, fetchPodcastsPackIncrease, removePodcastPack } from "../../../redux/actions/podcastsPack";
+import { fetchPodcastsIncrease } from "../../../redux/actions/podcasts";
 
 const PodcastSchema = Yup.object().shape({
   title: Yup.string()
@@ -108,7 +109,7 @@ const PodcastsPack = () => {
   const [limit, setLimit] = useState(12);
   const fetchMorePodcasts = () => {
     const dispatchFetchPodcastsIncrease = (limit, search) =>
-      dispatch(fetchPodcastsPackIncrease(limit, search));
+      dispatch(fetchPodcastsIncrease(limit, search));
     dispatchFetchPodcastsIncrease(limit + 12, search);
     setLimit((limit) => limit + 12);
   };
