@@ -12,12 +12,12 @@ import { ButtonCustom } from "src/components/ui/ButtonCustom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchProgram, saveProgram } from "src/redux/actions/program";
+
 
 import { Formik, Form } from "formik";
 import VideosPack from "./pack/VideosPack";
 import PodcastsPack from "./pack/PodcastsPack";
-import { fetchPack, savePack } from "../../redux/actions/pack";
+import { fetchPack, savePack,resetPacksErrors } from "../../redux/actions/pack";
 
 const ConfigurationPack = (props) => {
   const [key, setKey] = useState(0);
@@ -30,6 +30,8 @@ const ConfigurationPack = (props) => {
     if (!programReducer.isLoading && programReducer.program && id) {
       const dispatchFetchPacks = (id) => dispatch(fetchPack(id));
       dispatchFetchPacks(id);
+      const dispatchResetPacksErrors = () => dispatch(resetPacksErrors())
+      dispatchResetPacksErrors()
     }
   }, [programReducer.isLoading]);
 

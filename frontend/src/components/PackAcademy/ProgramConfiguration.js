@@ -13,59 +13,31 @@ import {
 import Checkbox from "src/components/ui/Checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  activeProgram,
-  cancelActivedProgram,
-  publishProgram,
-  cancelPublishedProgram,
-  removeProgram,
-} from "src/redux/actions/program";
+
+  publishPack,
+  cancelPublishedPack,
+  removePack,
+} from "src/redux/actions/pack";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { Link, useParams } from "react-router-dom";
-import {
-  activeBookingProgram,
-  cancelBookingProgram,
-} from "../../redux/actions/program";
+import { Link, useHistory, useParams } from "react-router-dom";
 import Prices from "static/data/prices/eur_prices_pack";
 import SelectPrice from "./SelectPrice";
 import { Field } from "formik";
 
-const ProgramConfiguration = (props) => {
+const PackConfiguration = (props) => {
   const MySwal = withReactContent(Swal);
   const { program } = useParams();
   const dispatch = useDispatch();
-  const programReducer = useSelector((state) => state.programReducer);
+  const packReducer = useSelector((state) => state.packReducer);
   const authReducer = useSelector((state) => state.authReducer);
-  const handleActiveProgram = () => {
-    const dispatchActiveProgram = () => dispatch(activeProgram());
-    dispatchActiveProgram();
+  const history = useHistory()
+  const handlePublishPack = () => {
+    const dispatchPublishPack = () => dispatch(publishPack());
+    dispatchPublishPack();
   };
-  const handleCancelActivedProgram = () => {
-    MySwal.fire({
-      title: "Estas seguro?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Desactivar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.value) {
-        const dispatchCancelActivedProgram = () =>
-          dispatch(cancelActivedProgram());
-        dispatchCancelActivedProgram();
-      }
-    });
-  };
-  const handlePublishProgram = () => {
-    const dispatchPublishProgram = () => dispatch(publishProgram());
-    dispatchPublishProgram();
-  };
-  const handleActiveBooking = () => {
-    const dispatchActiveBooking = () => dispatch(activeBookingProgram());
-    dispatchActiveBooking();
-  };
-  const handleCancelPublishedProgram = () => {
+
+  const handleCancelPublishedPack = () => {
     MySwal.fire({
       title: "Estas seguro?",
       icon: "warning",
@@ -76,29 +48,13 @@ const ProgramConfiguration = (props) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        const dispatchCancelPublishedProgram = () =>
-          dispatch(cancelPublishedProgram());
-        dispatchCancelPublishedProgram();
+        const dispatchCancelPublishedPack = () =>
+          dispatch(cancelPublishedPack());
+        dispatchCancelPublishedPack();
       }
     });
   };
-  const handleCancelBooking = () => {
-    MySwal.fire({
-      title: "Estas seguro?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Desactivar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.value) {
-        const dispatchCancelBooking = () => dispatch(cancelBookingProgram());
-        dispatchCancelBooking();
-      }
-    });
-  };
-  const handleRemoveProgram = () => {
+  const handleRemovePack = () => {
     MySwal.fire({
       title: "Estas seguro?",
       icon: "warning",
@@ -109,8 +65,8 @@ const ProgramConfiguration = (props) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        const dispatchRemoveProgram = () => dispatch(removeProgram());
-        dispatchRemoveProgram();
+        const dispatchRemovePack = (history) => dispatch(removePack(history));
+        dispatchRemovePack(history);
       }
     });
   };
@@ -273,31 +229,31 @@ const ProgramConfiguration = (props) => {
           </Col>
 
           <Col sm={{ offset: 1, span: 6 }}>
-            {programReducer.program && programReducer.program.published ? (
+            {packReducer.pack && packReducer.pack.published ? (
               <div className="d-sm-flex justify-content-between d-block">
                 <span className="text-secondary mr-3 font-weight-bold text-center d-block d-sm-inline">
                   Publicada
                 </span>
                 <ButtonCustomError
                   type="button"
-                  onClick={handleCancelPublishedProgram}
+                  onClick={handleCancelPublishedPack}
                 >
                   Despublicar
                 </ButtonCustomError>
               </div>
             ) : (
-              <ButtonCustomSuccess type="button" onClick={handlePublishProgram}>
+              <ButtonCustomSuccess type="button" onClick={handlePublishPack}>
                 Publicar
               </ButtonCustomSuccess>
             )}
-            {programReducer.publish_error &&
-              programReducer.publish_error.data.non_field_errors &&
-              programReducer.publish_error.data.non_field_errors.map(
+            {packReducer.publish_error &&
+              packReducer.publish_error.data.non_field_errors &&
+              packReducer.publish_error.data.non_field_errors.map(
                 (error) => <small className="d-block text-red">{error}</small>
               )}
-            {programReducer.canceling_published_error &&
-              programReducer.canceling_published_error.data.non_field_errors &&
-              programReducer.canceling_published_error.data.non_field_errors.map(
+            {packReducer.canceling_published_error &&
+              packReducer.canceling_published_error.data.non_field_errors &&
+              packReducer.canceling_published_error.data.non_field_errors.map(
                 (error) => <small className="d-block text-red">{error}</small>
               )}
           </Col>
@@ -311,14 +267,14 @@ const ProgramConfiguration = (props) => {
           </Col>
 
           <Col sm={{ offset: 1, span: 6 }}>
-            <ButtonCustomError type="button" onClick={handleRemoveProgram}>
+            <ButtonCustomError type="button" onClick={handleRemovePack}>
               Eliminar
             </ButtonCustomError>
 
-            {programReducer.removing_program_error &&
-              programReducer.removing_program_error.data.message && (
+            {packReducer.removing_pack_error &&
+              packReducer.removing_pack_error.data.message && (
                 <small className="d-block text-red">
-                  {programReducer.removing_program_error.data.message}
+                  {packReducer.removing_pack_error.data.message}
                 </small>
               )}
           </Col>
@@ -328,4 +284,4 @@ const ProgramConfiguration = (props) => {
   );
 };
 
-export default ProgramConfiguration;
+export default PackConfiguration;

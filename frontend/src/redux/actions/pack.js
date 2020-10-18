@@ -19,6 +19,7 @@ import {
   REMOVE_PACK,
   REMOVE_PACK_SUCCESS,
   REMOVE_PACK_FAIL,
+  RESET_PACKS_ERRORS
 } from "../types";
 
 import { tokenConfig } from "./auth";
@@ -162,7 +163,7 @@ export const cancelPublishedPack = () => (dispatch, getState) => {
     });
 };
 
-export const removePack = () => (dispatch, getState) => {
+export const removePack = (history) => (dispatch, getState) => {
   dispatch({ type: REMOVE_PACK });
   axios
     .delete(
@@ -170,11 +171,11 @@ export const removePack = () => (dispatch, getState) => {
       tokenConfig(getState)
     )
     .then((res) => {
-      console.log(res);
-      window.location.href = `/academy/${getState().programReducer.program.code}/admin/packs`;
+      history.push(`/academy/${getState().programReducer.program.code}/admin/packs`);
       dispatch({
         type: REMOVE_PACK_SUCCESS,
       });
+
     })
     .catch((err) => {
       dispatch({
@@ -183,3 +184,9 @@ export const removePack = () => (dispatch, getState) => {
       });
     });
 };
+
+export const resetPacksErrors = () => (dispatch) => {
+  dispatch({
+    type: RESET_PACKS_ERRORS
+  })
+}

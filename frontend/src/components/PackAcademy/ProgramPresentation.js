@@ -90,15 +90,6 @@ const ProgramPresentation = (props) => {
 
     return new File([u8arr], filename, { type: mime });
   }
-  const [videoSrc, setVideoSrc] = useState(null);
-  useEffect(() => {
-    if (
-      !packReducer.isLoading &&
-      packReducer.pack.video_presentation
-    ) {
-      setVideoSrc(packReducer.pack.video_presentation);
-    }
-  }, [packReducer.pack]);
  
   return (
     <div className="bg-white border p-3 rounded my-2">

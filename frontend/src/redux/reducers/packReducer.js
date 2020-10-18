@@ -18,6 +18,7 @@ import {
   REMOVE_PACK,
   REMOVE_PACK_SUCCESS,
   REMOVE_PACK_FAIL,
+  RESET_PACKS_ERRORS
 } from "../types";
 
 const initialState = {
@@ -90,6 +91,8 @@ export default function (state = initialState, action) {
         pack: {
           ...state.pack,
           pricture: action.payload,
+        picture_error: null,
+
         },
       };
     case PACK_PICTURE_FAIL:
@@ -155,7 +158,17 @@ export default function (state = initialState, action) {
         removing_pack: false,
         removing_pack_error: action.payload,
       };
-   
+    case RESET_PACKS_ERRORS:
+      return {
+        ...state,
+        removing_pack_error: null,
+        publish_error: null,
+        
+        canceling_published_error: null,
+        picture_error: null,
+        save_error: null,
+
+      }
     default:
       return state;
   }
