@@ -53,15 +53,15 @@ const PackCard = (props) => {
                 <div>
                   <small css={textEllipsis}>Videos: 12</small>
                 </div>
+                <div>
+                  <small css={textEllipsis}>Audios: 6</small>
+                </div>
                 {/* <div>
                   <small css={textEllipsis}>Playlists: 2</small>
                 </div>
                 <div>
-                  <small css={textEllipsis}>Audios: 6</small>
-                </div>
-                <div>
                   <small css={textEllipsis}>Recursos: 8</small>
-                </div> */}
+                </div>  */}
               </div>
 
 

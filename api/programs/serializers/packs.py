@@ -49,12 +49,13 @@ class PackModelSerializer(serializers.ModelSerializer):
             'pack_language',
             'picture',
             'videos',
+            'podcasts',
             'students',
             'instructor',
             'are_playlists',
             'are_videos',
             'are_podcasts',
-            'are_docs',
+            'are_resources',
             'published',
         )
 
@@ -90,8 +91,19 @@ class PackModelSerializer(serializers.ModelSerializer):
         return UserTeacherCountModelSerializer(obj.user, read_only=True).data
 
 
-class PackCreateSerializer(serializers.Serializer):
+class PackCreateSerializer(serializers.ModelSerializer):
     """Profile model serializer."""
+    class Meta:
+        """Meta class."""
+
+        model = Pack
+        fields = (
+            'id',
+        )
+
+        read_only_fields = (
+            'id',
+        )
 
     def create(self, validated_data):
 
@@ -127,12 +139,14 @@ class PackModifyModelSerializer(serializers.ModelSerializer):
             'pack_language',
             'picture',
             'videos',
+            'podcasts',
+
             'students',
             'instructor',
             'are_playlists',
             'are_videos',
             'are_podcasts',
-            'are_docs',
+            'are_resources',
             'published',
         )
 
@@ -169,21 +183,14 @@ class PackModifyModelSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         # Actualizar el precio de la clase
-        price = self.context['price']
-        if price != None:
+        if 'price' in self.context and self.context['price'] != None:
             PackPrice.objects.filter(pack=instance).delete()
             price = PackPrice.objects.create(**price, pack=instance)
 
-        language = self.context['language']
-        if language != None:
+        if 'language' in self.context and self.context['language'] != None:
             PackLanguage.objects.filter(pack=instance).delete()
             language = PackLanguage.objects.create(
                 **language, pack=instance)
-
-        if self.context['benefits'] != None:
-            Benefit.objects.filter(pack=instance.pk).delete()
-            for benefit in self.context['benefits']:
-                Benefit.objects.create(**benefit, pack=instance)
 
         return super(PackModifyModelSerializer, self).update(instance, validated_data)
 
@@ -192,10 +199,7 @@ class PublishPackSerializer(serializers.Serializer):
 
     def validate(self, data):
         pack = self.instance
-
-        try:
-            pack.packprice
-        except ObjectDoesNotExist:
+        if not PackPrice.objects.filter(pack=pack).exists():
             raise serializers.ValidationError(
                 'El pack no tiene un precio especificado')
 

@@ -186,7 +186,7 @@ const ProgramConfiguration = (props) => {
             lg={{ span: 4 }}
             className="text-center d-lg-flex justify-content-end align-items-center"
           >
-            <span className="m-0 font-weight-normal">Documentos</span>
+            <span className="m-0 font-weight-normal">Recursos</span>
           </Col>
 
           <Col

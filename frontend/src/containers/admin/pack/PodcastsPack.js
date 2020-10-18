@@ -12,7 +12,9 @@ import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
 import PodcastCard from "src/components/AdminAcademy/PodcastCard";
 import PodcastForm from "src/components/AdminAcademy/PodcastForm";
-
+import { MdPlaylistAdd, MdClose } from "react-icons/md";
+import VideoList from "src/components/ui/VideoList";
+import SearchBar from "src/components/ui/SearchBar";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -30,6 +32,7 @@ import {
 import { Formik, Form as FormFormik } from "formik";
 import videosReducer from "src/redux/reducers/videosReducer";
 import * as Yup from "yup";
+import styled from "@emotion/styled";
 
 const PodcastSchema = Yup.object().shape({
   title: Yup.string()
@@ -98,6 +101,11 @@ const PodcastsPack = () => {
       dispatch(fetchPodcastsPagination(url));
     dispatchFetchPodcastsPagination(url);
   };
+  const videosReducer = useSelector((state) => state.videosReducer);
+  const [isAddVideoOpen, setIsAddVideoOpen] = useState(false);
+  const handleToggleAddVideo = () => {
+    setIsAddVideoOpen((isAddVideoOpen) => (isAddVideoOpen ? false : true));
+  };
   return (
     <>
       <Main padding ref={main}>
@@ -108,19 +116,80 @@ const PodcastsPack = () => {
           onSubmit={handleSubmitSearch}
         />
         <ContainerWrapper>
-          <div className="d-flex justify-content-between mb-3">
-            <div>
-              {podcastsReducer.podcast_creating && (
-                <span>Subiendo podcast, por favor espera...</span>
-              )}
-              {podcastsReducer.podcast_editing && (
-                <span>Editando podcast, por favor espera...</span>
-              )}
-            </div>
-            <ButtonCustom onClick={() => handleShow()}>
-              Añadir Podcast
-            </ButtonCustom>
-          </div>
+
+        <div className="cursor-pointer  mb-3" onClick={handleToggleAddVideo}>
+
+{isAddVideoOpen ? (
+  <div className="d-flex align-items-center">
+    <IconContext.Provider
+      value={{
+        size: 22,
+        className: "global-class-name mr-2",
+      }}
+      >
+      {" "}
+      <MdClose />
+    </IconContext.Provider>
+    Cerrar
+  </div>
+) : (
+  <>
+    <IconContext.Provider
+      value={{
+        size: 22,
+        className: "global-class-name mr-2",
+      }}
+      >
+      {" "}
+      <MdPlaylistAdd />
+    </IconContext.Provider>
+    Añadir podcast
+  </>
+)}
+</div>
+{isAddVideoOpen && (
+<div className="position-relative">
+  <VideosForm onSubmit={(e) => e.preventDefault()}>
+    <SearchBar
+      placeholder="Buscar Videos"
+      search={{ search: search, setSearch: setSearch }}
+      onSubmit={handleSubmitSearch}
+    />
+    <AddVideoList>
+      {videosReducer.videos &&
+        videosReducer.videos.results.map((video) => (
+          <PlaylistVideo
+            className="d-flex justify-content-between align-items-center"
+            key={video.id}
+          >
+            <VideoList video={video} />
+            <IconContext.Provider
+              value={{
+                size: 30,
+                className: "global-class-name mr-2 cursor-pointer",
+              }}
+            >
+              <MdPlaylistAdd onClick={() =>{}} />
+            </IconContext.Provider>
+          </PlaylistVideo>
+        ))}
+      {videosReducer.isLoading && <span>Cargando...</span>}
+      {videosReducer.videos && videosReducer.videos.next && (
+        <div className="d-flex justify-content-center">
+          <ButtonCustom
+            onClick={fetchMoreVideos}
+            className="w-100"
+            type="button"
+          >
+            Cargar más videos
+          </ButtonCustom>
+        </div>
+      )}
+    </AddVideoList>
+  </VideosForm>
+</div>
+)}
+
           {podcastsReducer.podcasts &&
             podcastsReducer.podcasts.results.map((podcast) => (
               <PodcastCard
@@ -242,5 +311,25 @@ const PodcastsPack = () => {
     </>
   );
 };
+const VideosForm = styled.form`
+  position: absolute;
+  z-index: 10000;
+  background: #fff;
+  width: 50%;
+  @media only screen and (max-width: 768px) {
+    width: 100%;
 
+  }
+`;
+const PlaylistVideo = styled.div`
+  padding: 1rem;
+  &:hover {
+    background: #ececec;
+  }
+`;
+const AddVideoList = styled.div`
+  max-height: 40vh;
+  overflow: auto;
+  border: 1px solid #ccc;
+`;
 export default PodcastsPack;

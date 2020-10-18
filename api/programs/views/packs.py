@@ -62,7 +62,9 @@ class PackViewSet(mixins.CreateModelMixin,
         if self.action in ['list']:
             queryset = Pack.objects.filter(
                 program=self.program, published=True)
-
+        if self.action in ['list_program_packs']:
+            queryset = Pack.objects.filter(
+                program=self.program)
         return queryset
 
     def get_serializer_class(self):
@@ -83,6 +85,18 @@ class PackViewSet(mixins.CreateModelMixin,
         if self.action in ['update', 'partial_update', 'delete', 'list_my_packs']:
             permissions.append(IsAuthenticated)
         return [permission() for permission in permissions]
+
+    @action(detail=False, methods=['get'])
+    def list_program_packs(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     @action(detail=False, methods=['get'])
     def list_my_packs(self, request, *args, **kwargs):

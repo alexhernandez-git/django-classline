@@ -16,7 +16,7 @@ import { fetchProgram, saveProgram } from "src/redux/actions/program";
 
 import { Formik, Form } from "formik";
 import { connectStripe } from "../../redux/actions/auth";
-import VideosAdmin from "./pack/VideosPack";
+import VideosPack from "./pack/VideosPack";
 import PlaylistsPack from "./pack/PlaylistsPack";
 import PodcastsPack from "./pack/PodcastsPack";
 import ResourcesPack from "./pack/ResourcesPack";
@@ -140,14 +140,14 @@ const ConfigurationPack = (props) => {
                             <span>VIDEOS</span>
                           </Nav.Link>
                         </Nav.Item>
+                        <Nav.Item>
+                          <Nav.Link eventKey={3} className="text-grey">
+                            <span>PODCASTS</span>
+                          </Nav.Link>
+                        </Nav.Item>
                         {/* <Nav.Item>
                           <Nav.Link eventKey={3} className="text-grey">
                             <span>PLAYLISTS</span>
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link eventKey={4} className="text-grey">
-                            <span>PODCASTS</span>
                           </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
@@ -178,19 +178,19 @@ const ConfigurationPack = (props) => {
                         </Tab.Pane>
                         
                         <Tab.Pane eventKey={2} className="text-grey">
-                          <VideosAdmin
+                          <VideosPack
+                            values={props.values}
+                            setFieldValue={props.setFieldValue}
+                          />
+                        </Tab.Pane>
+                        <Tab.Pane eventKey={3} className="text-grey">
+                          <PodcastsPack
                             values={props.values}
                             setFieldValue={props.setFieldValue}
                           />
                         </Tab.Pane>
                         {/* <Tab.Pane eventKey={3} className="text-grey">
                           <PlaylistsPack
-                            values={props.values}
-                            setFieldValue={props.setFieldValue}
-                          />
-                        </Tab.Pane>
-                        <Tab.Pane eventKey={4} className="text-grey">
-                          <PodcastsPack
                             values={props.values}
                             setFieldValue={props.setFieldValue}
                           />

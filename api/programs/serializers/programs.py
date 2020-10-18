@@ -553,10 +553,7 @@ class PublishProgramSerializer(serializers.Serializer):
 
     def validate(self, data):
         program = self.instance
-
-        try:
-            program.programprice
-        except ObjectDoesNotExist:
+        if not ProgramPrice.objects.filter(program=program).exists():
             raise serializers.ValidationError(
                 'La academia no tiene un precio especificado')
 

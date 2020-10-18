@@ -134,7 +134,7 @@ const ProgramConfiguration = (props) => {
             <Checkbox name="are_videos" />
           </Col>
         </Row>
-
+{/* 
         <Row className="mb-5">
           <Col
             lg={{ span: 4 }}
@@ -149,9 +149,9 @@ const ProgramConfiguration = (props) => {
           >
             <Checkbox name="are_admin_playlists" />
           </Col>
-        </Row>
+        </Row> */}
 
-        <Row className="mb-5">
+        <Row className="">
           <Col
             lg={{ span: 4 }}
             className="text-center d-lg-flex justify-content-end align-items-center"
@@ -166,7 +166,7 @@ const ProgramConfiguration = (props) => {
             <Checkbox name="are_podcasts" />
           </Col>
         </Row>
-     
+{/*      
         <Row className="">
           <Col
             lg={{ span: 4 }}
@@ -181,7 +181,7 @@ const ProgramConfiguration = (props) => {
           >
             <Checkbox name="are_docs" />
           </Col>
-        </Row>
+        </Row> */}
       </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
       <span className="d-none d-md-block">Ponle un precio a tu pack</span>

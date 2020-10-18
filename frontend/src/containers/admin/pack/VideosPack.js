@@ -113,24 +113,13 @@ const VideosPack = () => {
         <form>
           <Filters
             title="Videos"
-            placeholder="Buscar video"
+            placeholder="Buscar Videos"
             search={{ search: search, setSearch: setSearch }}
             onSubmit={handleSubmitSearch}
           />
         </form>
         <ContainerWrapper>
-        {videosReducer.video_editing && 
-          <div className="d-flex justify-content-between mb-3">
-            <div>
-              {videosReducer.video_creating && (
-                <span>Subiendo video, por favor espera...</span>
-              )}
-              {videosReducer.video_editing && (
-                <span>Editando video, por favor espera...</span>
-              )}
-            </div>
-            </div>
-            }
+ 
  
             <div className="cursor-pointer  mb-3" onClick={handleToggleAddVideo}>
 
