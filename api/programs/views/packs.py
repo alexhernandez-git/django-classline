@@ -21,6 +21,9 @@ from api.programs.serializers import (
     AddStudentPackSerializer,
     PublishPackSerializer,
     CancelPublishPackSerializer,
+    AddVideoPackSerializer,
+    RemoveVideoPackSerializer
+
 )
 from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
@@ -36,7 +39,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 # Models
-from api.programs.models import Pack
+from api.programs.models import Pack, Video
 from api.users.models import User, Subscription, Teacher, Profile, Coupon, PurchasedItem
 
 # Utils
@@ -77,6 +80,10 @@ class PackViewSet(mixins.CreateModelMixin,
             return PublishPackSerializer
         elif self.action == 'cancel_publish':
             return CancelPublishPackSerializer
+        elif self.action == 'add_video':
+            return AddVideoPackSerializer
+        elif self.action == 'remove_video':
+            return RemoveVideoPackSerializer
         return PackModelSerializer
 
     def get_permissions(self):
@@ -180,6 +187,48 @@ class PackViewSet(mixins.CreateModelMixin,
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+    @action(detail=True, methods=['put', 'patch'])
+    def add_video(self, request, *args, **kwargs):
+        pack = self.get_object()
+        serializer_class = self.get_serializer_class()
+        video = Video.objects.get(pk=request.data['video'])
+
+        partial = request.method == 'PATCH'
+
+        serializer = serializer_class(
+            pack,
+            data=request.data,
+            context={'video': video},
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+
+        pack = serializer.save()
+
+        data = PackModelSerializer(pack).data
+        return Response(data)
+
+    @action(detail=True, methods=['put', 'patch'])
+    def remove_video(self, request, *args, **kwargs):
+        pack = self.get_object()
+        serializer_class = self.get_serializer_class()
+        video = Video.objects.get(pk=request.data['video'])
+
+        partial = request.method == 'PATCH'
+
+        serializer = serializer_class(
+            pack,
+            data=request.data,
+            context={'video': video},
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+
+        pack = serializer.save()
+
+        data = PackModelSerializer(pack).data
+        return Response(data)
 
     @action(detail=True, methods=['patch'])
     def add_student(self, request, *args, **kwargs):

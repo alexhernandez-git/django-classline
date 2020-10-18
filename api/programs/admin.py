@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 # Models
-from api.programs.models import Program, Student, Instructor, AllowedProgram, EventStudent
+from api.programs.models import Program, Student, Instructor, AllowedProgram, EventStudent, VideoPack
 
 
 @admin.register(Program)
@@ -40,3 +40,9 @@ class AllowedProgram(admin.ModelAdmin):
 class AllowedProgram(admin.ModelAdmin):
     """Profile model admin."""
     list_display = ('id', 'user')
+
+
+@admin.register(VideoPack)
+class AllowedProgram(admin.ModelAdmin):
+    """Profile model admin."""
+    list_display = ('id',)

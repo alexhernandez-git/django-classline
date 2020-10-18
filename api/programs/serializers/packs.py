@@ -17,9 +17,11 @@ from api.programs.models import (
     PackLanguage,
     VideoPack,
     PodcastPack,
+
 )
 
 # Serializes
+from .videos import VideoModelSerializer
 from .packs_prices import PackPriceModelSerializer
 from .packs_languages import PackLanguageModelSerializer
 
@@ -253,5 +255,37 @@ class AddStudentPackSerializer(serializers.Serializer):
 
         instance.students.add(validated_data['user'])
 
+        instance.save()
+        return instance
+
+
+class AddVideoPackSerializer(serializers.Serializer):
+
+    def validate(self, data):
+        video = self.context['video']
+        if Pack.objects.filter(videos=video).exists():
+            raise serializers.ValidationError(
+                'Tu pack ya contiene ese video')
+        return data
+
+    def update(self, instance, validated_data):
+        video = self.context['video']
+        instance.videos.add(video)
+        instance.save()
+        return instance
+
+
+class RemoveVideoPackSerializer(serializers.Serializer):
+
+    def validate(self, data):
+        video = self.context['video']
+        if not Pack.objects.filter(videos=video).exists():
+            raise serializers.ValidationError(
+                'Tu pack ya no contiene ese video')
+        return data
+
+    def update(self, instance, validated_data):
+        video = self.context['video']
+        instance.videos.remove(video)
         instance.save()
         return instance

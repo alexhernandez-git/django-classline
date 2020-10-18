@@ -32,7 +32,7 @@ class VideoModelSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, attrs):
-        if len(attrs['title']) == 0:
+        if 'title' in attrs and len(attrs['title']) == 0:
             raise serializers.ValidationError('El titulo no puede estar vacio')
 
         return super().validate(attrs)
