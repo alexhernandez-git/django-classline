@@ -1,6 +1,7 @@
 """Teacher serializer."""
 
 # Django
+from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 
 # Django REST Framework
@@ -272,7 +273,7 @@ class AddVideoPackSerializer(serializers.Serializer):
         video = self.context['video']
         instance.videos.add(video)
         instance.save()
-        return VideoPack.objects.get(video=video, pack=instance)
+        return get_object_or_404(VideoPack, video=video, pack=instance)
 
 
 class RemoveVideoPackSerializer(serializers.Serializer):
@@ -288,7 +289,7 @@ class RemoveVideoPackSerializer(serializers.Serializer):
         video = self.context['video']
         instance.videos.remove(video)
         instance.save()
-        return VideoPack.objects.get(video=video, pack=instance)
+        return instance
 
 
 class AddPodcastPackSerializer(serializers.Serializer):
@@ -304,7 +305,7 @@ class AddPodcastPackSerializer(serializers.Serializer):
         podcast = self.context['podcast']
         instance.podcasts.add(podcast)
         instance.save()
-        return PodcastPack.objects.get(podcast=podcast, pack=instance)
+        return get_object_or_404(PodcastPack, podcast=podcast, pack=instance)
 
 
 class RemovePodcastPackSerializer(serializers.Serializer):
@@ -320,4 +321,4 @@ class RemovePodcastPackSerializer(serializers.Serializer):
         podcast = self.context['podcast']
         instance.podcasts.remove(podcast)
         instance.save()
-        return PodcastPack.objects.get(podcast=podcast, pack=instance)
+        return instance

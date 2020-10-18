@@ -1,8 +1,12 @@
 """Pack views."""
 
+# Django
+from django.shortcuts import get_object_or_404
+
 # Django REST Framework
 import os
 import stripe
+
 from api.users.serializers import (
     ProfileModelSerializer,
     UserWithoutTeacherModelSerializer,
@@ -23,7 +27,10 @@ from api.programs.serializers import (
     CancelPublishPackSerializer,
     AddVideoPackSerializer,
     RemoveVideoPackSerializer,
-    VideoPackModelSerializer
+    VideoPackModelSerializer,
+    AddPodcastPackSerializer,
+    RemovePodcastPackSerializer,
+    PodcastPackModelSerializer
 )
 from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
@@ -39,7 +46,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 # Models
-from api.programs.models import Pack, Video
+from api.programs.models import Pack, Video, Podcast
 from api.users.models import User, Subscription, Teacher, Profile, Coupon, PurchasedItem
 
 # Utils
@@ -196,7 +203,7 @@ class PackViewSet(mixins.CreateModelMixin,
     def add_video(self, request, *args, **kwargs):
         pack = self.get_object()
         serializer_class = self.get_serializer_class()
-        video = Video.objects.get(pk=request.data['video'])
+        video = get_object_or_404(Video, pk=request.data['video'])
 
         partial = request.method == 'PATCH'
 
@@ -217,7 +224,7 @@ class PackViewSet(mixins.CreateModelMixin,
     def remove_video(self, request, *args, **kwargs):
         pack = self.get_object()
         serializer_class = self.get_serializer_class()
-        video = Video.objects.get(pk=request.data['video'])
+        video = get_object_or_404(Video, pk=request.data['video'])
 
         partial = request.method == 'PATCH'
 
@@ -229,16 +236,14 @@ class PackViewSet(mixins.CreateModelMixin,
         )
         serializer.is_valid(raise_exception=True)
 
-        video_pack = serializer.save()
-
-        data = VideoPackModelSerializer(video_pack).data
-        return Response(data)
+        serializer.save()
+        return Response(status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['put', 'patch'])
     def add_podcast(self, request, *args, **kwargs):
         pack = self.get_object()
         serializer_class = self.get_serializer_class()
-        podcast = Podcast.objects.get(pk=request.data['podcast'])
+        podcast = get_object_or_404(Podcast, pk=request.data['podcast'])
 
         partial = request.method == 'PATCH'
 
@@ -259,7 +264,7 @@ class PackViewSet(mixins.CreateModelMixin,
     def remove_podcast(self, request, *args, **kwargs):
         pack = self.get_object()
         serializer_class = self.get_serializer_class()
-        podcast = Podcast.objects.get(pk=request.data['podcast'])
+        podcast = get_object_or_404(Podcast, pk=request.data['podcast'])
 
         partial = request.method == 'PATCH'
 
@@ -271,10 +276,9 @@ class PackViewSet(mixins.CreateModelMixin,
         )
         serializer.is_valid(raise_exception=True)
 
-        podcast_pack = serializer.save()
+        serializer.save()
 
-        data = PodcastPackModelSerializer(podcast_pack).data
-        return Response(data)
+        return Response(status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['patch'])
     def add_student(self, request, *args, **kwargs):
