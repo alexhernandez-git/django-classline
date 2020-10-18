@@ -27,7 +27,7 @@ import { Formik, Form as FormFormik } from "formik";
 import videosReducer from "src/redux/reducers/videosReducer";
 import * as Yup from "yup";
 import styled from "@emotion/styled";
-import { addPodcastPack, fetchPodcastsPack, removePodcastPack } from "../../../redux/actions/podcastsPack";
+import { addPodcastPack, fetchPodcastsPack, fetchPodcastsPackIncrease, removePodcastPack } from "../../../redux/actions/podcastsPack";
 
 const PodcastSchema = Yup.object().shape({
   title: Yup.string()
@@ -105,6 +105,13 @@ const PodcastsPack = () => {
     const dispatchAddPodcastPack = (id) => dispatch(addPodcastPack(id));
     dispatchAddPodcastPack(id);
   }
+  const [limit, setLimit] = useState(12);
+  const fetchMorePodcasts = () => {
+    const dispatchFetchPodcastsIncrease = (limit, search) =>
+      dispatch(fetchPodcastsPackIncrease(limit, search));
+    dispatchFetchPodcastsIncrease(limit + 12, search);
+    setLimit((limit) => limit + 12);
+  };
   return (
     <>
       <Main padding ref={main}>
@@ -176,7 +183,7 @@ const PodcastsPack = () => {
               {podcastsReducer.podcasts && podcastsReducer.podcasts.next && (
                 <div className="d-flex justify-content-center">
                   <ButtonCustom
-                    onClick={fetchMoreVideos}
+                    onClick={fetchMorePodcasts}
                     className="w-100"
                     type="button"
                   >
