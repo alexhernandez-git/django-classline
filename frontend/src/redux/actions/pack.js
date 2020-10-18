@@ -23,14 +23,14 @@ import {
 
 import { tokenConfig } from "./auth";
 // CHECK TOKEN & LOAD USER
-export const fetchPack = (id) => (dispatch) => {
+export const fetchPack = (id) => (dispatch, getState) => {
   // User Loading
   dispatch({ type: PACK_FETCH });
 
   axios
     .get(`/api/programs/${
       getState().programReducer.program.code
-    }/pack/${id}`)
+    }/packs/${id}`)
     .then((res) => {
       console.log(res);
 
@@ -57,7 +57,7 @@ export const savePack = (pack) => (dispatch, getState) => {
   // })
   axios
     .patch(
-      `/api/programs/${getState().programReducer.program.code}/pack/${getState().packReducer.pack.code}/`,
+      `/api/programs/${getState().programReducer.program.code}/packs/${getState().packReducer.pack.code}/`,
       pack,
       tokenConfig(getState)
     )
@@ -90,7 +90,7 @@ export const uploadPicture = (picture) => (dispatch, getState) => {
   fd.append("picture", picture, picture.name);
   axios
     .patch(
-      `/api/programs/${getState().programReducer.program.code}/pack/${getState().packReducer.pack.code}/`,
+      `/api/programs/${getState().programReducer.program.code}/packs/${getState().packReducer.pack.code}/`,
       fd,
       tokenConfig(getState)
     )
@@ -114,7 +114,7 @@ export const publishPack = () => (dispatch, getState) => {
   dispatch({ type: PACK_PUBLISH });
   axios
     .patch(
-      `/api/programs/${getState().programReducer.program.code}/pack/${getState().packReducer.pack.code}/publish/`,
+      `/api/programs/${getState().programReducer.program.code}/packs/${getState().packReducer.pack.code}/publish/`,
       {},
       tokenConfig(getState)
     )
@@ -143,7 +143,7 @@ export const cancelPublishedPack = () => (dispatch, getState) => {
 
   axios
     .patch(
-      `/api/programs/${getState().programReducer.program.code}/pack/${getState().packReducer.pack.code}/cancel_publish/`,
+      `/api/programs/${getState().programReducer.program.code}/packs/${getState().packReducer.pack.code}/cancel_publish/`,
       {},
       tokenConfig(getState)
     )
@@ -166,7 +166,7 @@ export const removePack = () => (dispatch, getState) => {
   dispatch({ type: REMOVE_PACK });
   axios
     .delete(
-      `/api/programs/${getState().programReducer.program.code}/pack/${getState().packReducer.pack.code}/`,
+      `/api/programs/${getState().programReducer.program.code}/packs/${getState().packReducer.pack.code}/`,
       tokenConfig(getState)
     )
     .then((res) => {

@@ -20,66 +20,57 @@ import VideosPack from "./pack/VideosPack";
 import PlaylistsPack from "./pack/PlaylistsPack";
 import PodcastsPack from "./pack/PodcastsPack";
 import ResourcesPack from "./pack/ResourcesPack";
+import { fetchPack, savePack } from "../../redux/actions/pack";
 
 const ConfigurationPack = (props) => {
   const [key, setKey] = useState(0);
   const dispatch = useDispatch();
-  const program = useSelector((state) => state.programReducer.program);
+  const packReducer = useSelector((state) => state.packReducer);
+  const programReducer = useSelector((state) => state.programReducer);
+  const {  id } = useParams();
 
-  const router = useParams();
+  useEffect(() => {
+    if (!programReducer.isLoading && programReducer.program && id) {
+      const dispatchFetchPacks = (id) => dispatch(fetchPack(id));
+      dispatchFetchPacks(id);
+    }
+  }, [programReducer.isLoading]);
 
-  const [programState, setProgramState] = useState({
+  const [packState, setPackState] = useState({
     id: null,
     title: "",
-    subtitle: "",
     description: "",
-    benefits: [],
-    are_meetups: false,
-    meetups: null,
     are_videos: false,
     videos: null,
-    are_admin_playlists: false,
-    courses: null,
     are_podcasts: false,
     podcasts: null,
     students: null,
-    program_price: null,
-    program_language: "",
+    pack_price: null,
+    pack_language: null,
     instructor: {},
     is_published: false,
-    are_docs: true,
-    are_forum: true,
-    event_booking: false,
-    event_booking_calendar: false,
   });
   useEffect(() => {
-    if (program) {
-      setProgramState({
-        id: program.id,
-        title: program.title,
-        subtitle: program.subtitle,
-        description: program.description,
-        benefits: program.benefits,
-        are_meetups: program.are_meetups,
-        meetups: program.meetups,
-        are_videos: program.are_videos,
-        videos: program.videos,
-        are_admin_playlists: program.are_admin_playlists,
-        courses: program.courses,
-        are_podcasts: program.are_podcasts,
-        are_docs: program.are_docs,
-        are_forum: program.are_forum,
-        podcasts: program.podcasts,
-        students: program.students,
-        program_price: program.program_price,
-        program_language: program.program_language,
-        instructor: program.instructor,
-        is_published: program.is_published,
-        event_booking: program.event_booking,
-        event_booking_calendar: program.event_booking_calendar,
+    if (!packReducer.isLoading && packReducer.pack) {
+      console.log(packReducer.pack);
+      setPackState({
+        id: packReducer.pack.id,
+        title: packReducer.pack.title ? packReducer.pack.title : "",
+        description: packReducer.pack.description ? packReducer.pack.description : "",
+        are_videos: packReducer.pack.are_videos,
+        videos: packReducer.pack.videos,
+        are_podcasts: packReducer.pack.are_podcasts,
+        podcasts: packReducer.pack.podcasts,
+        students: packReducer.pack.students,
+        pack_price: packReducer.pack.pack_price,
+        pack_language: packReducer.pack.pack_language,
+        instructor: packReducer.pack.instructor,
+        is_published: packReducer.pack.is_published,
+        event_booking: packReducer.pack.event_booking,
+        event_booking_calendar: packReducer.pack.event_booking_calendar,
       });
     }
-  }, [program]);
+  }, [packReducer.isLoading, packReducer.pack]);
   return (
     <Main padding>
       <Filters 
@@ -90,11 +81,11 @@ const ConfigurationPack = (props) => {
       <ContainerTabs className="container">
         <Formik
           enableReinitialize={true}
-          initialValues={programState}
+          initialValues={packState}
           onSubmit={(values) => {
-            const dispatchSaveProgram = (program) =>
-              dispatch(saveProgram(program));
-            dispatchSaveProgram(values);
+            const dispatchSavePack = (pack) =>
+              dispatch(savePack(pack));
+            dispatchSavePack(values);
           }}
         >
           {(props) => {

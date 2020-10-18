@@ -6,8 +6,7 @@ import {
 } from "src/components/ui/ButtonCustom";
 import Cropper from "react-cropper";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadPicture } from "src/redux/actions/program";
-import { uploadVideo } from "src/redux/actions/program";
+import { uploadPicture } from "src/redux/actions/pack";
 
 const ProgramPresentation = (props) => {
   const dispatch = useDispatch();
@@ -22,7 +21,7 @@ const ProgramPresentation = (props) => {
   const handleShow = () => {
     setShow(true);
   };
-  const programReducer = useSelector((state) => state.programReducer);
+  const packReducer = useSelector((state) => state.packReducer);
 
   const [srcImage, setSrcImage] = useState(null);
   const [cropResult, setCropResult] = useState(
@@ -30,10 +29,11 @@ const ProgramPresentation = (props) => {
   );
   const [fileName, setFileName] = useState("");
   useEffect(() => {
-    if (programReducer.program && programReducer.program.picture) {
-      setCropResult(programReducer.program.picture);
+    if (!packReducer.isLoading && packReducer.pack) {
+      setCropResult(packReducer.pack.picture ? packReducer.pack.picture: "/static/assets/img/no-foto.png");
     }
-  }, []);
+  }, [packReducer.pack, packReducer.isLoading]);
+  
   const handleUploadImage = (e) => {
     e.preventDefault();
     handleShow();
@@ -92,12 +92,12 @@ const ProgramPresentation = (props) => {
   const [videoSrc, setVideoSrc] = useState(null);
   useEffect(() => {
     if (
-      !programReducer.isLoading &&
-      programReducer.program.video_presentation
+      !packReducer.isLoading &&
+      packReducer.pack.video_presentation
     ) {
-      setVideoSrc(programReducer.program.video_presentation);
+      setVideoSrc(packReducer.pack.video_presentation);
     }
-  }, [programReducer.program]);
+  }, [packReducer.pack]);
  
   return (
     <div className="bg-white border p-3 rounded my-2">

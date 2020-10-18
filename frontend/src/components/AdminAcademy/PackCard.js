@@ -6,7 +6,7 @@ const PackCard = (props) => {
   console.log(props)
   const { pathname } = useLocation();
   const { program } = useParams();
-  const {  title, picture } = props.pack;
+  const { code, title, picture } = props.pack;
   function msToHMS(seconds) {
     if (isNaN(seconds)) {
       return "00:00";
@@ -24,7 +24,7 @@ const PackCard = (props) => {
     <Link
       to={
         !/\/demo\//.test(pathname)
-          ? `/academy/${program}/admin/pack/1`
+          ? `/academy/${program}/admin/pack/${code}`
           : pathname
       }
     >
