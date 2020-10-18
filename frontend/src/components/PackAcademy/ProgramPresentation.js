@@ -30,9 +30,10 @@ const ProgramPresentation = (props) => {
   const [fileName, setFileName] = useState("");
   useEffect(() => {
     if (!packReducer.isLoading && packReducer.pack) {
-      setCropResult(packReducer.pack.picture ? packReducer.pack.picture: "/static/assets/img/no-foto.png");
+      console.log(packReducer.pack.picture);
+      setCropResult(packReducer.pack.picture ? packReducer.pack.picture :"/static/assets/img/no-foto.png");
     }
-  }, [packReducer.pack, packReducer.isLoading]);
+  }, [packReducer.pack?.picture]);
   
   const handleUploadImage = (e) => {
     e.preventDefault();

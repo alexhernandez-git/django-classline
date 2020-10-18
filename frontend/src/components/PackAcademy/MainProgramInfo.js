@@ -11,7 +11,7 @@ import SelectLang from "./SelectLang";
 import { useSelector } from "react-redux";
 
 const MainCourseInfo = (props) => {
-  const programReducer = useSelector((state) => state.programReducer);
+  const packReducer = useSelector((state) => state.packReducer);
   return (
     <div className="bg-white border p-3 rounded my-2 mb-4">
       <span className="d-none d-md-block">Información principal del pack</span>
@@ -32,9 +32,9 @@ const MainCourseInfo = (props) => {
               // value={values.title}
               // onChange={handleChange}
             />
-            {programReducer.save_error &&
-              programReducer.save_error.data.title &&
-              programReducer.save_error.data.title.map((error) => (
+            {packReducer.save_error &&
+              packReducer.save_error.data.title &&
+              packReducer.save_error.data.title.map((error) => (
                 <small className="d-block text-red">{error}</small>
               ))}
           </Col>
@@ -57,9 +57,9 @@ const MainCourseInfo = (props) => {
               // onChange={handleChange}
               placeholder="Descripción"
             />
-            {programReducer.save_error &&
-              programReducer.save_error.data.description &&
-              programReducer.save_error.data.description.map((error) => (
+            {packReducer.save_error &&
+              packReducer.save_error.data.description &&
+              packReducer.save_error.data.description.map((error) => (
                 <small className="d-block text-red">{error}</small>
               ))}
           </Col>

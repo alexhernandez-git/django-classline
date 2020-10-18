@@ -77,6 +77,8 @@ class PackModelSerializer(serializers.ModelSerializer):
         return students
 
     def get_pack_price(self, obj):
+        # import pdb
+        # pdb.set_trace()
         price = PackPrice.objects.filter(pack=obj)
         if price.count() > 0:
             return PackPriceModelSerializer(price[0], many=False).data
@@ -185,12 +187,13 @@ class PackModifyModelSerializer(serializers.ModelSerializer):
         # Actualizar el precio de la clase
         if 'price' in self.context and self.context['price'] != None:
             PackPrice.objects.filter(pack=instance).delete()
-            price = PackPrice.objects.create(**price, pack=instance)
+            price = PackPrice.objects.create(
+                **self.context['price'], pack=instance)
 
         if 'language' in self.context and self.context['language'] != None:
             PackLanguage.objects.filter(pack=instance).delete()
             language = PackLanguage.objects.create(
-                **language, pack=instance)
+                **self.context['language'], pack=instance)
 
         return super(PackModifyModelSerializer, self).update(instance, validated_data)
 

@@ -300,6 +300,28 @@ class PackViewSet(mixins.CreateModelMixin,
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+    def update(self, request, *args, **kwargs):
+        pack = self.get_object()
+        serializer_class = self.get_serializer_class()
+
+        partial = request.method == 'PATCH'
+
+        serializer = serializer_class(
+            pack,
+            data=request.data,
+            context={
+                'price': request.data.get('pack_price'),
+                'language': request.data.get('pack_language'),
+            },
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+
+        pack = serializer.save()
+
+        data = PackModelSerializer(pack).data
+        return Response(data)
+
     def create(self, request, *args, **kwargs):
         """Call by owners to finish a ride."""
         serializer_class = self.get_serializer_class()

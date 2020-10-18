@@ -13,13 +13,13 @@ export const SelectPrice = ({ field, form, ...props }) => {
       placeholder={<div>Selecciona tu precio</div>}
       menuShouldScrollIntoView={false}
       value={
-        !form.values.program_price
+        !form.values.pack_price
           ? false
           : Prices.filter(
-              (price) => price.level == form.values.program_price.level
+              (price) => price.level == form.values.pack_price.level
             )
       }
-      onChange={(value) => form.setFieldValue("program_price", value)}
+      onChange={(value) => form.setFieldValue("pack_price", value)}
       className="w-100 mr-2"
       styles={{
         control: (base, state) => ({

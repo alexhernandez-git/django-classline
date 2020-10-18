@@ -15,11 +15,8 @@ import { useParams } from "react-router-dom";
 import { fetchProgram, saveProgram } from "src/redux/actions/program";
 
 import { Formik, Form } from "formik";
-import { connectStripe } from "../../redux/actions/auth";
 import VideosPack from "./pack/VideosPack";
-import PlaylistsPack from "./pack/PlaylistsPack";
 import PodcastsPack from "./pack/PodcastsPack";
-import ResourcesPack from "./pack/ResourcesPack";
 import { fetchPack, savePack } from "../../redux/actions/pack";
 
 const ConfigurationPack = (props) => {
