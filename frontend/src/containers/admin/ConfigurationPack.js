@@ -73,7 +73,7 @@ const ConfigurationPack = (props) => {
   return (
     <Main padding>
       <Filters 
-        title="Yoga para principiantes"  
+        title={packReducer.pack?.title}  
         back="Volver"
       
       />

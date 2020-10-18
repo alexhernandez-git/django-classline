@@ -10,8 +10,7 @@ import {
 } from "src/components/ui/ButtonCustom";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
-import PodcastCard from "src/components/AdminAcademy/PodcastCard";
-import PodcastForm from "src/components/AdminAcademy/PodcastForm";
+import PodcastCard from "src/components/PackAcademy/PodcastCard";
 import { MdPlaylistAdd, MdClose } from "react-icons/md";
 import VideoList from "src/components/ui/VideoList";
 import SearchBar from "src/components/ui/SearchBar";
@@ -21,18 +20,14 @@ import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchPodcasts,
-  setPodcastEdit,
-  deletePodcastEdit,
-  editPodcast,
-  createPodcast,
   fetchPodcastsPagination,
-  deletePodcast,
 } from "src/redux/actions/podcasts";
 
 import { Formik, Form as FormFormik } from "formik";
 import videosReducer from "src/redux/reducers/videosReducer";
 import * as Yup from "yup";
 import styled from "@emotion/styled";
+import { addPodcastPack, fetchPodcastsPack, removePodcastPack } from "../../../redux/actions/podcastsPack";
 
 const PodcastSchema = Yup.object().shape({
   title: Yup.string()
@@ -46,31 +41,26 @@ const PodcastsPack = () => {
   const MySwal = withReactContent(Swal);
 
   const main = useRef();
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => {
-    const dispatchDeletePodcastEdit = () => dispatch(deletePodcastEdit());
-    dispatchDeletePodcastEdit();
-    setShow(false);
-  };
-  const handleShow = (podcast = null) => {
-    if (podcast) {
-      const dispatchSetPodcastEdit = (podcast) =>
-        dispatch(setPodcastEdit(podcast));
-      dispatchSetPodcastEdit(podcast);
-    }
-    setShow(true);
-  };
   const dispatch = useDispatch();
+  const podcastsReducer = useSelector((state) => state.podcastsReducer);
+  const podcastsPackReducer = useSelector((state) => state.podcastsPackReducer);
+  const packReducer = useSelector((state) => state.packReducer);
   const programReducer = useSelector((state) => state.programReducer);
 
   useEffect(() => {
-    if (!programReducer.isLoading) {
+    if (!programReducer.isLoading && programReducer.program) {
       const dispatchFetchPodcasts = () => dispatch(fetchPodcasts());
       dispatchFetchPodcasts();
     }
   }, [programReducer.isLoading]);
-  const podcastsReducer = useSelector((state) => state.podcastsReducer);
+  
+  useEffect(() => {
+    if (!packReducer.isLoading && packReducer.pack) {
+      const dispatchFetchPodcastsPack = () => dispatch(fetchPodcastsPack());
+      dispatchFetchPodcastsPack();
+    }
+  }, [packReducer.isLoading]);
+
 
   const handleDeletePodcast = (id) => {
     MySwal.fire({
@@ -83,7 +73,7 @@ const PodcastsPack = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        const dispatchDeletePodcast = (id) => dispatch(deletePodcast(id));
+        const dispatchDeletePodcast = (id) => dispatch(removePodcastPack(id));
         dispatchDeletePodcast(id);
       }
     });
@@ -94,6 +84,12 @@ const PodcastsPack = () => {
     const dispatchFetchPodcasts = (search) => dispatch(fetchPodcasts(search));
     dispatchFetchPodcasts(search);
   };
+  const [searchPodcasts, setSearchPodcasts] = useState("");
+  const handleSubmitSearchPodcasts = (e) => {
+    e.preventDefault();
+    const dispatchFetchPodcasts = (search) => dispatch(fetchPodcastsPack(search));
+    dispatchFetchPodcasts(searchPodcasts);
+  };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
 
@@ -101,11 +97,14 @@ const PodcastsPack = () => {
       dispatch(fetchPodcastsPagination(url));
     dispatchFetchPodcastsPagination(url);
   };
-  const videosReducer = useSelector((state) => state.videosReducer);
   const [isAddVideoOpen, setIsAddVideoOpen] = useState(false);
   const handleToggleAddVideo = () => {
     setIsAddVideoOpen((isAddVideoOpen) => (isAddVideoOpen ? false : true));
   };
+  const handleAddPack = (id) =>{
+    const dispatchAddPodcastPack = (id) => dispatch(addPodcastPack(id));
+    dispatchAddPodcastPack(id);
+  }
   return (
     <>
       <Main padding ref={main}>
@@ -119,92 +118,91 @@ const PodcastsPack = () => {
 
         <div className="cursor-pointer  mb-3" onClick={handleToggleAddVideo}>
 
-{isAddVideoOpen ? (
-  <div className="d-flex align-items-center">
-    <IconContext.Provider
-      value={{
-        size: 22,
-        className: "global-class-name mr-2",
-      }}
-      >
-      {" "}
-      <MdClose />
-    </IconContext.Provider>
-    Cerrar
-  </div>
-) : (
-  <>
-    <IconContext.Provider
-      value={{
-        size: 22,
-        className: "global-class-name mr-2",
-      }}
-      >
-      {" "}
-      <MdPlaylistAdd />
-    </IconContext.Provider>
-    Añadir podcast
-  </>
-)}
-</div>
-{isAddVideoOpen && (
-<div className="position-relative">
-  <VideosForm onSubmit={(e) => e.preventDefault()}>
-    <SearchBar
-      placeholder="Buscar Videos"
-      search={{ search: search, setSearch: setSearch }}
-      onSubmit={handleSubmitSearch}
-    />
-    <AddVideoList>
-      {videosReducer.videos &&
-        videosReducer.videos.results.map((video) => (
-          <PlaylistVideo
-            className="d-flex justify-content-between align-items-center"
-            key={video.id}
-          >
-            <VideoList video={video} />
+        {isAddVideoOpen ? (
+          <div className="d-flex align-items-center">
             <IconContext.Provider
               value={{
-                size: 30,
-                className: "global-class-name mr-2 cursor-pointer",
+                size: 22,
+                className: "global-class-name mr-2",
               }}
-            >
-              <MdPlaylistAdd onClick={() =>{}} />
+              >
+              {" "}
+              <MdClose />
             </IconContext.Provider>
-          </PlaylistVideo>
-        ))}
-      {videosReducer.isLoading && <span>Cargando...</span>}
-      {videosReducer.videos && videosReducer.videos.next && (
-        <div className="d-flex justify-content-center">
-          <ButtonCustom
-            onClick={fetchMoreVideos}
-            className="w-100"
-            type="button"
-          >
-            Cargar más videos
-          </ButtonCustom>
+            Cerrar
+          </div>
+        ) : (
+          <>
+            <IconContext.Provider
+              value={{
+                size: 22,
+                className: "global-class-name mr-2",
+              }}
+              >
+              {" "}
+              <MdPlaylistAdd />
+            </IconContext.Provider>
+            Añadir podcasts
+          </>
+        )}
         </div>
-      )}
-    </AddVideoList>
-  </VideosForm>
-</div>
-)}
+        {isAddVideoOpen && (
+        <div className="position-relative">
+          <VideosForm onSubmit={(e) => e.preventDefault()}>
+            <SearchBar
+              placeholder="Buscar Podcasts"
+              search={{ search: searchPodcasts, setSearch: setSearchPodcasts }}
+              onSubmit={handleSubmitSearchPodcasts}
+            />
+            <AddVideoList>
+              {podcastsReducer.podcasts &&
+                podcastsReducer.podcasts.results.map((podcast) => (
+                  <PlaylistVideo
+                    className="d-flex justify-content-between align-items-center"
+                    key={podcast.id}
+                  >
+                    <VideoList video={podcast} />
+                    <IconContext.Provider
+                      value={{
+                        size: 30,
+                        className: "global-class-name mr-2 cursor-pointer",
+                      }}
+                    >
+                      <MdPlaylistAdd onClick={() =>handleAddPack(podcast.id)} />
+                    </IconContext.Provider>
+                  </PlaylistVideo>
+                ))}
+              {podcastsReducer.isLoading && <span>Cargando...</span>}
+              {podcastsReducer.podcasts && podcastsReducer.podcasts.next && (
+                <div className="d-flex justify-content-center">
+                  <ButtonCustom
+                    onClick={fetchMoreVideos}
+                    className="w-100"
+                    type="button"
+                  >
+                    Cargar más podcasts
+                  </ButtonCustom>
+                </div>
+              )}
+            </AddVideoList>
+          </VideosForm>
+        </div>
+        )}
 
-          {podcastsReducer.podcasts &&
-            podcastsReducer.podcasts.results.map((podcast) => (
+          {podcastsPackReducer.podcasts &&
+            podcastsPackReducer.podcasts.results.map((podcast_pack) => (
               <PodcastCard
-                key={podcast.id}
-                podcast={podcast}
-                handleShow={handleShow}
+                key={podcast_pack.podcast.id}
+                podcast={podcast_pack.podcast}
                 handleDeletePodcast={handleDeletePodcast}
               />
             ))}
-          {podcastsReducer.isLoading && <span>Cargando...</span>}
-          {podcastsReducer.podcasts &&
-            (podcastsReducer.podcasts.previous ||
-              podcastsReducer.podcasts.next) && (
+          {podcastsPackReducer.isLoading && <span>Cargando...</span>}
+          {podcastsPackReducer.podcasts &&
+            (podcastsPackReducer.podcasts.previous ||
+              podcastsPackReducer.podcasts.next) && (
               <div className="d-flex justify-content-center my-5">
-                {podcastsReducer.podcasts.previous ? (
+                {podcastsPackReducer.podcasts.previous ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -213,7 +211,7 @@ const PodcastsPack = () => {
                   >
                     <IoIosArrowDropleft
                       onClick={() =>
-                        handleChangePage(podcastsReducer.podcasts.previous)
+                        handleChangePage(podcastsPackReducer.podcasts.previous)
                       }
                     />
                   </IconContext.Provider>
@@ -227,7 +225,7 @@ const PodcastsPack = () => {
                     <IoIosArrowDropleft />
                   </IconContext.Provider>
                 )}
-                {podcastsReducer.podcasts.next ? (
+                {podcastsPackReducer.podcasts.next ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -236,7 +234,7 @@ const PodcastsPack = () => {
                   >
                     <IoIosArrowDropright
                       onClick={() =>
-                        handleChangePage(podcastsReducer.podcasts.next)
+                        handleChangePage(podcastsPackReducer.podcasts.next)
                       }
                     />
                   </IconContext.Provider>
@@ -254,66 +252,13 @@ const PodcastsPack = () => {
             )}
         </ContainerWrapper>
       </Main>
-      <Modal show={show} onHide={handleClose} size="lg">
-        <Formik
-          enableReinitialize={true}
-          initialValues={
-            podcastsReducer.podcast_edit
-              ? podcastsReducer.podcast_edit
-              : {
-                  title: "",
-                  description: "",
-                  picture: null,
-                  audio: null,
-                  duration: null,
-                }
-          }
-          validationSchema={PodcastSchema}
-          onSubmit={(values) => {
-            if (podcastsReducer.podcast_edit) {
-              console.log(values);
-              const dispatchEditPodcast = (values) =>
-                dispatch(editPodcast(values));
-              dispatchEditPodcast(values);
-            } else {
-              const dispatchCreatePodcast = (values) =>
-                dispatch(createPodcast(values));
-              dispatchCreatePodcast(values);
-            }
-
-            handleClose();
-          }}
-        >
-          {(props) => {
-            return (
-              <>
-                <FormFormik>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Creación del podcast</Modal.Title>
-                  </Modal.Header>
-
-                  <PodcastForm
-                    values={props.values}
-                    setFieldValue={props.setFieldValue}
-                    isEdit={podcastsReducer.podcast_edit ? true : false}
-                    errors={props.errors}
-                    touched={props.touched}
-                  />
-                  <Modal.Footer>
-                    <ButtonCustom type="submit">Guardar</ButtonCustom>
-                  </Modal.Footer>
-                </FormFormik>
-              </>
-            );
-          }}
-        </Formik>
-      </Modal>
+      
     </>
   );
 };
 const VideosForm = styled.form`
   position: absolute;
-  z-index: 10000;
+  z-index: 400;
   background: #fff;
   width: 50%;
   @media only screen and (max-width: 768px) {

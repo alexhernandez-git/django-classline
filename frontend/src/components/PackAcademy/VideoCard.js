@@ -68,14 +68,7 @@ const VideoCard = (props) => {
           <small>Visitas</small>
         </div> */}
         <div className="d-flex align-items-center justify-content-center ml-3">
-          <IconContext.Provider
-            value={{
-              size: 23,
-              className: "cursor-pointer",
-            }}
-          >
-            <MdEdit onClick={() => props.handleShow(props.video)} />
-          </IconContext.Provider>
+
           <IconContext.Provider
             value={{
               size: 20,

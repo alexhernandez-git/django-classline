@@ -100,14 +100,6 @@ const PodcastCard = (props) => {
         <div className="d-flex align-items-center justify-content-center ml-3">
           <IconContext.Provider
             value={{
-              size: 23,
-              className: "cursor-pointer",
-            }}
-          >
-            <MdEdit onClick={() => props.handleShow(props.podcast)} />
-          </IconContext.Provider>
-          <IconContext.Provider
-            value={{
               size: 20,
               className: "cursor-pointer ml-3",
             }}

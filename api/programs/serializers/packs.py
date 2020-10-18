@@ -262,15 +262,11 @@ class AddStudentPackSerializer(serializers.Serializer):
 
 class AddVideoPackSerializer(serializers.Serializer):
 
-    def validate(self, data):
-        video = self.context['video']
-        if Pack.objects.filter(videos=video).exists():
-            raise serializers.ValidationError(
-                'Tu pack ya contiene ese video')
-        return data
-
     def update(self, instance, validated_data):
         video = self.context['video']
+        if VideoPack.objects.filter(video=video, pack=instance).exists():
+            raise serializers.ValidationError(
+                'Tu pack ya contiene ese video')
         instance.videos.add(video)
         instance.save()
         return get_object_or_404(VideoPack, video=video, pack=instance)
@@ -278,15 +274,11 @@ class AddVideoPackSerializer(serializers.Serializer):
 
 class RemoveVideoPackSerializer(serializers.Serializer):
 
-    def validate(self, data):
-        video = self.context['video']
-        if not Pack.objects.filter(videos=video).exists():
-            raise serializers.ValidationError(
-                'Tu pack ya no contiene ese video')
-        return data
-
     def update(self, instance, validated_data):
         video = self.context['video']
+        if not VideoPack.objects.filter(video=video, pack=instance).exists():
+            raise serializers.ValidationError(
+                'Tu pack ya no contiene ese video')
         instance.videos.remove(video)
         instance.save()
         return instance
@@ -294,15 +286,11 @@ class RemoveVideoPackSerializer(serializers.Serializer):
 
 class AddPodcastPackSerializer(serializers.Serializer):
 
-    def validate(self, data):
-        podcast = self.context['podcast']
-        if Pack.objects.filter(podcasts=podcast).exists():
-            raise serializers.ValidationError(
-                'Tu pack ya contiene ese podcast')
-        return data
-
     def update(self, instance, validated_data):
         podcast = self.context['podcast']
+        if PodcastPack.objects.filter(podcast=podcast, pack=instance).exists():
+            raise serializers.ValidationError(
+                'Tu pack ya contiene ese podcast')
         instance.podcasts.add(podcast)
         instance.save()
         return get_object_or_404(PodcastPack, podcast=podcast, pack=instance)
@@ -310,15 +298,11 @@ class AddPodcastPackSerializer(serializers.Serializer):
 
 class RemovePodcastPackSerializer(serializers.Serializer):
 
-    def validate(self, data):
-        podcast = self.context['podcast']
-        if not Pack.objects.filter(podcasts=podcast).exists():
-            raise serializers.ValidationError(
-                'Tu pack ya no contiene ese podcast')
-        return data
-
     def update(self, instance, validated_data):
         podcast = self.context['podcast']
+        if not PodcastPack.objects.filter(podcast=podcast, pack=instance).exists():
+            raise serializers.ValidationError(
+                'Tu pack ya no contiene ese podcast')
         instance.podcasts.remove(podcast)
         instance.save()
         return instance
