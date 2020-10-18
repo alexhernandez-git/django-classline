@@ -22,8 +22,8 @@ from api.programs.serializers import (
     PublishPackSerializer,
     CancelPublishPackSerializer,
     AddVideoPackSerializer,
-    RemoveVideoPackSerializer
-
+    RemoveVideoPackSerializer,
+    VideoPackModelSerializer
 )
 from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
@@ -84,6 +84,10 @@ class PackViewSet(mixins.CreateModelMixin,
             return AddVideoPackSerializer
         elif self.action == 'remove_video':
             return RemoveVideoPackSerializer
+        elif self.action == 'add_podcast':
+            return AddPodcastPackSerializer
+        elif self.action == 'remove_podcast':
+            return RemovePodcastPackSerializer
         return PackModelSerializer
 
     def get_permissions(self):
@@ -204,9 +208,9 @@ class PackViewSet(mixins.CreateModelMixin,
         )
         serializer.is_valid(raise_exception=True)
 
-        pack = serializer.save()
+        video_pack = serializer.save()
 
-        data = PackModelSerializer(pack).data
+        data = VideoPackModelSerializer(video_pack).data
         return Response(data)
 
     @action(detail=True, methods=['put', 'patch'])
@@ -225,9 +229,51 @@ class PackViewSet(mixins.CreateModelMixin,
         )
         serializer.is_valid(raise_exception=True)
 
-        pack = serializer.save()
+        video_pack = serializer.save()
 
-        data = PackModelSerializer(pack).data
+        data = VideoPackModelSerializer(video_pack).data
+        return Response(data)
+
+    @action(detail=True, methods=['put', 'patch'])
+    def add_podcast(self, request, *args, **kwargs):
+        pack = self.get_object()
+        serializer_class = self.get_serializer_class()
+        podcast = Podcast.objects.get(pk=request.data['podcast'])
+
+        partial = request.method == 'PATCH'
+
+        serializer = serializer_class(
+            pack,
+            data=request.data,
+            context={'podcast': podcast},
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+
+        podcast_pack = serializer.save()
+
+        data = PodcastPackModelSerializer(podcast_pack).data
+        return Response(data)
+
+    @action(detail=True, methods=['put', 'patch'])
+    def remove_podcast(self, request, *args, **kwargs):
+        pack = self.get_object()
+        serializer_class = self.get_serializer_class()
+        podcast = Podcast.objects.get(pk=request.data['podcast'])
+
+        partial = request.method == 'PATCH'
+
+        serializer = serializer_class(
+            pack,
+            data=request.data,
+            context={'podcast': podcast},
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+
+        podcast_pack = serializer.save()
+
+        data = PodcastPackModelSerializer(podcast_pack).data
         return Response(data)
 
     @action(detail=True, methods=['patch'])

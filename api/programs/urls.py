@@ -24,7 +24,7 @@ from api.programs.views.posts import PostViewSet
 from api.programs.views.comments import CommentViewSet
 from api.programs.views.instructors import InstructorViewSet
 from api.programs.views.packs import PackViewSet
-
+from api.programs.views.videos_pack import VideoPackViewSet
 router = DefaultRouter()
 
 router.register(r'programs', ProgramViewSet, basename='program')
@@ -128,6 +128,11 @@ router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/packs',
     PackViewSet,
     basename='packs'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/packs/(?P<pack_id>[-a-zA-Z0-9_]+)/videos-pack',
+    VideoPackViewSet,
+    basename='videos-pack'
 )
 urlpatterns = [
     path('', include(router.urls))

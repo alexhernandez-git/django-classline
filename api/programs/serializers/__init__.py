@@ -21,3 +21,5 @@ from .event_students import *
 from .packs import *
 from .packs_prices import *
 from .packs_languages import *
+from .videos_pack import *
+from .podcasts_pack import *

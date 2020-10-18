@@ -38,7 +38,7 @@ class VideoViewSet(mixins.CreateModelMixin,
 
     serializer_class = VideoModelSerializer
     lookup_field = 'pk'
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [SearchFilter]
     search_fields = ['title', 'description']
 
     def get_queryset(self):

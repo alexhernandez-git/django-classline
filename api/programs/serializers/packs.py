@@ -272,7 +272,7 @@ class AddVideoPackSerializer(serializers.Serializer):
         video = self.context['video']
         instance.videos.add(video)
         instance.save()
-        return instance
+        return VideoPack.objects.get(video=video, pack=instance)
 
 
 class RemoveVideoPackSerializer(serializers.Serializer):
@@ -288,4 +288,36 @@ class RemoveVideoPackSerializer(serializers.Serializer):
         video = self.context['video']
         instance.videos.remove(video)
         instance.save()
-        return instance
+        return VideoPack.objects.get(video=video, pack=instance)
+
+
+class AddPodcastPackSerializer(serializers.Serializer):
+
+    def validate(self, data):
+        podcast = self.context['podcast']
+        if Pack.objects.filter(podcasts=podcast).exists():
+            raise serializers.ValidationError(
+                'Tu pack ya contiene ese podcast')
+        return data
+
+    def update(self, instance, validated_data):
+        podcast = self.context['podcast']
+        instance.podcasts.add(podcast)
+        instance.save()
+        return PodcastPack.objects.get(podcast=podcast, pack=instance)
+
+
+class RemovePodcastPackSerializer(serializers.Serializer):
+
+    def validate(self, data):
+        podcast = self.context['podcast']
+        if not Pack.objects.filter(podcasts=podcast).exists():
+            raise serializers.ValidationError(
+                'Tu pack ya no contiene ese podcast')
+        return data
+
+    def update(self, instance, validated_data):
+        podcast = self.context['podcast']
+        instance.podcasts.remove(podcast)
+        instance.save()
+        return PodcastPack.objects.get(podcast=podcast, pack=instance)
