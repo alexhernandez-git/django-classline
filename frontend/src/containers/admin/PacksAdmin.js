@@ -4,27 +4,21 @@ import { Main } from "src/components/ui/Main";
 import Filters from "src/components/Layout/Filters";
 import { ButtonCustom } from "src/components/ui/ButtonCustom";
 
-import { Link, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import ContainerWrapper from "src/components/ui/Container";
 
-import {
-  fetchPlaylists,
-  setPlaylistEdit,
-  deletePlaylistEdit,
-  deletePlaylist,
-  fetchPlaylistsPagination,
-} from "src/redux/actions/playlists";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
 import PackCard from "../../components/AdminAcademy/PackCard";
 import styled from "@emotion/styled";
+import { createPack, fetchPacks, fetchPacksPagination } from "../../redux/actions/packs";
 const PacksAdmin = () => {
   const MySwal = withReactContent(Swal);
-
+  const history = useHistory()
   const main = useRef();
 
   const { program } = useParams();
@@ -33,50 +27,32 @@ const PacksAdmin = () => {
 
   useEffect(() => {
     if (!programReducer.isLoading && programReducer.program) {
-      const dispatchFetchPlaylists = () => dispatch(fetchPlaylists());
-      dispatchFetchPlaylists();
+      const dispatchFetchPacks = () => dispatch(fetchPacks());
+      dispatchFetchPacks();
     }
   }, [programReducer.isLoading]);
-  const playlistsReducer = useSelector((state) => state.playlistsReducer);
-  const handleSetEditPlaylist = (playlist) => {
-    const dispatchSetEditPlaylist = (playlist) =>
-      dispatch(setPlaylistEdit(playlist));
-    dispatchSetEditPlaylist(playlist);
-  };
-  const handleDeleteEditPlaylist = (playlist) => {
-    const dispatchDeleteEditPlaylist = (playlist) =>
-      dispatch(deletePlaylistEdit(playlist));
-    dispatchDeleteEditPlaylist(playlist);
-  };
-  const handleDeletePlaylist = (id) => {
-    MySwal.fire({
-      title: "Estas seguro?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Eliminar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.value) {
-        const dispatchDeletePlaylist = (id) => dispatch(deletePlaylist(id));
-        dispatchDeletePlaylist(id);
-      }
-    });
-  };
+  const packsReducer = useSelector((state) => state.packsReducer);
+
   const [search, setSearch] = useState("");
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    const dispatchFetchPlaylists = (search) => dispatch(fetchPlaylists(search));
-    dispatchFetchPlaylists(search);
+
+    const dispatchFetchPacks = (search) => dispatch(fetchPacks(search));
+    dispatchFetchPacks(search);
   };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
 
-    const dispatchFetchPlaylistsPagination = (url) =>
-      dispatch(fetchPlaylistsPagination(url));
-    dispatchFetchPlaylistsPagination(url);
+    const dispatchFetchPacksPagination = (url) =>
+    dispatch(fetchPacksPagination(url));
+  dispatchFetchPacksPagination(url);
   };
+  const handleCreatePack = () =>{
+    const dispatchCreatePack = (history) =>{
+      dispatch(createPack(history))
+    }
+    dispatchCreatePack(history)
+  }
   return (
     <Main padding ref={main}>
         <ContainerWrapper>
@@ -87,52 +63,28 @@ const PacksAdmin = () => {
         onSubmit={handleSubmitSearch}
       />
       <div className="d-flex justify-content-end mb-3">
-        <Link to={`/academy/${program}/admin/playlist/form`}>
-          <ButtonCustom onClick={handleDeleteEditPlaylist}>
+          <ButtonCustom onClick={handleCreatePack}>
             Nuevo Pack
           </ButtonCustom>
-        </Link>
       </div>
           <div className="row">
             <div className="col-12">
               <GridVideos>
-              {playlistsReducer.playlists &&
-                playlistsReducer.playlists.results.map((playlist) => (
-                  <>
+              {packsReducer.packs &&
+                packsReducer.packs.results.map((pack) => (
                   <PackCard
-                    playlist={playlist}
-                    key={playlist.id}
-                    handleSetEditPlaylist={handleSetEditPlaylist}
-                    handleDeletePlaylist={handleDeletePlaylist}
+                    pack={pack}
+                    key={pack.id}
                   />
-                  <PackCard
-                    playlist={playlist}
-                    key={playlist.id}
-                    handleSetEditPlaylist={handleSetEditPlaylist}
-                    handleDeletePlaylist={handleDeletePlaylist}
-                  />
-                    <PackCard
-                    playlist={playlist}
-                    key={playlist.id}
-                    handleSetEditPlaylist={handleSetEditPlaylist}
-                    handleDeletePlaylist={handleDeletePlaylist}
-                  />
-                    <PackCard
-                    playlist={playlist}
-                    key={playlist.id}
-                    handleSetEditPlaylist={handleSetEditPlaylist}
-                    handleDeletePlaylist={handleDeletePlaylist}
-                  />
-                </>
                 ))}
      
               </GridVideos>
-              {playlistsReducer.isLoading && <span>Cargando...</span>}
-      {playlistsReducer.playlists &&
-        (playlistsReducer.playlists.previous ||
-          playlistsReducer.playlists.next) && (
+              {packsReducer.isLoading && <span>Cargando...</span>}
+      {packsReducer.packs &&
+        (packsReducer.packs.previous ||
+          packsReducer.packs.next) && (
           <div className="d-flex justify-content-center my-5">
-            {playlistsReducer.playlists.previous ? (
+            {packsReducer.packs.previous ? (
               <IconContext.Provider
                 value={{
                   size: 50,
@@ -141,7 +93,7 @@ const PacksAdmin = () => {
               >
                 <IoIosArrowDropleft
                   onClick={() =>
-                    handleChangePage(playlistsReducer.playlists.previous)
+                    handleChangePage(packsReducer.packs.previous)
                   }
                 />
               </IconContext.Provider>
@@ -155,7 +107,7 @@ const PacksAdmin = () => {
                 <IoIosArrowDropleft />
               </IconContext.Provider>
             )}
-            {playlistsReducer.playlists.next ? (
+            {packsReducer.packs.next ? (
               <IconContext.Provider
                 value={{
                   size: 50,
@@ -164,7 +116,7 @@ const PacksAdmin = () => {
               >
                 <IoIosArrowDropright
                   onClick={() =>
-                    handleChangePage(playlistsReducer.playlists.next)
+                    handleChangePage(packsReducer.packs.next)
                   }
                 />
               </IconContext.Provider>

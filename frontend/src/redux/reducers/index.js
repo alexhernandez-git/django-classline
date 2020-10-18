@@ -33,6 +33,7 @@ import postReducer from "./postReducer";
 import commentsReducer from "./commentsReducer";
 import instructorAccountsReducer from "./instructorAccountsReducer";
 import bookEventsReducer from "./bookEventsReducer";
+import packsReducer from "./packsReducer";
 
 export default combineReducers({
   authReducer,
@@ -65,6 +66,7 @@ export default combineReducers({
   commentsReducer,
   instructorAccountsReducer,
   bookEventsReducer,
+  packsReducer,
 
   // Commercials reducers
   authCommercialsReducer,

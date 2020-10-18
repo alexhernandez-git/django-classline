@@ -1,5 +1,4 @@
 import axios from "axios";
-import Swal from "sweetalert2";
 
 import {
   PACKS_FETCH,
@@ -84,7 +83,7 @@ export const fetchPacksIncrease = (limit, search = "") => (
     });
 };
 
-export const createPack = (video) => (dispatch, getState) => {
+export const createPack = (history) => (dispatch, getState) => {
   dispatch({
     type: CREATE_PACK,
   });
@@ -101,6 +100,8 @@ export const createPack = (video) => (dispatch, getState) => {
         type: CREATE_PACK_SUCCESS,
         payload: res.data,
       });
+      history.push(`/academy/${getState().programReducer.program.code}/admin/pack/${res.data.code}`);
+
     })
     .catch((err) => {
       console.log("error", err.response);
