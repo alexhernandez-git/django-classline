@@ -23,6 +23,7 @@ from api.programs.views.shared_folders import SharedFolderViewSet
 from api.programs.views.posts import PostViewSet
 from api.programs.views.comments import CommentViewSet
 from api.programs.views.instructors import InstructorViewSet
+from api.programs.views.packs import PackViewSet
 
 router = DefaultRouter()
 
@@ -123,7 +124,11 @@ router.register(
     InstructorViewSet,
     basename='instructors'
 )
-
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/packs',
+    PackViewSet,
+    basename='packs'
+)
 urlpatterns = [
     path('', include(router.urls))
 ]

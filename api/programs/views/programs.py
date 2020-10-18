@@ -6,15 +6,10 @@ import stripe
 from api.users.serializers import (
     ProfileModelSerializer,
     UserWithoutTeacherModelSerializer,
-    AccountsSubscriptionSignUpSerializer,
-    AccountsSubscriptionModelSerializer,
     CouponModelSerializer,
     AddInstructorAccountsSerializer,
     CancelInstructorAccountsSerializer,
     UserModelSerializer
-)
-from api.users.serializers.subscriptions import(
-    SubscriptionSignUpSerializer
 )
 from api.programs.serializers import (
     ProgramModelSerializer,

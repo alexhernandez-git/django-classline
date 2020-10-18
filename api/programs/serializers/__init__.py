@@ -18,3 +18,6 @@ from .instructors import *
 from .allowed_programs import *
 from .events import *
 from .event_students import *
+from .packs import *
+from .packs_prices import *
+from .packs_languages import *

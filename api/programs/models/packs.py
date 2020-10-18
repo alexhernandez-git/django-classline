@@ -48,6 +48,10 @@ class Pack(CLineModel):
         'programs.Video',
         through='programs.VideoPack'
     )
+    podcasts = models.ManyToManyField(
+        'programs.Podcast',
+        through='programs.PodcastPack'
+    )
 
     def __str__(self):
         """Return description."""

@@ -22,4 +22,5 @@ from .packs import Pack
 from .packs_languages import PackLanguage
 from .packs_prices import PackPrice
 from .videos_pack import VideoPack
+from .podcast_pack import PodcastPack
 from .students_pack import StudentPack
