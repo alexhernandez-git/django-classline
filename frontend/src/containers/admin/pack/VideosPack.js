@@ -115,7 +115,6 @@ const VideosPack = (props) => {
   };
   return (
     <>
-      <Main infinite_height={infinite_height} ref={main}>
         <form>
           <Filters
             title="Videos"
@@ -261,7 +260,6 @@ const VideosPack = (props) => {
               </div>
             )}
         </ContainerWrapper>
-      </Main>
      
     </>
   );

@@ -140,7 +140,6 @@ export default function ResourcesPack() {
   };
   return (
     <>
-      <Main ref={main}>
         <Filters
           title="Documentos"
           placeholder={"Buscar Documentos"}
@@ -235,7 +234,6 @@ export default function ResourcesPack() {
             </div>
           </div>
         </ContainerWrapper>
-      </Main>
       <Modal show={show} onHide={handleClose} size="lg" centered>
         <Formik
           enableReinitialize={true}

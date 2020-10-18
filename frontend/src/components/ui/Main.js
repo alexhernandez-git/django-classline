@@ -7,11 +7,9 @@ export const Main = styled.div`
 
   overflow-y: auto;
   overflow-x: hidden;
-  
-  ${(props) => !props.infinite_height && "height: calc(100vh - 6rem);"}
-
+  height: calc(100vh - 6rem);
   @media screen and (max-width: 768px) {
-    ${(props) => !props.infinite_height && "height: calc(100vh - 6rem);"}
+    height: calc(100vh - 6rem);
   }
   @media screen and (max-width: 576px) {
     ${(props) => props.padding && "padding: 1rem"}

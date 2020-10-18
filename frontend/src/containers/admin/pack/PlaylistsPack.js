@@ -76,7 +76,7 @@ const PlaylistsPack = () => {
     dispatchFetchPlaylistsPagination(url);
   };
   return (
-    <Main ref={main}>
+    <>
       <Filters
         title="Cursos"
         placeholder="Buscar lista"
@@ -152,7 +152,7 @@ const PlaylistsPack = () => {
             )}
           </div>
         )}
-    </Main>
+        </>
   );
 };
 

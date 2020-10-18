@@ -116,7 +116,6 @@ const PodcastsPack = (props) => {
   };
   return (
     <>
-      <Main infinite_height={infinite_height} ref={main}>
         <Filters
           title="Podcasts"
           placeholder="Buscar Podcasts"
@@ -260,8 +259,6 @@ const PodcastsPack = (props) => {
               </div>
             )}
         </ContainerWrapper>
-      </Main>
-      
     </>
   );
 };
