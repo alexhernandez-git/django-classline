@@ -76,7 +76,7 @@ const PlaylistsPack = () => {
     dispatchFetchPlaylistsPagination(url);
   };
   return (
-    <Main padding ref={main}>
+    <Main ref={main}>
       <Filters
         title="Cursos"
         placeholder="Buscar lista"

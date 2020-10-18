@@ -115,7 +115,7 @@ const VideosPack = (props) => {
   };
   return (
     <>
-      <Main padding infinite_height={infinite_height} ref={main}>
+      <Main infinite_height={infinite_height} ref={main}>
         <form>
           <Filters
             title="Videos"

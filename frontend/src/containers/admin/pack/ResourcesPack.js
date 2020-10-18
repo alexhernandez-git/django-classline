@@ -140,7 +140,7 @@ export default function ResourcesPack() {
   };
   return (
     <>
-      <Main padding ref={main}>
+      <Main ref={main}>
         <Filters
           title="Documentos"
           placeholder={"Buscar Documentos"}

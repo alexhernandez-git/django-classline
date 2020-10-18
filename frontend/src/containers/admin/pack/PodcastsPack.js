@@ -116,7 +116,7 @@ const PodcastsPack = (props) => {
   };
   return (
     <>
-      <Main padding infinite_height={infinite_height} ref={main}>
+      <Main infinite_height={infinite_height} ref={main}>
         <Filters
           title="Podcasts"
           placeholder="Buscar Podcasts"
