@@ -203,7 +203,7 @@ class EventViewSet(mixins.CreateModelMixin,
                 "destination": event_info.program.user.profile.stripe_account_id,
             },
             application_fee_amount=int(
-                (float(serialized_event['price'])*100) * 10/100),
+                (float(serialized_event['price'])*100) * 15/100),
         )
 
         stripe.Invoice.pay(invoice['id'])
