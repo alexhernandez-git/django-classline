@@ -118,12 +118,8 @@ class PackViewSet(mixins.CreateModelMixin,
 
     @action(detail=False, methods=['get'])
     def list_my_packs(self, request, *args, **kwargs):
-        if request.GET['search']:
-            search = request.GET['search']
-            queryset = Pack.objects.filter(
-                students=request.user, title=search, description=search)
-        else:
-            queryset = Pack.objects.filter(students=request.user)
+
+        queryset = Pack.objects.filter(students=request.user)
 
         page = self.paginate_queryset(queryset)
         if page is not None:

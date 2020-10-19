@@ -374,6 +374,25 @@ const ProgramConfiguration = (props) => {
         )}
       </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
+        <span className="d-none d-md-block">Venta de Packs</span>
+      
+          <Row className="mb-4">
+            <Col
+              sm={{ span: 4 }}
+              className="text-center d-sm-flex justify-content-end align-items-center"
+            >
+              <span className="m-0 font-weight-normal">Enlace</span>
+            </Col>
+
+            <Col sm={{ offset: 1, span: 6 }} className="text-break">
+              <a target="_blank" href={`/academy/${program}/packs/`}>
+                https://classlineacademy.com/academy/{program}/packs/
+              </a>
+            </Col>
+          </Row>
+          
+      </div>
+      <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Acciones</span>
 
         <Row className="mb-4">

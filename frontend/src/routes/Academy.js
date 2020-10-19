@@ -50,6 +50,9 @@ import { fetchEventsBooked } from "../redux/actions/bookEvents";
 import LoginEventContainer from "../containers/LoginEventContainer";
 import PacksAdmin from "../containers/admin/PacksAdmin";
 import ConfigurationPack from "../containers/admin/ConfigurationPack";
+import BuyPacksContainer from "../containers/BuyPacksContainer";
+import LoginPacksContainer from "../containers/LoginPacksContainer";
+import CheckoutPack from "../containers/CheckoutPack";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -146,6 +149,22 @@ const Academy = () => {
           path="/academy/:program/login-academy"
           component={LoginEventContainer}
         />
+        <Route
+          exact
+          path="/academy/:program/packs"
+          component={BuyPacksContainer}
+        />
+        <Route
+          exact
+          path="/academy/:program/packs-login"
+          component={LoginPacksContainer}
+        />
+        <Route
+          exact
+          path="/academy/:program/pack/detail"
+          component={CheckoutPack}
+        />
+        
         {authReducer.isLoading ? (
           "Cargando..."
         ) : !authReducer.isAuthenticated ?<Redirect to={`/academy/${programId}`}/> :haveAccess() ? (

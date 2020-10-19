@@ -37,6 +37,7 @@ import packsReducer from "./packsReducer";
 import packReducer from "./packReducer";
 import videosPackReducer from "./videosPackReducer";
 import podcastsPackReducer from "./podcastsPackReducer";
+import buyPacksReducer from "./buyPacksReducer";
 
 export default combineReducers({
   authReducer,
@@ -73,7 +74,8 @@ export default combineReducers({
   packReducer,
   videosPackReducer,
   podcastsPackReducer,
-
+  buyPacksReducer,
+  
   // Commercials reducers
   authCommercialsReducer,
   costumersReducer,
