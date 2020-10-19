@@ -616,8 +616,8 @@ class UserLoginSerializer(serializers.Serializer):
             current_login_ip = Functions.get_client_ip(request)
 
             if UserLoginActivity.objects.filter(login_username=user.username).exists():
-                user_login_activity = UserLoginActivity.objects.get(
-                    login_username=user.username)
+                user_login_activity = UserLoginActivity.objects.filter(
+                    login_username=user.username)[0]
                 if user_login_activity.login_IP != current_login_ip:
                     if Token.objects.filter(user=user).exists():
                         last_token = Token.objects.get(user=user)
@@ -684,8 +684,8 @@ class UserLoginPlatformSerializer(serializers.Serializer):
         if user:
             current_login_ip = Functions.get_client_ip(request)
             if UserLoginActivity.objects.filter(login_username=user.username).exists():
-                user_login_activity = UserLoginActivity.objects.get(
-                    login_username=user.username)
+                user_login_activity = UserLoginActivity.objects.filter(
+                    login_username=user.username)[0]
                 if user_login_activity.login_IP != current_login_ip:
                     if Token.objects.filter(user=user).exists():
                         last_token = Token.objects.get(user=user)
