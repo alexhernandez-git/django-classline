@@ -277,13 +277,15 @@ class PackViewSet(mixins.CreateModelMixin,
         return Response(status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['patch'])
-    def add_student(self, request, *args, **kwargs):
+    def buy_pack(self, request, *args, **kwargs):
         """Call by owners to finish a ride."""
 
         pack = self.get_object()
         program = self.program
+
         user = request.user
         profile = user.profile
+
         if 'STRIPE_API_KEY' in os.environ:
             stripe.api_key = os.environ['STRIPE_API_KEY']
         else:
@@ -362,8 +364,6 @@ class PackViewSet(mixins.CreateModelMixin,
             user=user,
             pack=pack,
             program=program,
-            to_be_cancelled=False,
-            cancelled=False,
             payment_issue=False,
             is_student_purchased_pack=True
         )

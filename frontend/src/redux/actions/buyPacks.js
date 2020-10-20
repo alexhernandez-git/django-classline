@@ -22,13 +22,14 @@ import { tokenConfig } from "./auth";
 export const setSelectedPack = (pack) => (dispatch, getState) => {
   dispatch({ type: SET_SELECTED_PACK, payload: pack });
 };
-export const buyPacks = (
+
+
+export const buyPack = (
   pack,
   paymentMethodId = null,
   promotion_code = null
 ) => (dispatch, getState) => {
   const data = {
-    pack: pack,
     payment_method: paymentMethodId,
   };
   if (promotion_code) {
@@ -38,9 +39,9 @@ export const buyPacks = (
 
   axios
     .patch(
-      `/api/programs/${getState().programReducer.program.code}/events/${
-        event.id
-      }/purchase_event/`,
+      `/api/programs/${getState().programReducer.program.code}/packs/${
+        pack.code
+      }/buy_pack/`,
       data,
       tokenConfig(getState)
     )
@@ -116,30 +117,31 @@ export const fetchBuyPacksPagination = (url, showMyPacks) => (dispatch, getState
 };
 export const fetchMyPacks = (setShowMyPacks=false) => (dispatch, getState) => {
   // User Loading
-  dispatch({ type: FETCH_MY_PACKS });
-
-  axios
-    .get(
-      `/api/programs/${
-        getState().programReducer.program.code
-      }/packs/list_my_packs/`,
-      tokenConfig(getState)
-    )
-    .then((res) => {
-      dispatch({
-        type: FETCH_MY_PACKS_SUCCESS,
-        payload: res.data,
-      });
-      if (setShowMyPacks) {
-        setShowMyPacks(true)
-      }
-    })
-    .catch((err) => {
-      dispatch({
-        type: FETCH_MY_PACKS_FAIL,
-        payload: { data: err.response.data, status: err.response.status },
-      });
-    });
+  dispatch({ type: FETCH_MY_PACKS,
+  payload: getState().authReducer.user.id });
+  if (setShowMyPacks) {
+      setShowMyPacks(true)
+  }
+  // axios
+  //   .get(
+  //     `/api/programs/${
+  //       getState().programReducer.program.code
+  //     }/packs/list_my_packs/`,
+  //     tokenConfig(getState)
+  //   )
+  //   .then((res) => {
+  //     dispatch({
+  //       type: FETCH_MY_PACKS_SUCCESS,
+  //       payload: res.data,
+  //     });
+  //  
+  //   })
+  //   .catch((err) => {
+  //     dispatch({
+  //       type: FETCH_MY_PACKS_FAIL,
+  //       payload: { data: err.response.data, status: err.response.status },
+  //     });
+  //   });
 };
 
 

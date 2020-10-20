@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, {  useState, useEffect } from "react";
 import {
   Link,
   Redirect,
@@ -19,10 +19,10 @@ import {
   registerCheckoutClass,
   resetAuthErrors,
 } from "../redux/actions/auth";
-import moment from "moment";
-import { bookEvent, cancelEvent } from "../redux/actions/bookEvents";
+import { bookEvent } from "../redux/actions/bookEvents";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { buyPack } from "src/redux/actions/buyPacks";
 const CheckoutPack = (props) => {
   const MySwal = withReactContent(Swal);
 
@@ -63,7 +63,7 @@ const CheckoutPack = (props) => {
       console.log("[error]", error);
     } else {
       console.log("[PaymentMethod]", paymentMethod);
-      dispatch(bookEvent(buyPacksReducer.selected_pack, paymentMethod.id));
+      dispatch(buyPack(buyPacksReducer.selected_pack, paymentMethod.id));
     }
   };
   useEffect(() => {
@@ -72,10 +72,24 @@ const CheckoutPack = (props) => {
   const handleBookSaved = (payment_method) => {
     const paymentMethodId = payment_method;
 
-    dispatch(bookEvent(buyPacksReducer.selected_pack, paymentMethodId));
+    dispatch(buyPack(buyPacksReducer.selected_pack, paymentMethodId));
   };
   const [newCard, setNewCard] = useState(false);
 
+  const [isMyPack, setIsMyPack] = useState({
+    loading: true,
+    pack: false,
+  });
+  useEffect(() => {
+    if (!buyPacksReducer.isLoading && buyPacksReducer.packs && buyPacksReducer.selected_pack && authReducer.user) {
+      const selected_pack_updated = buyPacksReducer.packs.results.find((pack) => {
+        return pack.id === buyPacksReducer.selected_pack.id
+      });
+      const result = selected_pack_updated.students.some(student=> student === authReducer.user.id)
+      // return pack.students.some(student => student === authReducer.user.id)
+      setIsMyPack({ loading: false, pack: result });
+    }
+  }, [buyPacksReducer.selected_pack, buyPacksReducer.packs,authReducer.user]);
 
   return buyPacksReducer.selected_pack == null ? (
       <Redirect to={`/academy/${program}/packs`} />
@@ -172,7 +186,16 @@ const CheckoutPack = (props) => {
             </div>
 
             <div className="my-4"></div>
-          
+            {console.log(isMyPack.pack)}
+            {isMyPack.loading ? 
+            "Cargando..."  
+            :
+            <>
+              {isMyPack.pack ? 
+              <>
+              {console.log('entra')}
+              </>
+              :
               <>
                 {authReducer.isLoading ? (
                   "Cargando..."
@@ -540,6 +563,10 @@ const CheckoutPack = (props) => {
                   </div>
                 )}
               </>
+              }
+              </>
+            }
+
           </div>
           <div className="offset-sm-2 col-sm-4 offset-lg-0 d-none d-sm-block">
             <img

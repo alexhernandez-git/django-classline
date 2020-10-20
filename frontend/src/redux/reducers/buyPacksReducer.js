@@ -42,8 +42,10 @@ export default function (state = initialState, action) {
         pack_buying: false,
         packs:{
           ...state.packs,
-          results: [action.payload, ...state.packs.results]
-        } ,
+          results:  state.packs.results.map((pack) =>
+          pack.id === action.payload.id ? (pack = action.payload) : pack
+          )
+        },
       };
     case BUY_PACK_FAIL:
       return {
@@ -73,23 +75,14 @@ export default function (state = initialState, action) {
       case FETCH_MY_PACKS:
         return {
           ...state,
-          isLoading: true,
+          packs:{
+            ...state.packs,
+            results:  state.packs.results.filter((pack) =>
+              pack.students.some(student => student === action.payload)
+            )
+          },
         };
-      case FETCH_MY_PACKS_SUCCESS:
-        return {
-          ...state,
-          isLoading: false,
-          packs: action.payload,
-          error: null,
-        };
-  
-      case FETCH_MY_PACKS_FAIL:
-        return {
-          ...state,
-          packs: null,
-          isLoading: false,
-          error: action.payload,
-        };
+      
     // case CANCEL_PACK:
     //   return {
     //     ...state,

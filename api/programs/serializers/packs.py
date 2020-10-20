@@ -34,7 +34,7 @@ class PackModelSerializer(serializers.ModelSerializer):
     """Profile model serializer."""
     pack_price = serializers.SerializerMethodField(read_only=True)
     pack_language = serializers.SerializerMethodField(read_only=True)
-    students = serializers.SerializerMethodField(read_only=True)
+    students_count = serializers.SerializerMethodField(read_only=True)
     instructor = serializers.SerializerMethodField(read_only=True)
     videos = serializers.SerializerMethodField(read_only=True)
     podcasts = serializers.SerializerMethodField(read_only=True)
@@ -53,6 +53,7 @@ class PackModelSerializer(serializers.ModelSerializer):
             'picture',
             'videos',
             'podcasts',
+            'students_count',
             'students',
             'instructor',
             'are_playlists',
@@ -74,7 +75,7 @@ class PackModelSerializer(serializers.ModelSerializer):
         podcasts = PodcastPack.objects.filter(pack=obj.id).count()
         return podcasts
 
-    def get_students(self, obj):
+    def get_students_count(self, obj):
         from api.users.serializers.users import UserTeacherCountModelSerializer
         students = obj.students.all().count()
         return students

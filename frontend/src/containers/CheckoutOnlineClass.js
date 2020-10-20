@@ -71,7 +71,6 @@ const CheckoutOnlineClass = (props) => {
   }, [isRegister]);
   const handleBookSaved = (payment_method) => {
     const paymentMethodId = payment_method;
-
     dispatch(bookEvent(bookEventsReducer.selected_event, paymentMethodId));
   };
   const [newCard, setNewCard] = useState(false);
