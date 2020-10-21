@@ -18,7 +18,7 @@ export const fetchVideos = (search = "") => (dispatch, getState) => {
     .get(
       `/api/programs/${
         getState().programReducer.program.code
-      }/videos/?search=${search}`,
+      }/packs/${getState().studentPackReducer.pack.code}/videos-pack?search=${search}`,
       tokenConfig(getState)
     )
     .then((res) => {
@@ -64,7 +64,7 @@ export const fetchVideosIncrease = (limit, search = "") => (
     .get(
       `/api/programs/${
         getState().programReducer.program.code
-      }/videos/?search=${search}&limit=${limit}`,
+      }/packs/${getState().studentPackReducer.pack.code}/videos-pack?search=${search}&limit=${limit}`,
       tokenConfig(getState)
     )
     .then((res) => {
@@ -79,4 +79,17 @@ export const fetchVideosIncrease = (limit, search = "") => (
         payload: { data: err.response.data, status: err.response.status },
       });
     });
+};
+
+export const playVideo = (video) => (dispatch) => {
+  dispatch({
+    type: PLAY_STUDENT_VIDEO_PACK,
+    payload: video,
+  });
+};
+
+export const stopVideo = () => (dispatch) => {
+  dispatch({
+    type: STOP_STUDENT_VIDEO_PACK,
+  });
 };

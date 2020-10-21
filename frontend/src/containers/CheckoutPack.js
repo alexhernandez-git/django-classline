@@ -81,15 +81,22 @@ const CheckoutPack = (props) => {
     pack: false,
   });
   useEffect(() => {
-    if (!buyPacksReducer.isLoading && buyPacksReducer.packs && buyPacksReducer.selected_pack && authReducer.user) {
-      const selected_pack_updated = buyPacksReducer.packs.results.find((pack) => {
-        return pack.id === buyPacksReducer.selected_pack.id
-      });
-      const result = selected_pack_updated.students.some(student=> student === authReducer.user.id)
-      // return pack.students.some(student => student === authReducer.user.id)
-      setIsMyPack({ loading: false, pack: result });
+    if (!buyPacksReducer.isLoading && buyPacksReducer.packs && buyPacksReducer.selected_pack && !authReducer.isLoading) {
+      if (authReducer.user) {
+        console.log('entra')
+        console.log(buyPacksReducer.packs.results)
+        const selected_pack_updated = buyPacksReducer.packs.results.find((pack) => {
+          return pack.id === buyPacksReducer.selected_pack.id
+        });
+        const result = selected_pack_updated.students.some(student=> student === authReducer.user.id)
+        // return pack.students.some(student => student === authReducer.user.id)
+        setIsMyPack({ loading: false, pack: result });
+      }else{
+        setIsMyPack({ loading: false, pack: false });
+
+      }
     }
-  }, [buyPacksReducer.selected_pack, buyPacksReducer.packs,authReducer.user]);
+  }, [buyPacksReducer.selected_pack, buyPacksReducer.packs,authReducer.isLoading, authReducer.user]);
 
   return buyPacksReducer.selected_pack == null ? (
       <Redirect to={`/academy/${program}/packs`} />
@@ -192,9 +199,14 @@ const CheckoutPack = (props) => {
             :
             <>
               {isMyPack.pack ? 
-              <>
-              {console.log('entra')}
-              </>
+              <Link
+                to={`/pack/${program}/${buyPacksReducer.selected_pack.code}/videos`}
+                className="d-flex align-items-center w-100 justify-content-center my-button"
+              >
+
+                      Ir al pack
+  
+                </Link>
               :
               <>
                 {authReducer.isLoading ? (

@@ -41,7 +41,7 @@ const VideosPack = (props) => {
 
   const dispatch = useDispatch();
   const videosReducer = useSelector((state) => state.videosReducer);
-  const videosPackReducer = useSelector((state) => state.videosPackReducer);
+  const videosPackAdminReducer = useSelector((state) => state.videosPackAdminReducer);
   const packReducer = useSelector((state) => state.packReducer);
   const programReducer = useSelector((state) => state.programReducer);
 
@@ -199,19 +199,19 @@ const VideosPack = (props) => {
               </div>
             )}
 
-          {videosPackReducer.videos &&
-            videosPackReducer.videos.results.map((video_pack) => (
+          {videosPackAdminReducer.videos &&
+            videosPackAdminReducer.videos.results.map((video_pack) => (
               <VideoCard
                 video={video_pack.video}
                 key={video_pack.video.id}
                 handleVideoDelete={handleVideoDelete}
               />
             ))}
-          {videosPackReducer.isLoading && <span>Cargando...</span>}
-          {videosPackReducer.videos &&
-            (videosPackReducer.videos.previous || videosPackReducer.videos.next) && (
+          {videosPackAdminReducer.isLoading && <span>Cargando...</span>}
+          {videosPackAdminReducer.videos &&
+            (videosPackAdminReducer.videos.previous || videosPackAdminReducer.videos.next) && (
               <div className="d-flex justify-content-center my-5">
-                {videosPackReducer.videos.previous ? (
+                {videosPackAdminReducer.videos.previous ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -220,7 +220,7 @@ const VideosPack = (props) => {
                   >
                     <IoIosArrowDropleft
                       onClick={() =>
-                        handleChangePage(videosPackReducer.videos.previous)
+                        handleChangePage(videosPackAdminReducer.videos.previous)
                       }
                     />
                   </IconContext.Provider>
@@ -234,7 +234,7 @@ const VideosPack = (props) => {
                     <IoIosArrowDropleft />
                   </IconContext.Provider>
                 )}
-                {videosPackReducer.videos.next ? (
+                {videosPackAdminReducer.videos.next ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -243,7 +243,7 @@ const VideosPack = (props) => {
                   >
                     <IoIosArrowDropright
                       onClick={() =>
-                        handleChangePage(videosPackReducer.videos.next)
+                        handleChangePage(videosPackAdminReducer.videos.next)
                       }
                     />
                   </IconContext.Provider>

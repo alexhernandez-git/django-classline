@@ -6,7 +6,7 @@ import Video from "src/components/ui/Video";
 import styled from "@emotion/styled";
 import { Main } from "src/components/ui/Main";
 
-import { fetchVideos, fetchVideosPagination } from "src/redux/actions/videos";
+import { fetchVideos, fetchVideosPagination } from "src/redux/actions/videosPack";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
@@ -16,7 +16,7 @@ import ContainerWrapper from "src/components/ui/Container";
 
 export default function Videos() {
   const main = useRef();
-  const videosReducer = useSelector((state) => state.videosReducer);
+  const videosPackReducer = useSelector((state) => state.videosPackReducer);
 
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const handleOpenCategories = () => {
@@ -70,19 +70,19 @@ export default function Videos() {
           <div className="row">
             <div className="col-12">
               <GridVideos>
-                {videosReducer.videos &&
-                  videosReducer.videos.results.map((video) => (
-                    <div key={video.id}>
-                      <Video video={video} />
+                {videosPackReducer.videos &&
+                  videosPackReducer.videos.results.map((video_pack) => (
+                    <div key={video_pack.video.id}>
+                      <Video video={video_pack.video} />
                     </div>
                   ))}
               </GridVideos>
-              {videosReducer.isLoading && <span>Cargando...</span>}
-              {videosReducer.videos &&
-                (videosReducer.videos.previous ||
-                  videosReducer.videos.next) && (
+              {videosPackReducer.isLoading && <span>Cargando...</span>}
+              {videosPackReducer.videos &&
+                (videosPackReducer.videos.previous ||
+                  videosPackReducer.videos.next) && (
                   <div className="d-flex justify-content-center my-5">
-                    {videosReducer.videos.previous ? (
+                    {videosPackReducer.videos.previous ? (
                       <IconContext.Provider
                         value={{
                           size: 50,
@@ -91,7 +91,7 @@ export default function Videos() {
                       >
                         <IoIosArrowDropleft
                           onClick={() =>
-                            handleChangePage(videosReducer.videos.previous)
+                            handleChangePage(videosPackReducer.videos.previous)
                           }
                         />
                       </IconContext.Provider>
@@ -105,7 +105,7 @@ export default function Videos() {
                         <IoIosArrowDropleft />
                       </IconContext.Provider>
                     )}
-                    {videosReducer.videos.next ? (
+                    {videosPackReducer.videos.next ? (
                       <IconContext.Provider
                         value={{
                           size: 50,
@@ -114,7 +114,7 @@ export default function Videos() {
                       >
                         <IoIosArrowDropright
                           onClick={() =>
-                            handleChangePage(videosReducer.videos.next)
+                            handleChangePage(videosPackReducer.videos.next)
                           }
                         />
                       </IconContext.Provider>
@@ -138,21 +138,6 @@ export default function Videos() {
   );
 }
 
-const ButtonSearchUsers = styled.button`
-  background: none;
-  border: none;
-  font-size: 18px;
-  padding: 7px 12px;
-  border-radius: 100px;
-  color: #828282;
-
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  &:hover {
-    background: #e7e7e7;
-  }
-`;
 export const GridVideos = styled.div`
   display: grid;
   grid-gap: 4rem 2rem;

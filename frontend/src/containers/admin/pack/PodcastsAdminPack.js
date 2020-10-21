@@ -45,7 +45,7 @@ const PodcastsPack = (props) => {
   const main = useRef();
   const dispatch = useDispatch();
   const podcastsReducer = useSelector((state) => state.podcastsReducer);
-  const podcastsPackReducer = useSelector((state) => state.podcastsPackReducer);
+  const podcastsPackAdminReducer = useSelector((state) => state.podcastsPackAdminReducer);
   const packReducer = useSelector((state) => state.packReducer);
   const programReducer = useSelector((state) => state.programReducer);
 
@@ -197,20 +197,20 @@ const PodcastsPack = (props) => {
         </div>
         )}
 
-          {podcastsPackReducer.podcasts &&
-            podcastsPackReducer.podcasts.results.map((podcast_pack) => (
+          {podcastsPackAdminReducer.podcasts &&
+            podcastsPackAdminReducer.podcasts.results.map((podcast_pack) => (
               <PodcastCard
                 key={podcast_pack.podcast.id}
                 podcast={podcast_pack.podcast}
                 handleDeletePodcast={handleDeletePodcast}
               />
             ))}
-          {podcastsPackReducer.isLoading && <span>Cargando...</span>}
-          {podcastsPackReducer.podcasts &&
-            (podcastsPackReducer.podcasts.previous ||
-              podcastsPackReducer.podcasts.next) && (
+          {podcastsPackAdminReducer.isLoading && <span>Cargando...</span>}
+          {podcastsPackAdminReducer.podcasts &&
+            (podcastsPackAdminReducer.podcasts.previous ||
+              podcastsPackAdminReducer.podcasts.next) && (
               <div className="d-flex justify-content-center my-5">
-                {podcastsPackReducer.podcasts.previous ? (
+                {podcastsPackAdminReducer.podcasts.previous ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -219,7 +219,7 @@ const PodcastsPack = (props) => {
                   >
                     <IoIosArrowDropleft
                       onClick={() =>
-                        handleChangePage(podcastsPackReducer.podcasts.previous)
+                        handleChangePage(podcastsPackAdminReducer.podcasts.previous)
                       }
                     />
                   </IconContext.Provider>
@@ -233,7 +233,7 @@ const PodcastsPack = (props) => {
                     <IoIosArrowDropleft />
                   </IconContext.Provider>
                 )}
-                {podcastsPackReducer.podcasts.next ? (
+                {podcastsPackAdminReducer.podcasts.next ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -242,7 +242,7 @@ const PodcastsPack = (props) => {
                   >
                     <IoIosArrowDropright
                       onClick={() =>
-                        handleChangePage(podcastsPackReducer.podcasts.next)
+                        handleChangePage(podcastsPackAdminReducer.podcasts.next)
                       }
                     />
                   </IconContext.Provider>

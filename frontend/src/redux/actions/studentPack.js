@@ -8,14 +8,14 @@ import {
 
 import { tokenConfig } from "./auth";
 // CHECK TOKEN & LOAD USER
-export const fetchPack = (id) => (dispatch, getState) => {
+export const fetchPack = (programId, packId) => (dispatch, getState) => {
   // User Loading
   dispatch({ type: STUDENT_PACK_FETCH });
 
   axios
     .get(`/api/programs/${
-      getState().programReducer.program.code
-    }/packs/${id}`)
+      programId
+    }/packs/${packId}`)
     .then((res) => {
       console.log(res);
 

@@ -16,7 +16,7 @@ import {
   playPodcast,
   stopPodcast,
   fetchPodcastsPagination,
-} from "src/redux/actions/podcasts";
+} from "src/redux/actions/podcastsPack";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
@@ -24,7 +24,7 @@ const Podcasts = () => {
   const { pathname } = useLocation();
 
   const main = useRef();
-  const podcastsReducer = useSelector((state) => state.podcastsReducer);
+  const podcastsPackReducer = useSelector((state) => state.podcastsPackReducer);
 
   const dispatch = useDispatch();
 
@@ -69,13 +69,13 @@ const Podcasts = () => {
       ref={main}
     >
       <AudioPlayerContainer className="rounded d-flex align-items-center flex-column">
-        {podcastsReducer.podcast_playing ? (
+        {podcastsPackReducer.podcast_playing ? (
           <>
             <span className="h3 mb-4">
-              {podcastsReducer.podcast_playing.title}
+              {podcastsPackReducer.podcast_playing.title}
             </span>
 
-            <Mp3Player podcast={podcastsReducer.podcast_playing} />
+            <Mp3Player podcast={podcastsPackReducer.podcast_playing} />
           </>
         ) : (
           <span className="h3 text-white m-0">Selecciona un Podcast</span>
@@ -90,27 +90,27 @@ const Podcasts = () => {
 
       <PodcastsContainer className="row">
         <div className="col-12">
-          {podcastsReducer.podcasts &&
-            podcastsReducer.podcasts.results.map((podcast) => {
+          {podcastsPackReducer.podcasts &&
+            podcastsPackReducer.podcasts.results.map((podcast_pack) => {
               const active =
-                podcastsReducer.podcast_playing &&
-                podcastsReducer.podcast_playing.id == podcast.id;
+                podcastsPackReducer.podcast_playing &&
+                podcastsPackReducer.podcast_playing.id == podcast_pack.podcast.id;
               return (
                 <Podcast
                   handlePlay={handlePlay}
-                  key={podcast.id}
-                  podcast={podcast}
+                  key={podcast_pack.podcast.id}
+                  podcast={podcast_pack.podcast}
                   active={active}
                   handleStop={handleStop}
                 />
               );
             })}
-          {podcastsReducer.isLoading && <span>Cargando...</span>}
-          {podcastsReducer.podcasts &&
-            (podcastsReducer.podcasts.previous ||
-              podcastsReducer.podcasts.next) && (
+          {podcastsPackReducer.isLoading && <span>Cargando...</span>}
+          {podcastsPackReducer.podcasts &&
+            (podcastsPackReducer.podcasts.previous ||
+              podcastsPackReducer.podcasts.next) && (
               <div className="d-flex justify-content-center my-5">
-                {podcastsReducer.podcasts.previous ? (
+                {podcastsPackReducer.podcasts.previous ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -119,7 +119,7 @@ const Podcasts = () => {
                   >
                     <IoIosArrowDropleft
                       onClick={() =>
-                        handleChangePage(podcastsReducer.podcasts.previous)
+                        handleChangePage(podcastsPackReducer.podcasts.previous)
                       }
                     />
                   </IconContext.Provider>
@@ -133,7 +133,7 @@ const Podcasts = () => {
                     <IoIosArrowDropleft />
                   </IconContext.Provider>
                 )}
-                {podcastsReducer.podcasts.next ? (
+                {podcastsPackReducer.podcasts.next ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -142,7 +142,7 @@ const Podcasts = () => {
                   >
                     <IoIosArrowDropright
                       onClick={() =>
-                        handleChangePage(podcastsReducer.podcasts.next)
+                        handleChangePage(podcastsPackReducer.podcasts.next)
                       }
                     />
                   </IconContext.Provider>
