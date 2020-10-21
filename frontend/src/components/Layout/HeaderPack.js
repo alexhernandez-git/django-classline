@@ -32,6 +32,7 @@ const Header = (props) => {
   const { program, pack } = useParams();
   const authReducer = useSelector((state) => state.authReducer);
   const programReducer = useSelector((state) => state.programReducer);
+  const studentPackReducer = useSelector((state) => state.studentPackReducer);
 
   const [profileDivOpen, setProfileDivOpen] = useState(false);
   const handleWindowClick = (e) => {
@@ -59,13 +60,10 @@ const Header = (props) => {
     };
   });
   const handleLogout = () => {
-    if (/\/demo\//.test(pathname)) {
-      push(`/program/${program}`);
-    } else {
+   
       const dispatchLogout = () => dispatch(logout());
       dispatchLogout();
-      push(`/academy/${program}`);
-    }
+      push(`/academy/${program}/packs`);
   };
 
   const [show, setShow] = useState(false);
@@ -93,7 +91,7 @@ const Header = (props) => {
               <FaBars />
             </IconContext.Provider>
           </MenuButton>
-          {!programReducer.isLoading && programReducer.program ? (
+          {!programReducer.isLoading && programReducer.program && !studentPackReducer.isLoading && studentPackReducer.pack ? (
             <Link
               to={
                   `/pack/${program}/${pack}/videos`
@@ -113,7 +111,7 @@ const Header = (props) => {
                 </Logo>
 
                 <span className="ml-4 font-weight-bold d-none d-sm-block">
-                  {programReducer.program.title && programReducer.program.title}
+                  {studentPackReducer.pack.title && studentPackReducer.pack.title}
                 </span>
               </div>
             </Link>

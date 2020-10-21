@@ -4,7 +4,7 @@ import { textEllipsis } from "./TextEllipsis";
 import moment from "moment";
 const Video = (props) => {
   const { pathname } = useLocation();
-  const { program } = useParams();
+  const { program, pack } = useParams();
   const { id, title, picture, duration } = props.video;
   function msToHMS(seconds) {
     if (isNaN(seconds)) {
@@ -22,6 +22,7 @@ const Video = (props) => {
   return (
     <Link
       to={
+        pack ? `/pack/${program}/${pack}/video/${id}` : 
         !/\/demo\//.test(pathname)
           ? `/academy/${program}/video/${id}`
           : pathname

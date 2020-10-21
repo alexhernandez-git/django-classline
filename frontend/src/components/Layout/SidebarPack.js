@@ -25,14 +25,15 @@ const Sidebar = (props) => {
   const { pathname } = useLocation();
   const { program, pack } = useParams();
   const programReducer = useSelector((state) => state.programReducer);
+  const studentPackReducer = useSelector((state) => state.studentPackReducer);
   const authReducer = useSelector((state) => state.authReducer);
 
-  return programReducer.isLoading ? (
+  return studentPackReducer.isLoading ? (
     "Cargando..."
   ) : (
     <ContainerSidebar sidebarActive={sidebarActive}>
       
-          {programReducer.program.are_videos && (
+          {studentPackReducer.pack.are_videos && (
             <Link
               to={`/pack/${program}/${pack}/videos`}
             >
@@ -49,7 +50,7 @@ const Sidebar = (props) => {
             </Link>
           )}
       
-          {programReducer.program.are_podcasts && (
+          {studentPackReducer.pack.are_podcasts && (
             <Link
             to={`/pack/${program}/${pack}/podcasts`}
 

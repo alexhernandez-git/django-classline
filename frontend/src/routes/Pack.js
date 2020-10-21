@@ -15,6 +15,7 @@ import { loadUser, resetAuthErrors, setIsInstructor } from "../redux/actions/aut
 import { fetchProgram } from "../redux/actions/program";
 import { Helmet } from "react-helmet";
 import VideosPack from "../containers/pack/VideosPack";
+import VideoPack from "../containers/pack/VideoPack";
 import PodcastsPack from "../containers/pack/PodcastsPack";
 import { fetchPack } from "../redux/actions/studentPack";
 const Pack = () => {
@@ -54,8 +55,17 @@ const Pack = () => {
     }
   }, [programReducer.isLoading, studentPackReducer.isLoading]);
   const haveAccess = () => studentPackReducer.pack.students.some(student => student == authReducer.user.id)
-   
-  return programReducer.isLoading || studentPackReducer.isLoading ? (
+  
+  const redirectIfNotVideo = () =>{
+    if (studentPackReducer.pack.are_podcasts) {
+      return `/pack/${programId}/${packId}/podcasts`
+    }else{
+      return `/academy/${programId}/packs`
+
+    }
+  }
+
+  return programReducer.isLoading || studentPackReducer.isLoading || authReducer.isLoading ? (
     "Cargando..."
   )  : (
   //  !authReducer.user ?  (
@@ -78,7 +88,7 @@ const Pack = () => {
               component={
                 studentPackReducer.pack.are_videos
                   ? VideosPack
-                  : () => <Redirect to={`/academy/${programId}/packs`} />
+                  : () => <Redirect to={redirectIfNotVideo()} />
               }
             />
             <Route
@@ -90,7 +100,15 @@ const Pack = () => {
                   : () => <Redirect to={`/academy/${programId}/packs`} />
               }
             />
-    
+            
+            <Route
+              exact
+              path="/pack/:program/:pack/video/:id"
+              component={
+                studentPackReducer.pack.are_videos
+                ? VideoPack
+                : () => <Redirect to={redirectIfNotVideo()} />}
+            />
           </Layout>
         ) : (
           () => <Redirect to={`/academy/${programId}/packs`} />
