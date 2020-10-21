@@ -118,74 +118,16 @@ const Academy = () => {
       <ScrollToTop />
 
       <Switch>
-        <Route exact path="/academy/:program" component={IndexAcademy} />
-        <Route
-          exact
-          path="/academy/:program/book-class"
-          component={BookClassContainer}
-        />
-        <Route
-          exact
-          path="/academy/:program/checkout-class-academy"
-          component={CheckoutOnlineClass}
-        />
-        <Route
-          exact
-          path="/academy/:program/checkout-class"
-          component={CheckoutOnlineClass}
-        />
-        <Route
-          exact
-          path="/academy/:program/login"
-          component={LoginEventContainer}
-        />
-        <Route
-          exact
-          path="/academy/:program/login-academy"
-          component={LoginEventContainer}
-        />
         {authReducer.isLoading ? (
           "Cargando..."
-        ) : !authReducer.isAuthenticated ?<Redirect to={`/academy/${programId}`}/> :haveAccess() ? (
+        ) : !authReducer.isAuthenticated ?<Redirect to={`/academy/${programId}/packs`}/> :haveAccess() ? (
           <Layout>
-            <Route
-              exact
-              path="/academy/:program/home"
-              component={HomeAcademy}
-            />
             <Route
               exact
               path="/academy/:program/videos/:search?"
               component={
                 programReducer.program.are_videos
                   ? VideosAcademy
-                  : () => <Redirect to={`/academy/${programId}/home`} />
-              }
-            />
-            <Route
-              exact
-              path="/academy/:program/docs/:id"
-              component={
-                programReducer.program.are_docs
-                  ? DocsAcademy
-                  : () => <Redirect to={`/academy/${programId}/home`} />
-              }
-            />
-            <Route
-              exact
-              path="/academy/:program/courses/:search?"
-              component={
-                programReducer.program.are_admin_playlists
-                  ? CoursesAcademy
-                  : () => <Redirect to={`/academy/${programId}/home`} />
-              }
-            />
-            <Route
-              exact
-              path="/academy/:program/course/:id/:track?"
-              component={
-                programReducer.program.are_admin_playlists
-                  ? PlaylistAdminAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />
@@ -200,133 +142,18 @@ const Academy = () => {
             />
             <Route
               exact
-              path="/academy/:program/meetups"
-              component={
-                programReducer.program.are_meetups
-                  ? MeetupsAcademy
-                  : () => <Redirect to={`/academy/${programId}/home`} />
-              }
-            />
-            <Route
-              exact
-              path="/academy/:program/docs"
-              component={
-                programReducer.program.are_docs
-                  ? DocsAcademy
-                  : () => <Redirect to={`/academy/${programId}/home`} />
-              }
-            />
-            <Route
-              exact
-              path="/academy/:program/shared-docs"
-              component={
-                programReducer.program.are_docs
-                  ? SharedDocsAcademy
-                  : () => <Redirect to={`/academy/${programId}/home`} />
-              }
-            />
-            <Route
-              exact
-              path="/academy/:program/playlist/:id/:track?"
-              component={PlaylistAcademy}
-            />
-            <Route
-              exact
               path="/academy/:program/video/:id"
               component={VideoAcademy}
             />
-            {authReducer.user && authReducer.user.created_account && (
-              <Route
-                exact
-                path="/academy/:program/profile"
-                component={ProfileAcademy}
-              />
-            )}
             <Route
               exact
-              path="/academy/:program/playlists/:search?"
-              component={PlaylistsAcademy}
+              path="/academy/:program/profile"
+              component={ProfileAcademy}
             />
-            <Route
-              exact
-              path="/academy/:program/form/playlist"
-              component={PlaylistFormAcademy}
-            />
-            <Route
-              exact
-              path="/academy/:program/forum"
-              component={ForumAcademy}
-            />
-            <Route
-              exact
-              path="/academy/:program/post/:id"
-              component={PostAcademy}
-            />
-            {authReducer.user && isInstructor() ||isAdmin() ? (
-              <>
-                {isAdmin() &&
-                <>
-                <Route
-                exact
-                path="/academy/:program/admin"
-                component={ConfigurationAdmin}
-                />
-                  <Route
-                exact
-                path="/academy/:program/admin/accounts/:search?"
-                component={AccountsAdmin}
-                />
-                <Route
-                  exact
-                  path="/academy/:program/admin/instructors/:search?"
-                  component={InstructorAccountsAdmin}
-                />
-                </>
-              }
-                <Route
-                exact
-                path="/academy/:program/admin/users/:search?"
-                component={UsersAdmin}
-                />
-              
-                <Route
-                  exact
-                  path="/academy/:program/admin/videos/:search?"
-                  component={VideosAdmin}
-                />
-
-                <Route
-                  exact
-                  path="/academy/:program/admin/courses/:search?"
-                  component={CoursesAdmin}
-                />
-                <Route
-                  exact
-                  path="/academy/:program/admin/form/course"
-                  component={CourseFormAdmin}
-                />
-                <Route
-                  exact
-                  path="/academy/:program/admin/podcasts/:search?"
-                  component={PodcastsAdmin}
-                />
-                <Route
-                  exact
-                  path="/academy/:program/admin/meetups"
-                  component={MeetupsAdmin}
-                />
-                <Route
-                  exact
-                  path="/academy/:program/admin/docs"
-                  component={DocsAdmin}
-                />
-              </>
-            ) : (
-              () => <Redirect to={`/academy/${programId}/home`} />
-            )}
+          
           </Layout>
         ) : (
-          () => <Redirect to={`/academy/${programId}`} />
+          () => <Redirect to={`/academy/${programId}/pakcs`} />
         )}
       </Switch>
     </>

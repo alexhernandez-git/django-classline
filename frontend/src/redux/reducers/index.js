@@ -33,11 +33,14 @@ import postReducer from "./postReducer";
 import commentsReducer from "./commentsReducer";
 import instructorAccountsReducer from "./instructorAccountsReducer";
 import bookEventsReducer from "./bookEventsReducer";
-import packsReducer from "./packsReducer";
-import packReducer from "./packReducer";
-import videosPackReducer from "./videosPackReducer";
-import podcastsPackReducer from "./podcastsPackReducer";
-import buyPacksReducer from "./buyPacksReducer";
+import packsReducer from "./packs/packsReducer";
+import packReducer from "./packs/packReducer";
+import videosPackAdminReducer from "./packs/videosPackAdminReducer";
+import podcastsPackAdminReducer from "./packs/podcastsPackAdminReducer";
+import buyPacksReducer from "./packs/buyPacksReducer";
+import studentPackReducer from "./packs/studentPackReducer";
+import videosPackReducer from "./packs/videosPackReducer";
+import podcastsPackReducer from "./packs/podcastsPackReducer";
 
 export default combineReducers({
   authReducer,
@@ -72,10 +75,13 @@ export default combineReducers({
   bookEventsReducer,
   packsReducer,
   packReducer,
+  videosPackAdminReducer,
+  podcastsPackAdminReducer,
+  buyPacksReducer,
+  studentPackReducer,
   videosPackReducer,
   podcastsPackReducer,
-  buyPacksReducer,
-  
+
   // Commercials reducers
   authCommercialsReducer,
   costumersReducer,

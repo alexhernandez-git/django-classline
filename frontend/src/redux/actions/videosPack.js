@@ -2,145 +2,80 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 import {
-  VIDEOS_PACK_FETCH,
-  VIDEOS_PACK_SUCCESS,
-  VIDEOS_PACK_FAIL,
-  VIDEOS_PACK_ADD,
-  VIDEOS_PACK_ADD_FAIL,
-  VIDEOS_PACK_ADD_SUCCESS,
-  VIDEOS_PACK_REMOVE,
-  VIDEOS_PACK_REMOVE_FAIL,
-  VIDEOS_PACK_REMOVE_SUCCESS,
+  STUDENT_VIDEOS_PACK_FETCH,
+  STUDENT_VIDEOS_PACK_SUCCESS,
+  STUDENT_VIDEOS_PACK_FAIL,
 } from "../types";
 
 import { tokenConfig } from "./auth";
 
 // CHECK TOKEN & LOAD USER
-export const fetchVideosPack = (search = "") => (dispatch, getState) => {
+export const fetchVideos = (search = "") => (dispatch, getState) => {
   // User Loading
-  dispatch({ type: VIDEOS_PACK_FETCH });
+  dispatch({ type: STUDENT_VIDEOS_PACK_FETCH });
 
   axios
     .get(
       `/api/programs/${
         getState().programReducer.program.code
-      }/packs/${getState().packReducer.pack.code}/videos-pack?search=${search}`,
+      }/videos/?search=${search}`,
       tokenConfig(getState)
     )
     .then((res) => {
       dispatch({
-        type: VIDEOS_PACK_SUCCESS,
+        type: STUDENT_VIDEOS_PACK_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
-        type: VIDEOS_PACK_FAIL,
+        type: STUDENT_VIDEOS_PACK_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
 };
-export const fetchVideosPackPagination = (url) => (dispatch, getState) => {
+export const fetchVideosPagination = (url) => (dispatch, getState) => {
   // User Loading
-  dispatch({ type: VIDEOS_PACK_FETCH });
+  dispatch({ type: STUDENT_VIDEOS_PACK_FETCH });
 
   axios
     .get(url, tokenConfig(getState))
     .then((res) => {
       dispatch({
-        type: VIDEOS_PACK_SUCCESS,
+        type: STUDENT_VIDEOS_PACK_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
-        type: VIDEOS_PACK_FAIL,
+        type: STUDENT_VIDEOS_PACK_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
 };
-export const fetchVideosPackIncrease = (limit, search = "") => (
+export const fetchVideosIncrease = (limit, search = "") => (
   dispatch,
   getState
 ) => {
   // User Loading
-  dispatch({ type: VIDEOS_PACK_FETCH });
+  dispatch({ type: STUDENT_VIDEOS_PACK_FETCH });
 
   axios
     .get(
       `/api/programs/${
         getState().programReducer.program.code
-      }/packs/${getState().packReducer.pack.code}/videos-pack?search=${search}&limit=${limit}`,
+      }/videos/?search=${search}&limit=${limit}`,
       tokenConfig(getState)
     )
     .then((res) => {
       dispatch({
-        type: VIDEOS_PACK_SUCCESS,
+        type: STUDENT_VIDEOS_PACK_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
-        type: VIDEOS_PACK_FAIL,
-        payload: { data: err.response.data, status: err.response.status },
-      });
-    });
-};
-
-export const addVideoPack = (id) => (dispatch, getState) => {
-  dispatch({
-    type: VIDEOS_PACK_ADD,
-  });
-  axios
-    .patch(
-      `/api/programs/${
-        getState().programReducer.program.code
-      }/packs/${getState().packReducer.pack.code}/add_video/`,
-      {video: id},
-      tokenConfig(getState)
-    )
-    .then((res) => {
-      dispatch({
-        type: VIDEOS_PACK_ADD_SUCCESS,
-        payload: res.data,
-      });
-    })
-    .catch((err) => {
-      dispatch({
-        type: VIDEOS_PACK_ADD_FAIL,
-        payload: { data: err.response.data, status: err.response.status },
-      });
-    });
-};
-
-
-export const removeVideoPack = (id) => (dispatch, getState) => {
-  dispatch({
-    type: VIDEOS_PACK_REMOVE,
-    payload: id,
-  });
-
-  axios
-    .patch(
-      `/api/programs/${
-        getState().programReducer.program.code
-      }/packs/${getState().packReducer.pack.code}/remove_video/`,
-      {video: id},
-      tokenConfig(getState)
-    )
-    .then(() => {
-      dispatch({
-        type: VIDEOS_PACK_REMOVE_SUCCESS,
-      });
-      Swal.fire({
-        title: "Eliminado!",
-        icon: "success",
-        confirmButtonText: "Ok",
-      });
-    })
-    .catch((err) => {
-      dispatch({
-        type: VIDEOS_PACK_REMOVE_FAIL,
+        type: STUDENT_VIDEOS_PACK_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
