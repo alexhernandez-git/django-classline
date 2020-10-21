@@ -40,13 +40,13 @@ const PlaylistPage = (props) => {
     })
   }
   } 
-  const playlistVideoRef = useRef(null)
-  useEffect(() => {
-    console.log(playlistVideoRef);
-    if (playlistVideoRef.current) {
-      playlistVideoRef.current.scrollIntoView();
-    }
-  }, [trackId])
+  // const playlistVideoRef = useRef(null)
+  // useEffect(() => {
+  //   console.log(playlistVideoRef);
+  //   if (playlistVideoRef.current) {
+  //     playlistVideoRef.current.scrollIntoView();
+  //   }
+  // }, [trackId])
   return (
     <Main padding>
       <div className="row">
@@ -90,7 +90,7 @@ const PlaylistPage = (props) => {
                           ? "active d-flex justify-content-between align-items-center cursor-pointer"
                           : "d-flex justify-content-between align-items-center cursor-pointer"
                       }
-                      ref={index == trackId ? playlistVideoRef : null}
+                      // ref={index == trackId ? playlistVideoRef : null}
                     >
                       <span className="mr-4">{index + 1}</span>
                       <Video video={track.video} />
