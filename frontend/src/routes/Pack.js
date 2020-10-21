@@ -47,13 +47,12 @@ const Pack = () => {
       !programReducer.isLoading &&
       programReducer.program &&
       !studentPackReducer.isLoading &&
-      studentPackReducer.pack &&
-      !authReducer.user
+      studentPackReducer.pack
     ) {
       const dispatchLoadUser = () => dispatch(loadUser());
       dispatchLoadUser();
     }
-  }, [programReducer.isLoading]);
+  }, [programReducer.isLoading, studentPackReducer.isLoading]);
   const haveAccess = () => studentPackReducer.pack.students.some(student => student == authReducer.user.id)
    
   return programReducer.isLoading || studentPackReducer.isLoading ? (

@@ -354,7 +354,7 @@ class PackViewSet(mixins.CreateModelMixin,
                 "destination": serialised_pack.get('instructor').get('profile').get('stripe_account_id'),
             },
             application_fee_amount=int(serialised_pack.get(
-                'pack_price').get('value')*100 * 20/100),
+                'pack_price').get('value')*100 * 25/100),
         )
 
         stripe.Invoice.pay(invoice['id'])

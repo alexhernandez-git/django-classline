@@ -28,8 +28,8 @@ ReactDOM.render(
       <Elements stripe={stripePromise} options={{ locale: "es" }}>
         <BrowserRouter>
           <Switch>
-            <Route path="/dashboard" component={Dashboard} />
             <Route path="/pack/:program/:pack" component={Pack} />
+            <Route path="/dashboard" component={Dashboard} />
             <Route path="/academy/:program" component={Academy} />
             <Route path="/demo/academy/:program" component={DemoAcademy} />
             <Route path="/" component={App} />
