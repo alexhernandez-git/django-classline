@@ -58,6 +58,10 @@ const PacksAdmin = () => {
     push(`/academy/${programReducer.program.code}/pack/detail`)
   }
   return (
+    <div
+    className="mb-5 pb-5"
+    style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
+  >
     <ContainerWrapper>
       <Filters
         title={showMyPacks ? "Mis Packs" : "Packs Publicados"}
@@ -148,6 +152,7 @@ const PacksAdmin = () => {
             </div>
           </div>
         </ContainerWrapper>
+        </div>
   );
 };
 export const GridVideos = styled.div`

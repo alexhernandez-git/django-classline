@@ -56,7 +56,8 @@ const index = () => {
   });
 
   return (
-    <>
+<>
+
       <Global
         styles={css`
           :root {
@@ -127,7 +128,8 @@ const index = () => {
           </span>
         </ContainerLogo>
       </Header> */}
-
+    <div className="mb-5 pb-5"
+    style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}>
       <Section className="py-5">
         <div className="container">
           <div className="row">
@@ -384,7 +386,13 @@ const index = () => {
         </div>
         {openVideo && <TransparentBackground />}
       </div>
-    </>
+    </div>
+    <div className="d-flex justify-content-end mr-5">
+          <a href="https://classlineacademy.com/" target="_blank">
+            <img height="25" src="../../../static/assets/img/logo7.PNG"/>
+          </a>
+        </div>
+          </>
   );
 };
 const Header = styled.header``;

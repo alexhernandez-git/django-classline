@@ -77,6 +77,11 @@ const BuyPacksContainer = () => {
       </Header> */}
       <div className="py-5 px-3">
         <BuyPacks />
+        <div className="d-flex justify-content-end mr-5">
+          <a href="https://classlineacademy.com/" target="_blank">
+            <img height="25" src="../../../static/assets/img/logo7.PNG"/>
+          </a>
+        </div>
       </div>
     </>
   );
