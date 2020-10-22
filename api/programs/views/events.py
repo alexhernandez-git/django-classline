@@ -196,14 +196,14 @@ class EventViewSet(mixins.CreateModelMixin,
             customer=customer_id,
             price=price.id,
         )
-
+        platform_fee = int(
+            (float(serialized_event['price'])*100) * 25/100)
         invoice = stripe.Invoice.create(
             customer=customer_id,
             transfer_data={
                 "destination": event_info.program.user.profile.stripe_account_id,
             },
-            application_fee_amount=int(
-                (float(serialized_event['price'])*100) * 25/100),
+            application_fee_amount=platform_fee,
         )
 
         stripe.Invoice.pay(invoice['id'])
@@ -213,6 +213,7 @@ class EventViewSet(mixins.CreateModelMixin,
             user=user,
             price=serialized_event['price'],
             currency=serialized_event['currency'],
+            platform_fee=platform_fee,
             program=program,
             event=event_info,
             payment_issue=False,

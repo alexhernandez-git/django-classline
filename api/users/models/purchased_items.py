@@ -22,6 +22,9 @@ class PurchasedItem(CLineModel):
     price = models.DecimalField(
         max_digits=10, decimal_places=2, default=0)
 
+    platform_fee = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0)
+
     currency = models.CharField(max_length=3, null=True, blank=True)
 
     product = models.CharField(max_length=100, null=True, blank=True)
