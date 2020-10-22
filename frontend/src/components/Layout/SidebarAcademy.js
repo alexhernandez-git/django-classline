@@ -8,7 +8,7 @@ import {
   FaCog,
   FaArrowLeft,
   FaListUl,
-  FaVideo,
+  FaRegCalendarAlt,
   FaChalkboardTeacher,
   FaPhotoVideo,
   FaBox,
@@ -156,9 +156,9 @@ const Sidebar = (props) => {
                   className: "sidebar-icon",
                 }}
               >
-                <FaVideo />
+                <FaRegCalendarAlt />
               </IconContext.Provider>{" "}
-              Clases online
+              Eventos
             </SecctionLink>
           </Link>
           <Link to={`/academy/${program}/admin/docs`}>
@@ -271,9 +271,9 @@ const Sidebar = (props) => {
                     className: "sidebar-icon",
                   }}
                 >
-                  <FaVideo />
+                  <FaRegCalendarAlt />
                 </IconContext.Provider>{" "}
-                Clases online
+                Eventos
               </SecctionLink>
             </Link>
           )}

@@ -50,7 +50,6 @@ const meetups = () => {
   };
   const handleShow = () => setShow(true);
   const [isOpen, setIsOpen] = useState(false);
-  const [events, setEvents] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
 
   const MySwal = withReactContent(Swal);
@@ -59,6 +58,7 @@ const meetups = () => {
     title: "Nuevo evento",
     start: null,
     description: "",
+    online_class:true,
     videoconference: "",
     color: "",
     recurrent: false,
@@ -77,6 +77,8 @@ const meetups = () => {
           args.description != null
             ? args.description
             : args.extendedProps.description,
+            online_class:
+            args.online_class != null ? args.online_class : args.extendedProps.online_class,
         videoconference:
           args.videoconference != null
             ? args.videoconference
@@ -95,17 +97,16 @@ const meetups = () => {
   const handleSave = (e) => {
     e.preventDefault();
     updateEvent(classData);
-    handleClose();
   };
   const addEvent = () => {
-    const dispatchCreateMeetup = (args) => dispatch(createMeetup(args));
+    const dispatchCreateMeetup = (args) => dispatch(createMeetup(args,setShow, setIsEdit));
+    
     dispatchCreateMeetup({ ...args, price: price });
+
     // setEvents((events) => [...events, args]);
-    handleClose();
   };
   const updateEvent = (event, newPrice = null) => {
-    setIsEdit(false);
-    const dispatchEditMeetup = (event) => dispatch(editMeetup(event));
+    const dispatchEditMeetup = (event) => dispatch(editMeetup(event,setShow,setIsEdit));
     if (newPrice) {
       dispatchEditMeetup({ ...event, newPrice: price });
     } else {
@@ -116,7 +117,7 @@ const meetups = () => {
     // );
   };
   const deleteEvent = (event) => {
-    const dispatchDeleteMeetup = (id) => dispatch(deleteMeetup(id));
+    const dispatchDeleteMeetup = (id) => dispatch(deleteMeetup(id,setShow,setIsEdit));
     dispatchDeleteMeetup(event.id);
     // setEvents((events) => events.filter((e) => e.id !== event.id));
   };
@@ -135,6 +136,7 @@ const meetups = () => {
       start: arg.date,
       end: null,
       description: "",
+      online_class: true,
       videoconference: "",
       color: "",
       recurrent: true,
@@ -155,6 +157,7 @@ const meetups = () => {
             ? args.event.backgroundColor
             : "",
         description: args.event.extendedProps.description,
+        online_class: args.event.extendedProps.online_class,
         videoconference: args.event.extendedProps.videoconference,
         day_of_week: args.event.extendedProps.day_of_week,
         recurrent: args.event.extendedProps.recurrent,
@@ -177,6 +180,7 @@ const meetups = () => {
             ? args.event.backgroundColor
             : "",
         description: args.event.extendedProps.description,
+        online_class: args.event.extendedProps.online_class,
         videoconference: args.event.extendedProps.videoconference,
         day_of_week: args.event.extendedProps.day_of_week,
         recurrent: args.event.extendedProps.recurrent,
@@ -207,7 +211,6 @@ const meetups = () => {
       if (result.value) {
         deleteEvent(args);
 
-        handleClose();
 
         return Swal.fire({
           icon: "success",
@@ -231,6 +234,7 @@ const meetups = () => {
             startTime: moment(meetup.start).format("HH:mm:ss"),
             endTime: moment(meetup.end).format("HH:mm:ss"),
             color: meetup.color && meetup.color,
+            online_class: meetup.online_class && meetup.online_class,
             videoconference: meetup.videoconference && meetup.videoconference,
             recurrent: meetup.recurrent && meetup.recurrent,
             bookable: meetup.bookable && meetup.bookable,
@@ -244,6 +248,7 @@ const meetups = () => {
             start: meetup.start,
             end: meetup.end,
             color: meetup.color && meetup.color,
+            online_class: meetup.online_class && meetup.online_class,
             videoconference: meetup.videoconference && meetup.videoconference,
             recurrent: meetup.recurrent && meetup.recurrent,
             bookable: meetup.bookable && meetup.bookable,
@@ -259,7 +264,7 @@ const meetups = () => {
   }, [recurringMeetups]);
   return (
     <Main padding>
-      <Filters title="Clases online" className="border-bottom" />
+      <Filters title="Eventos" className="border-bottom" />
       <ContainerCalendar className="container mt-4">
         <div className="calendar">
           <FullCalendar

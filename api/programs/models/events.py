@@ -25,6 +25,7 @@ class Event(CLineModel):
     end = models.DateTimeField(blank=True, null=True)
     color = models.CharField(max_length=50, blank=True, null=True)
     program = models.ForeignKey('programs.Program', on_delete=models.CASCADE)
+    online_class = models.BooleanField(default=True)
     recurrent = models.BooleanField(default=False)
     bookable = models.BooleanField(default=False)
     price = models.DecimalField(

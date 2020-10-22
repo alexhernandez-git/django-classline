@@ -61,6 +61,8 @@ export default function (state = initialState, action) {
         meetups: state.meetups.map((meetup) =>
           meetup.id === action.payload.id ? (meetup = action.payload) : meetup
         ),
+        meetup_edit_error: null,
+
       };
 
     case EDIT_MEETUP_FAIL:
@@ -79,6 +81,8 @@ export default function (state = initialState, action) {
         ...state,
         meetup_creating: false,
         meetups: [action.payload, ...state.meetups],
+        meetup_create_error: null,
+
       };
 
     case CREATE_MEETUP_FAIL:
@@ -101,6 +105,8 @@ export default function (state = initialState, action) {
           (meetup) => meetup.id !== state.meetup_delete
         ),
         meetup_delete: null,
+        meetup_delete_error: null,
+
       };
 
     case DELETE_MEETUP_FAIL:

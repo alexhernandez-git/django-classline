@@ -42,7 +42,7 @@ export const fetchMeetups = () => (dispatch, getState) => {
     });
 };
 
-export const editMeetup = (meetup) => (dispatch, getState) => {
+export const editMeetup = (meetup, setShow, setIsEdit) => (dispatch, getState) => {
   dispatch({
     type: EDIT_MEETUP,
     payload: meetup,
@@ -89,6 +89,8 @@ export const editMeetup = (meetup) => (dispatch, getState) => {
         type: EDIT_MEETUP_SUCCESS,
         payload: res.data.event,
       });
+      setShow(false)
+      setIsEdit(false)
     })
     .catch((err) => {
       dispatch({
@@ -98,7 +100,7 @@ export const editMeetup = (meetup) => (dispatch, getState) => {
     });
 };
 
-export const createMeetup = (meetup) => (dispatch, getState) => {
+export const createMeetup = (meetup, setShow, setIsEdit) => (dispatch, getState) => {
   dispatch({
     type: CREATE_MEETUP,
   });
@@ -114,6 +116,8 @@ export const createMeetup = (meetup) => (dispatch, getState) => {
         type: CREATE_MEETUP_SUCCESS,
         payload: res.data,
       });
+      setShow(false)
+      setIsEdit(false)
     })
     .catch((err) => {
       dispatch({
@@ -123,7 +127,7 @@ export const createMeetup = (meetup) => (dispatch, getState) => {
     });
 };
 
-export const deleteMeetup = (id) => (dispatch, getState) => {
+export const deleteMeetup = (id, setShow, setIsEdit) => (dispatch, getState) => {
   dispatch({
     type: DELETE_MEETUP,
     payload: id,
@@ -138,6 +142,8 @@ export const deleteMeetup = (id) => (dispatch, getState) => {
       dispatch({
         type: DELETE_MEETUP_SUCCESS,
       });
+      setShow(false)
+      setIsEdit(false)
     })
     .catch((err) => {
       dispatch({

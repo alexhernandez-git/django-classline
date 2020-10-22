@@ -23,6 +23,7 @@ class EventModelSerializer(serializers.ModelSerializer):
             'start',
             'end',
             'color',
+            'online_class',
             'videoconference',
             'recurrent',
             'price',
@@ -34,6 +35,22 @@ class EventModelSerializer(serializers.ModelSerializer):
         read_only_fields = (
             'id',
         )
+
+    def validate_videoconference(self, data):
+
+        if self.context['request'].data['online_class'] and data == "":
+            raise serializers.ValidationError(
+                'Este campo no puede estar vacio'
+            )
+        return data
+
+    def validate_price(self, data):
+
+        if self.context['request'].data['bookable'] and data <= 0:
+            raise serializers.ValidationError(
+                'El precio del evento tiene que ser mayor a 0'
+            )
+        return data
 
     def create(self, validated_data):
         program = self.context['program']

@@ -99,7 +99,7 @@ const BookMeetups = (props) => {
           className="mb-5 pb-5"
           style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
         >
-          <Filters title="Reservar clases online" className="border-bottom" />
+          <Filters title="Reservar eventos" className="border-bottom" />
           <div className="mt-4 d-flex justify-content-end container">
             <MyButton
               className={
