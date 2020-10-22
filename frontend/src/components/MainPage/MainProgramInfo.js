@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { useSelector } from "react-redux";
 
 import styled from "@emotion/styled";
+import { FaSearch } from "react-icons/fa";
+import { IconContext } from "react-icons/lib";
 
 const MainProgramInfo = () => {
   const [active, setActive] = useState(false);
@@ -9,30 +11,28 @@ const MainProgramInfo = () => {
 
   return (
     <>
-      <div className="col-lg-8 col-md-6 mb-4 p-0">
-        <div className="w-100 text-white">
+      <div className="p-0">
+        <div className="w-100 text-white d-flex justify-content-between">
           <MainInfo className="d-flex flex-column justify-content-center">
             <h2 className="text-break">{program && program.title}</h2>
-            <span>{program && program.subtitle}</span>
+            {/* <span>{program && program.subtitle}</span> */}
           </MainInfo>
+          <Search>
+            <input 
+              type="text"
+              placeholder="Busqueda general"
+              />
+              <button>
+                <IconContext.Provider
+                      value={{
+                        className: "sidebar-icon",
+                      }}
+                    >
+                    <FaSearch/>
+                  </IconContext.Provider>
+              </button>
+          </Search>
         </div>
-      </div>
-      <div className="col-lg-4 col-md-6 mb-4 p-0 position-relative">
-        {program && program.video_presentation && (
-          <div className="px-3 course-card">
-            <div className="shadow w-100 p-1 rounded bg-white mb-3">
-              <div className="w-100">
-                <CardContainer>
-                  <VideoCard
-                    poster={program && program.picture}
-                    src={program && program.video_presentation}
-                    controls
-                  />
-                </CardContainer>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );
@@ -56,11 +56,35 @@ export const CardContainer = styled.div`
   overflow: hidden;
   height: 0;
 `;
-export const VideoCard = styled.video`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-`;
+const Search = styled.div`
+margin: 3rem;
+  display: flex;
+  justify-content: center;
+  input{
+    padding:1rem 1rem 1rem 2rem;
+
+    max-width:30rem;
+    width: 100%;
+    display: block;
+    border-radius: 2rem 0 0 2rem;
+
+    overflow: hidden;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    border:none;
+  }
+  button{
+    padding:1rem;
+    max-width:5rem;
+    width: 100%;
+    display: block;
+    border-radius: 0 2rem  2rem 0;
+    overflow: hidden;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    border:none;
+  }
+  button:hover{
+    opacity: 0.7;
+  }
+
+`
 export default MainProgramInfo;

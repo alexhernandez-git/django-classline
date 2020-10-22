@@ -14,6 +14,9 @@ import { fetchPopularPlaylists } from "src/redux/actions/popularPlaylists";
 import { fetchPopularPodcasts } from "src/redux/actions/popularPodcasts";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import { IconContext } from "react-icons/lib";
+import { BsFillCollectionPlayFill } from "react-icons/bs";
+import { FaListUl, FaPodcast, FaRegPlayCircle, FaSearch } from "react-icons/fa";
 
 export default function Home() {
   const history = useHistory();
@@ -43,53 +46,211 @@ export default function Home() {
   return (
     !programReducer.isLoading && (
       <>
-        <Main>
+        <Main className="text-grey">
           <MainProgramContainer>
             <div className="container">
-              <div className="row mx-auto">
+              <div className="mx-auto">
                 <MainProgramInfo />
               </div>
             </div>
           </MainProgramContainer>
+          
+          <div className="container mt-5">
+            <GridElements className="">
+              <Element>
+                <div>
+                  <IconContext.Provider
+                        value={{
+                          className: "sidebar-icon",
+                        }}
+                        >
+                      <BsFillCollectionPlayFill />
+                    </IconContext.Provider>{" "}
+                  Buscar en Videos
+                  </div>
+              </Element>
+              <Element>
+              <IconContext.Provider
+                    value={{
+                      className: "sidebar-icon",
+                    }}
+                    >
+                    <FaListUl />
+                  </IconContext.Provider>{" "}
+                  Buscar en Playlists
+              </Element>
+              <Element>
+                <IconContext.Provider
+                    value={{
+                      className: "sidebar-icon",
+                    }}
+                    >
+                    <FaPodcast />
+                  </IconContext.Provider>{" "}
+                  Buscar en Podcasts
+              </Element>
+                
+            
+            </GridElements>
+          
+              </div>
+          <ImgContainer>
+              <div className="img-content">
+              <IconContext.Provider
+                
+                value={{
+                  className: "position-absolute cursor-pointer",
+                  color:"#fff",
+                  style: {
+                    left: "0",
+                    right: "0",
+                    top: "0",
+                    bottom: "0",
+                    margin: "auto",
+                    fontSize: "4rem",
+                    zIndex: "100",
+                  },
+                }}
+              >
+                <div>
+                  <FaRegPlayCircle />
+                </div>
+              </IconContext.Provider>
+              <small>Ver video presentación</small>
+              </div>
+                <img className="img-video" src={programReducer.program && programReducer.program.picture} />
+            </ImgContainer>
+   
 
-          <div className="container my-5">
-            {programReducer.program.are_videos && (
-              <>
-                <div className="mb-4">
-                  <FavouriteVideos />
-                </div>
-                <hr />
-              </>
-            )}
-            {programReducer.program.are_admin_playlists && (
-              <>
-                <div className="mb-4">
-                  <MainPlaylists />
-                </div>
-                <hr />
-              </>
-            )}
-            {programReducer.program.are_podcasts && (
-              <>
-                <div className="mb-4">
-                  <FavouritePodcasts />
-                </div>
-                <hr />
-              </>
-            )}
-            {programReducer.program.are_meetups && <ThisWeekMeetups />}
-          </div>
+          <div className="container">
+            <div className="border-bottom mb-3 pb-2">
+              <span>Categorias</span>
+            </div>
+            <BadgesContainer>
+              <Badge>
+                Comida sana
+              </Badge>
+              <Badge>
+                Deportes
+              </Badge>
+              <Badge>
+                Yoga
+              </Badge>
+              <Badge>
+                Comida sana
+              </Badge>
+              <Badge>
+                Deportes
+              </Badge>
+              <Badge>
+                Yoga
+              </Badge>
+              <Badge>
+                Comida sana
+              </Badge>
+              <Badge>
+                Deportes
+              </Badge>
+              <Badge>
+                Yoga
+              </Badge>
+              <Badge>
+                Comida sana
+              </Badge>
+              <Badge>
+                Deportes
+              </Badge>
+              <Badge>
+                Yoga
+              </Badge>
+            </BadgesContainer>
+            </div>
         </Main>
       </>
     )
   );
 }
 
-export const MainProgramContainer = styled.div`
-  background: var(--darkgray);
-  padding-top: 2rem;
+
+const GridElements = styled.div`  
+/* justify-content: space-between; */
+margin-bottom: 2rem;
+display: flex;
+justify-content: center;
+
 `;
 
-export const Title = styled.div`
-  font-size: 2.8rem;
+const Element = styled.div`
+cursor:pointer;
+  padding:1rem;
+  color: #323840;
+  display:flex;
+  justify-content: center;
+  align-items:center;
+  text-align:center;
+  max-width: 30rem;
+  width: 100%;
+  display: block;
+
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  &:hover img {
+    transform: scale(1.03);
+  }
+  margin: 2rem;
+
+` 
+ const MainProgramContainer = styled.div`
+  background: var(--darkgray);
+  padding: 2rem;
 `;
+
+
+ const ImgContainer = styled.div`
+    max-width:50rem;
+    width: 100%;
+    border-radius: 2rem;
+    margin: 3rem auto;
+    overflow: hidden;
+    position: relative;
+    small{
+    position: absolute;
+    left: 50%;
+
+    top: 70%;
+
+    transform: translate(-50%,-50%);
+
+    color: #fff;
+    z-index: 1;
+
+    }
+    .img-video{
+      z-index: 1;
+      width: 100%;
+      display: block;
+      border-radius: 2rem;
+      overflow: hidden;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+      border:none;
+      filter: brightness(50%);
+    }
+`;
+const BadgesContainer = styled.div`  
+  display: flex;
+  flex-flow: wrap;
+`;
+const Badge = styled.div`
+  cursor:pointer;
+  padding:1rem;
+  color: #323840;
+  width: max-content;
+  border-radius: 2rem;
+  overflow: hidden;
+  margin: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  &:hover img {
+    transform: scale(1.03);
+  }
+` 

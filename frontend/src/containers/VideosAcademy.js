@@ -153,7 +153,7 @@ const ButtonSearchUsers = styled.button`
     background: #e7e7e7;
   }
 `;
-export const GridVideos = styled.div`
+const GridVideos = styled.div`
   display: grid;
   grid-gap: 4rem 2rem;
   grid-template-columns: repeat(4, 1fr);

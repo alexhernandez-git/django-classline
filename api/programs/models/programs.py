@@ -41,6 +41,8 @@ class Program(CLineModel):
     event_booking = models.BooleanField(default=False)
     event_booking_calendar = models.BooleanField(default=False)
 
+    brand_color = models.CharField(max_length=50, blank=True, null=True)
+
     # accounts
     level_pro = models.BooleanField(default=False)
     level_adquired = models.PositiveIntegerField(null=True, blank=True)
