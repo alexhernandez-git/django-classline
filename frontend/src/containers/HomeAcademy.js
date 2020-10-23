@@ -14,6 +14,7 @@ import { IconContext } from "react-icons/lib";
 import { BsFillCollectionPlayFill } from "react-icons/bs";
 import { FaListUl, FaPodcast, FaRegPlayCircle, FaSearch } from "react-icons/fa";
 import TopicCard from "../components/AdminAcademy/TopicCard";
+import SearchElementCard from "../components/AdminAcademy/SearchElementCard";
 
 export default function Home() {
   const history = useHistory();
@@ -52,45 +53,7 @@ export default function Home() {
             </div>
           </MainProgramContainer>
 
-          <div className="container mt-5">
-            <GridElements className="">
-              <Element>
-                <div>
-                  <IconContext.Provider
-                    value={{
-                      className: "sidebar-icon",
-                    }}
-                  >
-                    <BsFillCollectionPlayFill />
-                  </IconContext.Provider>{" "}
-                  Buscar en Videos
-                  </div>
-              </Element>
-              <Element>
-                <IconContext.Provider
-                  value={{
-                    className: "sidebar-icon",
-                  }}
-                >
-                  <FaListUl />
-                </IconContext.Provider>{" "}
-                  Buscar en Playlists
-              </Element>
-              <Element>
-                <IconContext.Provider
-                  value={{
-                    className: "sidebar-icon",
-                  }}
-                >
-                  <FaPodcast />
-                </IconContext.Provider>{" "}
-                  Buscar en Podcasts
-              </Element>
-
-
-            </GridElements>
-
-          </div>
+          
           <ImgContainer>
             <div className="img-content">
               <IconContext.Provider
@@ -117,6 +80,15 @@ export default function Home() {
             </div>
             <img className="img-video" src={programReducer.program && programReducer.program.picture} />
           </ImgContainer>
+          <div className="container mt-5">
+            <GridElements className="">
+             
+              <SearchElementCard searchVideos/>  
+              <SearchElementCard searchPlaylists/>
+              <SearchElementCard searchPodcasts/>
+
+            </GridElements>
+          </div>
           <div className="container">
             <div className="border-bottom mb-3 pb-2">
               <span>Temas</span>
@@ -125,11 +97,10 @@ export default function Home() {
    
                 <TopicCard/>
                 <TopicCard/>
-                <TopicCard/>
+                {/* <TopicCard/> */}
                 <TopicCard/>
             </TopicsContainer>
           </div>
-
           {/* <div className="container">
             <div className="border-bottom mb-3 pb-2">
               <span>Tags</span>
@@ -190,30 +161,6 @@ justify-content: center;
   }
 `;
 
-const Element = styled.div`
-cursor:pointer;
-  padding:1rem;
-  color: #323840;
-  display:flex;
-  justify-content: center;
-  align-items:center;
-  text-align:center;
-  max-width: 30rem;
-  width: 100%;
-  display: block;
-  border-radius: 2rem;
-  overflow: hidden;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-  &:hover img {
-    transform: scale(1.03);
-  }
-  margin: 2rem;
-  @media screen and (max-width: 576px) {
-    max-width: none;
-    margin: 2rem 0;
-  }
-
-`
 const MainProgramContainer = styled.div`
   background: var(--darkgray);
   padding: 2rem;
