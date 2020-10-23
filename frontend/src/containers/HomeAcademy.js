@@ -2,12 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Main } from "src/components/ui/Main";
 import styled from "@emotion/styled";
 import MainProgramInfo from "src/components/MainPage/MainProgramInfo";
-import ProgramDescription from "src/components/MainPage/ProgramDescription";
-import ProgramBenefits from "src/components/MainPage/ProgramBenefits";
-import FavouriteVideos from "src/components/MainPage/FavouriteVideos";
-import FavouritePodcasts from "src/components/MainPage/FavouritePodcasts";
-import MainPlaylists from "src/components/MainPage/MainPlaylists";
-import ThisWeekMeetups from "src/components/MainPage/ThisWeekMeetups";
+import { textEllipsis } from "src/components/ui/TextEllipsis";
+
 import { useDispatch } from "react-redux";
 import { fetchPopularVideos } from "src/redux/actions/popularVideos";
 import { fetchPopularPlaylists } from "src/redux/actions/popularPlaylists";
@@ -17,6 +13,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { IconContext } from "react-icons/lib";
 import { BsFillCollectionPlayFill } from "react-icons/bs";
 import { FaListUl, FaPodcast, FaRegPlayCircle, FaSearch } from "react-icons/fa";
+import TopicCard from "../components/AdminAcademy/TopicCard";
 
 export default function Home() {
   const history = useHistory();
@@ -54,53 +51,53 @@ export default function Home() {
               </div>
             </div>
           </MainProgramContainer>
-          
+
           <div className="container mt-5">
             <GridElements className="">
               <Element>
                 <div>
                   <IconContext.Provider
-                        value={{
-                          className: "sidebar-icon",
-                        }}
-                        >
-                      <BsFillCollectionPlayFill />
-                    </IconContext.Provider>{" "}
+                    value={{
+                      className: "sidebar-icon",
+                    }}
+                  >
+                    <BsFillCollectionPlayFill />
+                  </IconContext.Provider>{" "}
                   Buscar en Videos
                   </div>
               </Element>
               <Element>
-              <IconContext.Provider
-                    value={{
-                      className: "sidebar-icon",
-                    }}
-                    >
-                    <FaListUl />
-                  </IconContext.Provider>{" "}
+                <IconContext.Provider
+                  value={{
+                    className: "sidebar-icon",
+                  }}
+                >
+                  <FaListUl />
+                </IconContext.Provider>{" "}
                   Buscar en Playlists
               </Element>
               <Element>
                 <IconContext.Provider
-                    value={{
-                      className: "sidebar-icon",
-                    }}
-                    >
-                    <FaPodcast />
-                  </IconContext.Provider>{" "}
+                  value={{
+                    className: "sidebar-icon",
+                  }}
+                >
+                  <FaPodcast />
+                </IconContext.Provider>{" "}
                   Buscar en Podcasts
               </Element>
-                
-            
+
+
             </GridElements>
-          
-              </div>
+
+          </div>
           <ImgContainer>
-              <div className="img-content">
+            <div className="img-content">
               <IconContext.Provider
-                
+
                 value={{
                   className: "position-absolute cursor-pointer",
-                  color:"#fff",
+                  color: "#fff",
                   style: {
                     left: "0",
                     right: "0",
@@ -117,14 +114,25 @@ export default function Home() {
                 </div>
               </IconContext.Provider>
               <small>Ver video presentación</small>
-              </div>
-                <img className="img-video" src={programReducer.program && programReducer.program.picture} />
-            </ImgContainer>
-   
-
+            </div>
+            <img className="img-video" src={programReducer.program && programReducer.program.picture} />
+          </ImgContainer>
           <div className="container">
             <div className="border-bottom mb-3 pb-2">
-              <span>Categorias</span>
+              <span>Temas</span>
+            </div>
+            <TopicsContainer>
+   
+                <TopicCard/>
+                <TopicCard/>
+                <TopicCard/>
+                <TopicCard/>
+            </TopicsContainer>
+          </div>
+
+          {/* <div className="container">
+            <div className="border-bottom mb-3 pb-2">
+              <span>Tags</span>
             </div>
             <BadgesContainer>
               <Badge>
@@ -164,7 +172,7 @@ export default function Home() {
                 Yoga
               </Badge>
             </BadgesContainer>
-            </div>
+          </div> */}
         </Main>
       </>
     )
@@ -177,7 +185,9 @@ const GridElements = styled.div`
 margin-bottom: 2rem;
 display: flex;
 justify-content: center;
-
+@media screen and (max-width: 576px) {
+  display: inline;
+  }
 `;
 
 const Element = styled.div`
@@ -191,7 +201,6 @@ cursor:pointer;
   max-width: 30rem;
   width: 100%;
   display: block;
-
   border-radius: 2rem;
   overflow: hidden;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
@@ -199,15 +208,19 @@ cursor:pointer;
     transform: scale(1.03);
   }
   margin: 2rem;
+  @media screen and (max-width: 576px) {
+    max-width: none;
+    margin: 2rem 0;
+  }
 
-` 
- const MainProgramContainer = styled.div`
+`
+const MainProgramContainer = styled.div`
   background: var(--darkgray);
   padding: 2rem;
 `;
 
 
- const ImgContainer = styled.div`
+const ImgContainer = styled.div`
     max-width:50rem;
     width: 100%;
     border-radius: 2rem;
@@ -253,4 +266,11 @@ const Badge = styled.div`
   &:hover img {
     transform: scale(1.03);
   }
-` 
+`
+
+const TopicsContainer = styled.div`  
+  flex-flow: wrap;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+`;
