@@ -42,7 +42,7 @@ class PodcastPackViewSet(mixins.CreateModelMixin,
     serializer_class = PodcastPackModelSerializer
     lookup_field = 'pk'
     filter_backends = [SearchFilter]
-    search_fields = ['video__title', 'video__description']
+    search_fields = ['podcast__title', 'podcast__description']
 
     def get_queryset(self):
         """Restrict list to public-only."""

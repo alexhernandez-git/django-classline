@@ -10,7 +10,7 @@ import random
 import string
 
 
-class PodcastCategory(CLineModel):
+class PodcastTopic(CLineModel):
     podcast = models.ForeignKey('programs.Podcast', on_delete=models.CASCADE)
     topic = models.ForeignKey(
         'programs.ProgramTopic', on_delete=models.CASCADE)

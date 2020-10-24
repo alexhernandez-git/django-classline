@@ -10,7 +10,7 @@ import random
 import string
 
 
-class VideoCategory(CLineModel):
+class VideoTopic(CLineModel):
     video = models.ForeignKey('programs.Video', on_delete=models.CASCADE)
     topic = models.ForeignKey(
         'programs.ProgramTopic', on_delete=models.CASCADE)

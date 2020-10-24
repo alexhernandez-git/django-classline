@@ -24,9 +24,7 @@ from .packs_prices import PackPrice
 from .videos_pack import VideoPack
 from .podcasts_pack import PodcastPack
 from .students_pack import StudentPack
-# from .categories_videos import CategoryVideos
-# from .categories_playlists import CategoryPlaylists
-# from .categories_podcasts import CategoryPodcasts
-# from .videos_categories import VideoCategory
-# from .playlists_categories import PlaylistCategory
-# from .podcasts_categories import PodcastCategory
+from .program_topics import ProgramTopic
+from .videos_topic import VideoTopic
+from .playlists_topic import PlaylistTopic
+from .podcasts_topic import PodcastTopic

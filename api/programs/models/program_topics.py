@@ -41,8 +41,9 @@ class ProgramTopic(CLineModel):
     )
     podcasts = models.ManyToManyField(
         'programs.Podcast',
-        through='programs.PodcastsTopic'
+        through='programs.PodcastTopic'
     )
+    color = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         """Return description."""

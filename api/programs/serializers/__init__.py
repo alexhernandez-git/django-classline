@@ -23,3 +23,7 @@ from .packs_prices import *
 from .packs_languages import *
 from .videos_pack import *
 from .podcasts_pack import *
+from .program_topics import *
+from .videos_topic import *
+from .podcasts_topic import *
+from .playlists_topic import *
