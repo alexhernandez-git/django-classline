@@ -103,4 +103,4 @@ class AddTopicMixin(viewsets.GenericViewSet):
             code=topic_id
         )
 
-        return super(AddPackMixin, self).dispatch(request, *args, **kwargs)
+        return super(AddTopicMixin, self).dispatch(request, *args, **kwargs)

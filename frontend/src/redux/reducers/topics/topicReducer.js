@@ -1,31 +1,24 @@
 import {
-  PACK_FETCH,
-  PACK_SUCCESS,
-  PACK_FAIL,
-  PACK_SAVE,
-  PACK_SAVE_SUCCESS,
-  PACK_SAVE_FAIL,
-  PACK_PICTURE_UPLOAD,
-  PACK_PICTURE_SUCCESS,
-  PACK_PICTURE_FAIL,
-
-  PACK_PUBLISH,
-  PACK_PUBLISH_SUCCESS,
-  PACK_PUBLISH_FAIL,
-  PACK_CANCEL_PUBLISH,
-  PACK_CANCEL_PUBLISH_SUCCESS,
-  PACK_CANCEL_PUBLISH_FAIL,
-  REMOVE_PACK,
-  REMOVE_PACK_SUCCESS,
-  REMOVE_PACK_FAIL,
-  RESET_PACKS_ERRORS
+  TOPIC_FETCH,
+  TOPIC_SUCCESS,
+  TOPIC_FAIL,
+  TOPIC_SAVE,
+  TOPIC_SAVE_SUCCESS,
+  TOPIC_SAVE_FAIL,
+  TOPIC_PICTURE_UPLOAD,
+  TOPIC_PICTURE_SUCCESS,
+  TOPIC_PICTURE_FAIL,
+  REMOVE_TOPIC,
+  REMOVE_TOPIC_SUCCESS,
+  REMOVE_TOPIC_FAIL,
+  RESET_TOPICS_ERRORS
 } from "../../types";
 
 const initialState = {
   isLoading: true,
-  pack: null,
+  topic: null,
   error: null,
-  pack_saving: false,
+  topic_saving: false,
   save_error: null,
   picture_uploading: false,
   picture_error: null,
@@ -33,135 +26,96 @@ const initialState = {
   publish_error: null,
   canceling_published: false,
   canceling_published_error: null,
-  removing_pack: false,
-  removing_pack_error: null,
+  removing_topic: false,
+  removing_topic_error: null,
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case PACK_FETCH:
+    case TOPIC_FETCH:
       return {
         ...state,
         isLoading: true,
       };
-    case PACK_SUCCESS:
+    case TOPIC_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        pack: action.payload,
+        topic: action.payload,
       };
 
-    case PACK_FAIL:
+    case TOPIC_FAIL:
       return {
         ...state,
-        pack: null,
+        topic: null,
         isLoading: false,
         error: action.payload,
       };
-    case PACK_SAVE:
+    case TOPIC_SAVE:
       return {
         ...state,
-        pack_saving: true,
+        topic_saving: true,
       };
-    case PACK_SAVE_SUCCESS:
+    case TOPIC_SAVE_SUCCESS:
       return {
         ...state,
-        pack_saving: false,
+        topic_saving: false,
         save_error: null,
 
-        pack: {
+        topic: {
           ...action.payload,
         },
       };
-    case PACK_SAVE_FAIL:
+    case TOPIC_SAVE_FAIL:
       return {
         ...state,
-        pack_saving: false,
+        topic_saving: false,
         save_error: action.payload,
       };
-    case PACK_PICTURE_UPLOAD:
+    case TOPIC_PICTURE_UPLOAD:
       return {
         ...state,
         picture_uploading: true,
       };
-    case PACK_PICTURE_SUCCESS:
+    case TOPIC_PICTURE_SUCCESS:
       return {
         ...state,
         picture_uploading: false,
-        pack: {
-          ...state.pack,
+        topic: {
+          ...state.topic,
           pricture: action.payload,
         picture_error: null,
 
         },
       };
-    case PACK_PICTURE_FAIL:
+    case TOPIC_PICTURE_FAIL:
       return {
         ...state,
         picture_uploading: false,
         picture_error: action.paylod,
       };
-    
-    case PACK_PUBLISH:
+    case REMOVE_TOPIC:
       return {
         ...state,
-        publishing: true,
+        removing_topic: true,
       };
-    case PACK_PUBLISH_SUCCESS:
+    case REMOVE_TOPIC_SUCCESS:
       return {
         ...state,
-        publishing: false,
-        publish_error: null,
-
-        pack: action.payload,
+        removing_topic: false,
+        removing_topic_error: null,
+        topic: null,
       };
-    case PACK_PUBLISH_FAIL:
+    case REMOVE_TOPIC_FAIL:
       return {
         ...state,
-        publishing: false,
-        publish_error: action.payload,
+        removing_topic: false,
+        removing_topic_error: action.payload,
       };
-    case PACK_CANCEL_PUBLISH:
+    case RESET_TOPICS_ERRORS:
       return {
         ...state,
-        canceling_published: true,
-      };
-    case PACK_CANCEL_PUBLISH_SUCCESS:
-      return {
-        ...state,
-        canceling_published: false,
-        canceling_published_error: null,
-
-        pack: action.payload,
-      };
-    case PACK_CANCEL_PUBLISH_FAIL:
-      return {
-        ...state,
-        canceling_published: false,
-        canceling_published_error: action.payload,
-      };
-    case REMOVE_PACK:
-      return {
-        ...state,
-        removing_pack: true,
-      };
-    case REMOVE_PACK_SUCCESS:
-      return {
-        ...state,
-        removing_pack: false,
-        removing_pack_error: null,
-        pack: null,
-      };
-    case REMOVE_PACK_FAIL:
-      return {
-        ...state,
-        removing_pack: false,
-        removing_pack_error: action.payload,
-      };
-    case RESET_PACKS_ERRORS:
-      return {
-        ...state,
-        removing_pack_error: null,
+        removing_topic_error: null,
         publish_error: null,
         
         canceling_published_error: null,

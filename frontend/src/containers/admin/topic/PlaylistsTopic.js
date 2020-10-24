@@ -282,6 +282,5 @@ const PlaylistPlaylist = styled.div`
 const AddPlaylistList = styled.div`
   max-height: 40vh;
   overflow: auto;
-  border: 1px solid #ccc;
 `;
 export default PlaylistsTopic;

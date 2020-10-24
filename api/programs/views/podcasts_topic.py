@@ -47,7 +47,7 @@ class PodcastTopicViewSet(mixins.CreateModelMixin,
     def get_queryset(self):
         """Restrict list to public-only."""
         queryset = PodcastTopic.objects.filter(
-            pack=self.pack)
+            topic=self.topic)
         return queryset
 
     def get_permissions(self):

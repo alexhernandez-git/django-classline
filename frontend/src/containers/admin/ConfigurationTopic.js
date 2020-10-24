@@ -4,10 +4,9 @@ import { Main } from "src/components/ui/Main";
 import Filters from "src/components/Layout/Filters";
 import { Tab, Nav, Col, Row } from "react-bootstrap";
 import styled from "@emotion/styled";
-import MainProgramInfo from "src/components/TopicAcademy/MainProgramInfo";
-import ProgramBenefitsForm from "src/components/TopicAcademy/ProgramBenefitsForm";
-import ProgramPresentation from "src/components/TopicAcademy/ProgramPresentation";
-import ProgramConfiguration from "src/components/TopicAcademy/ProgramConfiguration";
+import MainTopicInfo from "src/components/TopicAcademy/MainTopicInfo";
+import TopicPresentation from "src/components/TopicAcademy/TopicPresentation";
+import TopicConfiguration from "src/components/TopicAcademy/TopicConfiguration";
 import { ButtonCustom } from "src/components/ui/ButtonCustom";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +24,7 @@ const ConfigurationTopic = (props) => {
   const dispatch = useDispatch();
   const topicReducer = useSelector((state) => state.topicReducer);
   const programReducer = useSelector((state) => state.programReducer);
-  const {  id } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     if (!programReducer.isLoading && programReducer.program && id) {
@@ -38,6 +37,7 @@ const ConfigurationTopic = (props) => {
 
   const [topicState, setTopicState] = useState({
     id: null,
+    code: null,
     name: "",
     videos: null,
     playlists: null,
@@ -45,9 +45,9 @@ const ConfigurationTopic = (props) => {
   });
   useEffect(() => {
     if (!topicReducer.isLoading && topicReducer.topic) {
-      console.log(topicReducer.topic);
       setTopicState({
         id: topicReducer.topic.id,
+        code: topicReducer.topic.code,
         name: topicReducer.topic.name ? topicReducer.topic.name : "",
         are_videos: topicReducer.topic.are_videos,
         videos: topicReducer.topic.videos,
@@ -135,15 +135,15 @@ const ConfigurationTopic = (props) => {
                     <Col className="pl-3 pr-3 pb-5">
                       <Tab.Content>
                         <Tab.Pane eventKey={0} className="text-grey">
-                          <MainProgramInfo
+                          <MainTopicInfo
                             values={props.values}
                             setFieldValue={props.setFieldValue}
                           />
-                          <ProgramPresentation />
+                          <TopicPresentation />
                         </Tab.Pane>
 
                         <Tab.Pane eventKey={1} className="text-grey">
-                          <ProgramConfiguration
+                          <TopicConfiguration
                             values={props.values}
                             setFieldValue={props.setFieldValue}
                           />

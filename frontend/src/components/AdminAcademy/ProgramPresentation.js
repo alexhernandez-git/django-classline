@@ -67,7 +67,7 @@ const ProgramPresentation = (props) => {
     );
     var FileSize = file.size / 1024 / 1024;
     console.log(FileSize);
-    if (FileSize < 5) {
+    if (FileSize < 50) {
       const dispatchUploadPicture = (file) => dispatch(uploadPicture(file));
       dispatchUploadPicture(file);
     } else {
