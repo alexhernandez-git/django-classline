@@ -45,7 +45,7 @@ const PodcastsTopic = (props) => {
   const main = useRef();
   const dispatch = useDispatch();
   const podcastsReducer = useSelector((state) => state.podcastsReducer);
-  const podcastsTopicAdminReducer = useSelector((state) => state.podcastsTopicAdminReducer);
+  const podcastsTopicReducer = useSelector((state) => state.podcastsTopicReducer);
   const topicReducer = useSelector((state) => state.topicReducer);
   const programReducer = useSelector((state) => state.programReducer);
 
@@ -197,20 +197,20 @@ const PodcastsTopic = (props) => {
         </div>
         )}
 
-          {podcastsTopicAdminReducer.podcasts &&
-            podcastsTopicAdminReducer.podcasts.results.map((podcast_topic) => (
+          {podcastsTopicReducer.podcasts &&
+            podcastsTopicReducer.podcasts.results.map((podcast_topic) => (
               <PodcastCard
                 key={podcast_topic.podcast.id}
                 podcast={podcast_topic.podcast}
                 handleDeletePodcast={handleDeletePodcast}
               />
             ))}
-          {podcastsTopicAdminReducer.isLoading && <span>Cargando...</span>}
-          {podcastsTopicAdminReducer.podcasts &&
-            (podcastsTopicAdminReducer.podcasts.previous ||
-              podcastsTopicAdminReducer.podcasts.next) && (
+          {podcastsTopicReducer.isLoading && <span>Cargando...</span>}
+          {podcastsTopicReducer.podcasts &&
+            (podcastsTopicReducer.podcasts.previous ||
+              podcastsTopicReducer.podcasts.next) && (
               <div className="d-flex justify-content-center my-5">
-                {podcastsTopicAdminReducer.podcasts.previous ? (
+                {podcastsTopicReducer.podcasts.previous ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -219,7 +219,7 @@ const PodcastsTopic = (props) => {
                   >
                     <IoIosArrowDropleft
                       onClick={() =>
-                        handleChangePage(podcastsTopicAdminReducer.podcasts.previous)
+                        handleChangePage(podcastsTopicReducer.podcasts.previous)
                       }
                     />
                   </IconContext.Provider>
@@ -233,7 +233,7 @@ const PodcastsTopic = (props) => {
                     <IoIosArrowDropleft />
                   </IconContext.Provider>
                 )}
-                {podcastsTopicAdminReducer.podcasts.next ? (
+                {podcastsTopicReducer.podcasts.next ? (
                   <IconContext.Provider
                     value={{
                       size: 50,
@@ -242,7 +242,7 @@ const PodcastsTopic = (props) => {
                   >
                     <IoIosArrowDropright
                       onClick={() =>
-                        handleChangePage(podcastsTopicAdminReducer.podcasts.next)
+                        handleChangePage(podcastsTopicReducer.podcasts.next)
                       }
                     />
                   </IconContext.Provider>

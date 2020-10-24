@@ -15,7 +15,7 @@ import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
 import TopicCard from "../../components/TopicAcademy/TopicCard";
 import styled from "@emotion/styled";
-import { createTopic, fetchTopics, fetchTopicsPagination } from "../../redux/actions/topic/topics";
+import { createTopic, fetchTopics, fetchTopicsPagination } from "../../redux/actions/topics/topics";
 const TopicsAdmin = () => {
   const MySwal = withReactContent(Swal);
   const history = useHistory()

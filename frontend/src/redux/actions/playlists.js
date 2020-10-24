@@ -64,6 +64,33 @@ export const fetchPlaylistsPagination = (url) => (dispatch, getState) => {
       });
     });
 };
+export const fetchPlaylistsIncrease = (limit, search = "") => (
+  dispatch,
+  getState
+) => {
+  // User Loading
+  dispatch({ type: PLAYLISTS_FETCH });
+
+  axios
+    .get(
+      `/api/programs/${
+        getState().programReducer.program.code
+      }/playlists/?search=${search}&limit=${limit}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      dispatch({
+        type: PLAYLISTS_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: PLAYLISTS_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
 export const setPlaylistEdit = (playlist) => (dispatch) => {
   // User Loading
 

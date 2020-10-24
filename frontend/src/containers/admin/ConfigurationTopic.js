@@ -38,43 +38,28 @@ const ConfigurationTopic = (props) => {
 
   const [topicState, setTopicState] = useState({
     id: null,
-    title: "",
-    description: "",
-    are_videos: false,
+    name: "",
     videos: null,
-    are_podcasts: false,
+    playlists: null,
     podcasts: null,
-    students: null,
-    topic_price: null,
-    topic_language: null,
-    instructor: {},
-    is_published: false,
   });
   useEffect(() => {
     if (!topicReducer.isLoading && topicReducer.topic) {
       console.log(topicReducer.topic);
       setTopicState({
         id: topicReducer.topic.id,
-        title: topicReducer.topic.title ? topicReducer.topic.title : "",
-        description: topicReducer.topic.description ? topicReducer.topic.description : "",
+        name: topicReducer.topic.name ? topicReducer.topic.name : "",
         are_videos: topicReducer.topic.are_videos,
         videos: topicReducer.topic.videos,
-        are_podcasts: topicReducer.topic.are_podcasts,
         podcasts: topicReducer.topic.podcasts,
-        students: topicReducer.topic.students,
-        topic_price: topicReducer.topic.topic_price,
-        topic_language: topicReducer.topic.topic_language,
-        instructor: topicReducer.topic.instructor,
-        is_published: topicReducer.topic.is_published,
-        event_booking: topicReducer.topic.event_booking,
-        event_booking_calendar: topicReducer.topic.event_booking_calendar,
+        playlists: topicReducer.topic.playlists,
       });
     }
   }, [topicReducer.isLoading, topicReducer.topic]);
   return (
     <Main padding>
       <Filters 
-        title={topicReducer.topic?.title}  
+        name={topicReducer.topic?.name}  
         back="Volver"
       
       />
@@ -133,19 +118,15 @@ const ConfigurationTopic = (props) => {
                         </Nav.Item>
                         <Nav.Item>
                           <Nav.Link eventKey={3} className="text-grey">
-                            <span>PODCASTS</span>
-                          </Nav.Link>
-                        </Nav.Item>
-                        {/* <Nav.Item>
-                          <Nav.Link eventKey={3} className="text-grey">
                             <span>PLAYLISTS</span>
                           </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                          <Nav.Link eventKey={5} className="text-grey">
-                            <span>RECURSOS</span>
+                          <Nav.Link eventKey={4} className="text-grey">
+                            <span>PODCASTS</span>
                           </Nav.Link>
-                        </Nav.Item> */}
+                        </Nav.Item>
+        
                       </Nav>
                     </Col>
                   </Row>
@@ -175,24 +156,19 @@ const ConfigurationTopic = (props) => {
                           />
                         </Tab.Pane>
                         <Tab.Pane eventKey={3} className="text-grey">
+                          <PlaylistsTopic
+                            values={props.values}
+                            setFieldValue={props.setFieldValue}
+                          />
+                        </Tab.Pane>
+                        <Tab.Pane eventKey={4} className="text-grey">
                           <PodcastsTopic
                             values={props.values}
                             setFieldValue={props.setFieldValue}
 
                           />
                         </Tab.Pane>
-                        {/* <Tab.Pane eventKey={3} className="text-grey">
-                          <PlaylistsTopic
-                            values={props.values}
-                            setFieldValue={props.setFieldValue}
-                          />
-                        </Tab.Pane>
-                        <Tab.Pane eventKey={5} className="text-grey">
-                          <ResourcesTopic
-                            values={props.values}
-                            setFieldValue={props.setFieldValue}
-                          />
-                        </Tab.Pane> */}
+
                       </Tab.Content>
                     </Col>
                   </Row>

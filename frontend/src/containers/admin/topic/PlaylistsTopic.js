@@ -10,14 +10,13 @@ import PlaylistList from "src/components/ui/PlaylistList";
 import SearchBar from "src/components/ui/SearchBar";
 
 import { IconContext } from "react-icons";
-import PlaylistCard from "src/components/TopicAcademy/PlaylistCard";
+import PlaylistCard from "src/components/ui/PlaylistCard";
 import {
   fetchPlaylists,
-
+  fetchPlaylistsIncrease
 } from "src/redux/actions/playlists";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Formik, Form as FormFormik } from "formik";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -25,8 +24,13 @@ import ContainerWrapper from "src/components/ui/Container";
 
 import * as Yup from "yup";
 import styled from "@emotion/styled";
-import { addPlaylistTopic, fetchPlaylistsTopic, fetchPlaylistsTopicIncrease, fetchPlaylistsTopicPagination, removePlaylistTopic } from "../../../redux/actions/playlistsTopic";
-import { fetchPlaylistsIncrease } from "../../../redux/actions/playlists";
+import { 
+  addPlaylistTopic, 
+  fetchPlaylistsTopic, 
+  fetchPlaylistsTopicIncrease, 
+  fetchPlaylistsTopicPagination, 
+  removePlaylistTopic 
+} from "src/redux/actions/topics/playlistsTopic";
 
 
 const PlaylistsTopic = (props) => {
