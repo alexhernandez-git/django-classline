@@ -53,6 +53,8 @@ import ConfigurationPack from "../containers/admin/ConfigurationPack";
 import BuyPacksContainer from "../containers/BuyPacksContainer";
 import LoginPacksContainer from "../containers/LoginPacksContainer";
 import CheckoutPack from "../containers/CheckoutPack";
+import GeneralSearch from "../containers/GeneralSearch";
+import TopicSearch from "../containers/TopicSearch";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -176,10 +178,38 @@ const Academy = () => {
             />
             <Route
               exact
-              path="/academy/:program/videos/:search?"
+              path="/academy/:program/search/:search"
+              component={GeneralSearch}
+            />
+            <Route
+              exact
+              path="/academy/:program/topic/:topic/:search?"
+              component={TopicSearch}
+            />
+            <Route
+              exact
+              path="/academy/:program/:topic?/videos/:search?"
               component={
                 programReducer.program.are_videos
                   ? VideosAcademy
+                  : () => <Redirect to={`/academy/${programId}/home`} />
+              }
+            />
+            <Route
+              exact
+              path="/academy/:program/:topic?/courses/:search?"
+              component={
+                programReducer.program.are_admin_playlists
+                  ? CoursesAcademy
+                  : () => <Redirect to={`/academy/${programId}/home`} />
+              }
+            />
+            <Route
+              exact
+              path="/academy/:program/:topic?/podcasts/:search?"
+              component={
+                programReducer.program.are_podcasts
+                  ? PodcastsAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />
@@ -192,15 +222,7 @@ const Academy = () => {
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />
-            <Route
-              exact
-              path="/academy/:program/courses/:search?"
-              component={
-                programReducer.program.are_admin_playlists
-                  ? CoursesAcademy
-                  : () => <Redirect to={`/academy/${programId}/home`} />
-              }
-            />
+      
             <Route
               exact
               path="/academy/:program/course/:id/:track?"
@@ -210,15 +232,7 @@ const Academy = () => {
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />
-            <Route
-              exact
-              path="/academy/:program/podcasts/:search?"
-              component={
-                programReducer.program.are_podcasts
-                  ? PodcastsAcademy
-                  : () => <Redirect to={`/academy/${programId}/home`} />
-              }
-            />
+  
             <Route
               exact
               path="/academy/:program/meetups"

@@ -3,10 +3,10 @@ import styled from "@emotion/styled";
 import { textEllipsis } from "src/components/ui/TextEllipsis";
 import moment from "moment";
 const TopicCard = (props) => {
-
+  const {program} = useParams()
   return (
     <Link
-      to={"/"}
+      to={`/academy/${program}/topic/feefw`}
     >
            <Topic>
                 <TopicImage className="cursor-pointer">

@@ -28,18 +28,7 @@ export default function Home() {
 
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
-  useEffect(() => {
-    if (!programReducer.isLoading && programReducer.program) {
-      const dispatchFetchPopularVideos = () => dispatch(fetchPopularVideos());
-      dispatchFetchPopularVideos();
-      const dispatchFetchPopularPlaylists = () =>
-        dispatch(fetchPopularPlaylists());
-      dispatchFetchPopularPlaylists();
-      const dispatchFetchPopularPodcasts = () =>
-        dispatch(fetchPopularPodcasts());
-      dispatchFetchPopularPodcasts();
-    }
-  }, [programReducer.isLoading]);
+
 
   return (
     !programReducer.isLoading && (
@@ -101,49 +90,7 @@ export default function Home() {
                 <TopicCard/>
             </TopicsContainer>
           </div>
-          {/* <div className="container">
-            <div className="border-bottom mb-3 pb-2">
-              <span>Tags</span>
-            </div>
-            <BadgesContainer>
-              <Badge>
-                Comida sana
-              </Badge>
-              <Badge>
-                Deportes
-              </Badge>
-              <Badge>
-                Yoga
-              </Badge>
-              <Badge>
-                Comida sana
-              </Badge>
-              <Badge>
-                Deportes
-              </Badge>
-              <Badge>
-                Yoga
-              </Badge>
-              <Badge>
-                Comida sana
-              </Badge>
-              <Badge>
-                Deportes
-              </Badge>
-              <Badge>
-                Yoga
-              </Badge>
-              <Badge>
-                Comida sana
-              </Badge>
-              <Badge>
-                Deportes
-              </Badge>
-              <Badge>
-                Yoga
-              </Badge>
-            </BadgesContainer>
-          </div> */}
+
         </Main>
       </>
     )

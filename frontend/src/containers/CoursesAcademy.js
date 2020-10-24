@@ -12,10 +12,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
 import { useParams } from "react-router-dom";
+import { Padding } from "../components/ui/Padding";
+import TopicBanner from "../components/ui/TopicBanner";
 const playlists = () => {
   const main = useRef();
   const coursesReducer = useSelector((state) => state.coursesReducer);
   const programReducer = useSelector((state) => state.programReducer);
+  const {topic } = useParams()
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -38,7 +41,13 @@ const playlists = () => {
     dispatchFetchPlaylistsPagination(url);
   };
   return (
-    <Main padding ref={main}>
+    <Main ref={main}>
+              {topic && 
+          <TopicBanner/>
+        }
+        <Padding>
+
+
       <Filters
         title="Playlists"
         placeholder={"Buscar playlists"}
@@ -111,6 +120,8 @@ const playlists = () => {
             )}
         </div>
       </div>
+      </Padding>
+
     </Main>
   );
 };

@@ -135,7 +135,7 @@ const PostAcademy = () => {
                               component="textarea"
                               name="message"
                               type="text"
-                              placeholder="Comentario"
+                              placeholder="Respuesta"
                               style={{ height: "36px" }}
                             />
                             <div className="m-1 d-none d-md-block"></div>
@@ -143,7 +143,7 @@ const PostAcademy = () => {
                               type="submit"
                               style={{ height: "fit-content" }}
                             >
-                              Comentar
+                              Responder
                             </ButtonCustom>
                           </div>
                           {errors.message && touched.message ? (

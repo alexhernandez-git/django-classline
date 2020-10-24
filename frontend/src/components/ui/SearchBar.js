@@ -5,8 +5,30 @@ import { IconContext } from "react-icons";
 
 const SearchBar = (props) => {
   return (
-    <SearchBarComponent
-      onSubmit={(e) => e.preventDefault()}
+    // <SearchBarComponent
+    //   onSubmit={(e) => e.preventDefault()}
+    //   onKeyDown={(e) => {
+    //     console.log(e.keyCode);
+    //     if (e.keyCode == 13 || e.keyCode == "Enter") {
+    //       return props.onSubmit(e);
+    //     }
+    //   }}
+    // >
+    //   <input
+    //     type="text"
+    //     placeholder={props.placeholder}
+    //     value={props.search.search}
+    //     onChange={(e) => props.search.setSearch(e.target.value)}
+    //   />
+    //   <button type="button" onClick={props.onSubmit}>
+    //     <IconContext.Provider value={{ className: "global-class-name" }}>
+    //       <FaSearch />
+    //     </IconContext.Provider>
+    //   </button>
+    // </SearchBarComponent>
+    
+    <Search 
+       onSubmit={(e) => e.preventDefault()}
       onKeyDown={(e) => {
         console.log(e.keyCode);
         if (e.keyCode == 13 || e.keyCode == "Enter") {
@@ -14,7 +36,7 @@ const SearchBar = (props) => {
         }
       }}
     >
-      <input
+    <input 
         type="text"
         placeholder={props.placeholder}
         value={props.search.search}
@@ -25,9 +47,41 @@ const SearchBar = (props) => {
           <FaSearch />
         </IconContext.Provider>
       </button>
-    </SearchBarComponent>
+  </Search>
   );
 };
+const Search = styled.div`
+  display: flex;
+  justify-content: center;
+  height:fit-content;
+  input{
+    padding:1rem 1rem 1rem 2rem;
+
+    max-width:30rem;
+    width: 100%;
+    display: block;
+    border-radius: 2rem 0 0 2rem;
+
+    overflow: hidden;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    border:none;
+  }
+  button{
+    padding:1rem;
+    max-width:5rem;
+    width: 100%;
+    display: block;
+    border-radius: 0 2rem  2rem 0;
+    overflow: hidden;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    border:none;
+  }
+  button:hover{
+    opacity: 0.7;
+  }
+
+`
+
 const SearchBarComponent = styled.form`
   grid-area: search;
   display: flex;

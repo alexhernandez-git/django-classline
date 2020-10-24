@@ -5,6 +5,7 @@ import Filters from "src/components/Layout/Filters";
 import Video from "src/components/ui/Video";
 import styled from "@emotion/styled";
 import { Main } from "src/components/ui/Main";
+import { Padding } from "src/components/ui/Padding";
 
 import { fetchVideos, fetchVideosPagination } from "src/redux/actions/videos";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,11 +14,12 @@ import { useParams } from "react-router-dom";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
 import ContainerWrapper from "src/components/ui/Container";
+import TopicBanner from "../components/ui/TopicBanner";
 
 export default function Videos() {
   const main = useRef();
   const videosReducer = useSelector((state) => state.videosReducer);
-
+  const {topic } = useParams()
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const handleOpenCategories = () => {
     setCategoriesOpen((CategoriesOpen) => {
@@ -57,12 +59,15 @@ export default function Videos() {
   };
   return (
     <>
-      <Main padding ref={main}>
+      <Main ref={main}>
+        {topic && 
+          <TopicBanner/>
+        }
+        <Padding>
+
         <Filters
           title="Videos"
           placeholder={"Buscar Videos"}
-          title="Videos"
-          placeholder="Buscar video"
           search={{ search: search, setSearch: setSearch }}
           onSubmit={handleSubmitSearch}
         />
@@ -133,6 +138,8 @@ export default function Videos() {
             </div>
           </div>
         </ContainerWrapper>
+        </Padding>
+
       </Main>
     </>
   );

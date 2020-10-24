@@ -18,10 +18,13 @@ import {
   fetchPodcastsPagination,
 } from "src/redux/actions/podcasts";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import TopicBanner from "../components/ui/TopicBanner";
+import { Padding } from "../components/ui/Padding";
 
 const Podcasts = () => {
   const { pathname } = useLocation();
+  const {topic } = useParams()
 
   const main = useRef();
   const podcastsReducer = useSelector((state) => state.podcastsReducer);
@@ -63,11 +66,14 @@ const Podcasts = () => {
   };
   return (
     <Main
-      padding
       className="position-relative"
       style={{ paddingBottom: "100px" }}
       ref={main}
     >
+        {topic && 
+          <TopicBanner/>
+        }
+        <Padding>
       <AudioPlayerContainer className="rounded d-flex align-items-center flex-column">
         {podcastsReducer.podcast_playing ? (
           <>
@@ -160,6 +166,7 @@ const Podcasts = () => {
             )}
         </div>
       </PodcastsContainer>
+      </Padding>
     </Main>
   );
 };
