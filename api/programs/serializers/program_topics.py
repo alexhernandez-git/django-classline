@@ -16,6 +16,7 @@ from api.programs.models import (
     ProgramTopic,
     VideoTopic,
     PodcastTopic,
+    PlaylistTopic
 
 )
 

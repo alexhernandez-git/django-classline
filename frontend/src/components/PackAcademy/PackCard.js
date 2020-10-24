@@ -6,7 +6,7 @@ const PackCard = (props) => {
   console.log(props)
   const { pathname } = useLocation();
   const { program } = useParams();
-  const {  title, picture, duration } = props.playlist;
+  const { code, title, picture, videos, podcasts,are_videos,are_podcasts, pack_price } = props.pack;
   function msToHMS(seconds) {
     if (isNaN(seconds)) {
       return "00:00";
@@ -24,7 +24,7 @@ const PackCard = (props) => {
     <Link
       to={
         !/\/demo\//.test(pathname)
-          ? `/academy/${program}/video/1`
+          ? `/academy/${program}/admin/pack/${code}`
           : pathname
       }
     >
@@ -46,22 +46,28 @@ const PackCard = (props) => {
             <div className="video-text">
 
               <div className="py-2 d-flex justify-content-between">
-                <span css={textEllipsis}>Yoga para principiantes</span>
-                <span css={textEllipsis} className="text-grey">23.99€</span>
+                <span css={textEllipsis}>{title ? title : "Nuevo pack" }</span>
+                {pack_price && 
+                  <span css={textEllipsis} className="text-grey">{pack_price.label}</span>
+                }
               </div>
               <div className="text-grey">
+                {are_videos && 
                 <div>
-                  <small css={textEllipsis}>Videos: 12</small>
+                  <small css={textEllipsis}>Videos: {videos}</small>
                 </div>
+                }
+                {are_podcasts && 
                 <div>
+                  <small css={textEllipsis}>Audios: {podcasts}</small>
+                </div>
+                }
+                {/* <div>
                   <small css={textEllipsis}>Playlists: 2</small>
                 </div>
                 <div>
-                  <small css={textEllipsis}>Audios: 6</small>
-                </div>
-                <div>
                   <small css={textEllipsis}>Recursos: 8</small>
-                </div>
+                </div>  */}
               </div>
 
 
@@ -78,7 +84,9 @@ const PackContent = styled.div`
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-
+  &:hover img {
+    transform: scale(1.03);
+  }
 ` 
 
 const PackImage = styled.span`
@@ -90,9 +98,7 @@ const PackImage = styled.span`
     transition: 0.5s ease;
     width: 100%;
   }
-  .video-content:hover img {
-    transform: scale(1.03);
-  }
+
   .video-content {
     position: relative;
   }

@@ -13,7 +13,6 @@ import ContainerWrapper from "src/components/ui/Container";
 
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
-import PackCard from "../../components/AdminAcademy/PackCard";
 import styled from "@emotion/styled";
 import BuyPackCard from "../AdminAcademy/BuyPackCard";
 import { fetchBuyPacksPagination, fetchMyPacks, fetchPublishedPacks,setSelectedPack } from "../../redux/actions/buyPacks";

@@ -13,7 +13,7 @@ import ContainerWrapper from "src/components/ui/Container";
 
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
-import PackCard from "../../components/AdminAcademy/PackCard";
+import PackCard from "../../components/PackAcademy/PackCard";
 import styled from "@emotion/styled";
 import { createPack, fetchPacks, fetchPacksPagination } from "../../redux/actions/packs";
 const PacksAdmin = () => {

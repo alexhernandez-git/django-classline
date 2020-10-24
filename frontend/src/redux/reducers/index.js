@@ -41,6 +41,12 @@ import buyPacksReducer from "./packs/buyPacksReducer";
 import studentPackReducer from "./packs/studentPackReducer";
 import videosPackReducer from "./packs/videosPackReducer";
 import podcastsPackReducer from "./packs/podcastsPackReducer";
+import topicsReducer from "./topics/topicsReducer";
+import topicReducer from "./topics/topicReducer";
+import videosTopicReducer from "./topics/videosTopicReducer";
+import playlistsTopicReducer from "./topics/playlistsTopicReducer";
+import podcastsTopicReducer from "./topics/podcastsTopicReducer";
+
 
 export default combineReducers({
   authReducer,
@@ -81,7 +87,11 @@ export default combineReducers({
   studentPackReducer,
   videosPackReducer,
   podcastsPackReducer,
-
+  topicsReducer,
+  topicReducer,
+  videosTopicReducer,
+  playlistsTopicReducer,
+  podcastsTopicReducer,
   // Commercials reducers
   authCommercialsReducer,
   costumersReducer,

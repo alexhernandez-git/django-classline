@@ -49,6 +49,7 @@ import BookClassContainer from "../containers/BookClassContainer";
 import { fetchEventsBooked } from "../redux/actions/bookEvents";
 import LoginEventContainer from "../containers/LoginEventContainer";
 import PacksAdmin from "../containers/admin/PacksAdmin";
+import TopicsAdmin from "../containers/admin/TopicsAdmin";
 import ConfigurationPack from "../containers/admin/ConfigurationPack";
 import BuyPacksContainer from "../containers/BuyPacksContainer";
 import LoginPacksContainer from "../containers/LoginPacksContainer";
@@ -301,33 +302,43 @@ const Academy = () => {
               <>
                 {isAdmin() &&
                 <>
-                <Route
-                exact
-                path="/academy/:program/admin"
-                component={ConfigurationAdmin}
-                />
-                <Route
+                  <Route
                   exact
-                  path="/academy/:program/admin/packs"
-                  component={PacksAdmin}
-                />
-                <Route
-                  exact
-                  path="/academy/:program/admin/pack/:id"
-                  component={ConfigurationPack}
-                />
-                <Route
-                  exact
-                  path="/academy/:program/admin/accounts/:search?"
-                  component={AccountsAdmin}
-                />
-                <Route
-                  exact
-                  path="/academy/:program/admin/instructors/:search?"
-                  component={InstructorAccountsAdmin}
-                />
+                  path="/academy/:program/admin"
+                  component={ConfigurationAdmin}
+                  />
+                  <Route
+                    exact
+                    path="/academy/:program/admin/packs"
+                    component={PacksAdmin}
+                  />
+                  <Route
+                    exact
+                    path="/academy/:program/admin/pack/:id"
+                    component={ConfigurationPack}
+                  />
+                  <Route
+                    exact
+                    path="/academy/:program/admin/accounts/:search?"
+                    component={AccountsAdmin}
+                  />
+                  <Route
+                    exact
+                    path="/academy/:program/admin/instructors/:search?"
+                    component={InstructorAccountsAdmin}
+                  />
                 </>
               }
+                <Route
+                  exact
+                  path="/academy/:program/admin/topics"
+                  component={TopicsAdmin}
+                />
+                <Route
+                    exact
+                    path="/academy/:program/admin/topic/:id"
+                    component={ConfigurationPack}
+                  />
                 <Route
                 exact
                 path="/academy/:program/admin/users/:search?"

@@ -66,7 +66,7 @@ class ProgramTopicViewSet(mixins.CreateModelMixin,
 
     def get_queryset(self):
         """Restrict list to public-only."""
-        queryset = Topic.objects.filter(program=self.program)
+        queryset = ProgramTopic.objects.filter(program=self.program)
         if self.action in ['list']:
             queryset = ProgramTopic.objects.filter(
                 program=self.program)
@@ -76,7 +76,7 @@ class ProgramTopicViewSet(mixins.CreateModelMixin,
     def get_serializer_class(self):
         """Return serializer based on action."""
         if self.action == 'create':
-            return TopicCreateSerializer
+            return ProgramTopicCreateSerializer
         if self.action in ['update', 'partial_update', 'get_accounts', 'cancel_accounts']:
             return TopicModifyModelSerializer
         elif self.action == 'publish':
@@ -95,12 +95,12 @@ class ProgramTopicViewSet(mixins.CreateModelMixin,
             return AddPodcastTopicSerializer
         elif self.action == 'remove_podcast':
             return RemovePodcastTopicSerializer
-        return TopicModelSerializer
+        return ProgramTopicModelSerializer
 
     def get_permissions(self):
         """Assign permissions based on action."""
         permissions = []
-        if self.action in ['update', 'partial_update', 'delete', 'list_my_topics']:
+        if self.action in ['update', 'partial_update', 'delete']:
             permissions.append(IsAuthenticated)
         return [permission() for permission in permissions]
 
@@ -244,7 +244,7 @@ class ProgramTopicViewSet(mixins.CreateModelMixin,
 
         topic = serializer.save()
 
-        data = TopicModelSerializer(topic).data
+        data = ProgramTopicModelSerializer(topic).data
         return Response(data)
 
     def create(self, request, *args, **kwargs):
@@ -261,5 +261,5 @@ class ProgramTopicViewSet(mixins.CreateModelMixin,
         serializer.is_valid(raise_exception=True)
         topic = serializer.save()
 
-        data = TopicModelSerializer(topic, many=False).data
+        data = ProgramTopicModelSerializer(topic, many=False).data
         return Response(data, status=status.HTTP_201_CREATED)

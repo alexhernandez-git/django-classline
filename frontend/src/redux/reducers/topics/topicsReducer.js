@@ -1,68 +1,68 @@
 import {
-  PACKS_FETCH,
-  PACKS_SUCCESS,
-  PACKS_FAIL,
-  CREATE_PACK,
-  CREATE_PACK_FAIL,
-  CREATE_PACK_SUCCESS,
+  TOPICS_FETCH,
+  TOPICS_SUCCESS,
+  TOPICS_FAIL,
+  CREATE_TOPIC,
+  CREATE_TOPIC_FAIL,
+  CREATE_TOPIC_SUCCESS,
 } from "../../types";
 
 const initialState = {
   isLoading: true,
-  packs: null,
+topics: null,
   error: null,
-  pack_edit: null,
-  pack_editing: false,
-  pack_edit_error: null,
-  pack_creating: false,
-  pack_create_error: null,
-  pack_delete: null,
-  pack_deleting: false,
-  pack_delete_error: null,
+topic_edit: null,
+topic_editing: false,
+topic_edit_error: null,
+topic_creating: false,
+topic_create_error: null,
+topic_delete: null,
+topic_deleting: false,
+topic_delete_error: null,
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case PACKS_FETCH:
+    case TOPICS_FETCH:
       return {
         ...state,
         isLoading: true,
       };
-    case PACKS_SUCCESS:
+    case TOPICS_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        packs: action.payload,
+      topics: action.payload,
       };
 
-    case PACKS_FAIL:
+    case TOPICS_FAIL:
       return {
         ...state,
-        packs: null,
+      topics: null,
         isLoading: false,
         error: action.payload,
       };
     
-    case CREATE_PACK:
+    case CREATE_TOPIC:
       return {
         ...state,
-        pack_creating: true,
+      topic_creating: true,
       };
-    case CREATE_PACK_SUCCESS:
+    case CREATE_TOPIC_SUCCESS:
       return {
         ...state,
-        pack_creating: false,
-        packs: {
-          ...state.packs,
-          results: [action.payload, ...state.packs.results],
+      topic_creating: false,
+      topics: {
+          ...statetopics,
+          results: [action.payload, ...statetopics.results],
         },
       };
 
-    case CREATE_PACK_FAIL:
+    case CREATE_TOPIC_FAIL:
       return {
         ...state,
-        pack_creating: false,
-        pack_create_error: action.payload,
+      topic_creating: false,
+      topic_create_error: action.payload,
       };
      default:
       return state;
