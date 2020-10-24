@@ -6,12 +6,15 @@ import { BsFillCollectionPlayFill } from "react-icons/bs";
 import { FaListUl, FaPodcast, FaSearch } from "react-icons/fa";
 import React, { useState,useRef} from "react";
 import useOutsideClick from "../../hooks/useOutsideClick";
+import { Link, useParams } from "react-router-dom";
+import SearchBar from "../ui/SearchBar";
 
 
 const SearchElementCard = (props) => {
   const [active, setActive] = useState(false)
+  const {program} = useParams()
   const ref = useRef();
-  const {searchVideos, searchPlaylists, searchPodcasts} = props
+  const {searchVideos, searchPlaylists, searchPodcasts, search} = props
   useOutsideClick(ref, () => {
     setActive(false)
   });
@@ -55,45 +58,37 @@ const SearchElementCard = (props) => {
       }
         {active && 
         <div className="hidden-div">
-        <Search>
-            <input 
-              type="text"
-              placeholder={searchVideos && "Buscar en Videos" || 
-                          searchPlaylists && "Buscar en Playlists" || 
-                          searchPodcasts && "Buscar en Podcasts"}
-              />
-              <button>
-                <IconContext.Provider
-                      value={{
-                        className: "sidebar-icon",
-                      }}
-                      >
-                    <FaSearch/>
-                  </IconContext.Provider>
-              </button>
-          </Search>
+        <SearchBar
+            placeholder={searchVideos && "Buscar en Videos" || 
+            searchPlaylists && "Buscar en Playlists" || 
+            searchPodcasts && "Buscar en Podcasts"}
+            search={search}
+          />
+        
           <div className="div-results">
             <BadgesContainer>
-              <Badge>
-                <small>
-                    Comida sana
-                </small>
-              </Badge>
-              <Badge>
-                <small>
-                    Nutrición
-                </small>
-              </Badge>
-              <Badge>
-                <small>
-                    Deporte
-                </small>
-              </Badge>
-              <Badge>
-                <small>
-                    Yoga
-                </small>
-              </Badge>
+                <Link to={`/academy/${program}/fewefwafeaw/${searchVideos && "videos" || searchPlaylists && "playlists" || searchPodcasts && "podcasts"}`}>
+                  <Badge>
+                    <small>
+                        Comida sana
+                    </small>
+                  </Badge>
+                </Link>
+                <Link to={`/academy/${program}/fewefwafeaw/${searchVideos && "videos" || searchPlaylists && "playlists" || searchPodcasts && "podcasts"}`}>
+                  <Badge>
+                    <small>
+                        Yoga
+                    </small>
+                  </Badge>
+                </Link>
+                <Link to={`/academy/${program}/fewefwafeaw/${searchVideos && "videos" || searchPlaylists && "playlists" || searchPodcasts && "podcasts"}`}>
+                  <Badge>
+                    <small>
+                        Meditación
+                    </small>
+                  </Badge>
+                </Link>
+              
             </BadgesContainer>
           </div>
         </div>

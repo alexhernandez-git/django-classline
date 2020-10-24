@@ -12,7 +12,7 @@ const Playlist = (props) => {
     <Link
       to={
         !/\/demo\//.test(pathname)
-          ? `/academy/${program}/course/${id}`
+          ? `/academy/${program}/playlist/${id}`
           : pathname
       }
     >

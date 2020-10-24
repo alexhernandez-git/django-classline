@@ -29,7 +29,7 @@ const PlaylistPage = (props) => {
     const maxPlaylistTrack = playlistReducer.playlist.tracks.length
     if (newTrackId < maxPlaylistTrack) {
       history.push({
-        pathname:`/academy/${programReducer.program.code}/playlist/${playlistReducer.playlist.id}/${newTrackId}`, 
+        pathname:`/academy/${programReducer.program.code}/student-playlist/${playlistReducer.playlist.id}/${newTrackId}`, 
       })
     }
   }
@@ -37,7 +37,7 @@ const PlaylistPage = (props) => {
     const newTrackId = Number(trackId)  - 1
     if (newTrackId >= 0) {
     history.push({
-      pathname:`/academy/${programReducer.program.code}/playlist/${playlistReducer.playlist.id}/${newTrackId}`, 
+      pathname:`/academy/${programReducer.program.code}/student-playlist/${playlistReducer.playlist.id}/${newTrackId}`, 
     })
   }
   } 
@@ -83,7 +83,7 @@ const PlaylistPage = (props) => {
               playlistReducer.playlist.tracks.map((track, index) => (
                 <Link
                   to={{
-                    pathname: `/academy/${programReducer.program.code}/playlist/${playlistReducer.playlist.id}/${index}`,
+                    pathname: `/academy/${programReducer.program.code}/student-playlist/${playlistReducer.playlist.id}/${index}`,
                     query: { track: track.id },
                   }}
                   params={{ track: track.id }}

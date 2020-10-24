@@ -197,7 +197,7 @@ const Academy = () => {
             />
             <Route
               exact
-              path="/academy/:program/:topic?/courses/:search?"
+              path="/academy/:program/:topic?/playlists/:search?"
               component={
                 programReducer.program.are_admin_playlists
                   ? CoursesAcademy
@@ -225,7 +225,7 @@ const Academy = () => {
       
             <Route
               exact
-              path="/academy/:program/course/:id/:track?"
+              path="/academy/:program/playlist/:id/:track?"
               component={
                 programReducer.program.are_admin_playlists
                   ? PlaylistAdminAcademy
@@ -262,7 +262,7 @@ const Academy = () => {
             />
             <Route
               exact
-              path="/academy/:program/playlist/:id/:track?"
+              path="/academy/:program/student-playlist/:id/:track?"
               component={PlaylistAcademy}
             />
             <Route
@@ -279,12 +279,12 @@ const Academy = () => {
             )}
             <Route
               exact
-              path="/academy/:program/playlists/:search?"
+              path="/academy/:program/student-playlists/:search?"
               component={PlaylistsAcademy}
             />
             <Route
               exact
-              path="/academy/:program/form/playlist"
+              path="/academy/:program/form/student-playlist"
               component={PlaylistFormAcademy}
             />
             <Route
@@ -342,12 +342,12 @@ const Academy = () => {
 
                 <Route
                   exact
-                  path="/academy/:program/admin/courses/:search?"
+                  path="/academy/:program/admin/playlists/:search?"
                   component={CoursesAdmin}
                 />
                 <Route
                   exact
-                  path="/academy/:program/admin/form/course"
+                  path="/academy/:program/admin/form/playlist"
                   component={CourseFormAdmin}
                 />
                 <Route

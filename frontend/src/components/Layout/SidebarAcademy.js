@@ -124,7 +124,7 @@ const Sidebar = (props) => {
               Videos
             </SecctionLink>
           </Link>
-          <Link to={`/academy/${program}/admin/courses`}>
+          <Link to={`/academy/${program}/admin/playlists`}>
             <SecctionLink active={/\/courses\/?$/.test(pathname)}>
               <IconContext.Provider
                 value={{
@@ -227,9 +227,9 @@ const Sidebar = (props) => {
             <Link
               to={`${
                 /\/demo\/?/.test(pathname) ? "/demo" : ""
-              }/academy/${program}/courses`}
+              }/academy/${program}/playlists`}
             >
-              <SecctionLink active={/\/courses\/?$/.test(pathname)}>
+              <SecctionLink active={/\/playlists\/?$/.test(pathname)}>
                 <IconContext.Provider
                   value={{
                     className: "sidebar-icon",
@@ -320,10 +320,10 @@ const Sidebar = (props) => {
           {programReducer.program.are_videos  && (
             <Link
               to={            
-                /\/demo\/?/.test(pathname) ? pathname :`/academy/${program}/playlists`
+                /\/demo\/?/.test(pathname) ? pathname :`/academy/${program}/student-playlists`
               }
             >
-              <SecctionLink active={/\/playlists\/?$/.test(pathname)}>
+              <SecctionLink active={/\/student-playlists\/?$/.test(pathname)}>
                 <IconContext.Provider
                   value={{
                     className: "sidebar-icon",

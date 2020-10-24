@@ -4,11 +4,12 @@ import { useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import { FaSearch } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
+import SearchBar from "../ui/SearchBar";
 
 const MainProgramInfo = () => {
-  const [active, setActive] = useState(false);
+  const [search, setSearch] = useState("");
   const program = useSelector((state) => state.programReducer.program);
-
+  
   return (
     <>
       <div className="p-0">
@@ -17,21 +18,12 @@ const MainProgramInfo = () => {
             <h2 className="text-break">{program && program.title}</h2>
             {/* <span>{program && program.subtitle}</span> */}
           </MainInfo>
-          <Search>
-            <input 
-              type="text"
+          <SearchBar
               placeholder="Busqueda general"
-              />
-              <button>
-                <IconContext.Provider
-                      value={{
-                        className: "sidebar-icon",
-                      }}
-                    >
-                    <FaSearch/>
-                  </IconContext.Provider>
-              </button>
-          </Search>
+              search={{ search: search, setSearch: setSearch }}
+          
+          />
+
         </div>
       </div>
     </>

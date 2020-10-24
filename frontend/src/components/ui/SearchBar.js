@@ -5,27 +5,7 @@ import { IconContext } from "react-icons";
 
 const SearchBar = (props) => {
   return (
-    // <SearchBarComponent
-    //   onSubmit={(e) => e.preventDefault()}
-    //   onKeyDown={(e) => {
-    //     console.log(e.keyCode);
-    //     if (e.keyCode == 13 || e.keyCode == "Enter") {
-    //       return props.onSubmit(e);
-    //     }
-    //   }}
-    // >
-    //   <input
-    //     type="text"
-    //     placeholder={props.placeholder}
-    //     value={props.search.search}
-    //     onChange={(e) => props.search.setSearch(e.target.value)}
-    //   />
-    //   <button type="button" onClick={props.onSubmit}>
-    //     <IconContext.Provider value={{ className: "global-class-name" }}>
-    //       <FaSearch />
-    //     </IconContext.Provider>
-    //   </button>
-    // </SearchBarComponent>
+
     
     <Search 
        onSubmit={(e) => e.preventDefault()}

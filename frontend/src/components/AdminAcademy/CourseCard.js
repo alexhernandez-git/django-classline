@@ -63,7 +63,7 @@ const PlaylistCard = (props) => {
               className: "cursor-pointer",
             }}
           >
-            <Link to={`/academy/${program}/admin/form/course`}>
+            <Link to={`/academy/${program}/admin/form/playlist`}>
               <MdEdit
                 onClick={() => props.handleSetEditPlaylist(props.playlist)}
               />

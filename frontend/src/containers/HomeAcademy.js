@@ -29,6 +29,9 @@ export default function Home() {
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
 
+  const [searchVideos, setSearchVideos] = useState("")
+  const [searchPlaylists, setSearchPlaylists] = useState("")
+  const [searchPodcasts, setSearchPodcasts] = useState("")
 
   return (
     !programReducer.isLoading && (
@@ -71,15 +74,23 @@ export default function Home() {
           </ImgContainer>
           <div className="container mt-5">
             <GridElements className="">
-             
-              <SearchElementCard searchVideos/>  
-              <SearchElementCard searchPlaylists/>
-              <SearchElementCard searchPodcasts/>
+              <SearchElementCard 
+                searchVideos 
+                search={{search: searchVideos, setSearch: setSearchVideos}}
+              />  
+              <SearchElementCard 
+                searchPlaylists
+                search={{search: searchPlaylists, setSearch: setSearchPlaylists}}
+              />
+              <SearchElementCard 
+                searchPodcasts
+                search={{search: searchPodcasts, setSearch: setSearchPodcasts}}
+              />
 
             </GridElements>
           </div>
           <div className="container">
-            <div className="border-bottom mb-3 pb-2">
+            <div className="border-bottom mb-3 pb-2 text-center">
               <span>Temas</span>
             </div>
             <TopicsContainer>
