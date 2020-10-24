@@ -17,9 +17,9 @@ from api.users.serializers import (
 )
 
 from api.programs.serializers import (
-    TopicModelSerializer,
-    TopicCreateSerializer,
-    TopicModifyModelSerializer,
+    ProgramTopicModelSerializer,
+    ProgramTopicCreateSerializer,
+    ProgramTopicModifyModelSerializer,
     AddVideoTopicSerializer,
     RemoveVideoTopicSerializer,
     AddPodcastTopicSerializer,
@@ -27,7 +27,7 @@ from api.programs.serializers import (
     AddPlaylistTopicSerializer,
     RemovePlaylistTopicSerializer,
     VideoTopicModelSerializer,
-    PodcastTopicModelSerializer
+    PodcastTopicModelSerializer,
     PlaylistTopicModelSerializer
 )
 from rest_framework import mixins, viewsets, status
@@ -51,15 +51,15 @@ from api.users.models import User, Subscription, Teacher, Profile, Coupon, Purch
 from api.utils.permissions import AddProgramMixin
 
 
-class TopicViewSet(mixins.CreateModelMixin,
-                   mixins.UpdateModelMixin,
-                   mixins.ListModelMixin,
-                   mixins.RetrieveModelMixin,
-                   mixins.DestroyModelMixin,
-                   AddProgramMixin):
+class ProgramTopicViewSet(mixins.CreateModelMixin,
+                          mixins.UpdateModelMixin,
+                          mixins.ListModelMixin,
+                          mixins.RetrieveModelMixin,
+                          mixins.DestroyModelMixin,
+                          AddProgramMixin):
     """Topic view set."""
 
-    serializer_class = TopicModelSerializer
+    serializer_class = ProgramTopicModelSerializer
     lookup_field = 'code'
     search_fields = ('title', 'description')
     filter_backends = [SearchFilter]

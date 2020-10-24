@@ -26,6 +26,10 @@ from api.programs.views.instructors import InstructorViewSet
 from api.programs.views.packs import PackViewSet
 from api.programs.views.videos_pack import VideoPackViewSet
 from api.programs.views.podcasts_pack import PodcastPackViewSet
+from api.programs.views.program_topics import ProgramTopicViewSet
+from api.programs.views.videos_topic import VideoTopicViewSet
+from api.programs.views.playlists_topic import PlaylistTopicViewSet
+from api.programs.views.podcasts_topic import PodcastTopicViewSet
 router = DefaultRouter()
 
 router.register(r'programs', ProgramViewSet, basename='program')
@@ -139,6 +143,26 @@ router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/packs/(?P<pack_id>[-a-zA-Z0-9_]+)/podcasts-pack',
     PodcastPackViewSet,
     basename='podcasts-pack'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/topics',
+    ProgramTopicViewSet,
+    basename='topics'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/topics/(?P<topic_id>[-a-zA-Z0-9_]+)/videos-topic',
+    VideoTopicViewSet,
+    basename='videos-topic'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/topics/(?P<topic_id>[-a-zA-Z0-9_]+)/playlist-topic',
+    PlaylistTopicViewSet,
+    basename='playlist-topic'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/topics/(?P<topic_id>[-a-zA-Z0-9_]+)/podcasts-topic',
+    PodcastTopicViewSet,
+    basename='podcasts-topic'
 )
 urlpatterns = [
     path('', include(router.urls))
