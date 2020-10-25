@@ -91,7 +91,7 @@ const PlaylistsAcademy = () => {
       />
       <ContainerWrapper>
         <div className="d-flex justify-content-end mb-3">
-          <Link to={`/academy/${program}/form/playlist`}>
+          <Link to={`/academy/${program}/form/student-playlist`}>
             <ButtonCustom onClick={handleDeleteEditPlaylist}>
               Nueva Lista
             </ButtonCustom>

@@ -27,6 +27,7 @@ import ContainerWrapper from "src/components/ui/Container";
 import * as Yup from "yup";
 import styled from "@emotion/styled";
 import { addVideoTopic, fetchVideosTopic, fetchVideosTopicIncrease, fetchVideosTopicPagination, removeVideoTopic } from "../../../redux/actions/topics/videosTopic";
+import useOutsideClick from "../../../hooks/useOutsideClick";
 
 const VideosTopic = (props) => {
   const MySwal = withReactContent(Swal);
@@ -106,6 +107,11 @@ const VideosTopic = (props) => {
     dispatchFetchVideosIncrease(limit + 12, search);
     setLimit((limit) => limit + 12);
   };
+  const addVideoRef = useRef()
+
+  useOutsideClick(addVideoRef, () => {
+    setIsAddVideoOpen(false)
+  });
   return (
     <>
         <form>
@@ -118,7 +124,8 @@ const VideosTopic = (props) => {
         </form>
         <ContainerWrapper>
  
- 
+          <div ref={addVideoRef}>
+            
             <div className="cursor-pointer  mb-3" onClick={handleToggleAddVideo}>
 
               {isAddVideoOpen ? (
@@ -150,19 +157,19 @@ const VideosTopic = (props) => {
               )}
               </div>
               {isAddVideoOpen && (
-              <div className="position-relative">
+                <div className="position-relative">
                 <VideosForm onSubmit={(e) => e.preventDefault()}>
                   <SearchBar
                     placeholder="Buscar Videos"
                     search={{ search: searchVideos, setSearch: setSearchVideos }}
                     onSubmit={handleSubmitSearchVideos}
-                  />
+                    />
                   <AddVideoList>
                     {videosReducer.videos &&
                       videosReducer.videos.results.map((video) => (
                         <PlaylistVideo
-                          className="d-flex justify-content-between align-items-center"
-                          key={video.id}
+                        className="d-flex justify-content-between align-items-center"
+                        key={video.id}
                         >
                           <VideoList video={video} />
                           <IconContext.Provider
@@ -170,7 +177,7 @@ const VideosTopic = (props) => {
                               size: 30,
                               className: "global-class-name mr-2 cursor-pointer",
                             }}
-                          >
+                            >
                             <MdPlaylistAdd onClick={() => handleAddVideo(video.id)} />
                           </IconContext.Provider>
                         </PlaylistVideo>
@@ -182,7 +189,7 @@ const VideosTopic = (props) => {
                           onClick={fetchMoreVideos}
                           className="w-100"
                           type="button"
-                        >
+                          >
                           Cargar más videos
                         </ButtonCustom>
                       </div>
@@ -191,15 +198,16 @@ const VideosTopic = (props) => {
                 </VideosForm>
               </div>
             )}
+            </div>
 
           {videosTopicReducer.videos &&
             videosTopicReducer.videos.results.map((video_topic) => (
               <VideoCard
-                video={video_topic.video}
-                key={video_topic.video.id}
-                handleVideoDelete={handleVideoDelete}
+              video={video_topic.video}
+              key={video_topic.video.id}
+              handleVideoDelete={handleVideoDelete}
               />
-            ))}
+              ))}
           {videosTopicReducer.isLoading && <span>Cargando...</span>}
           {videosTopicReducer.videos &&
             (videosTopicReducer.videos.previous || videosTopicReducer.videos.next) && (

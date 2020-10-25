@@ -31,13 +31,14 @@ import {
   removePlaylistTopic 
 } from "src/redux/actions/topics/playlistsTopic";
 import PlaylistCard from "src/components/TopicAcademy/PlaylistCard";
+import useOutsideClick from "../../../hooks/useOutsideClick";
 
 
 const PlaylistsTopic = (props) => {
   const MySwal = withReactContent(Swal);
   const {infinite_height} = props
   const main = useRef();
-
+  const addPlaylistRef = useRef()
   const dispatch = useDispatch();
   const playlistsReducer = useSelector((state) => state.playlistsReducer);
   const playlistsTopicReducer = useSelector((state) => state.playlistsTopicReducer);
@@ -112,6 +113,9 @@ const PlaylistsTopic = (props) => {
     dispatchFetchPlaylistsIncrease(limit + 12, search);
     setLimit((limit) => limit + 12);
   };
+  useOutsideClick(addPlaylistRef, () => {
+    setIsAddPlaylistOpen(false)
+  });
   return (
     <>
         <form>
@@ -125,78 +129,81 @@ const PlaylistsTopic = (props) => {
         <ContainerWrapper>
  
  
-            <div className="cursor-pointer  mb-3" onClick={handleToggleAddPlaylist}>
+            <div ref={addPlaylistRef}>
+              <div className="cursor-pointer  mb-3" onClick={handleToggleAddPlaylist} >
 
-              {isAddPlaylistOpen ? (
-                <div className="d-flex align-items-center">
-                  <IconContext.Provider
-                    value={{
-                      size: 22,
-                      className: "global-class-name mr-2",
-                    }}
-                    >
-                    {" "}
-                    <MdClose />
-                  </IconContext.Provider>
-                  Cerrar
+                {isAddPlaylistOpen ? (
+                  <div className="d-flex align-items-center">
+                    <IconContext.Provider
+                      value={{
+                        size: 22,
+                        className: "global-class-name mr-2",
+                      }}
+                      >
+                      {" "}
+                      <MdClose />
+                    </IconContext.Provider>
+                    Cerrar
+                  </div>
+                ) : (
+                  <>
+                    <IconContext.Provider
+                      value={{
+                        size: 22,
+                        className: "global-class-name mr-2",
+                      }}
+                      >
+                      {" "}
+                      <MdPlaylistAdd />
+                    </IconContext.Provider>
+                    Añadir playlists
+                  </>
+                )}
                 </div>
-              ) : (
-                <>
-                  <IconContext.Provider
-                    value={{
-                      size: 22,
-                      className: "global-class-name mr-2",
-                    }}
-                    >
-                    {" "}
-                    <MdPlaylistAdd />
-                  </IconContext.Provider>
-                  Añadir playlists
-                </>
+                {isAddPlaylistOpen && (
+                <div className="position-relative">
+                  <PlaylistsForm onSubmit={(e) => e.preventDefault()}>
+                    <SearchBar
+                      placeholder="Buscar Playlists"
+                      search={{ search: searchPlaylists, setSearch: setSearchPlaylists }}
+                      onSubmit={handleSubmitSearchPlaylists}
+                    />
+                    <AddPlaylistList>
+                      {playlistsReducer.playlists &&
+                        playlistsReducer.playlists.results.map((playlist) => (
+                          <PlaylistPlaylist
+                            className="d-flex justify-content-between align-items-center"
+                            key={playlist.id}
+                          >
+                            <PlaylistList playlist={playlist} />
+                            <IconContext.Provider
+                              value={{
+                                size: 30,
+                                className: "global-class-name mr-2 cursor-pointer",
+                              }}
+                            >
+                              <MdPlaylistAdd onClick={() => handleAddPlaylist(playlist.id)} />
+                            </IconContext.Provider>
+                          </PlaylistPlaylist>
+                        ))}
+                      {playlistsReducer.isLoading && <span>Cargando...</span>}
+                      {playlistsReducer.playlists && playlistsReducer.playlists.next && (
+                        <div className="d-flex justify-content-center">
+                          <ButtonCustom
+                            onClick={fetchMorePlaylists}
+                            className="w-100"
+                            type="button"
+                          >
+                            Cargar más playlists
+                          </ButtonCustom>
+                        </div>
+                      )}
+                    </AddPlaylistList>
+                  </PlaylistsForm>
+                </div>
               )}
               </div>
-              {isAddPlaylistOpen && (
-              <div className="position-relative">
-                <PlaylistsForm onSubmit={(e) => e.preventDefault()}>
-                  <SearchBar
-                    placeholder="Buscar Playlists"
-                    search={{ search: searchPlaylists, setSearch: setSearchPlaylists }}
-                    onSubmit={handleSubmitSearchPlaylists}
-                  />
-                  <AddPlaylistList>
-                    {playlistsReducer.playlists &&
-                      playlistsReducer.playlists.results.map((playlist) => (
-                        <PlaylistPlaylist
-                          className="d-flex justify-content-between align-items-center"
-                          key={playlist.id}
-                        >
-                          <PlaylistList playlist={playlist} />
-                          <IconContext.Provider
-                            value={{
-                              size: 30,
-                              className: "global-class-name mr-2 cursor-pointer",
-                            }}
-                          >
-                            <MdPlaylistAdd onClick={() => handleAddPlaylist(playlist.id)} />
-                          </IconContext.Provider>
-                        </PlaylistPlaylist>
-                      ))}
-                    {playlistsReducer.isLoading && <span>Cargando...</span>}
-                    {playlistsReducer.playlists && playlistsReducer.playlists.next && (
-                      <div className="d-flex justify-content-center">
-                        <ButtonCustom
-                          onClick={fetchMorePlaylists}
-                          className="w-100"
-                          type="button"
-                        >
-                          Cargar más playlists
-                        </ButtonCustom>
-                      </div>
-                    )}
-                  </AddPlaylistList>
-                </PlaylistsForm>
-              </div>
-            )}
+
 
           {playlistsTopicReducer.playlists &&
             playlistsTopicReducer.playlists.results.map((playlist_topic) => (

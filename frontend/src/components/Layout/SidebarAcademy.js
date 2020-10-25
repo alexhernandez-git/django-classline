@@ -139,7 +139,7 @@ const Sidebar = (props) => {
             </SecctionLink>
           </Link>
           <Link to={`/academy/${program}/admin/playlists`}>
-            <SecctionLink active={/\/courses\/?$/.test(pathname)}>
+            <SecctionLink active={/\/playlists\/?$/.test(pathname)}>
               <IconContext.Provider
                 value={{
                   className: "sidebar-icon",

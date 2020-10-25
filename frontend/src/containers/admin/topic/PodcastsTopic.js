@@ -29,6 +29,7 @@ import * as Yup from "yup";
 import styled from "@emotion/styled";
 import { addPodcastTopic, fetchPodcastsTopic, fetchPodcastsTopicIncrease, removePodcastTopic } from "../../../redux/actions/topics/podcastsTopic";
 import { fetchPodcastsIncrease } from "../../../redux/actions/podcasts";
+import useOutsideClick from "../../../hooks/useOutsideClick";
 
 const PodcastSchema = Yup.object().shape({
   title: Yup.string()
@@ -100,9 +101,9 @@ const PodcastsTopic = (props) => {
       dispatch(fetchPodcastsPagination(url));
     dispatchFetchPodcastsPagination(url);
   };
-  const [isAddVideoOpen, setIsAddVideoOpen] = useState(false);
+  const [isAddVideoOpen, setIsAddPodcastOpen] = useState(false);
   const handleToggleAddVideo = () => {
-    setIsAddVideoOpen((isAddVideoOpen) => (isAddVideoOpen ? false : true));
+    setIsAddPodcastOpen((isAddVideoOpen) => (isAddVideoOpen ? false : true));
   };
   const handleAddTopic = (id) =>{
     const dispatchAddPodcastTopic = (id) => dispatch(addPodcastTopic(id));
@@ -115,6 +116,11 @@ const PodcastsTopic = (props) => {
     dispatchFetchPodcastsIncrease(limit + 12, search);
     setLimit((limit) => limit + 12);
   };
+  const addPodcastRef = useRef()
+
+  useOutsideClick(addPodcastRef, () => {
+    setIsAddPodcastOpen(false)
+  });
   return (
     <>
         <Filters
@@ -124,79 +130,81 @@ const PodcastsTopic = (props) => {
           onSubmit={handleSubmitSearchPodcasts}
         />
         <ContainerWrapper>
+        <div>
 
-        <div className="cursor-pointer  mb-3" onClick={handleToggleAddVideo}>
+          <div className="cursor-pointer  mb-3" onClick={handleToggleAddVideo}>
 
-        {isAddVideoOpen ? (
-          <div className="d-flex align-items-center">
-            <IconContext.Provider
-              value={{
-                size: 22,
-                className: "global-class-name mr-2",
-              }}
-              >
-              {" "}
-              <MdClose />
-            </IconContext.Provider>
-            Cerrar
+          {isAddVideoOpen ? (
+            <div className="d-flex align-items-center">
+              <IconContext.Provider
+                value={{
+                  size: 22,
+                  className: "global-class-name mr-2",
+                }}
+                >
+                {" "}
+                <MdClose />
+              </IconContext.Provider>
+              Cerrar
+            </div>
+          ) : (
+            <>
+              <IconContext.Provider
+                value={{
+                  size: 22,
+                  className: "global-class-name mr-2",
+                }}
+                >
+                {" "}
+                <MdPlaylistAdd />
+              </IconContext.Provider>
+              Añadir podcasts
+            </>
+          )}
           </div>
-        ) : (
-          <>
-            <IconContext.Provider
-              value={{
-                size: 22,
-                className: "global-class-name mr-2",
-              }}
-              >
-              {" "}
-              <MdPlaylistAdd />
-            </IconContext.Provider>
-            Añadir podcasts
-          </>
-        )}
-        </div>
-        {isAddVideoOpen && (
-        <div className="position-relative">
-          <VideosForm onSubmit={(e) => e.preventDefault()}>
-            <SearchBar
-              placeholder="Buscar Podcasts"
-              search={{ search: search, setSearch: setSearch }}
-              onSubmit={handleSubmitSearch}
-            />
-            <AddVideoList>
-              {podcastsReducer.podcasts &&
-                podcastsReducer.podcasts.results.map((podcast) => (
-                  <PlaylistVideo
-                    className="d-flex justify-content-between align-items-center"
-                    key={podcast.id}
-                  >
-                    <VideoList video={podcast} />
-                    <IconContext.Provider
-                      value={{
-                        size: 30,
-                        className: "global-class-name mr-2 cursor-pointer",
-                      }}
+          {isAddVideoOpen && (
+          <div className="position-relative">
+            <VideosForm onSubmit={(e) => e.preventDefault()}>
+              <SearchBar
+                placeholder="Buscar Podcasts"
+                search={{ search: search, setSearch: setSearch }}
+                onSubmit={handleSubmitSearch}
+              />
+              <AddVideoList>
+                {podcastsReducer.podcasts &&
+                  podcastsReducer.podcasts.results.map((podcast) => (
+                    <PlaylistVideo
+                      className="d-flex justify-content-between align-items-center"
+                      key={podcast.id}
                     >
-                      <MdPlaylistAdd onClick={() =>handleAddTopic(podcast.id)} />
-                    </IconContext.Provider>
-                  </PlaylistVideo>
-                ))}
-              {podcastsReducer.isLoading && <span>Cargando...</span>}
-              {podcastsReducer.podcasts && podcastsReducer.podcasts.next && (
-                <div className="d-flex justify-content-center">
-                  <ButtonCustom
-                    onClick={fetchMorePodcasts}
-                    className="w-100"
-                    type="button"
-                  >
-                    Cargar más podcasts
-                  </ButtonCustom>
-                </div>
-              )}
-            </AddVideoList>
-          </VideosForm>
+                      <VideoList video={podcast} />
+                      <IconContext.Provider
+                        value={{
+                          size: 30,
+                          className: "global-class-name mr-2 cursor-pointer",
+                        }}
+                      >
+                        <MdPlaylistAdd onClick={() =>handleAddTopic(podcast.id)} />
+                      </IconContext.Provider>
+                    </PlaylistVideo>
+                  ))}
+                {podcastsReducer.isLoading && <span>Cargando...</span>}
+                {podcastsReducer.podcasts && podcastsReducer.podcasts.next && (
+                  <div className="d-flex justify-content-center">
+                    <ButtonCustom
+                      onClick={fetchMorePodcasts}
+                      className="w-100"
+                      type="button"
+                    >
+                      Cargar más podcasts
+                    </ButtonCustom>
+                  </div>
+                )}
+              </AddVideoList>
+            </VideosForm>
+          </div>
+          )}
         </div>
-        )}
 
           {podcastsTopicReducer.podcasts &&
             podcastsTopicReducer.podcasts.results.map((podcast_topic) => (

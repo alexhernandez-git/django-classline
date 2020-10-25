@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ButtonStyle, ButtonCustomError } from "src/components/ui/ButtonCustom";
-import { Form, Row, Col } from "react-bootstrap";
+import { Form, Row, Col, Modal } from "react-bootstrap";
 import { IconContext } from "react-icons";
 
 import { FaPlus, FaTrash } from "react-icons/fa";
@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Field } from "formik";
 import { ButtonCustom } from "../ui/ButtonCustom";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
 const PlaylistForm = (props) => {
   const {
@@ -51,6 +52,8 @@ const PlaylistForm = (props) => {
         position: videoCards.length,
       },
     ]);
+    setIsAddVideoOpen(false)
+
   };
   useEffect(() => {
     console.log(videoCards);
@@ -78,6 +81,11 @@ const PlaylistForm = (props) => {
     dispatchFetchVideosIncrease(limit + 12, search);
     setLimit((limit) => limit + 12);
   };
+  const addVideoRef = useRef()
+
+  useOutsideClick(addVideoRef, () => {
+    setIsAddVideoOpen(false)
+  });
   return (
     <div className="row">
       <div className="col-md-6">
@@ -142,6 +150,7 @@ const PlaylistForm = (props) => {
       <div className="col-md-6 col-xl-5">
         <div className="d-flex justify-content-between border-bottom pb-2 mb-3">
           <span>Videos</span>
+
           <div className="cursor-pointer" onClick={handleToggleAddVideo}>
             {isAddVideoOpen ? (
               <div className="d-flex align-items-center">
@@ -172,48 +181,50 @@ const PlaylistForm = (props) => {
             )}
           </div>
         </div>
-        {isAddVideoOpen && (
-          <div className="position-relative">
-            <VideosForm onSubmit={(e) => e.preventDefault()}>
-              <SearchBar
-                placeholder="Buscar Videos"
-                search={{ search: search, setSearch: setSearch }}
-                onSubmit={handleSubmitSearch}
-              />
-              <AddVideoList>
-                {videosReducer.videos &&
-                  videosReducer.videos.results.map((video) => (
-                    <PlaylistVideo
-                      className="d-flex justify-content-between align-items-center"
-                      key={video.id}
-                    >
-                      <VideoList video={video} />
-                      <IconContext.Provider
-                        value={{
-                          size: 30,
-                          className: "global-class-name mr-2 cursor-pointer",
-                        }}
+              <Modal show={isAddVideoOpen} onHide={()=>{}}>
+                <div ref={addVideoRef}>
+              <VideosForm onSubmit={(e) => e.preventDefault()}>
+                <SearchBar
+                  placeholder="Buscar Videos"
+                  search={{ search: search, setSearch: setSearch }}
+                  onSubmit={handleSubmitSearch}
+                />
+                <AddVideoList>
+                  {videosReducer.videos &&
+                    videosReducer.videos.results.map((video) => (
+                      <PlaylistVideo
+                        className="d-flex justify-content-between align-items-center"
+                        key={video.id}
                       >
-                        <MdPlaylistAdd onClick={() => handleAddVideo(video)} />
-                      </IconContext.Provider>
-                    </PlaylistVideo>
-                  ))}
-                {videosReducer.isLoading && <span>Cargando...</span>}
-                {videosReducer.videos && videosReducer.videos.next && (
-                  <div className="d-flex justify-content-center">
-                    <ButtonCustom
-                      onClick={fetchMoreVideos}
-                      className="w-100"
-                      type="button"
-                    >
-                      Cargar más videos
-                    </ButtonCustom>
-                  </div>
-                )}
-              </AddVideoList>
-            </VideosForm>
-          </div>
-        )}
+                        <VideoList video={video} />
+                        <IconContext.Provider
+                          value={{
+                            size: 30,
+                            className: "global-class-name mr-2 cursor-pointer",
+                          }}
+                        >
+                          <MdPlaylistAdd onClick={() => handleAddVideo(video)} />
+                        </IconContext.Provider>
+                      </PlaylistVideo>
+                    ))}
+                  {videosReducer.isLoading && <span>Cargando...</span>}
+                  {videosReducer.videos && videosReducer.videos.next && (
+                    <div className="d-flex justify-content-center">
+                      <ButtonCustom
+                        onClick={fetchMoreVideos}
+                        className="w-100"
+                        type="button"
+                      >
+                        Cargar más videos
+                      </ButtonCustom>
+                    </div>
+                  )}
+                </AddVideoList>
+              </VideosForm>
+              </div>
+            </Modal>
+
+
         <DndVideoList
           videoCards={videoCards}
           setVideoCards={setVideoCards}

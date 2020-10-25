@@ -32,6 +32,7 @@ import * as Yup from "yup";
 import styled from "@emotion/styled";
 import { addVideoPack, fetchVideosPack, fetchVideosPackIncrease, fetchVideosPackPagination, removeVideoPack } from "../../../redux/actions/videosPackAdmin";
 import { fetchVideosIncrease } from "../../../redux/actions/videos";
+import useOutsideClick from "../../../hooks/useOutsideClick";
 
 
 const VideosPack = (props) => {
@@ -113,6 +114,12 @@ const VideosPack = (props) => {
     dispatchFetchVideosIncrease(limit + 12, search);
     setLimit((limit) => limit + 12);
   };
+
+  const addVideoRef = useRef()
+
+  useOutsideClick(addVideoRef, () => {
+    setIsAddVideoOpen(false)
+  });
   return (
     <>
         <form>
@@ -125,7 +132,9 @@ const VideosPack = (props) => {
         </form>
         <ContainerWrapper>
  
- 
+          <div ref={addVideoRef}>
+
+
             <div className="cursor-pointer  mb-3" onClick={handleToggleAddVideo}>
 
               {isAddVideoOpen ? (
@@ -198,6 +207,7 @@ const VideosPack = (props) => {
                 </VideosForm>
               </div>
             )}
+          </div>
 
           {videosPackAdminReducer.videos &&
             videosPackAdminReducer.videos.results.map((video_pack) => (

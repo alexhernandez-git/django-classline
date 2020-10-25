@@ -29,6 +29,7 @@ import * as Yup from "yup";
 import styled from "@emotion/styled";
 import { addPodcastPack, fetchPodcastsPack, fetchPodcastsPackIncrease, removePodcastPack } from "../../../redux/actions/podcastsPackAdmin";
 import { fetchPodcastsIncrease } from "../../../redux/actions/podcasts";
+import useOutsideClick from "../../../hooks/useOutsideClick";
 
 const PodcastSchema = Yup.object().shape({
   title: Yup.string()
@@ -114,6 +115,11 @@ const PodcastsPack = (props) => {
     dispatchFetchPodcastsIncrease(limit + 12, search);
     setLimit((limit) => limit + 12);
   };
+  const addPodcastRef = useRef()
+
+  useOutsideClick(addPodcastRef, () => {
+    setIsAddVideoOpen(false)
+  });
   return (
     <>
         <Filters
@@ -123,79 +129,81 @@ const PodcastsPack = (props) => {
           onSubmit={handleSubmitSearch}
         />
         <ContainerWrapper>
+        <div ref={addPodcastRef}>
 
-        <div className="cursor-pointer  mb-3" onClick={handleToggleAddVideo}>
+            <div className="cursor-pointer  mb-3" onClick={handleToggleAddVideo}>
 
-        {isAddVideoOpen ? (
-          <div className="d-flex align-items-center">
-            <IconContext.Provider
-              value={{
-                size: 22,
-                className: "global-class-name mr-2",
-              }}
-              >
-              {" "}
-              <MdClose />
-            </IconContext.Provider>
-            Cerrar
-          </div>
-        ) : (
-          <>
-            <IconContext.Provider
-              value={{
-                size: 22,
-                className: "global-class-name mr-2",
-              }}
-              >
-              {" "}
-              <MdPlaylistAdd />
-            </IconContext.Provider>
-            Añadir podcasts
-          </>
-        )}
-        </div>
-        {isAddVideoOpen && (
-        <div className="position-relative">
-          <VideosForm onSubmit={(e) => e.preventDefault()}>
-            <SearchBar
-              placeholder="Buscar Podcasts"
-              search={{ search: searchPodcasts, setSearch: setSearchPodcasts }}
-              onSubmit={handleSubmitSearchPodcasts}
-            />
-            <AddVideoList>
-              {podcastsReducer.podcasts &&
-                podcastsReducer.podcasts.results.map((podcast) => (
-                  <PlaylistVideo
-                    className="d-flex justify-content-between align-items-center"
-                    key={podcast.id}
+            {isAddVideoOpen ? (
+              <div className="d-flex align-items-center">
+                <IconContext.Provider
+                  value={{
+                    size: 22,
+                    className: "global-class-name mr-2",
+                  }}
                   >
-                    <VideoList video={podcast} />
-                    <IconContext.Provider
-                      value={{
-                        size: 30,
-                        className: "global-class-name mr-2 cursor-pointer",
-                      }}
-                    >
-                      <MdPlaylistAdd onClick={() =>handleAddPack(podcast.id)} />
-                    </IconContext.Provider>
-                  </PlaylistVideo>
-                ))}
-              {podcastsReducer.isLoading && <span>Cargando...</span>}
-              {podcastsReducer.podcasts && podcastsReducer.podcasts.next && (
-                <div className="d-flex justify-content-center">
-                  <ButtonCustom
-                    onClick={fetchMorePodcasts}
-                    className="w-100"
-                    type="button"
+                  {" "}
+                  <MdClose />
+                </IconContext.Provider>
+                Cerrar
+              </div>
+            ) : (
+              <>
+                <IconContext.Provider
+                  value={{
+                    size: 22,
+                    className: "global-class-name mr-2",
+                  }}
                   >
-                    Cargar más podcasts
-                  </ButtonCustom>
-                </div>
-              )}
-            </AddVideoList>
-          </VideosForm>
+                  {" "}
+                  <MdPlaylistAdd />
+                </IconContext.Provider>
+                Añadir podcasts
+              </>
+            )}
+            </div>
+            {isAddVideoOpen && (
+            <div className="position-relative">
+              <VideosForm onSubmit={(e) => e.preventDefault()}>
+                <SearchBar
+                  placeholder="Buscar Podcasts"
+                  search={{ search: searchPodcasts, setSearch: setSearchPodcasts }}
+                  onSubmit={handleSubmitSearchPodcasts}
+                />
+                <AddVideoList>
+                  {podcastsReducer.podcasts &&
+                    podcastsReducer.podcasts.results.map((podcast) => (
+                      <PlaylistVideo
+                        className="d-flex justify-content-between align-items-center"
+                        key={podcast.id}
+                      >
+                        <VideoList video={podcast} />
+                        <IconContext.Provider
+                          value={{
+                            size: 30,
+                            className: "global-class-name mr-2 cursor-pointer",
+                          }}
+                        >
+                          <MdPlaylistAdd onClick={() =>handleAddPack(podcast.id)} />
+                        </IconContext.Provider>
+                      </PlaylistVideo>
+                    ))}
+                  {podcastsReducer.isLoading && <span>Cargando...</span>}
+                  {podcastsReducer.podcasts && podcastsReducer.podcasts.next && (
+                    <div className="d-flex justify-content-center">
+                      <ButtonCustom
+                        onClick={fetchMorePodcasts}
+                        className="w-100"
+                        type="button"
+                      >
+                        Cargar más podcasts
+                      </ButtonCustom>
+                    </div>
+                  )}
+                </AddVideoList>
+              </VideosForm>
+            </div>
+            )}
         </div>
-        )}
 
           {podcastsPackAdminReducer.podcasts &&
             podcastsPackAdminReducer.podcasts.results.map((podcast_pack) => (

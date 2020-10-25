@@ -90,7 +90,7 @@ const CoursesAdmin = () => {
       />
       <ContainerWrapper>
         <div className="d-flex justify-content-end mb-3">
-          <Link to={`/academy/${program}/admin/form/course`}>
+          <Link to={`/academy/${program}/admin/form/playlist`}>
             <ButtonCustom onClick={handleDeleteEditPlaylist}>
               Nueva Playlist
             </ButtonCustom>
