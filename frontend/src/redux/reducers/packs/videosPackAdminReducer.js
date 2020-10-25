@@ -13,7 +13,9 @@ import {
 
 const initialState = {
     isLoading: false,
-    videos: null,
+    videos:  {
+        results: []
+    },
     error: null,
     video_adding: false,
     video_adding_error: null,

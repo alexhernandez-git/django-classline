@@ -13,7 +13,9 @@ import {
 
 const initialState = {
     isLoading: false,
-    podcasts: null,
+    podcasts: {
+        results: []
+    },
     error: null,
     podcast_adding: false,
     podcast_adding_error: null,

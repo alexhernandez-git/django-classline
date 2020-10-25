@@ -89,8 +89,9 @@ const PodcastsTopic = (props) => {
   const [searchPodcasts, setSearchPodcasts] = useState("");
   const handleSubmitSearchPodcasts = (e) => {
     e.preventDefault();
-    const dispatchFetchPodcasts = (search) => dispatch(fetchPodcastsTopic(search));
-    dispatchFetchPodcasts(searchPodcasts);
+    console.log('fetching podcasts', searchPodcasts)
+    const dispatchFetchPodcastsTopic = (search) => dispatch(fetchPodcastsTopic(search));
+    dispatchFetchPodcastsTopic(searchPodcasts);
   };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
@@ -119,8 +120,8 @@ const PodcastsTopic = (props) => {
         <Filters
           title="Podcasts"
           placeholder="Buscar Podcasts"
-          search={{ search: search, setSearch: setSearch }}
-          onSubmit={handleSubmitSearch}
+          search={{ search: searchPodcasts, setSearch: setSearchPodcasts }}
+          onSubmit={handleSubmitSearchPodcasts}
         />
         <ContainerWrapper>
 
@@ -159,8 +160,8 @@ const PodcastsTopic = (props) => {
           <VideosForm onSubmit={(e) => e.preventDefault()}>
             <SearchBar
               placeholder="Buscar Podcasts"
-              search={{ search: searchPodcasts, setSearch: setSearchPodcasts }}
-              onSubmit={handleSubmitSearchPodcasts}
+              search={{ search: search, setSearch: setSearch }}
+              onSubmit={handleSubmitSearch}
             />
             <AddVideoList>
               {podcastsReducer.podcasts &&

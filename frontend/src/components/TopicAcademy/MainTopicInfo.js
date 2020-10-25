@@ -27,14 +27,14 @@ const MainTopicInfo = (props) => {
           <Col lg={{ offset: 1, span: 6 }}>
             <Field
               type="text"
-              name="title"
-              placeholder="Titulo de la academia"
+              name="name"
+              placeholder="Nombre"
               // value={values.title}
               // onChange={handleChange}
             />
             {topicReducer.save_error &&
-              topicReducer.save_error.data.title &&
-              topicReducer.save_error.data.title.map((error) => (
+              topicReducer.save_error.data.name &&
+              topicReducer.save_error.data.name.map((error) => (
                 <small className="d-block text-red">{error}</small>
               ))}
           </Col>

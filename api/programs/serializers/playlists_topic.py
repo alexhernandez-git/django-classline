@@ -13,7 +13,7 @@ from datetime import timedelta
 
 
 class PlaylistTopicModelSerializer(serializers.ModelSerializer):
-    podcast = serializers.SerializerMethodField(read_only=True)
+    playlist = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         """Meta class."""
@@ -21,7 +21,7 @@ class PlaylistTopicModelSerializer(serializers.ModelSerializer):
         model = PlaylistTopic
         fields = (
             'id',
-            'podcast',
+            'playlist',
             'topic',
         )
         # extra_kwargs = {'end': {'required': False}}
@@ -29,7 +29,7 @@ class PlaylistTopicModelSerializer(serializers.ModelSerializer):
             'id',
         )
 
-    def get_podcast(self, obj):
+    def get_playlist(self, obj):
         from api.programs.serializers import PlaylistModelSerializer
-        podcast = obj.podcast
-        return PlaylistModelSerializer(podcast, many=False).data
+        playlist = obj.playlist
+        return PlaylistModelSerializer(playlist, many=False).data

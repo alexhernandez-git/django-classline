@@ -35,7 +35,7 @@ const VideosTopic = (props) => {
   const dispatch = useDispatch();
   const videosReducer = useSelector((state) => state.videosReducer);
   const videosTopicReducer = useSelector((state) => state.videosTopicReducer);
-  const packReducer = useSelector((state) => state.packReducer);
+  const topicReducer = useSelector((state) => state.topicReducer);
   const programReducer = useSelector((state) => state.programReducer);
 
   useEffect(() => {
@@ -47,11 +47,11 @@ const VideosTopic = (props) => {
   }, [programReducer.program]);
 
   useEffect(() => {
-    if (!packReducer.isLoading && packReducer.pack) {
+    if (!topicReducer.isLoading && topicReducer.topic) {
       const dispatchFetchVideosTopic = () => dispatch(fetchVideosTopic());
       dispatchFetchVideosTopic();
     }
-  }, [packReducer.isLoading]);
+  }, [topicReducer.isLoading]);
 
   const handleVideoDelete = (id) => {
     MySwal.fire({
@@ -193,10 +193,10 @@ const VideosTopic = (props) => {
             )}
 
           {videosTopicReducer.videos &&
-            videosTopicReducer.videos.results.map((video_pack) => (
+            videosTopicReducer.videos.results.map((video_topic) => (
               <VideoCard
-                video={video_pack.video}
-                key={video_pack.video.id}
+                video={video_topic.video}
+                key={video_topic.video.id}
                 handleVideoDelete={handleVideoDelete}
               />
             ))}

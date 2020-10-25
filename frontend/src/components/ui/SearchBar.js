@@ -37,7 +37,7 @@ const Search = styled.div`
   input{
     padding:1rem 1rem 1rem 2rem;
 
-    max-width:30rem;
+    /* max-width:30rem; */
     width: 100%;
     display: block;
     border-radius: 2rem 0 0 2rem;

@@ -155,7 +155,7 @@ router.register(
     basename='videos-topic'
 )
 router.register(
-    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/topics/(?P<topic_id>[-a-zA-Z0-9_]+)/playlist-topic',
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/topics/(?P<topic_id>[-a-zA-Z0-9_]+)/playlists-topic',
     PlaylistTopicViewSet,
     basename='playlist-topic'
 )

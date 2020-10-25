@@ -47,7 +47,7 @@ export const fetchTopic = (id) => (dispatch, getState) => {
       // }
     });
 };
-export const saveTopic = (pack) => (dispatch, getState) => {
+export const saveTopic = (topic) => (dispatch, getState) => {
   dispatch({ type: TOPIC_SAVE });
   // dispatch({
   //     type: TOPIC_PICTURE_SUCCESS,
@@ -55,8 +55,8 @@ export const saveTopic = (pack) => (dispatch, getState) => {
   // })
   axios
     .patch(
-      `/api/programs/${getState().programReducer.program.code}/topics/${getState().packReducer.pack.code}/`,
-      pack,
+      `/api/programs/${getState().programReducer.program.code}/topics/${getState().topicReducer.topic.code}/`,
+      topic,
       tokenConfig(getState)
     )
     .then((res) => {
@@ -88,7 +88,7 @@ export const uploadPicture = (picture) => (dispatch, getState) => {
   fd.append("picture", picture, picture.name);
   axios
     .patch(
-      `/api/programs/${getState().programReducer.program.code}/topics/${getState().packReducer.pack.code}/`,
+      `/api/programs/${getState().programReducer.program.code}/topics/${getState().topicReducer.topic.code}/`,
       fd,
       tokenConfig(getState)
     )
@@ -111,7 +111,7 @@ export const removeTopic = (history) => (dispatch, getState) => {
   dispatch({ type: REMOVE_TOPIC });
   axios
     .delete(
-      `/api/programs/${getState().programReducer.program.code}/topics/${getState().packReducer.pack.code}/`,
+      `/api/programs/${getState().programReducer.program.code}/topics/${getState().topicReducer.topic.code}/`,
       tokenConfig(getState)
     )
     .then((res) => {

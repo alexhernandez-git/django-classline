@@ -92,10 +92,6 @@ class ProgramTopicCreateSerializer(serializers.ModelSerializer):
 
 class ProgramTopicModifyModelSerializer(serializers.ModelSerializer):
     """Profile model serializer."""
-    topic_price = serializers.SerializerMethodField(read_only=True)
-    topic_language = serializers.SerializerMethodField(read_only=True)
-    students = serializers.SerializerMethodField(read_only=True)
-    instructor = serializers.SerializerMethodField(read_only=True)
     videos = serializers.SerializerMethodField(read_only=True)
     playlists = serializers.SerializerMethodField(read_only=True)
     podcasts = serializers.SerializerMethodField(read_only=True)
@@ -109,8 +105,6 @@ class ProgramTopicModifyModelSerializer(serializers.ModelSerializer):
             'code',
             'name',
 
-            'topic_price',
-            'topic_language',
             'picture',
             'videos',
             'playlists',
@@ -140,19 +134,19 @@ class AddVideoTopicSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         video = self.context['video']
-        if VideoTopic.objects.filter(video=video, pack=instance).exists():
+        if VideoTopic.objects.filter(video=video, topic=instance).exists():
             raise serializers.ValidationError(
                 'Tu tema ya contiene ese video')
         instance.videos.add(video)
         instance.save()
-        return get_object_or_404(VideoTopic, video=video, pack=instance)
+        return get_object_or_404(VideoTopic, video=video, topic=instance)
 
 
 class RemoveVideoTopicSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         video = self.context['video']
-        if not VideoTopic.objects.filter(video=video, pack=instance).exists():
+        if not VideoTopic.objects.filter(video=video, topic=instance).exists():
             raise serializers.ValidationError(
                 'Tu tema ya no contiene ese video')
         instance.videos.remove(video)
@@ -164,19 +158,19 @@ class AddPodcastTopicSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         podcast = self.context['podcast']
-        if PodcastTopic.objects.filter(podcast=podcast, pack=instance).exists():
+        if PodcastTopic.objects.filter(podcast=podcast, topic=instance).exists():
             raise serializers.ValidationError(
                 'Tu tema ya contiene ese podcast')
         instance.podcasts.add(podcast)
         instance.save()
-        return get_object_or_404(PodcastTopic, podcast=podcast, pack=instance)
+        return get_object_or_404(PodcastTopic, podcast=podcast, topic=instance)
 
 
 class RemovePodcastTopicSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         podcast = self.context['podcast']
-        if not PodcastTopic.objects.filter(podcast=podcast, pack=instance).exists():
+        if not PodcastTopic.objects.filter(podcast=podcast, topic=instance).exists():
             raise serializers.ValidationError(
                 'Tu tema ya no contiene ese podcast')
         instance.podcasts.remove(podcast)
@@ -188,19 +182,20 @@ class AddPlaylistTopicSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         playlist = self.context['playlist']
-        if PlaylistTopic.objects.filter(playlist=playlist, pack=instance).exists():
+
+        if PlaylistTopic.objects.filter(playlist=playlist, topic=instance).exists():
             raise serializers.ValidationError(
                 'Tu tema ya contiene ese playlist')
         instance.playlists.add(playlist)
         instance.save()
-        return get_object_or_404(PlaylistTopic, playlist=playlist, pack=instance)
+        return get_object_or_404(PlaylistTopic, playlist=playlist, topic=instance)
 
 
 class RemovePlaylistTopicSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         playlist = self.context['playlist']
-        if not PlaylistTopic.objects.filter(playlist=playlist, pack=instance).exists():
+        if not PlaylistTopic.objects.filter(playlist=playlist, topic=instance).exists():
             raise serializers.ValidationError(
                 'Tu tema ya no contiene ese playlist')
         instance.playlists.remove(playlist)

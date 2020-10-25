@@ -78,11 +78,7 @@ class ProgramTopicViewSet(mixins.CreateModelMixin,
         if self.action == 'create':
             return ProgramTopicCreateSerializer
         if self.action in ['update', 'partial_update', 'get_accounts', 'cancel_accounts']:
-            return TopicModifyModelSerializer
-        elif self.action == 'publish':
-            return PublishTopicSerializer
-        elif self.action == 'cancel_publish':
-            return CancelPublishTopicSerializer
+            return ProgramTopicModifyModelSerializer
         elif self.action == 'add_video':
             return AddVideoTopicSerializer
         elif self.action == 'remove_video':
@@ -145,7 +141,8 @@ class ProgramTopicViewSet(mixins.CreateModelMixin,
         return Response(status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['put', 'patch'])
-    def add_palylist(self, request, *args, **kwargs):
+    def add_playlist(self, request, *args, **kwargs):
+
         topic = self.get_object()
         serializer_class = self.get_serializer_class()
         playlist = get_object_or_404(Playlist, pk=request.data['playlist'])
@@ -162,21 +159,21 @@ class ProgramTopicViewSet(mixins.CreateModelMixin,
 
         playlist_topic = serializer.save()
 
-        data = VideoTopicModelSerializer(playlist_topic).data
+        data = PlaylistTopicModelSerializer(playlist_topic).data
         return Response(data)
 
     @action(detail=True, methods=['put', 'patch'])
-    def remove_video(self, request, *args, **kwargs):
+    def remove_playlist(self, request, *args, **kwargs):
         topic = self.get_object()
         serializer_class = self.get_serializer_class()
-        video = get_object_or_404(Video, pk=request.data['video'])
+        playlist = get_object_or_404(Playlist, pk=request.data['playlist'])
 
         partial = request.method == 'PATCH'
 
         serializer = serializer_class(
             topic,
             data=request.data,
-            context={'video': video},
+            context={'playlist': playlist},
             partial=partial
         )
         serializer.is_valid(raise_exception=True)

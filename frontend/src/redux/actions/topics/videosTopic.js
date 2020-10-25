@@ -100,6 +100,7 @@ export const addVideoTopic = (id) => (dispatch, getState) => {
       tokenConfig(getState)
     )
     .then((res) => {
+      console.log(res.data)
       dispatch({
         type: VIDEOS_TOPIC_ADD_SUCCESS,
         payload: res.data,

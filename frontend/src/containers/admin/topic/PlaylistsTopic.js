@@ -10,7 +10,6 @@ import PlaylistList from "src/components/ui/PlaylistList";
 import SearchBar from "src/components/ui/SearchBar";
 
 import { IconContext } from "react-icons";
-import PlaylistCard from "src/components/ui/PlaylistCard";
 import {
   fetchPlaylists,
   fetchPlaylistsIncrease
@@ -31,6 +30,7 @@ import {
   fetchPlaylistsTopicPagination, 
   removePlaylistTopic 
 } from "src/redux/actions/topics/playlistsTopic";
+import PlaylistCard from "src/components/TopicAcademy/PlaylistCard";
 
 
 const PlaylistsTopic = (props) => {
@@ -41,7 +41,7 @@ const PlaylistsTopic = (props) => {
   const dispatch = useDispatch();
   const playlistsReducer = useSelector((state) => state.playlistsReducer);
   const playlistsTopicReducer = useSelector((state) => state.playlistsTopicReducer);
-  const packReducer = useSelector((state) => state.packReducer);
+  const topicReducer = useSelector((state) => state.topicReducer);
   const programReducer = useSelector((state) => state.programReducer);
 
   useEffect(() => {
@@ -53,11 +53,11 @@ const PlaylistsTopic = (props) => {
   }, [programReducer.program]);
 
   useEffect(() => {
-    if (!packReducer.isLoading && packReducer.pack) {
+    if (!topicReducer.isLoading && topicReducer.topic) {
       const dispatchFetchPlaylistsTopic = () => dispatch(fetchPlaylistsTopic());
       dispatchFetchPlaylistsTopic();
     }
-  }, [packReducer.isLoading]);
+  }, [topicReducer.isLoading]);
 
   const handlePlaylistDelete = (id) => {
     MySwal.fire({
@@ -87,8 +87,8 @@ const PlaylistsTopic = (props) => {
   const [searchPlaylists, setSearchPlaylists] = useState();
     const handleSubmitSearchPlaylists = (e) => {
       e.preventDefault();
-      const dispatchFetchPlaylistsTopicSearch = (search) => dispatch(fetchPlaylists(search));
-      dispatchFetchPlaylistsTopicSearch(searchPlaylists);
+      const dispatchFetchPlaylistsSearch = (search) => dispatch(fetchPlaylists(search));
+      dispatchFetchPlaylistsSearch(searchPlaylists);
     };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
@@ -199,10 +199,10 @@ const PlaylistsTopic = (props) => {
             )}
 
           {playlistsTopicReducer.playlists &&
-            playlistsTopicReducer.playlists.results.map((playlist_pack) => (
+            playlistsTopicReducer.playlists.results.map((playlist_topic) => (
               <PlaylistCard
-                playlist={playlist_pack.playlist}
-                key={playlist_pack.playlist.id}
+                playlist={playlist_topic.playlist}
+                key={playlist_topic.playlist.id}
                 handlePlaylistDelete={handlePlaylistDelete}
               />
             ))}

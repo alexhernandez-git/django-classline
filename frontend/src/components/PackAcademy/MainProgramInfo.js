@@ -28,7 +28,7 @@ const MainCourseInfo = (props) => {
             <Field
               type="text"
               name="title"
-              placeholder="Titulo de la academia"
+              placeholder="Titulo del pack"
               // value={values.title}
               // onChange={handleChange}
             />

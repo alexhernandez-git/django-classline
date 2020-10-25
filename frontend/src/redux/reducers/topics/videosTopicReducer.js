@@ -13,7 +13,9 @@ import {
 
 const initialState = {
     isLoading: false,
-    videos: null,
+    videos: {
+        results: []
+    },
     error: null,
     video_adding: false,
     video_adding_error: null,
@@ -56,7 +58,7 @@ export default function (state = initialState, action) {
                 ...state.videos,
                 results: [action.payload, ...state.videos.results],
             },
-            };
+        };
     
         case VIDEOS_TOPIC_ADD_FAIL:
             return {

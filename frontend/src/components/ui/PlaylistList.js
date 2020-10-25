@@ -1,13 +1,13 @@
 import styled from "@emotion/styled";
 const VideoList = (props) => {
-  const { id, name, picture, views } = props.video;
+  const { id, name, picture, views } = props.playlist;
 
   return (
     <VideoContent className="d-flex align-items-center">
       <img
         className="rounded mr-2 w-50"
         src={picture ? picture : "../../../../static/assets/img/no-foto.png"}
-        alt="video"
+        alt="playlist"
       />
       <div>
         <small

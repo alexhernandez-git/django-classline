@@ -13,7 +13,9 @@ import {
 
 const initialState = {
     isLoading: false,
-    playlists: null,
+    playlists:  {
+        results: []
+    },
     error: null,
     playlist_adding: false,
     playlist_adding_error: null,
