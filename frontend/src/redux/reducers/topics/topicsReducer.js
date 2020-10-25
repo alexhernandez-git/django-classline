@@ -53,8 +53,8 @@ export default function (state = initialState, action) {
         ...state,
       topic_creating: false,
       topics: {
-          ...statetopics,
-          results: [action.payload, ...statetopics.results],
+          ...state.topics,
+          results: [action.payload, ...state.topics.results],
         },
       };
 

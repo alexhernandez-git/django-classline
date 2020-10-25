@@ -76,8 +76,9 @@ class PlaylistAdminModelSerializer(serializers.ModelSerializer):
             PlaylistAdminTrack.objects.create(
                 video=track['video'], position=track['position'], playlist=instance)
         picture = get_object_or_404(Video, id=tracks[0]['video'].id).picture
-        instance.picture = File(picture, picture.name)
+        new_picture_name = picture.name.split("/")[-1]
 
+        instance.picture = File(picture, new_picture_name)
         return super(PlaylistAdminModelSerializer, self).update(instance, validated_data)
 
     def create(self, validated_data):
@@ -85,8 +86,8 @@ class PlaylistAdminModelSerializer(serializers.ModelSerializer):
         validated_data['program'] = self.context['program']
 
         picture = get_object_or_404(Video, id=tracks[0]['video']['id']).picture
-
-        validated_data['picture'] = File(picture, picture.name)
+        new_picture_name = picture.name.split("/")[-1]
+        validated_data['picture'] = File(picture, new_picture_name)
         playlist = PlaylistAdmin.objects.create(**validated_data)
         for track in tracks:
             track['video'] = get_object_or_404(Video, id=track['video']['id'])

@@ -61,7 +61,7 @@ class ProgramTopicViewSet(mixins.CreateModelMixin,
 
     serializer_class = ProgramTopicModelSerializer
     lookup_field = 'code'
-    search_fields = ('title', 'description')
+    search_fields = ('name',)
     filter_backends = [SearchFilter]
 
     def get_queryset(self):
