@@ -30,6 +30,7 @@ import styled from "@emotion/styled";
 import { addPodcastTopic, fetchPodcastsTopic, fetchPodcastsTopicIncrease, removePodcastTopic } from "../../../redux/actions/topics/podcastsTopic";
 import { fetchPodcastsIncrease } from "../../../redux/actions/podcasts";
 import useOutsideClick from "../../../hooks/useOutsideClick";
+import { addPodcastPack } from "../../../redux/actions/podcastsPackAdmin";
 
 const PodcastSchema = Yup.object().shape({
   title: Yup.string()
@@ -130,7 +131,7 @@ const PodcastsTopic = (props) => {
           onSubmit={handleSubmitSearchPodcasts}
         />
         <ContainerWrapper>
-        <div>
+        <div ref={addPodcastRef}>
 
           <div className="cursor-pointer  mb-3" onClick={handleToggleAddVideo}>
 

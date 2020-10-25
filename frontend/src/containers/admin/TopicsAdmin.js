@@ -64,7 +64,7 @@ const TopicsAdmin = () => {
       />
       <div className="d-flex justify-content-end mb-3">
           <ButtonCustom onClick={handleCreateTopic}>
-            Nuevo Topic
+            Nuevo Tema
           </ButtonCustom>
       </div>
           <div className="row">
@@ -79,7 +79,7 @@ const TopicsAdmin = () => {
                 ))}
      
               </GridTopics>
-              {topicsReducer.isLoading && <span>Cargando...</span>}
+      {topicsReducer.isLoading && <span>Cargando...</span>}
       {topicsReducer.topics &&
         (topicsReducer.topics.previous ||
           topicsReducer.topics.next) && (

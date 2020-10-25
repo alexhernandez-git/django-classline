@@ -77,9 +77,15 @@ const Podcasts = () => {
       <AudioPlayerContainer className="rounded d-flex align-items-center flex-column">
         {podcastsReducer.podcast_playing ? (
           <>
-            <span className="h3 mb-4">
+          <div className="d-sm-flex justify-content-between w-100">
+            <span className="h3 mb-4 mx-2">
               {podcastsReducer.podcast_playing.title}
             </span>
+            <small className="mb-4  mx-2 cursor-pointer" onClick={()=>handleStop(podcastsReducer.podcast_playing.id)}>
+              Quitar la reproducción
+            </small>
+            
+          </div>
 
             <Mp3Player podcast={podcastsReducer.podcast_playing} />
           </>
@@ -178,7 +184,7 @@ const AudioPlayerContainer = styled.div`
   right: 0;
 
   width: calc(100% - 90px);
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 576px) {
     width: 100%;
   }
 `;

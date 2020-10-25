@@ -63,11 +63,11 @@ export default function MainInfoCourse() {
                         ''
 
                     }
-                    <div className="mt-5">
+                    {/* <div className="mt-5">
                         <Link className="btn-green text-white py-2 px-3 h5"to={`/demo/academy/${programContext.programState.program.code}/home`} target="_blank">
                             <span>Ver demo</span>
                         </Link>
-                    </div>
+                    </div> */}
 
                 </div>
             )
