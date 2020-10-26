@@ -11,7 +11,8 @@ import string
 
 
 class PlaylistTopic(CLineModel):
-    playlist = models.ForeignKey('programs.Playlist', on_delete=models.CASCADE)
+    playlist = models.ForeignKey(
+        'programs.PlaylistAdmin', on_delete=models.CASCADE)
     topic = models.ForeignKey(
         'programs.ProgramTopic', on_delete=models.CASCADE)
 

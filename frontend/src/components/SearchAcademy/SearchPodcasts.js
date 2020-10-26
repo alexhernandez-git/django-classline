@@ -21,53 +21,44 @@ const SearchPodcasts = () => {
       router.push(`/academy/${program}/podcasts`);
     }
   };
-  const popularPodcastsReducer = useSelector(
-    (state) => state.popularPodcastsReducer
+  const podcastsReducer = useSelector(
+    (state) => state.podcastsReducer
   );
   let settings = null;
-  if (!popularPodcastsReducer.isLoading) {
+  if (!podcastsReducer.isLoading) {
     settings = {
-      infinite: popularPodcastsReducer.podcasts.length > 2,
+      infinite: podcastsReducer.podcasts.results.length > 2,
       slidesToShow:
-        popularPodcastsReducer.podcasts.length < 2
-          ? popularPodcastsReducer.podcasts.length
+        podcastsReducer.podcasts.results.length < 2
+          ? podcastsReducer.podcasts.results.length
           : 2,
       slidesToScroll:
-        popularPodcastsReducer.podcasts.length < 2
-          ? popularPodcastsReducer.podcasts.length
+        podcastsReducer.podcasts.results.length < 2
+          ? podcastsReducer.podcasts.results.length
           : 2,
       draggable: true,
       vertical: true,
       verticalSwiping: true,
     };
   }
-  return popularPodcastsReducer.isLoading ? (
+  return podcastsReducer.isLoading ? (
     "Cargando..."
   ) : (
     <>
       <SlickSlider>
-        <div className="d-flex justify-content-between">
+        <div className="">
           <span>Podcasts</span>
-          <Link
-            to={
-              !/\/demo\//.test(pathname)
-                ? `/academy/${program}/podcasts`
-                : `/demo/academy/${program}/podcasts`
-            }
-          >
-            <span className="cursor-pointer">Ver más</span>
-          </Link>
         </div>
         <Slider {...settings}>
-          {popularPodcastsReducer.podcasts &&
-            popularPodcastsReducer.podcasts.map((podcast) => (
+          {podcastsReducer.podcasts.results &&
+            podcastsReducer.podcasts.results.map((podcast) => (
               <div className="p-2" key={podcast.id}>
                 <Podcast podcast={podcast} handlePlay={handlePlay} />
               </div>
             ))}
-          {popularPodcastsReducer.isLoading && <span>Cargando...</span>}
+          {podcastsReducer.isLoading && <span>Cargando...</span>}
         </Slider>
-        {popularPodcastsReducer.podcasts.length == 0 && (
+        {podcastsReducer.podcasts.results.length == 0 && (
           <span className="text-grey">No hay podcasts</span>
         )}
       </SlickSlider>

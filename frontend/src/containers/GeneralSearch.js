@@ -5,9 +5,9 @@ import MainProgramInfo from "src/components/MainPage/MainProgramInfo";
 import { textEllipsis } from "src/components/ui/TextEllipsis";
 
 import { useDispatch } from "react-redux";
-import { fetchPopularVideos } from "src/redux/actions/popularVideos";
-import { fetchPopularPlaylists } from "src/redux/actions/popularPlaylists";
-import { fetchPopularPodcasts } from "src/redux/actions/popularPodcasts";
+import { fetchVideos } from "src/redux/actions/videos";
+import { fetchPlaylists } from "src/redux/actions/courses";
+import { fetchPodcasts } from "src/redux/actions/podcasts";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { IconContext } from "react-icons/lib";
@@ -20,26 +20,39 @@ import SearchPodcasts from "src/components/SearchAcademy/SearchPodcasts";
 import SearchPlaylists from "src/components/SearchAcademy/SearchPlaylists";
 export default function GeneralSearch() {
   const history = useHistory();
-  const { program } = useParams();
+  const { program, search } = useParams();
   const authReducer = useSelector((state) => state.authReducer);
   // useEffect(() => {
   //   console.log("isloading", authReducer.isLoading);
   //   // if (!authReducer.isLoading && !authReducer.isAuthenticated)
   //   // history.push(`/academy/${program}`);
   // }, [authReducer.isLoading]);
+  const [generalSearch, setGeneralSearch] = useState(search)
+  const handleSearchSubmit = (e) =>{
+    e.preventDefault()
+    const dispatchFetchVideos = (generalSearch) => dispatch(fetchVideos(generalSearch));
+    dispatchFetchVideos(generalSearch);
+    const dispatchFetchPlaylists = (generalSearch) =>
+      dispatch(fetchPlaylists(generalSearch));
+    dispatchFetchPlaylists(generalSearch);
+    const dispatchFetchPodcasts = (generalSearch) =>
+      dispatch(fetchPodcasts(generalSearch));
+    dispatchFetchPodcasts(generalSearch);
+    history.push(`/academy/${program}/search/${generalSearch}`)
 
+  }
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
   useEffect(() => {
     if (!programReducer.isLoading && programReducer.program) {
-      const dispatchFetchPopularVideos = () => dispatch(fetchPopularVideos());
-      dispatchFetchPopularVideos();
-      const dispatchFetchPopularPlaylists = () =>
-        dispatch(fetchPopularPlaylists());
-      dispatchFetchPopularPlaylists();
-      const dispatchFetchPopularPodcasts = () =>
-        dispatch(fetchPopularPodcasts());
-      dispatchFetchPopularPodcasts();
+      const dispatchFetchVideos = (search) => dispatch(fetchVideos(search));
+      dispatchFetchVideos(search);
+      const dispatchFetchPlaylists = (search) =>
+        dispatch(fetchPlaylists(search));
+      dispatchFetchPlaylists(search);
+      const dispatchFetchPodcasts = (search) =>
+        dispatch(fetchPodcasts(search));
+      dispatchFetchPodcasts(search);
     }
   }, [programReducer.isLoading]);
 
@@ -50,7 +63,10 @@ export default function GeneralSearch() {
           <MainProgramContainer>
             <div className="container">
               <div className="mx-auto">
-                <MainProgramInfo />
+                <MainProgramInfo 
+                  search={{search: generalSearch, setSearch: setGeneralSearch}}
+                  handleSearchSubmit={handleSearchSubmit} 
+                />
               </div>
             </div>
           </MainProgramContainer>

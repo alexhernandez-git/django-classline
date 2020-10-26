@@ -15,6 +15,9 @@ import { BsFillCollectionPlayFill } from "react-icons/bs";
 import { FaListUl, FaPodcast, FaRegPlayCircle, FaSearch } from "react-icons/fa";
 import TopicCard from "../components/AdminAcademy/TopicCard";
 import SearchElementCard from "../components/AdminAcademy/SearchElementCard";
+import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
+import { useRef } from "react";
+import { fetchTopics, fetchTopicsPagination } from "../redux/actions/topics/topics";
 
 export default function Home() {
   const history = useHistory();
@@ -28,11 +31,29 @@ export default function Home() {
 
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
+  const topicsReducer = useSelector((state) => state.topicsReducer);
 
   const [searchVideos, setSearchVideos] = useState("")
   const [searchPlaylists, setSearchPlaylists] = useState("")
   const [searchPodcasts, setSearchPodcasts] = useState("")
+  const main = useRef()
+  const handleChangePage = (url) => {
+    main.current.scrollTo(0, 0);
 
+    const dispatchFetchTopicsPagination = (url) =>
+      dispatch(fetchTopicsPagination(url));
+    dispatchFetchTopicsPagination(url);
+  };
+  useEffect(() => {
+    if (!programReducer.isLoading && programReducer.program) {
+      const dispatchFetchTopics = () => dispatch(fetchTopics());
+      dispatchFetchTopics();
+    }
+  }, [programReducer.isLoading]);
+  const [search, setSearch] = useState("")
+  const handleSearchSubmit = () =>{
+    history.push(`/academy/${program}/search/${search}`)
+  }
   return (
     !programReducer.isLoading && (
       <>
@@ -40,7 +61,10 @@ export default function Home() {
           <MainProgramContainer>
             <div className="container">
               <div className="mx-auto">
-                <MainProgramInfo />
+                <MainProgramInfo 
+                    search={{search: search, setSearch: setSearch}}
+                    handleSearchSubmit={handleSearchSubmit} 
+                />
               </div>
             </div>
           </MainProgramContainer>
@@ -93,13 +117,65 @@ export default function Home() {
             <div className="border-bottom mb-3 pb-2 text-center">
               <span>Temas</span>
             </div>
-            <TopicsContainer>
-   
-                <TopicCard/>
-                <TopicCard/>
-                {/* <TopicCard/> */}
-                <TopicCard/>
+            <TopicsContainer ref={main}>
+              {topicsReducer.topics &&
+                  topicsReducer.topics.results.map((topic) => (
+                    <TopicCard key={topic.id} topic={topic} />
+                ))}
             </TopicsContainer>
+            {topicsReducer.isLoading && <span>Cargando...</span>}
+              {topicsReducer.topics &&
+                (topicsReducer.topics.previous ||
+                  topicsReducer.topics.next) && (
+                  <div className="d-flex justify-content-center my-5">
+                    {topicsReducer.topics.previous ? (
+                      <IconContext.Provider
+                        value={{
+                          size: 50,
+                          className: "cursor-pointer",
+                        }}
+                      >
+                        <IoIosArrowDropleft
+                          onClick={() =>
+                            handleChangePage(topicsReducer.topics.previous)
+                          }
+                        />
+                      </IconContext.Provider>
+                    ) : (
+                      <IconContext.Provider
+                        value={{
+                          size: 50,
+                          color: "#a1a1a1",
+                        }}
+                      >
+                        <IoIosArrowDropleft />
+                      </IconContext.Provider>
+                    )}
+                    {topicsReducer.topics.next ? (
+                      <IconContext.Provider
+                        value={{
+                          size: 50,
+                          className: "cursor-pointer",
+                        }}
+                      >
+                        <IoIosArrowDropright
+                          onClick={() =>
+                            handleChangePage(topicsReducer.topics.next)
+                          }
+                        />
+                      </IconContext.Provider>
+                    ) : (
+                      <IconContext.Provider
+                        value={{
+                          size: 50,
+                          color: "#a1a1a1",
+                        }}
+                      >
+                        <IoIosArrowDropright />
+                      </IconContext.Provider>
+                    )}
+                  </div>
+                )}
           </div>
 
         </Main>

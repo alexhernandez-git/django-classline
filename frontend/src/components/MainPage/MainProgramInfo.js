@@ -5,23 +5,25 @@ import styled from "@emotion/styled";
 import { FaSearch } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import SearchBar from "../ui/SearchBar";
+import { useHistory, useParams } from "react-router-dom";
 
-const MainProgramInfo = () => {
-  const [search, setSearch] = useState("");
-  const program = useSelector((state) => state.programReducer.program);
-  
-  return (
+const MainProgramInfo = (props) => {
+  const { program } = useParams();
+  const history = useHistory()
+  const programObject = useSelector((state) => state.programReducer.program);
+  const {search, handleSearchSubmit} = props
+  return (  
     <>
       <div className="p-2">
         <div className="w-100 text-white d-flex justify-content-between align-items-center">
           <MainInfo className="d-flex flex-column justify-content-center">
-            <h2 className="text-break">{program && program.title}</h2>
+            <h2 className="text-break">{programObject && programObject.title}</h2>
             {/* <span>{program && program.subtitle}</span> */}
           </MainInfo>
           <SearchBar
               placeholder="Busqueda general"
-              search={{ search: search, setSearch: setSearch }}
-          
+              search={search}
+              onSubmit={handleSearchSubmit}
           />
 
         </div>

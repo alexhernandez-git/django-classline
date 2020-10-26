@@ -17,6 +17,7 @@ const SearchBar = (props) => {
       }}
     >
     <input 
+        autoFocus
         type="text"
         placeholder={props.placeholder}
         value={props.search.search}

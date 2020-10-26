@@ -9,6 +9,9 @@ import SearchBar from "./SearchBar";
 const TopicBanner = (props) => {
   const [search, setSearch] = useState("")
   const {searchBar} = props
+  const topicReducer = useSelector(
+    (state) => state.topicReducer
+  );
   return (
     <>
       <TopicBannerContainer style={{background: "#56b389"}}>
@@ -18,7 +21,7 @@ const TopicBanner = (props) => {
               <div className="p-4">
                 <div className="w-100 text-white d-flex justify-content-between align-items-center">
                   <MainInfo className="d-flex flex-column justify-content-center">
-                    <h2 className="text-break">Comida sana</h2>
+                    <h2 className="text-break">{topicReducer.topic && topicReducer.topic.name}</h2>
                     {/* <span>{program && program.subtitle}</span> */}
                   </MainInfo>
                   {searchBar &&

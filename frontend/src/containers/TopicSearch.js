@@ -5,23 +5,20 @@ import MainProgramInfo from "src/components/MainPage/MainProgramInfo";
 import { textEllipsis } from "src/components/ui/TextEllipsis";
 
 import { useDispatch } from "react-redux";
-import { fetchPopularVideos } from "src/redux/actions/popularVideos";
-import { fetchPopularPlaylists } from "src/redux/actions/popularPlaylists";
-import { fetchPopularPodcasts } from "src/redux/actions/popularPodcasts";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { IconContext } from "react-icons/lib";
-import { BsFillCollectionPlayFill } from "react-icons/bs";
-import { FaListUl, FaPodcast, FaRegPlayCircle, FaSearch } from "react-icons/fa";
-import TopicCard from "../components/AdminAcademy/TopicCard";
-import SearchElementCard from "../components/AdminAcademy/SearchElementCard";
-import SearchVideos from "src/components/SearchAcademy/SearchVideos";
-import SearchPodcasts from "src/components/SearchAcademy/SearchPodcasts";
-import SearchPlaylists from "src/components/SearchAcademy/SearchPlaylists";
+import SearchVideos from "src/components/SearchAcademyTopic/SearchVideos";
+import SearchPodcasts from "src/components/SearchAcademyTopic/SearchPodcasts";
+import SearchPlaylists from "src/components/SearchAcademyTopic/SearchPlaylists";
 import TopicBanner from "../components/ui/TopicBanner";
+import { fetchVideos } from "../redux/actions/videos";
+import { fetchVideosTopic } from "../redux/actions/topics/videosTopic";
+import { fetchPlaylistsTopic } from "../redux/actions/topics/playlistsTopic";
+import { fetchPodcastsTopic } from "../redux/actions/topics/podcastsTopic";
+import { fetchTopic } from "../redux/actions/topics/topic";
 export default function ThemeSearch() {
   const history = useHistory();
-  const { program } = useParams();
+  const { program,topic } = useParams();
   const authReducer = useSelector((state) => state.authReducer);
   // useEffect(() => {
   //   console.log("isloading", authReducer.isLoading);
@@ -31,24 +28,32 @@ export default function ThemeSearch() {
 
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
+  const topicReducer = useSelector((state) => state.topicReducer);
   useEffect(() => {
     if (!programReducer.isLoading && programReducer.program) {
-      const dispatchFetchPopularVideos = () => dispatch(fetchPopularVideos());
-      dispatchFetchPopularVideos();
-      const dispatchFetchPopularPlaylists = () =>
-        dispatch(fetchPopularPlaylists());
-      dispatchFetchPopularPlaylists();
-      const dispatchFetchPopularPodcasts = () =>
-        dispatch(fetchPopularPodcasts());
-      dispatchFetchPopularPodcasts();
+      const dispatchFetchTopic = () => dispatch(fetchTopic(topic));
+      dispatchFetchTopic();
     }
   }, [programReducer.isLoading]);
 
+  useEffect(() => {
+    if (!topicReducer.isLoading && topicReducer.topic) {
+      const dispatchFetchVideos = () => dispatch(fetchVideosTopic());
+      dispatchFetchVideos();
+      const dispatchFetchPlaylists = () =>
+        dispatch(fetchPlaylistsTopic());
+      dispatchFetchPlaylists();
+      const dispatchFetchPopularPodcasts = () =>
+        dispatch(fetchPodcastsTopic());
+      dispatchFetchPopularPodcasts();
+    }
+  }, [topicReducer.isLoading]);
+
   return (
-    !programReducer.isLoading && (
+    !topicReducer.isLoading && (
       <>
         <Main className="text-grey">
-
+          
           <TopicBanner searchBar />
 
 
@@ -75,7 +80,7 @@ export default function ThemeSearch() {
                 <div className="mb-4">
                   <SearchPodcasts />
                 </div>
-                {/* <hr /> */}
+                <hr />
               </>
             )}
             {/* {programReducer.program.are_meetups && <ThisWeekMeetups />} */}

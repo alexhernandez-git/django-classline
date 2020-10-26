@@ -8,14 +8,14 @@ const SearchVideos = () => {
   const { pathname } = useLocation();
 
   const { program } = useParams();
-  const popularVideosReducer = useSelector(
-    (state) => state.popularVideosReducer
+  const videosReducer = useSelector(
+    (state) => state.videosReducer
   );
   let settings = null;
-  if (!popularVideosReducer.isLoading) {
+  if (!videosReducer.isLoading) {
     settings = {
       className: "center",
-      infinite: popularVideosReducer.videos.length > 4,
+      infinite: videosReducer.videos.results.length > 4,
       slidesToShow: 4,
       slidesToScroll: 4,
 
@@ -26,12 +26,12 @@ const SearchVideos = () => {
           breakpoint: 1024,
           settings: {
             slidesToShow:
-              popularVideosReducer.videos.length < 3
-                ? popularVideosReducer.videos.length
+              videosReducer.videos.results.length < 3
+                ? videosReducer.videos.results.length
                 : 3,
             slidesToScroll:
-              popularVideosReducer.videos.length < 3
-                ? popularVideosReducer.videos.length
+              videosReducer.videos.results.length < 3
+                ? videosReducer.videos.results.length
                 : 3,
             infinite: true,
           },
@@ -46,33 +46,25 @@ const SearchVideos = () => {
       ],
     };
   }
-  return popularVideosReducer.isLoading ? (
+  return videosReducer.isLoading ? (
     "Cargando..."
   ) : (
     <>
       <SlickSlider>
-        <div className="d-flex justify-content-between">
+        <div className="">
           <span>Videos</span>
-          <Link
-            to={
-              !/\/demo\//.test(pathname)
-                ? `/academy/${program}/videos`
-                : `/demo/academy/${program}/videos`
-            }
-          >
-            <span className="cursor-pointer">Ver más</span>
-          </Link>
+  
         </div>
         <Slider {...settings}>
-          {popularVideosReducer.videos &&
-            popularVideosReducer.videos.map((video) => (
+          {videosReducer.videos.results &&
+            videosReducer.videos.results.map((video) => (
               <div className="p-2" key={video.id}>
                 <Video video={video} />
               </div>
             ))}
         </Slider>
-        {popularVideosReducer.isLoading && <span>Cargando...</span>}
-        {popularVideosReducer.videos.length == 0 && (
+        {videosReducer.isLoading && <span>Cargando...</span>}
+        {videosReducer.videos.results.length == 0 && (
           <span className="text-grey">No hay videos</span>
         )}
       </SlickSlider>

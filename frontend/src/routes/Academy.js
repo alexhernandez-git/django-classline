@@ -180,7 +180,7 @@ const Academy = () => {
             />
             <Route
               exact
-              path="/academy/:program/search/:search"
+              path="/academy/:program/search/:search?"
               component={GeneralSearch}
             />
             <Route

@@ -13,7 +13,7 @@ import { IconContext } from "react-icons";
 import {
   fetchPlaylists,
   fetchPlaylistsIncrease
-} from "src/redux/actions/playlists";
+} from "src/redux/actions/courses";
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -38,9 +38,8 @@ const PlaylistsTopic = (props) => {
   const MySwal = withReactContent(Swal);
   const {infinite_height} = props
   const main = useRef();
-  const addPlaylistRef = useRef()
   const dispatch = useDispatch();
-  const playlistsReducer = useSelector((state) => state.playlistsReducer);
+  const coursesReducer = useSelector((state) => state.coursesReducer);
   const playlistsTopicReducer = useSelector((state) => state.playlistsTopicReducer);
   const topicReducer = useSelector((state) => state.topicReducer);
   const programReducer = useSelector((state) => state.programReducer);
@@ -77,7 +76,7 @@ const PlaylistsTopic = (props) => {
     });
   };
 
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
   
   const handleSubmitSearch = (e) => {
     e.preventDefault();
@@ -85,7 +84,7 @@ const PlaylistsTopic = (props) => {
     dispatchFetchPlaylistsTopicSearch(search);
   };
 
-  const [searchPlaylists, setSearchPlaylists] = useState();
+  const [searchPlaylists, setSearchPlaylists] = useState("");
     const handleSubmitSearchPlaylists = (e) => {
       e.preventDefault();
       const dispatchFetchPlaylistsSearch = (search) => dispatch(fetchPlaylists(search));
@@ -113,6 +112,8 @@ const PlaylistsTopic = (props) => {
     dispatchFetchPlaylistsIncrease(limit + 12, search);
     setLimit((limit) => limit + 12);
   };
+  const addPlaylistRef = useRef()
+
   useOutsideClick(addPlaylistRef, () => {
     setIsAddPlaylistOpen(false)
   });
@@ -169,8 +170,8 @@ const PlaylistsTopic = (props) => {
                       onSubmit={handleSubmitSearchPlaylists}
                     />
                     <AddPlaylistList>
-                      {playlistsReducer.playlists &&
-                        playlistsReducer.playlists.results.map((playlist) => (
+                      {coursesReducer.playlists &&
+                        coursesReducer.playlists.results.map((playlist) => (
                           <PlaylistPlaylist
                             className="d-flex justify-content-between align-items-center"
                             key={playlist.id}
@@ -186,8 +187,8 @@ const PlaylistsTopic = (props) => {
                             </IconContext.Provider>
                           </PlaylistPlaylist>
                         ))}
-                      {playlistsReducer.isLoading && <span>Cargando...</span>}
-                      {playlistsReducer.playlists && playlistsReducer.playlists.next && (
+                      {coursesReducer.isLoading && <span>Cargando...</span>}
+                      {coursesReducer.playlists && coursesReducer.playlists.next && (
                         <div className="d-flex justify-content-center">
                           <ButtonCustom
                             onClick={fetchMorePlaylists}

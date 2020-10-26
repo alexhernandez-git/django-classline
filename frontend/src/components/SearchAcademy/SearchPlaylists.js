@@ -11,14 +11,14 @@ const SearchPlaylists = () => {
   const { pathname } = useLocation();
 
   const { program } = useParams();
-  const popularPlaylistsReducer = useSelector(
-    (state) => state.popularPlaylistsReducer
+  const coursesReducer = useSelector(
+    (state) => state.coursesReducer
   );
   let settings = null;
-  if (!popularPlaylistsReducer.isLoading) {
+  if (!coursesReducer.isLoading) {
     settings = {
       className: "center",
-      infinite: popularPlaylistsReducer.playlists.length > 3,
+      infinite: coursesReducer.playlists.results.length > 3,
       slidesToShow: 3,
       slidesToScroll: 3,
 
@@ -30,7 +30,7 @@ const SearchPlaylists = () => {
           settings: {
             slidesToShow: 2,
             slidesToScroll: 2,
-            infinite: popularPlaylistsReducer.playlists.length > 2,
+            infinite: coursesReducer.playlists.results.length > 2,
           },
         },
         {
@@ -43,34 +43,26 @@ const SearchPlaylists = () => {
       ],
     };
   }
-  return popularPlaylistsReducer.isLoading ? (
+  return coursesReducer.isLoading ? (
     "Cargando..."
   ) : (
     <>
       <SlickSlider>
-        <div className="d-flex justify-content-between">
+        <div className="">
           <span>Playlists</span>
-          <Link
-            to={
-              !/\/demo\//.test(pathname)
-                ? `/academy/${program}/courses`
-                : `/demo/academy/${program}/courses`
-            }
-          >
-            <span className="cursor-pointer">Ver más</span>
-          </Link>
+
         </div>
 
         <Slider {...settings}>
-          {popularPlaylistsReducer.playlists &&
-            popularPlaylistsReducer.playlists.map((playlist) => (
+          {coursesReducer.playlists.results &&
+            coursesReducer.playlists.results.map((playlist) => (
               <div className="p-2 cursor-pointer" key={playlist.id}>
                 <Course playlist={playlist} />
               </div>
             ))}
         </Slider>
-        {popularPlaylistsReducer.isLoading && <span>Cargando...</span>}
-        {popularPlaylistsReducer.playlists.length == 0 && (
+        {coursesReducer.isLoading && <span>Cargando...</span>}
+        {coursesReducer.playlists.results.length == 0 && (
           <span className="text-grey">No hay playlists</span>
         )}
       </SlickSlider>

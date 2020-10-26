@@ -14,7 +14,7 @@ class PlaylistAdmin(CLineModel):
     code = models.CharField(max_length=10, blank=True, null=True)
     picture = models.ImageField(
         'profile picture',
-        upload_to='programs/playlists/pictures/',
+        upload_to='programs/playlists_admin/pictures/',
         blank=True, null=True,
         max_length=500
     )

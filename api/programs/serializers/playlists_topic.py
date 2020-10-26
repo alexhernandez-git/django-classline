@@ -30,6 +30,6 @@ class PlaylistTopicModelSerializer(serializers.ModelSerializer):
         )
 
     def get_playlist(self, obj):
-        from api.programs.serializers import PlaylistModelSerializer
+        from api.programs.serializers import PlaylistAdminModelSerializer
         playlist = obj.playlist
-        return PlaylistModelSerializer(playlist, many=False).data
+        return PlaylistAdminModelSerializer(playlist, many=False).data

@@ -36,7 +36,7 @@ class ProgramTopic(CLineModel):
         through='programs.VideoTopic'
     )
     playlists = models.ManyToManyField(
-        'programs.Playlist',
+        'programs.PlaylistAdmin',
         through='programs.PlaylistTopic'
     )
     podcasts = models.ManyToManyField(

@@ -44,7 +44,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 # Models
-from api.programs.models import ProgramTopic, Video, Podcast, Playlist
+from api.programs.models import ProgramTopic, Video, Podcast, PlaylistAdmin
 from api.users.models import User, Subscription, Teacher, Profile, Coupon, PurchasedItem
 
 # Utils
@@ -145,7 +145,8 @@ class ProgramTopicViewSet(mixins.CreateModelMixin,
 
         topic = self.get_object()
         serializer_class = self.get_serializer_class()
-        playlist = get_object_or_404(Playlist, pk=request.data['playlist'])
+        playlist = get_object_or_404(
+            PlaylistAdmin, pk=request.data['playlist'])
 
         partial = request.method == 'PATCH'
 
@@ -166,7 +167,8 @@ class ProgramTopicViewSet(mixins.CreateModelMixin,
     def remove_playlist(self, request, *args, **kwargs):
         topic = self.get_object()
         serializer_class = self.get_serializer_class()
-        playlist = get_object_or_404(Playlist, pk=request.data['playlist'])
+        playlist = get_object_or_404(
+            PlaylistAdmin, pk=request.data['playlist'])
 
         partial = request.method == 'PATCH'
 

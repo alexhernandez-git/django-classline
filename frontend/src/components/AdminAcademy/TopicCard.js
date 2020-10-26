@@ -4,16 +4,17 @@ import { textEllipsis } from "src/components/ui/TextEllipsis";
 import moment from "moment";
 const TopicCard = (props) => {
   const {program} = useParams()
+  const {code, name, picture}= props.topic
   return (
     <Link
-      to={`/academy/${program}/topic/feefw`}
+      to={`/academy/${program}/topic/${code}`}
     >
            <Topic>
                 <TopicImage className="cursor-pointer">
                   <div className="video-content">
                     <img
                       className="rounded"
-                      src={
+                      src={picture ? picture :
                         "../../../../static/assets/img/no-foto-square.png"
                       }
                       alt="video"
@@ -23,7 +24,7 @@ const TopicCard = (props) => {
                 <TopicInfo>
 
                   <div className="video-text">
-                      <span css={textEllipsis}>Vida sana</span>
+                      <span css={textEllipsis}>{name}</span>
                   </div>
                 </TopicInfo>
               </Topic>
