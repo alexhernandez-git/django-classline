@@ -11,6 +11,8 @@ const TopicBanner = (props) => {
   const topicReducer = useSelector(
     (state) => state.topicReducer
   );
+  const programObject = useSelector((state) => state.programReducer.program);
+
   return (
     <>
         <TopicBannerContainer style={{background: "linear-gradient(45deg,#2e6a89,#56b389)"}}>
@@ -23,14 +25,19 @@ const TopicBanner = (props) => {
                     <h2 className="text-break">{topicReducer.topic && topicReducer.topic.name}</h2>
                     {/* <span>{program && program.subtitle}</span> */}
                   </MainInfo>
-                  <div className="d-block d-sm-none m-3"></div>
-                  {searchBar &&
-                    <SearchBar
-                    placeholder={"Busqueda"}
-                    search={search}
-                    onSubmit={handleSearchSubmit}
-                    />
-                  }
+        
+                      {programObject.are_videos || programObject.are_admin_playlists || programObject.are_podcasts && 
+                    <>
+                          <div className="d-block d-sm-none m-3"></div>
+                          {searchBar &&
+                            <SearchBar
+                            placeholder={"Busqueda"}
+                            search={search}
+                            onSubmit={handleSearchSubmit}
+                            />
+                          }
+                    </>
+                    }
                 </div>
               </div>
               </div>
