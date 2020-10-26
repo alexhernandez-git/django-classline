@@ -342,7 +342,6 @@ const TopicsContainer = styled.div`
 
 const ToolsList = styled.div`  
   max-width: 80rem;
-  margin: auto auto 3rem;
   display: flex; 
   justify-content:center;
   flex-wrap: wrap;
