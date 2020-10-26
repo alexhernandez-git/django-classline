@@ -326,7 +326,7 @@ const ImgContainer = styled.div`
 const TopicsContainer = styled.div`  
   display: grid;
   grid-gap: 4rem 2rem;
-
+  margin: auto auto 3rem;
   grid-template-columns: repeat(4, 1fr);
 
   @media screen and (max-width: 1200px) {
