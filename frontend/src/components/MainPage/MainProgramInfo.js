@@ -24,6 +24,8 @@ const MainProgramInfo = (props) => {
                       <h2 className="text-break">{programObject && programObject.title}</h2>
                       {/* <span>{program && program.subtitle}</span> */}
                     </MainInfo>
+                  <div className="d-block d-sm-none m-3"></div>
+
                     <SearchBar
                         placeholder="Busqueda general"
                         search={search}

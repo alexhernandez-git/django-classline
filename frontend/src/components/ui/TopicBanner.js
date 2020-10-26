@@ -23,6 +23,7 @@ const TopicBanner = (props) => {
                     <h2 className="text-break">{topicReducer.topic && topicReducer.topic.name}</h2>
                     {/* <span>{program && program.subtitle}</span> */}
                   </MainInfo>
+                  <div className="d-block d-sm-none m-3"></div>
                   {searchBar &&
                     <SearchBar
                     placeholder={"Busqueda"}
