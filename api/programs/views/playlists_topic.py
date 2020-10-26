@@ -42,7 +42,7 @@ class PlaylistTopicViewSet(mixins.CreateModelMixin,
     serializer_class = PlaylistTopicModelSerializer
     lookup_field = 'pk'
     filter_backends = [SearchFilter]
-    search_fields = ['playlist__name', 'playlist__description']
+    search_fields = ['playlist__name']
 
     def get_queryset(self):
         """Restrict list to public-only."""

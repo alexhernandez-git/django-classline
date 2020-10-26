@@ -10,11 +10,7 @@ import { fetchPlaylists } from "src/redux/actions/courses";
 import { fetchPodcasts } from "src/redux/actions/podcasts";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";
-import { IconContext } from "react-icons/lib";
-import { BsFillCollectionPlayFill } from "react-icons/bs";
-import { FaListUl, FaPodcast, FaRegPlayCircle, FaSearch } from "react-icons/fa";
-import TopicCard from "../components/AdminAcademy/TopicCard";
-import SearchElementCard from "../components/AdminAcademy/SearchElementCard";
+
 import SearchVideos from "src/components/SearchAcademy/SearchVideos";
 import SearchPodcasts from "src/components/SearchAcademy/SearchPodcasts";
 import SearchPlaylists from "src/components/SearchAcademy/SearchPlaylists";
@@ -60,16 +56,11 @@ export default function GeneralSearch() {
     !programReducer.isLoading && (
       <>
         <Main className="text-grey">
-          <MainProgramContainer>
-            <div className="container">
-              <div className="mx-auto">
-                <MainProgramInfo 
-                  search={{search: generalSearch, setSearch: setGeneralSearch}}
-                  handleSearchSubmit={handleSearchSubmit} 
-                />
-              </div>
-            </div>
-          </MainProgramContainer>
+
+          <MainProgramInfo 
+            search={{search: generalSearch, setSearch: setGeneralSearch}}
+            handleSearchSubmit={handleSearchSubmit} 
+          />
 
           
           <div className="container my-5">
@@ -104,75 +95,3 @@ export default function GeneralSearch() {
     )
   );
 }
-
-
-const GridElements = styled.div`  
-/* justify-content: space-between; */
-margin-bottom: 2rem;
-display: flex;
-justify-content: center;
-@media screen and (max-width: 576px) {
-  display: inline;
-  }
-`;
-
-const MainProgramContainer = styled.div`
-  background: var(--darkgray);
-  padding: 2rem;
-`;
-
-
-const ImgContainer = styled.div`
-    max-width:50rem;
-    width: 100%;
-    border-radius: 2rem;
-    margin: 3rem auto;
-    overflow: hidden;
-    position: relative;
-    small{
-    position: absolute;
-    left: 50%;
-
-    top: 70%;
-
-    transform: translate(-50%,-50%);
-
-    color: #fff;
-    z-index: 1;
-
-    }
-    .img-video{
-      z-index: 1;
-      width: 100%;
-      display: block;
-      border-radius: 2rem;
-      overflow: hidden;
-      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-      border:none;
-      filter: brightness(50%);
-    }
-`;
-const BadgesContainer = styled.div`  
-  display: flex;
-  flex-flow: wrap;
-`;
-const Badge = styled.div`
-  cursor:pointer;
-  padding:1rem;
-  color: #323840;
-  width: max-content;
-  border-radius: 2rem;
-  overflow: hidden;
-  margin: 1rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-  &:hover img {
-    transform: scale(1.03);
-  }
-`
-
-const TopicsContainer = styled.div`  
-  flex-flow: wrap;
-  margin-bottom: 2rem;
-  display: flex;
-  justify-content: center;
-`;

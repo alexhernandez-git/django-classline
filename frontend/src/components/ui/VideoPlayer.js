@@ -26,12 +26,9 @@ let count = 0;
 
 const VideoPlayer = (props) => {
   const {
-    id,
     title,
     description,
     video,
-    picture,
-    views,
     created,
   } = props.video;
   const {goNext, goPrevious, isPlaylist} = props
@@ -168,17 +165,20 @@ const VideoPlayer = (props) => {
           isPlaylist={isPlaylist}
         />
       </PlayerWrapper>
-
+      {title && 
       <div className="d-flex justify-content-between mt-4">
         <div>
           <span className="d-block">{title}</span>
           <small>
             {/* {views} visualizaciones · {moment(created).format("DD-MM-YYYY")} */}
-            {moment(created).format("DD-MM-YYYY")}
+            {created && moment(created).format("DD-MM-YYYY")}
           </small>
         </div>
       </div>
+      }
+      {description &&
       <div className="mt-2">{description}</div>
+      }
     </>
   );
 };

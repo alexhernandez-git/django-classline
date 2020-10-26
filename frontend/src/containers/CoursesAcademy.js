@@ -14,25 +14,53 @@ import { IconContext } from "react-icons";
 import { useLocation, useParams } from "react-router-dom";
 import { Padding } from "../components/ui/Padding";
 import TopicBanner from "../components/ui/TopicBanner";
+import { fetchPlaylistsTopic, fetchPlaylistsTopicPagination } from "../redux/actions/topics/playlistsTopic";
+import { fetchTopic } from "../redux/actions/topics/topic";
 const playlists = () => {
   const main = useRef();
   const coursesReducer = useSelector((state) => state.coursesReducer);
+  const playlistsTopicReducer = useSelector((state) => state.playlistsTopicReducer);
+
   const programReducer = useSelector((state) => state.programReducer);
+  const topicReducer = useSelector((state) => state.topicReducer);
   const {topic } = useParams()
   const location = useLocation()
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!programReducer.isLoading && programReducer.program && topic) {
+      const dispatchFetchTopic = () => dispatch(fetchTopic(topic));
+      dispatchFetchTopic();
+    }
+  }, [programReducer.isLoading,topic]);
+
   useEffect(() => {
     if (!programReducer.isLoading && programReducer.program) {
-      const dispatchFetchPlaylists = (search) => dispatch(fetchPlaylists(search));
-      dispatchFetchPlaylists(location?.state?.search);
+      if(!topic){
+        const dispatchFetchPlaylists = (search) => dispatch(fetchPlaylists(search));
+        dispatchFetchPlaylists(location?.state?.search);
+      }
     }
   }, [programReducer.isLoading]);
+
+  useEffect(() => {
+    if (!topicReducer.isLoading && topicReducer.topic) {
+      const dispatchFetchTopicPlaylists = (search) => dispatch(fetchPlaylistsTopic(search));
+      dispatchFetchTopicPlaylists(location?.state?.search);
+    }
+  }, [topicReducer.isLoading]);
+
   const [coursesSearch, setCoursesSearch] = useState(location?.state?.search);
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    const dispatchFetchPlaylists = (coursesSearch) => dispatch(fetchPlaylists(coursesSearch));
-    dispatchFetchPlaylists(coursesSearch);
+    if (topic) {
+      const dispatchFetchTopicPlaylists = (coursesSearch) => dispatch(fetchPlaylistsTopic(coursesSearch));
+      dispatchFetchTopicPlaylists(coursesSearch);
+    }else{
+      const dispatchFetchPlaylists = (coursesSearch) => dispatch(fetchPlaylists(coursesSearch));
+      dispatchFetchPlaylists(coursesSearch);
+    }
   };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
@@ -41,9 +69,16 @@ const playlists = () => {
       dispatch(fetchPlaylistsPagination(url));
     dispatchFetchPlaylistsPagination(url);
   };
+  const handleChangePageTopic = (url) => {
+    main.current.scrollTo(0, 0);
+
+    const dispatchFetchPlaylistsTopicPagination = (url) =>
+      dispatch(fetchPlaylistsTopicPagination(url));
+    dispatchFetchPlaylistsTopicPagination(url);
+  };
   return (
     <Main ref={main}>
-              {topic && 
+        {topic && 
           <TopicBanner/>
         }
         <Padding>
@@ -59,14 +94,86 @@ const playlists = () => {
       <div className="row">
         <div className="col-12">
           <GridVideos>
-            {coursesReducer.playlists &&
-              coursesReducer.playlists.results.map((playlist) => (
-                <div className="cursor-pointer" key={playlist.key}>
-                  <Course playlist={playlist} />
-                </div>
-              ))}
+            {topic ? 
+            <>
+              {playlistsTopicReducer.playlists &&
+                playlistsTopicReducer.playlists.results.map((playlist_topic) => (
+                  <div className="cursor-pointer" key={playlist_topic.key}>
+                    <Course playlist={playlist_topic.playlist} />
+                  </div>
+                ))}
+            </>
+            :
+            <>
+                {coursesReducer.playlists &&
+                  coursesReducer.playlists.results.map((playlist) => (
+                    <div className="cursor-pointer" key={playlist.key}>
+                      <Course playlist={playlist} />
+                    </div>
+                  ))}
+            </>
+            }
+      
           </GridVideos>
-          {coursesReducer.isLoading && <span>Cargando...</span>}
+          {topic ? 
+            <>
+            {playlistsTopicReducer.isLoading && <span>Cargando...</span>}
+          {playlistsTopicReducer.playlists &&
+            (playlistsTopicReducer.playlists.previous ||
+              playlistsTopicReducer.playlists.next) && (
+              <div className="d-flex justify-content-center my-5">
+                {playlistsTopicReducer.playlists.previous ? (
+                  <IconContext.Provider
+                    value={{
+                      size: 50,
+                      className: "cursor-pointer",
+                    }}
+                  >
+                    <IoIosArrowDropleft
+                      onClick={() =>
+                        handleChangePageTopic(playlistsTopicReducer.playlists.previous)
+                      }
+                    />
+                  </IconContext.Provider>
+                ) : (
+                  <IconContext.Provider
+                    value={{
+                      size: 50,
+                      color: "#a1a1a1",
+                    }}
+                  >
+                    <IoIosArrowDropleft />
+                  </IconContext.Provider>
+                )}
+                {playlistsTopicReducer.playlists.next ? (
+                  <IconContext.Provider
+                    value={{
+                      size: 50,
+                      className: "cursor-pointer",
+                    }}
+                  >
+                    <IoIosArrowDropright
+                      onClick={() =>
+                        handleChangePage(playlistsTopicReducer.playlists.next)
+                      }
+                    />
+                  </IconContext.Provider>
+                ) : (
+                  <IconContext.Provider
+                    value={{
+                      size: 50,
+                      color: "#a1a1a1",
+                    }}
+                  >
+                    <IoIosArrowDropright />
+                  </IconContext.Provider>
+                )}
+              </div>
+            )}
+            </>
+            :
+            <>
+            {coursesReducer.isLoading && <span>Cargando...</span>}
           {coursesReducer.playlists &&
             (coursesReducer.playlists.previous ||
               coursesReducer.playlists.next) && (
@@ -119,6 +226,9 @@ const playlists = () => {
                 )}
               </div>
             )}
+            </>  
+          }
+          
         </div>
       </div>
       </Padding>

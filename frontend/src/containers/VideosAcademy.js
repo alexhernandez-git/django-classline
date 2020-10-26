@@ -15,34 +15,57 @@ import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
 import ContainerWrapper from "src/components/ui/Container";
 import TopicBanner from "../components/ui/TopicBanner";
+import { fetchTopic } from "../redux/actions/topics/topic";
+import { fetchVideosTopic, fetchVideosTopicPagination } from "../redux/actions/topics/videosTopic";
 
 export default function Videos() {
   const main = useRef();
   const videosReducer = useSelector((state) => state.videosReducer);
-  const {topic } = useParams()
+  const videosTopicReducer = useSelector((state) => state.videosTopicReducer);
+  const { topic } = useParams()
   const location = useLocation()
-  console.log(location)
 
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
+  const topicReducer = useSelector((state) => state.topicReducer);
+
+  useEffect(() => {
+    if (!programReducer.isLoading && programReducer.program && topic) {
+      const dispatchFetchTopic = () => dispatch(fetchTopic(topic));
+      dispatchFetchTopic();
+    }
+  }, [programReducer.isLoading,topic]);
+
   useEffect(() => {
     if (!programReducer.isLoading && programReducer.program) {
-  
-      const dispatchFetchVideos = (search) => dispatch(fetchVideos(search));
-      dispatchFetchVideos(location?.state?.search);
+      if (!topic) {
+        const dispatchFetchVideos = (search) => dispatch(fetchVideos(search));
+        dispatchFetchVideos(location?.state?.search);
+
+      }
     }
   }, [programReducer.isLoading]);
+
+  useEffect(() => {
+    if (!topicReducer.isLoading && topicReducer.topic) {
+      const dispatchFetchTopicVideos = (search) => dispatch(fetchVideosTopic(search));
+      dispatchFetchTopicVideos(location?.state?.search);
+    }
+  }, [topicReducer.isLoading]);
+
   const [videosSearch, setVideosSearch] = useState(location?.state?.search);
-  // useEffect(() => {
-  //   if (!programReducer.isLoading && programReducer.program) {
-  //     const dispatchFetchVideos = (search) => dispatch(fetchVideos(search));
-  //     dispatchFetchVideos(search);
-  //   }
-  // }, [search, programReducer.isLoading]);
+
+
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    const dispatchFetchVideos = (videosSearch) => dispatch(fetchVideos(videosSearch));
-    dispatchFetchVideos(videosSearch);
+    if (topic) {
+      const dispatchFetchTopicVideos = (videosSearch) => dispatch(fetchVideosTopic(videosSearch));
+      dispatchFetchTopicVideos(videosSearch);
+    }else{
+      const dispatchFetchVideos = (videosSearch) => dispatch(fetchVideos(videosSearch));
+      dispatchFetchVideos(videosSearch);
+
+    }
   };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
@@ -50,6 +73,13 @@ export default function Videos() {
     const dispatchFetchVideosPagination = (url) =>
       dispatch(fetchVideosPagination(url));
     dispatchFetchVideosPagination(url);
+  };
+  const handleChangePageTopic = (url) => {
+    main.current.scrollTo(0, 0);
+
+    const dispatchFetchVideosTopicPagination = (url) =>
+      dispatch(fetchVideosTopicPagination(url));
+    dispatchFetchVideosTopicPagination(url);
   };
   return (
     <>
@@ -69,13 +99,84 @@ export default function Videos() {
           <div className="row">
             <div className="col-12">
               <GridVideos>
-                {videosReducer.videos &&
-                  videosReducer.videos.results.map((video) => (
-                    <div key={video.id}>
+                {topic ?
+                  <>
+                  {videosTopicReducer.videos &&
+                    videosTopicReducer.videos.results.map((video_topic) => (
+                      <div key={video_topic.video.id}>
+                      <Video video={video_topic.video} />
+                      </div>
+                      ))}
+                  </>
+                  :
+                  <>
+                  {videosReducer.videos &&
+                    videosReducer.videos.results.map((video) => (
+                      <div key={video.id}>
                       <Video video={video} />
-                    </div>
-                  ))}
+                      </div>
+                      ))}
+                    </>
+                  }
               </GridVideos>
+              {topic ? 
+              <>
+              {videosTopicReducer.isLoading && <span>Cargando...</span>}
+              {videosTopicReducer.videos &&
+                (videosTopicReducer.videos.previous ||
+                  videosTopicReducer.videos.next) && (
+                  <div className="d-flex justify-content-center my-5">
+                    {videosTopicReducer.videos.previous ? (
+                      <IconContext.Provider
+                        value={{
+                          size: 50,
+                          className: "cursor-pointer",
+                        }}
+                      >
+                        <IoIosArrowDropleft
+                          onClick={() =>
+                            handleChangePageTopic(videosTopicReducer.videos.previous)
+                          }
+                        />
+                      </IconContext.Provider>
+                    ) : (
+                      <IconContext.Provider
+                        value={{
+                          size: 50,
+                          color: "#a1a1a1",
+                        }}
+                      >
+                        <IoIosArrowDropleft />
+                      </IconContext.Provider>
+                    )}
+                    {videosTopicReducer.videos.next ? (
+                      <IconContext.Provider
+                        value={{
+                          size: 50,
+                          className: "cursor-pointer",
+                        }}
+                      >
+                        <IoIosArrowDropright
+                          onClick={() =>
+                            handleChangePageTopic(videosTopicReducer.videos.next)
+                          }
+                        />
+                      </IconContext.Provider>
+                    ) : (
+                      <IconContext.Provider
+                        value={{
+                          size: 50,
+                          color: "#a1a1a1",
+                        }}
+                      >
+                        <IoIosArrowDropright />
+                      </IconContext.Provider>
+                    )}
+                  </div>
+                )}
+              </>
+              :
+              <>
               {videosReducer.isLoading && <span>Cargando...</span>}
               {videosReducer.videos &&
                 (videosReducer.videos.previous ||
@@ -129,6 +230,10 @@ export default function Videos() {
                     )}
                   </div>
                 )}
+              </>
+
+              }
+             
             </div>
           </div>
         </ContainerWrapper>

@@ -14,23 +14,36 @@ const MainProgramInfo = (props) => {
   const {search, handleSearchSubmit} = props
   return (  
     <>
-      <div className="p-2">
-        <div className="w-100 text-white d-flex justify-content-between align-items-center">
-          <MainInfo className="d-flex flex-column justify-content-center">
-            <h2 className="text-break">{programObject && programObject.title}</h2>
-            {/* <span>{program && program.subtitle}</span> */}
-          </MainInfo>
-          <SearchBar
-              placeholder="Busqueda general"
-              search={search}
-              onSubmit={handleSearchSubmit}
-          />
+            <MainProgramContainer style={{background: "linear-gradient(45deg,#2e6a89,#56b389)"}}>
+            <div className="container">
+              <div className="mx-auto">
+             
+                <div className="p-2">
+                  <div className="w-100 text-white d-flex justify-content-between align-items-center">
+                    <MainInfo className="d-flex flex-column justify-content-center">
+                      <h2 className="text-break">{programObject && programObject.title}</h2>
+                      {/* <span>{program && program.subtitle}</span> */}
+                    </MainInfo>
+                    <SearchBar
+                        placeholder="Busqueda general"
+                        search={search}
+                        onSubmit={handleSearchSubmit}
+                        />
 
-        </div>
-      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </MainProgramContainer>
     </>
   );
 };
+const MainProgramContainer = styled.div`
+
+  padding: 2rem;
+`;
+
+
 export const ProfileImgDiv = styled.div`
   height: 100px;
   width: 100px;

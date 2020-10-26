@@ -18,6 +18,7 @@ import SearchElementCard from "../components/AdminAcademy/SearchElementCard";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { useRef } from "react";
 import { fetchTopics, fetchTopicsPagination } from "../redux/actions/topics/topics";
+import VideoPlayer from "src/components/ui/VideoPlayer";
 
 export default function Home() {
   const history = useHistory();
@@ -54,28 +55,32 @@ export default function Home() {
   const handleSearchSubmit = () =>{
     history.push({pathname: `/academy/${program}/search`, state: {search: search}})
   }
+  const [isPlaying, setIsPlaying] = useState(false)
   return (
     !programReducer.isLoading && (
       <>
         <Main className="text-grey">
-          <MainProgramContainer>
-            <div className="container">
-              <div className="mx-auto">
+
                 <MainProgramInfo 
                     search={{search: search, setSearch: setSearch}}
                     handleSearchSubmit={handleSearchSubmit} 
                 />
-              </div>
-            </div>
-          </MainProgramContainer>
+
 
           
           <ImgContainer>
-            <div className="img-content">
+          {isPlaying ? 
+                 <>
+                  <VideoPlayer video={{video:programReducer.program.video_presentation}} />
+          
+                </>
+                :
+                <>
+            <div className="img-content" onClick={()=>setIsPlaying(true)}>
               <IconContext.Provider
 
-                value={{
-                  className: "position-absolute cursor-pointer",
+              value={{
+                className: "position-absolute cursor-pointer",
                   color: "#fff",
                   style: {
                     left: "0",
@@ -87,7 +92,7 @@ export default function Home() {
                     zIndex: "100",
                   },
                 }}
-              >
+                >
                 <div>
                   <FaRegPlayCircle />
                 </div>
@@ -95,6 +100,8 @@ export default function Home() {
               <small>Ver video presentación</small>
             </div>
             <img className="img-video" src={programReducer.program && programReducer.program.picture} />
+             </>
+             }
           </ImgContainer>
           <div className="container mt-5">
             <GridElements className="">
@@ -195,11 +202,6 @@ justify-content: center;
   }
 `;
 
-const MainProgramContainer = styled.div`
-  background: var(--darkgray);
-  padding: 2rem;
-`;
-
 
 const ImgContainer = styled.div`
     max-width:50rem;
@@ -231,23 +233,6 @@ const ImgContainer = styled.div`
       filter: brightness(50%);
     }
 `;
-const BadgesContainer = styled.div`  
-  display: flex;
-  flex-flow: wrap;
-`;
-const Badge = styled.div`
-  cursor:pointer;
-  padding:1rem;
-  color: #323840;
-  width: max-content;
-  border-radius: 2rem;
-  overflow: hidden;
-  margin: 1rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-  &:hover img {
-    transform: scale(1.03);
-  }
-`
 
 const TopicsContainer = styled.div`  
   display: grid;

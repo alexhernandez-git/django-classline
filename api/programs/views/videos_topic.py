@@ -42,7 +42,7 @@ class VideoTopicViewSet(mixins.CreateModelMixin,
     serializer_class = VideoTopicModelSerializer
     lookup_field = 'pk'
     filter_backends = [SearchFilter]
-    search_fields = ['topic__title', 'topic__description']
+    search_fields = ['video__title', 'video__description']
 
     def get_queryset(self):
         """Restrict list to public-only."""

@@ -7,14 +7,13 @@ import { IconContext } from "react-icons/lib";
 import SearchBar from "./SearchBar";
 
 const TopicBanner = (props) => {
-  const [search, setSearch] = useState("")
-  const {searchBar} = props
+  const {searchBar, search, handleSearchSubmit} = props
   const topicReducer = useSelector(
     (state) => state.topicReducer
   );
   return (
     <>
-      <TopicBannerContainer style={{background: "#56b389"}}>
+        <TopicBannerContainer style={{background: "linear-gradient(45deg,#2e6a89,#56b389)"}}>
             <div className="container">
               <div className="mx-auto">
 
@@ -28,7 +27,7 @@ const TopicBanner = (props) => {
                     <SearchBar
                     placeholder={"Busqueda"}
                     search={search}
-                    setSearch={setSearch}
+                    onSubmit={handleSearchSubmit}
                     />
                   }
                 </div>

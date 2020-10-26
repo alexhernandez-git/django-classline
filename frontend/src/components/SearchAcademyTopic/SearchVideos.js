@@ -56,7 +56,7 @@ const SearchVideos = () => {
 
         </div>
         <Slider {...settings}>
-          {videosTopicReducer.videos.results &&
+          {videosTopicReducer.videos &&
             videosTopicReducer.videos.results.map((video_topic) => (
               <div className="p-2" key={video_topic.id}>
                 <Video video={video_topic.video} />
