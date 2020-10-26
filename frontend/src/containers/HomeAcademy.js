@@ -66,7 +66,23 @@ export default function Home() {
                     handleSearchSubmit={handleSearchSubmit} 
                 />
 
+          <div className="container mt-5">
+            <GridElements className="">
+              <SearchElementCard 
+                searchVideos 
+                search={{search: searchVideos, setSearch: setSearchVideos}}
+              />  
+              <SearchElementCard 
+                searchPlaylists
+                search={{search: searchPlaylists, setSearch: setSearchPlaylists}}
+              />
+              <SearchElementCard 
+                searchPodcasts
+                search={{search: searchPodcasts, setSearch: setSearchPodcasts}}
+              />
 
+            </GridElements>
+          </div>
           
           <ImgContainer>
           {programReducer.program.video_presentation ? 
@@ -110,23 +126,7 @@ export default function Home() {
 
           }
           </ImgContainer>
-          <div className="container mt-5">
-            <GridElements className="">
-              <SearchElementCard 
-                searchVideos 
-                search={{search: searchVideos, setSearch: setSearchVideos}}
-              />  
-              <SearchElementCard 
-                searchPlaylists
-                search={{search: searchPlaylists, setSearch: setSearchPlaylists}}
-              />
-              <SearchElementCard 
-                searchPodcasts
-                search={{search: searchPodcasts, setSearch: setSearchPodcasts}}
-              />
-
-            </GridElements>
-          </div>
+      
           {topicsReducer.topics && topicsReducer.topics.results && topicsReducer.topics.results.length > 0 && 
             <div className="container">
               <div className="border-bottom mb-3 pb-2 text-center">
