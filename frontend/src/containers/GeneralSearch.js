@@ -9,7 +9,7 @@ import { fetchVideos } from "src/redux/actions/videos";
 import { fetchPlaylists } from "src/redux/actions/courses";
 import { fetchPodcasts } from "src/redux/actions/podcasts";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { IconContext } from "react-icons/lib";
 import { BsFillCollectionPlayFill } from "react-icons/bs";
 import { FaListUl, FaPodcast, FaRegPlayCircle, FaSearch } from "react-icons/fa";
@@ -20,7 +20,8 @@ import SearchPodcasts from "src/components/SearchAcademy/SearchPodcasts";
 import SearchPlaylists from "src/components/SearchAcademy/SearchPlaylists";
 export default function GeneralSearch() {
   const history = useHistory();
-  const { program, search } = useParams();
+  const { program } = useParams();
+  const {search} = useLocation().state
   const authReducer = useSelector((state) => state.authReducer);
   // useEffect(() => {
   //   console.log("isloading", authReducer.isLoading);
@@ -38,7 +39,6 @@ export default function GeneralSearch() {
     const dispatchFetchPodcasts = (generalSearch) =>
       dispatch(fetchPodcasts(generalSearch));
     dispatchFetchPodcasts(generalSearch);
-    history.push(`/academy/${program}/search/${generalSearch}`)
 
   }
   const dispatch = useDispatch();

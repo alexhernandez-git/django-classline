@@ -6,18 +6,32 @@ import { BsFillCollectionPlayFill } from "react-icons/bs";
 import { FaListUl, FaPodcast, FaSearch } from "react-icons/fa";
 import React, { useState,useRef} from "react";
 import useOutsideClick from "../../hooks/useOutsideClick";
-import { Link, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import SearchBar from "../ui/SearchBar";
-
+import {useSelector} from "react-redux"
 
 const SearchElementCard = (props) => {
   const [active, setActive] = useState(false)
   const {program} = useParams()
+  const history = useHistory()
   const ref = useRef();
-  const {searchVideos, searchPlaylists, searchPodcasts, search} = props
+  const {searchVideos, searchPlaylists, searchPodcasts} = props
+  const topicsReducer = useSelector(state => state.topicsReducer)
   useOutsideClick(ref, () => {
     setActive(false)
   });
+  const [search, setSearch] = useState("")
+  const handleSearchSubmit = () =>{
+    if (searchVideos) {
+      history.push({pathname: `/academy/${program}/videos`, state: {search: search}})
+    }
+    if (searchPlaylists) {
+      history.push({pathname: `/academy/${program}/playlists`, state: {search: search}}) 
+    }
+    if (searchPodcasts) {
+      history.push({pathname: `/academy/${program}/podcasts`, state: {search: search}})
+    }
+  }
   return (
     <Element onClick={()=>setActive(true)} ref={ref}>
       {searchVideos && 
@@ -60,39 +74,29 @@ const SearchElementCard = (props) => {
         <div className="hidden-div">
         <SearchBar
             placeholder={searchVideos && "Buscar en Videos" || 
-            searchPlaylists && "Buscar en Playlists" || 
-            searchPodcasts && "Buscar en Podcasts"}
-            search={search}
+                        searchPlaylists && "Buscar en Playlists" || 
+                        searchPodcasts && "Buscar en Podcasts"}
+            search={{search: search, setSearch: setSearch}}
+            onSubmit={handleSearchSubmit} 
           />
         
           <div className="div-results">
             <BadgesContainer>
-                <Link to={`/academy/${program}/fewefwafeaw/${searchVideos && "videos" || searchPlaylists && "playlists" || searchPodcasts && "podcasts"}`}>
-                  <Badge>
-                    <small>
-                        Comida sana
-                    </small>
-                  </Badge>
-                </Link>
-                <Link to={`/academy/${program}/fewefwafeaw/${searchVideos && "videos" || searchPlaylists && "playlists" || searchPodcasts && "podcasts"}`}>
-                  <Badge>
-                    <small>
-                        Yoga
-                    </small>
-                  </Badge>
-                </Link>
-                <Link to={`/academy/${program}/fewefwafeaw/${searchVideos && "videos" || searchPlaylists && "playlists" || searchPodcasts && "podcasts"}`}>
-                  <Badge>
-                    <small>
-                        Meditación
-                    </small>
-                  </Badge>
-                </Link>
-              
-            </BadgesContainer>
-          </div>
+                {topicsReducer.topics && topicsReducer.topics.results.map(topic =>(
+                    <Link key={topic.id} to={`/academy/${program}/${topic.code}/${searchVideos && "videos" || searchPlaylists && "playlists" || searchPodcasts && "podcasts"}`}>
+                      <Badge>
+                        <small css={textEllipsis}>
+                            {topic.name && topic.name}
+                        </small>
+                      </Badge>
+                    </Link>
+                    )
+                  )}
+
+              </BadgesContainer>
+              </div>
         </div>
-        }
+      }
     </Element>
   );
 };
@@ -148,36 +152,7 @@ cursor:pointer;
     }
   }
 `
-const Search = styled.div`
-  display: flex;
-  justify-content: center;
-  input{
-    padding:1rem 1rem 1rem 2rem;
 
-    max-width:30rem;
-    width: 100%;
-    display: block;
-    border-radius: 2rem 0 0 2rem;
-
-    overflow: hidden;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-    border:none;
-  }
-  button{
-    padding:1rem;
-    max-width:5rem;
-    width: 100%;
-    display: block;
-    border-radius: 0 2rem  2rem 0;
-    overflow: hidden;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-    border:none;
-  }
-  button:hover{
-    opacity: 0.7;
-  }
-
-`
 const BadgesContainer = styled.div`  
   display: flex;
   flex-flow: wrap;

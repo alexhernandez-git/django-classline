@@ -38,14 +38,11 @@ const Topic = styled.div`
   border-radius: 1rem;
   overflow: hidden;
   max-width: 25.7rem;
-  margin: 1rem;
+  margin: auto;
+
   box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
   &:hover img {
     transform: scale(1.03);
-  }
-  @media screen and (max-width: 480px) {
-    margin: 0 0 1rem;
-
   }
 `
 

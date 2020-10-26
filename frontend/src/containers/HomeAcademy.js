@@ -13,7 +13,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { IconContext } from "react-icons/lib";
 import { BsFillCollectionPlayFill } from "react-icons/bs";
 import { FaListUl, FaPodcast, FaRegPlayCircle, FaSearch } from "react-icons/fa";
-import TopicCard from "../components/AdminAcademy/TopicCard";
+import TopicCard from "../components/TopicAcademy/TopicCard";
 import SearchElementCard from "../components/AdminAcademy/SearchElementCard";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { useRef } from "react";
@@ -52,7 +52,7 @@ export default function Home() {
   }, [programReducer.isLoading]);
   const [search, setSearch] = useState("")
   const handleSearchSubmit = () =>{
-    history.push(`/academy/${program}/search/${search}`)
+    history.push({pathname: `/academy/${program}/search`, state: {search: search}})
   }
   return (
     !programReducer.isLoading && (
@@ -250,8 +250,18 @@ const Badge = styled.div`
 `
 
 const TopicsContainer = styled.div`  
-  flex-flow: wrap;
-  margin-bottom: 2rem;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-gap: 4rem 2rem;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (max-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;

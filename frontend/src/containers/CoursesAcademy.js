@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Padding } from "../components/ui/Padding";
 import TopicBanner from "../components/ui/TopicBanner";
 const playlists = () => {
@@ -19,19 +19,20 @@ const playlists = () => {
   const coursesReducer = useSelector((state) => state.coursesReducer);
   const programReducer = useSelector((state) => state.programReducer);
   const {topic } = useParams()
+  const location = useLocation()
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (!programReducer.isLoading && programReducer.program) {
-      const dispatchFetchPlaylists = () => dispatch(fetchPlaylists());
-      dispatchFetchPlaylists();
+      const dispatchFetchPlaylists = (search) => dispatch(fetchPlaylists(search));
+      dispatchFetchPlaylists(location?.state?.search);
     }
   }, [programReducer.isLoading]);
-  const [search, setSearch] = useState("");
+  const [coursesSearch, setCoursesSearch] = useState(location?.state?.search);
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    const dispatchFetchPlaylists = (search) => dispatch(fetchPlaylists(search));
-    dispatchFetchPlaylists(search);
+    const dispatchFetchPlaylists = (coursesSearch) => dispatch(fetchPlaylists(coursesSearch));
+    dispatchFetchPlaylists(coursesSearch);
   };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
@@ -51,7 +52,7 @@ const playlists = () => {
       <Filters
         title="Playlists"
         placeholder={"Buscar playlists"}
-        search={{ search: search, setSearch: setSearch }}
+        search={{ search: coursesSearch, setSearch: setCoursesSearch }}
         onSubmit={handleSubmitSearch}
       />
 

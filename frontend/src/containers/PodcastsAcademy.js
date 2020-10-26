@@ -23,9 +23,8 @@ import TopicBanner from "../components/ui/TopicBanner";
 import { Padding } from "../components/ui/Padding";
 
 const Podcasts = () => {
-  const { pathname } = useLocation();
+  const  { pathname, state } = useLocation();
   const {topic } = useParams()
-
   const main = useRef();
   const podcastsReducer = useSelector((state) => state.podcastsReducer);
 
@@ -35,8 +34,8 @@ const Podcasts = () => {
 
   useEffect(() => {
     if (!programReducer.isLoading && programReducer.program) {
-      const dispatchFetchPodcasts = () => dispatch(fetchPodcasts());
-      dispatchFetchPodcasts();
+      const dispatchFetchPodcasts = (search) => dispatch(fetchPodcasts(search));
+      dispatchFetchPodcasts(location?.state?.search);
     }
   }, [programReducer.isLoading]);
   const handlePlay = (podcast) => {
@@ -51,11 +50,11 @@ const Podcasts = () => {
       dispatchStopPodcast();
     }
   };
-  const [search, setSearch] = useState("");
+  const [podcastsSearch, setPodcastsSearch] = useState(state?.search);
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    const dispatchFetchPodcasts = (search) => dispatch(fetchPodcasts(search));
-    dispatchFetchPodcasts(search);
+    const dispatchFetchPodcasts = (podcastsSearch) => dispatch(fetchPodcasts(podcastsSearch));
+    dispatchFetchPodcasts(podcastsSearch);
   };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
@@ -96,7 +95,7 @@ const Podcasts = () => {
       <Filters
         title="Podcasts"
         placeholder={"Buscar Podcasts"}
-        search={{ search: search, setSearch: setSearch }}
+        search={{ search: podcastsSearch, setSearch: setPodcastsSearch }}
         onSubmit={handleSubmitSearch}
       />
 

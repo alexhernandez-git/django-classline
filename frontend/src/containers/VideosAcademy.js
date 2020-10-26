@@ -10,7 +10,7 @@ import { Padding } from "src/components/ui/Padding";
 import { fetchVideos, fetchVideosPagination } from "src/redux/actions/videos";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
 import ContainerWrapper from "src/components/ui/Container";
@@ -20,25 +20,19 @@ export default function Videos() {
   const main = useRef();
   const videosReducer = useSelector((state) => state.videosReducer);
   const {topic } = useParams()
-  const [categoriesOpen, setCategoriesOpen] = useState(false);
-  const handleOpenCategories = () => {
-    setCategoriesOpen((CategoriesOpen) => {
-      if (CategoriesOpen) {
-        return false;
-      } else {
-        return true;
-      }
-    });
-  };
+  const location = useLocation()
+  console.log(location)
+
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
   useEffect(() => {
     if (!programReducer.isLoading && programReducer.program) {
-      const dispatchFetchVideos = () => dispatch(fetchVideos());
-      dispatchFetchVideos();
+  
+      const dispatchFetchVideos = (search) => dispatch(fetchVideos(search));
+      dispatchFetchVideos(location?.state?.search);
     }
   }, [programReducer.isLoading]);
-  const [search, setSearch] = useState("");
+  const [videosSearch, setVideosSearch] = useState(location?.state?.search);
   // useEffect(() => {
   //   if (!programReducer.isLoading && programReducer.program) {
   //     const dispatchFetchVideos = (search) => dispatch(fetchVideos(search));
@@ -47,8 +41,8 @@ export default function Videos() {
   // }, [search, programReducer.isLoading]);
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    const dispatchFetchVideos = (search) => dispatch(fetchVideos(search));
-    dispatchFetchVideos(search);
+    const dispatchFetchVideos = (videosSearch) => dispatch(fetchVideos(videosSearch));
+    dispatchFetchVideos(videosSearch);
   };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
@@ -68,7 +62,7 @@ export default function Videos() {
         <Filters
           title="Videos"
           placeholder={"Buscar Videos"}
-          search={{ search: search, setSearch: setSearch }}
+          search={{ search: videosSearch, setSearch: setVideosSearch }}
           onSubmit={handleSubmitSearch}
         />
         <ContainerWrapper>
