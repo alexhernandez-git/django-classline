@@ -127,71 +127,72 @@ export default function Home() {
 
             </GridElements>
           </div>
-          <div className="container">
-            <div className="border-bottom mb-3 pb-2 text-center">
-              <span>Temas</span>
+          {topicsReducer.topics && topicsReducer.topics.results && topicsReducer.topics.results.length > 0 && 
+            <div className="container">
+              <div className="border-bottom mb-3 pb-2 text-center">
+                <span>Temas</span>
+              </div>
+              <TopicsContainer ref={main}>
+                {topicsReducer.topics &&
+                    topicsReducer.topics.results.map((topic) => (
+                      <TopicCard key={topic.id} topic={topic} />
+                  ))}
+              </TopicsContainer>
+              {topicsReducer.isLoading && <span>Cargando...</span>}
+                {topicsReducer.topics &&
+                  (topicsReducer.topics.previous ||
+                    topicsReducer.topics.next) && (
+                    <div className="d-flex justify-content-center my-5">
+                      {topicsReducer.topics.previous ? (
+                        <IconContext.Provider
+                          value={{
+                            size: 50,
+                            className: "cursor-pointer",
+                          }}
+                        >
+                          <IoIosArrowDropleft
+                            onClick={() =>
+                              handleChangePage(topicsReducer.topics.previous)
+                            }
+                          />
+                        </IconContext.Provider>
+                      ) : (
+                        <IconContext.Provider
+                          value={{
+                            size: 50,
+                            color: "#a1a1a1",
+                          }}
+                        >
+                          <IoIosArrowDropleft />
+                        </IconContext.Provider>
+                      )}
+                      {topicsReducer.topics.next ? (
+                        <IconContext.Provider
+                          value={{
+                            size: 50,
+                            className: "cursor-pointer",
+                          }}
+                        >
+                          <IoIosArrowDropright
+                            onClick={() =>
+                              handleChangePage(topicsReducer.topics.next)
+                            }
+                          />
+                        </IconContext.Provider>
+                      ) : (
+                        <IconContext.Provider
+                          value={{
+                            size: 50,
+                            color: "#a1a1a1",
+                          }}
+                        >
+                          <IoIosArrowDropright />
+                        </IconContext.Provider>
+                      )}
+                    </div>
+                  )}
             </div>
-            <TopicsContainer ref={main}>
-              {topicsReducer.topics &&
-                  topicsReducer.topics.results.map((topic) => (
-                    <TopicCard key={topic.id} topic={topic} />
-                ))}
-            </TopicsContainer>
-            {topicsReducer.isLoading && <span>Cargando...</span>}
-              {topicsReducer.topics &&
-                (topicsReducer.topics.previous ||
-                  topicsReducer.topics.next) && (
-                  <div className="d-flex justify-content-center my-5">
-                    {topicsReducer.topics.previous ? (
-                      <IconContext.Provider
-                        value={{
-                          size: 50,
-                          className: "cursor-pointer",
-                        }}
-                      >
-                        <IoIosArrowDropleft
-                          onClick={() =>
-                            handleChangePage(topicsReducer.topics.previous)
-                          }
-                        />
-                      </IconContext.Provider>
-                    ) : (
-                      <IconContext.Provider
-                        value={{
-                          size: 50,
-                          color: "#a1a1a1",
-                        }}
-                      >
-                        <IoIosArrowDropleft />
-                      </IconContext.Provider>
-                    )}
-                    {topicsReducer.topics.next ? (
-                      <IconContext.Provider
-                        value={{
-                          size: 50,
-                          className: "cursor-pointer",
-                        }}
-                      >
-                        <IoIosArrowDropright
-                          onClick={() =>
-                            handleChangePage(topicsReducer.topics.next)
-                          }
-                        />
-                      </IconContext.Provider>
-                    ) : (
-                      <IconContext.Provider
-                        value={{
-                          size: 50,
-                          color: "#a1a1a1",
-                        }}
-                      >
-                        <IoIosArrowDropright />
-                      </IconContext.Provider>
-                    )}
-                  </div>
-                )}
-          </div>
-
+          }
         </Main>
       </>
     )

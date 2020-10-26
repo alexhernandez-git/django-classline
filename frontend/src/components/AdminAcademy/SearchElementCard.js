@@ -79,11 +79,11 @@ const SearchElementCard = (props) => {
             search={{search: search, setSearch: setSearch}}
             onSubmit={handleSearchSubmit} 
           />
-        
+          {topicsReducer.topics && topicsReducer.topics.results && topicsReducer.topics.results.length > 0 && 
           <div className="div-results">
             <BadgesContainer>
-                {topicsReducer.topics && topicsReducer.topics.results.map(topic =>(
-                    <Link key={topic.id} to={`/academy/${program}/${topic.code}/${searchVideos && "videos" || searchPlaylists && "playlists" || searchPodcasts && "podcasts"}`}>
+                {topicsReducer.topics.results.map(topic =>(
+                  <Link key={topic.id} to={`/academy/${program}/${topic.code}/${searchVideos && "videos" || searchPlaylists && "playlists" || searchPodcasts && "podcasts"}`}>
                       <Badge>
                         <small css={textEllipsis}>
                             {topic.name && topic.name}
@@ -91,10 +91,11 @@ const SearchElementCard = (props) => {
                       </Badge>
                     </Link>
                     )
-                  )}
+                    )}
 
               </BadgesContainer>
-              </div>
+            </div>
+          }
         </div>
       }
     </Element>
