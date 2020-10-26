@@ -69,18 +69,20 @@ export default function Home() {
 
           
           <ImgContainer>
-          {isPlaying ? 
-                 <>
-                  <VideoPlayer video={{video:programReducer.program.video_presentation}} />
-          
+          {programReducer.program.video_presentation ? 
+          <>
+              {isPlaying ? 
+                <>
+                <VideoPlayer video={{video:programReducer.program.video_presentation}} />
+                
                 </>
                 :
                 <>
             <div className="img-content" onClick={()=>setIsPlaying(true)}>
               <IconContext.Provider
 
-              value={{
-                className: "position-absolute cursor-pointer",
+                value={{
+                  className: "position-absolute cursor-pointer",
                   color: "#fff",
                   style: {
                     left: "0",
@@ -102,6 +104,11 @@ export default function Home() {
             <img className="img-video" src={programReducer.program && programReducer.program.picture} />
              </>
              }
+             </>
+             :
+            <img className="img-picture" src={programReducer.program && programReducer.program.picture} />
+
+          }
           </ImgContainer>
           <div className="container mt-5">
             <GridElements className="">
@@ -231,6 +238,15 @@ const ImgContainer = styled.div`
       box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
       border:none;
       filter: brightness(50%);
+    }
+    .img-picture{
+      z-index: 1;
+      width: 100%;
+      display: block;
+      border-radius: 2rem;
+      overflow: hidden;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+      border:none;
     }
 `;
 
