@@ -199,7 +199,7 @@ export default function Home() {
           :
           <div className="m-5 d-flex"></div>
           }
-          {programReducer.program.are_videos || programReducer.program.are_admin_playlists || programReducer.program.are_podcasts && 
+          {(programReducer.program.are_videos || programReducer.program.are_admin_playlists || programReducer.program.are_podcasts) && 
             <>
             {topicsReducer.topics && topicsReducer.topics.results && topicsReducer.topics.results.length > 0 && 
               <div className="container">

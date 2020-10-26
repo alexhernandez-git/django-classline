@@ -24,7 +24,7 @@ const MainProgramInfo = (props) => {
                       <h2 className="text-break">{programObject && programObject.title}</h2>
                       {/* <span>{program && program.subtitle}</span> */}
                     </MainInfo>
-                    {programObject.are_videos || programObject.are_admin_playlists || programObject.are_podcasts && 
+                    {(programObject.are_videos || programObject.are_admin_playlists || programObject.are_podcasts) && 
                     <>
                         <div className="d-block d-sm-none m-3"></div>
 
