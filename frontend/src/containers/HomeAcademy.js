@@ -9,16 +9,17 @@ import { fetchPopularVideos } from "src/redux/actions/popularVideos";
 import { fetchPopularPlaylists } from "src/redux/actions/popularPlaylists";
 import { fetchPopularPodcasts } from "src/redux/actions/popularPodcasts";
 import { useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { IconContext } from "react-icons/lib";
 import { BsFillCollectionPlayFill } from "react-icons/bs";
-import { FaListUl, FaPodcast, FaRegPlayCircle, FaSearch } from "react-icons/fa";
+import { FaListUl, FaPodcast, FaRegCalendarAlt, FaRegPlayCircle, FaSearch } from "react-icons/fa";
 import TopicCard from "../components/TopicAcademy/TopicCard";
 import SearchElementCard from "../components/AdminAcademy/SearchElementCard";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { useRef } from "react";
 import { fetchTopics, fetchTopicsPagination } from "../redux/actions/topics/topics";
 import VideoPlayer from "src/components/ui/VideoPlayer";
+import { MdFolder, MdFolderShared, MdForum } from "react-icons/md";
 
 export default function Home() {
   const history = useHistory();
@@ -68,18 +69,24 @@ export default function Home() {
 
           <div className="container mt-5">
             <GridElements className="">
-              <SearchElementCard 
+              {programReducer.program.are_videos &&
+                <SearchElementCard 
                 searchVideos 
                 search={{search: searchVideos, setSearch: setSearchVideos}}
-              />  
-              <SearchElementCard 
+                />  
+              }
+              {programReducer.program.are_admin_playlists && 
+                <SearchElementCard 
                 searchPlaylists
                 search={{search: searchPlaylists, setSearch: setSearchPlaylists}}
-              />
-              <SearchElementCard 
+                />
+              }
+              {programReducer.program.are_podcasts &&
+                <SearchElementCard 
                 searchPodcasts
                 search={{search: searchPodcasts, setSearch: setSearchPodcasts}}
-              />
+                />
+              }
 
             </GridElements>
           </div>
@@ -126,7 +133,72 @@ export default function Home() {
 
           }
           </ImgContainer>
-      
+          {(programReducer.program.are_meetups || programReducer.program.are_docs || programReducer.program.are_forum) ?
+            <ToolsList>
+             {programReducer.program.are_meetups && (
+
+               <Link
+                    to={`/academy/${program}/meetups`}
+                    >
+                    <Tool>
+                        <div className="d-flex flex-column justify-content-center align-items-center">
+                          <IconContext.Provider
+                            value={{
+                              size: 30,
+                              className: "cursor-pointer",
+                            }}
+                            >
+                            <FaRegCalendarAlt/>
+                          </IconContext.Provider>
+                          Eventos
+                        </div>
+                    </Tool>
+                  </Link>
+             )}
+              {programReducer.program.are_docs && (
+
+                <Link
+                to={`/academy/${program}/docs`}
+                >
+                  <Tool>
+                      <div className="d-flex flex-column justify-content-center align-items-center">
+                        <IconContext.Provider
+                          value={{
+                            size: 30,
+                            className: "cursor-pointer",
+                          }}
+                          >
+                          <MdFolder/>
+                        </IconContext.Provider>
+                        Recursos
+                      </div>
+                  </Tool>
+                  </Link>
+              )}
+              {programReducer.program.are_forum  && (
+                <Link
+                to={`/academy/${program}/forum`}
+                >
+                  <Tool>
+                      <div className="d-flex flex-column justify-content-center align-items-center">
+                        <IconContext.Provider
+                          value={{
+                            size: 30,
+                            className: "cursor-pointer",
+                          }}
+                          >
+                          <MdForum/>
+                        </IconContext.Provider>
+                        Foro
+                      </div>
+                  </Tool>
+                </Link>
+              )}
+            </ToolsList>
+            
+          :
+          <div className="m-5 d-flex"></div>
+          }
           {topicsReducer.topics && topicsReducer.topics.results && topicsReducer.topics.results.length > 0 && 
             <div className="container">
               <div className="border-bottom mb-3 pb-2 text-center">
@@ -267,3 +339,23 @@ const TopicsContainer = styled.div`
     grid-template-columns: repeat(1, 1fr);
   }
 `;
+
+const ToolsList = styled.div`  
+  max-width: 80rem;
+  margin: auto auto 3rem;
+  display: flex; 
+  justify-content:center;
+  flex-wrap: wrap;
+`;
+const Tool = styled.div`  
+  padding: 1rem;
+  border-radius: 50%;
+  align-items: center;
+    justify-content: center;
+    display: flex;
+  width: 10rem;
+  height:10rem;
+  color: #606060!important;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  margin: 1rem;
+`

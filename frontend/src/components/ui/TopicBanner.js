@@ -18,7 +18,7 @@ const TopicBanner = (props) => {
               <div className="mx-auto">
 
               <div className="p-4">
-                <div className="w-100 text-white d-flex justify-content-between align-items-center">
+                <div className="w-100 text-white d-sm-flex justify-content-between align-items-center">
                   <MainInfo className="d-flex flex-column justify-content-center">
                     <h2 className="text-break">{topicReducer.topic && topicReducer.topic.name}</h2>
                     {/* <span>{program && program.subtitle}</span> */}

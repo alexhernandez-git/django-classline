@@ -311,7 +311,6 @@ const Sidebar = (props) => {
             </Link>
           )}
 
-          <hr />
           {programReducer.program.are_forum  && (
             <Link
               to={
@@ -331,6 +330,8 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
+          <hr />
+
           {programReducer.program.are_videos  && (
             <Link
               to={            
