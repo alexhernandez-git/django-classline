@@ -15,7 +15,7 @@ const TopicBanner = (props) => {
 
   return (
     <>
-        <TopicBannerContainer style={{background:topicReducer.topic.color ? topicReducer.topic.color : "#757575"}}>
+        <TopicBannerContainer style={{background:topicReducer.topic.color ? topicReducer.topic.color : "#323840"}}>
             <div className="container">
               <div className="mx-auto">
 

@@ -14,7 +14,7 @@ const MainProgramInfo = (props) => {
   const {search, handleSearchSubmit} = props
   return (  
     <>
-            <MainProgramContainer style={{background: programObject.brand_color ? programObject.brand_color : "#757575"}}>
+            <MainProgramContainer style={{background: programObject.brand_color ? programObject.brand_color : "#323840"}}>
             <div className="container">
               <div className="mx-auto">
              
