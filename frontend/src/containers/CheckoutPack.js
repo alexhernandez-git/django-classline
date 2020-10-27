@@ -38,9 +38,9 @@ const CheckoutPack = (props) => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const handleSubmit = async (pack) => {
+  const handleSubmit = async (e) => {
     // Block native form submission.
-    pack.prpackDefault();
+    e.preventDefault();
 
     if (!stripe || !elements) {
       // Stripe.js has not loaded yet. Make sure to disable
@@ -203,9 +203,7 @@ const CheckoutPack = (props) => {
                 to={`/pack/${program}/${buyPacksReducer.selected_pack.code}/videos`}
                 className="d-flex align-items-center w-100 justify-content-center my-button"
               >
-
-                      Ir al pack
-  
+                    Ir al pack
                 </Link>
               :
               <>
