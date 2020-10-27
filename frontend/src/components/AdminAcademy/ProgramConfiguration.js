@@ -259,7 +259,7 @@ const ProgramConfiguration = (props) => {
             <Col lg={{ offset: 1, span: 6 }}>
                 <ColorPickerDiv>
                   <DemoColor onClick={handleShowColor}>
-                    <div className="color-div" style={{background:brand_color}}>
+                    <div className="color-div" style={{background:brand_color ? brand_color : "#323840"}}>
                     </div>
                   </DemoColor>
                   <div ref={colorRef}>
@@ -267,7 +267,7 @@ const ProgramConfiguration = (props) => {
                       <div className="color-picker-div">
 
                         <SketchPicker
-                          color={{hex:brand_color}}
+                          color={{hex:brand_color ? brand_color : "#323840"}}
                           onChange={handleChangeComplete}
                           />
                       </div>

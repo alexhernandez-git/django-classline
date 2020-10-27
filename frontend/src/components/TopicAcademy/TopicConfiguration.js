@@ -82,7 +82,7 @@ const TopicConfiguration = (props) => {
             <Col lg={{ offset: 1, span: 6 }}>
                 <ColorPickerDiv>
                   <DemoColor onClick={handleShowColor}>
-                    <div className="color-div" style={{background:color}}>
+                    <div className="color-div" style={{background:color ? color : "#323840"}}>
                     </div>
                   </DemoColor>
                   <div ref={colorRef}>
@@ -90,7 +90,7 @@ const TopicConfiguration = (props) => {
                       <div className="color-picker-div">
 
                         <SketchPicker
-                          color={{hex:color}}
+                          color={{hex:color ? color : "#323840"}}
                           onChange={handleChangeComplete}
                           />
                       </div>
