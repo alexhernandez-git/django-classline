@@ -12,7 +12,7 @@ const TopicBanner = (props) => {
   );
   const programObject = useSelector((state) => state.programReducer.program);
 
-  return (
+  return topicReducer.topic &&(
     <>
         <TopicBannerContainer style={{background:topicReducer.topic.color ? topicReducer.topic.color : "#323840"}}>
             <div className="container">
