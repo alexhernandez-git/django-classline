@@ -16,8 +16,13 @@ import {
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Link, useHistory, useParams } from "react-router-dom";
+import styled from "@emotion/styled";
+import { SketchPicker } from "react-color";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
 const TopicConfiguration = (props) => {
+  const {color} = props.values
+  const {setFieldValue} = props
   const MySwal = withReactContent(Swal);
   const { program } = useParams();
   const dispatch = useDispatch();
@@ -42,12 +47,61 @@ const TopicConfiguration = (props) => {
       }
     });
   };
+  const handleChangeComplete = (color) => {
+    setFieldValue('color', color.hex)
+  };
+  const [showColor, setShowColor] = useState(false)
+  const handleCloseColor = () =>{
+    setShowColor(false)
+  }
+  const handleShowColor = ()=>{
+    setShowColor(true)
+  }
+  const colorRef = useRef()
+
+  useOutsideClick(colorRef, () => {
+    if (showColor) {
+      handleCloseColor(false)
+      
+    }
+  });
   return (
     <>
     
+        <div className="bg-white border p-3 rounded my-2 mb-4">
+        <span className="d-none d-md-block">Ponle un color al tema</span>
+
+          <Row className="">
+            <Col
+              lg={{ span: 4 }}
+              className="text-center d-lg-flex justify-content-end align-items-center"
+            >
+              <span className="m-0 font-weight-normal">Color</span>
+            </Col>
+
+            <Col lg={{ offset: 1, span: 6 }}>
+                <ColorPickerDiv>
+                  <DemoColor onClick={handleShowColor}>
+                    <div className="color-div" style={{background:color}}>
+                    </div>
+                  </DemoColor>
+                  <div ref={colorRef}>
+                    {showColor &&
+                      <div className="color-picker-div">
+
+                        <SketchPicker
+                          color={{hex:color}}
+                          onChange={handleChangeComplete}
+                          />
+                      </div>
+                    }
+                  </div>
+                </ColorPickerDiv>
+            </Col>
+          </Row>
+        </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Acciones</span>
-
       
         <Row className="mb-4">
           <Col
@@ -74,5 +128,31 @@ const TopicConfiguration = (props) => {
     </>
   );
 };
+const DemoColor = styled.div`
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  padding: 1rem;
+  max-width: 5rem;
+  border-radius: 1rem;
+  cursor:pointer;
+  .color-div{
+    padding: 1rem;
+  }
+  @media screen and (max-width: 991px) {
+  margin: auto;
+  }
+
+`
+const ColorPickerDiv = styled.div`
+  position: relative;
+  z-index: 50;
+  .color-picker-div{
+    position:absolute;
+    @media screen and (max-width: 991px) {
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+  }
+`
+
 
 export default TopicConfiguration;

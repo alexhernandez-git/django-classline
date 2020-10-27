@@ -46,6 +46,7 @@ const index = (props) => {
     are_forum: true,
     event_booking: false,
     event_booking_calendar: false,
+    brand_color: null
   });
   useEffect(() => {
     if (program) {
@@ -72,6 +73,7 @@ const index = (props) => {
         is_published: program.is_published,
         event_booking: program.event_booking,
         event_booking_calendar: program.event_booking_calendar,
+        brand_color: program.brand_color
       });
     }
   }, [program]);

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 
-import { Form, Row, Col } from "react-bootstrap";
+import { Form, Row, Col, Modal } from "react-bootstrap";
 
 import Select from "react-select";
 import Lenguages from "static/data/languages";
@@ -29,8 +29,13 @@ import {
 import Prices from "static/data/prices/eur_prices_program";
 import { Field } from "formik";
 import SelectPrice from "./SelectPrice";
+import { SketchPicker } from "react-color";
+import styled from "@emotion/styled";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
 const ProgramConfiguration = (props) => {
+  const {brand_color} = props.values
+  const {setFieldValue} = props
   const MySwal = withReactContent(Swal);
   const { program } = useParams();
   const dispatch = useDispatch();
@@ -114,6 +119,24 @@ const ProgramConfiguration = (props) => {
       }
     });
   };
+
+  const handleChangeComplete = (color) => {
+    setFieldValue('brand_color', color.hex)
+  };
+  const [showColor, setShowColor] = useState(false)
+  const handleCloseColor = () =>{
+    setShowColor(false)
+  }
+  const handleShowColor = ()=>{
+    setShowColor(true)
+  }
+  const colorRef = useRef()
+
+  useOutsideClick(colorRef, () => {
+    if (showColor) {
+      handleCloseColor(false)
+    }
+  });
   return (
     <>
       <div className="bg-white border p-3 rounded my-2 mb-4 pb-5">
@@ -222,6 +245,38 @@ const ProgramConfiguration = (props) => {
                     </Col>
                 </Row> */}
       </div>
+      <div className="bg-white border p-3 rounded my-2 mb-4">
+        <span className="d-none d-md-block">Ponle un color a tu programa</span>
+
+          <Row className="">
+            <Col
+              lg={{ span: 4 }}
+              className="text-center d-lg-flex justify-content-end align-items-center"
+            >
+              <span className="m-0 font-weight-normal">Color</span>
+            </Col>
+
+            <Col lg={{ offset: 1, span: 6 }}>
+                <ColorPickerDiv>
+                  <DemoColor onClick={handleShowColor}>
+                    <div className="color-div" style={{background:brand_color}}>
+                    </div>
+                  </DemoColor>
+                  <div ref={colorRef}>
+                    {showColor &&
+                      <div className="color-picker-div">
+
+                        <SketchPicker
+                          color={{hex:brand_color}}
+                          onChange={handleChangeComplete}
+                          />
+                      </div>
+                      }
+                    </div>
+                </ColorPickerDiv>
+            </Col>
+          </Row>
+        </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
       <span className="d-none d-md-block">Ponle un precio a tu programa</span>
 
@@ -496,5 +551,32 @@ const ProgramConfiguration = (props) => {
     </>
   );
 };
+
+const DemoColor = styled.div`
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  padding: 1rem;
+  max-width: 5rem;
+  border-radius: 1rem;
+  cursor:pointer;
+  .color-div{
+    padding: 1rem;
+  }
+  @media screen and (max-width: 991px) {
+  margin: auto;
+  }
+
+`
+const ColorPickerDiv = styled.div`
+  position: relative;
+  z-index: 50;
+  .color-picker-div{
+    position:absolute;
+    @media screen and (max-width: 991px) {
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+  }
+`
+
 
 export default ProgramConfiguration;

@@ -45,6 +45,7 @@ class ProgramTopicModelSerializer(serializers.ModelSerializer):
             'videos',
             'playlists',
             'podcasts',
+            'color',
         )
 
         read_only_fields = (
@@ -109,6 +110,7 @@ class ProgramTopicModifyModelSerializer(serializers.ModelSerializer):
             'videos',
             'playlists',
             'podcasts',
+            'color',
         )
 
         read_only_fields = (

@@ -14,7 +14,7 @@ const MainProgramInfo = (props) => {
   const {search, handleSearchSubmit} = props
   return (  
     <>
-            <MainProgramContainer style={{background: "linear-gradient(45deg,#2e6a89,#56b389)"}}>
+            <MainProgramContainer style={{background: programObject.brand_color ? programObject.brand_color : "linear-gradient(45deg,#2e6a89,#56b389)"}}>
             <div className="container">
               <div className="mx-auto">
              

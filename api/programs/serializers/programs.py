@@ -140,7 +140,8 @@ class ProgramModifyModelSerializer(serializers.ModelSerializer):
             'ratings',
             'is_subscribed',
             'event_booking',
-            'event_booking_calendar'
+            'event_booking_calendar',
+            'brand_color'
         )
 
         read_only_fields = (
@@ -259,7 +260,8 @@ class ProgramBasicModelSerializer(serializers.ModelSerializer):
             'ratings',
             'is_subscribed',
             'event_booking',
-            'event_booking_calendar'
+            'event_booking_calendar',
+            'brand_color'
 
         )
 
@@ -348,7 +350,9 @@ class ProgramModelSerializer(serializers.ModelSerializer):
             'ratings',
             'is_subscribed',
             'event_booking',
-            'event_booking_calendar'
+            'event_booking_calendar',
+            'brand_color'
+
 
         )
         read_only_fields = (
@@ -468,7 +472,9 @@ class ProgramListModelSerializer(serializers.ModelSerializer):
             'ratings',
             'is_subscribed',
             'event_booking',
-            'event_booking_calendar'
+            'event_booking_calendar',
+            'brand_color'
+
 
         )
         read_only_fields = (

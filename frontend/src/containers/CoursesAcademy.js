@@ -16,6 +16,8 @@ import { Padding } from "../components/ui/Padding";
 import TopicBanner from "../components/ui/TopicBanner";
 import { fetchPlaylistsTopic, fetchPlaylistsTopicPagination } from "../redux/actions/topics/playlistsTopic";
 import { fetchTopic } from "../redux/actions/topics/topic";
+import ContainerWrapper from "src/components/ui/Container";
+
 const playlists = () => {
   const main = useRef();
   const coursesReducer = useSelector((state) => state.coursesReducer);
@@ -90,6 +92,7 @@ const playlists = () => {
         search={{ search: coursesSearch, setSearch: setCoursesSearch }}
         onSubmit={handleSubmitSearch}
       />
+      <ContainerWrapper>
 
       <div className="row">
         <div className="col-12">
@@ -231,6 +234,7 @@ const playlists = () => {
           
         </div>
       </div>
+      </ContainerWrapper>
       </Padding>
 
     </Main>

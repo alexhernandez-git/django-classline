@@ -42,6 +42,7 @@ const ConfigurationTopic = (props) => {
     videos: null,
     playlists: null,
     podcasts: null,
+    color: null,
   });
   useEffect(() => {
     if (!topicReducer.isLoading && topicReducer.topic) {
@@ -53,6 +54,7 @@ const ConfigurationTopic = (props) => {
         videos: topicReducer.topic.videos,
         podcasts: topicReducer.topic.podcasts,
         playlists: topicReducer.topic.playlists,
+        color: topicReducer.topic.color
       });
     }
   }, [topicReducer.isLoading, topicReducer.topic]);
