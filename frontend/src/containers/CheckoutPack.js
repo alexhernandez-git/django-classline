@@ -104,7 +104,6 @@ const CheckoutPack = (props) => {
     "Cargando..."
   ) : (
     <CheckoutPackDiv>
-      {console.log(buyPacksReducer.selected_pack)}
       <div className="mt-5 text-grey container instructor">
         <div
           className="text-grey d-flex align-items-center cursor-pointer"
@@ -315,8 +314,8 @@ const CheckoutPack = (props) => {
                         )}
                     </form>
                     <span className="text-secondary">
-                      {buyPacksReducer.pack_booking && (
-                        <div className="mt-3">Adquiriendo clase...</div>
+                      {buyPacksReducer.pack_buying && (
+                        <div className="mt-3">Adquiriendo pack...</div>
                       )}
                     </span>
                   </>
