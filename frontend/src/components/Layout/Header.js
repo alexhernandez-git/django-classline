@@ -8,7 +8,6 @@ import { IconContext } from "react-icons";
 import { Link, Redirect, useLocation, useHistory } from "react-router-dom";
 import "static/assets/styles/components/Layout/Header.scss";
 import { AppContext } from "src/context/AppContext";
-import Logo from "../../../static/assets/img/logo.PNG";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 export default function Header() {

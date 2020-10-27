@@ -92,34 +92,16 @@ const InfoSlider = () => {
                       <div className="col-lg-7">
                         <img
                           className="rounded shadow"
-                          src="static/assets/img/indexresize.png"
+                          src="static/assets/img/Webp.net-resizeimage (6).png"
                           alt=""
                         />
                       </div>
                     </div>
-                    {/* <div className="row w-100 align-items-center mb-5">
-                  <div className="col-lg-7 order-3">
-                    <img
-                      src="static/assets/img/main-page-pictures/main-page.png"
-                      alt=""
-                    />
-                  </div>
-                  <div className="d-block d-lg-none m-2 order-2"></div>
-                  <div className="col-lg-5 order-1">
-                    <span className="h5 text-dark d-block">
-                      Comprometida con los tiempos que corren
-                    </span>
-                    <span className="text-grey">
-                      Con nuestras academias no correras riesgo de contagiarte
-                      ni de contagiar a tus seres queridos
-                    </span>
-                  </div>
-                </div> */}
                     <div className="row w-100 align-items-center mb-5">
                       <div className="col-lg-7 order-3">
                         <img
                           className="rounded shadow"
-                          src="static/assets/img/mainpageresize.png"
+                          src="static/assets/img/Webp.net-resizeimage (6).png"
                           alt=""
                         />
                       </div>
@@ -150,7 +132,7 @@ const InfoSlider = () => {
                       <div className="col-lg-7 order-3">
                         <img
                           className="rounded shadow"
-                          src="static/assets/img/Webp.net-resizeimage (2).png"
+                          src="static/assets/img/Webp.net-resizeimage (7).png"
                           alt=""
                         />
                       </div>
@@ -170,21 +152,6 @@ const InfoSlider = () => {
                         </div>
                       </div>
                     </div>
-                    {/* <div className="w-100 align-items-center mb-3">
-                      <div className="col">
-                        <span className="h5 text-dark d-block">
-                          ¡Mira nuestras academias!
-                        </span>
-                        <span className="text-grey"> Te esperamos</span>
-                        <div className=" mt-3">
-                          <Link to="/programs">
-                            <span className="btn-green py-2 px-3 text-white h5">
-                              Ver academias
-                            </span>
-                          </Link>
-                        </div>
-                      </div>
-                    </div> */}
                   </div>
                   <div className="info-slider slick-element text-center p-4 font-weight-normal">
                     <div className="row w-100 align-items-center mb-5">

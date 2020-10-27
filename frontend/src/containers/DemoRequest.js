@@ -37,7 +37,7 @@ const DemoRequest = (props) => {
           <div className="w-100 ">
             <img
               className="w-100 rounded shadow"
-              src="static/assets/img/indexresize.png"
+              src="static/assets/img/Webp.net-resizeimage (5).png"
               alt=""
             />
           </div>
