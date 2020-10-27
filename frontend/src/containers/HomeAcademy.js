@@ -21,7 +21,7 @@ import { fetchTopics, fetchTopicsPagination } from "../redux/actions/topics/topi
 import VideoPlayer from "src/components/ui/VideoPlayer";
 import { MdFolder, MdFolderShared, MdForum } from "react-icons/md";
 
-export default function Home() {
+export default function Home(props) {
   const history = useHistory();
   const { program } = useParams();
   const authReducer = useSelector((state) => state.authReducer);
@@ -206,7 +206,7 @@ export default function Home() {
                 <div className="border-bottom mb-3 pb-2 text-center">
                   <span>Temas</span>
                 </div>
-                <TopicsContainer ref={main}>
+                <TopicsContainer length={topicsReducer.topics.results.length} ref={main}>
                   {topicsReducer.topics &&
                       topicsReducer.topics.results.map((topic) => (
                         <TopicCard key={topic.id} topic={topic} />
@@ -331,13 +331,14 @@ const TopicsContainer = styled.div`
   display: grid;
   grid-gap: 4rem 2rem;
   margin: auto auto 3rem;
-  grid-template-columns: repeat(4, 1fr);
+
+  grid-template-columns: ${(props) => props.length < 4 ? `repeat(${props.length}, 1fr)` : "repeat(4, 1fr)"};
 
   @media screen and (max-width: 1200px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: ${(props) => props.length < 4 ? `repeat(${props.length}, 1fr)` : "repeat(3, 1fr)"};
   }
   @media screen and (max-width: 992px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: ${(props) => props.length < 4 ? `repeat(${props.length}, 1fr)` : "repeat(2, 1fr)"};
   }
   @media screen and (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr);
