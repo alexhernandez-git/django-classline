@@ -15,7 +15,7 @@ const TopicBanner = (props) => {
 
   return (
     <>
-        <TopicBannerContainer style={{background:topicReducer.topic.color ? topicReducer.topic.color : "linear-gradient(45deg,#2e6a89,#56b389)"}}>
+        <TopicBannerContainer style={{background:topicReducer.topic.color ? topicReducer.topic.color : "#757575"}}>
             <div className="container">
               <div className="mx-auto">
 
