@@ -22,3 +22,5 @@ class UserLoginActivity(CLineModel):
     class Meta:
         verbose_name = 'user_login_activity'
         verbose_name_plural = 'user_login_activities'
+
+        ordering = ['-login_datetime']
