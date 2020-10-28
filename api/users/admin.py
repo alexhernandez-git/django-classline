@@ -79,7 +79,7 @@ class PurchasedItem(admin.ModelAdmin):
 @admin.register(UserLoginActivity)
 class UserLoginActivity(admin.ModelAdmin):
     """UsersLoginActivity model admin."""
-    list_display = ('id', 'created')
+    list_display = ('id', 'login_username', 'login_datetime')
 
 
 admin.site.register(User, CustomUserAdmin)
