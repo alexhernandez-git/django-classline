@@ -82,4 +82,7 @@ class UserLoginActivity(admin.ModelAdmin):
     list_display = ('id', 'created')
     fieldsets = UserLoginActivity.fieldsets + (
         (None, {'fields': ('created',)}),
+    )
+
+
 admin.site.register(User, CustomUserAdmin)
