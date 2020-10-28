@@ -19,7 +19,9 @@ import { RiFullscreenFill } from "react-icons/ri";
 import Slider from "rc-slider";
 import "static/assets/styles/components/Layout/rc-slider.scss";
 import { IoMdSkipForward } from "react-icons/io";
+import { useSelector } from "react-redux";
 const PlayerControls = forwardRef((props, ref) => {
+  const programReducer = useSelector(state => state.programReducer)
   const {
     id,
     title,
@@ -51,7 +53,9 @@ const PlayerControls = forwardRef((props, ref) => {
     isPlaylist
   } = props;
   return (
-    <ControlsWrapper ref={ref}>
+    <ControlsWrapper ref={ref} 
+    color={programReducer.program.brand_color}
+    >
       <div className="click-zone" onClick={onPlayPause} onDoubleClick={onToggleFullScreen}></div>
       <div className="video-title">{title}</div>
       <div className="middle-controls">
@@ -250,6 +254,9 @@ const ControlsWrapper = styled.div`
   .press-icon:hover {
     color: #fff !important;
     z-index: 3;
+  }
+  .rc-slider-track{
+    background-color: ${props=>props.color?props.color: "#56b389"};
   }
 `;
 

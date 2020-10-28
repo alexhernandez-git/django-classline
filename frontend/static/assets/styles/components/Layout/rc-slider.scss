@@ -24,7 +24,7 @@
   left: 0;
   height: 4px;
   border-radius: 6px;
-  background-color: #56b389;
+  // background-color: #56b389;
 }
 .rc-slider-handle {
   position: absolute;
@@ -35,27 +35,27 @@
   margin-top: -5px;
   cursor: grab;
   border-radius: 50%;
-  border: solid 2px #3f8164;
+  border: solid 2px #fff;
   background-color: #fff;
   touch-action: pan-x;
 }
 .rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging {
-  border-color: #2e6a89;
-  box-shadow: 0 0 0 5px #56b389;
+  border-color: #fff;
+  box-shadow: 0 0 0 5px #ccc;
 }
 .rc-slider-handle:focus {
   outline: none;
 }
 .rc-slider-handle-click-focused:focus {
-  border-color: #56b389;
+  border-color: #fff;
   box-shadow: unset;
 }
 .rc-slider-handle:hover {
-  border-color: #2e6a89;
+  border-color: #fff;
 }
 .rc-slider-handle:active {
-  border-color: #2e6a89;
-  box-shadow: 0 0 5px #2e6a89;
+  border-color: #fff;
+  box-shadow: 0 0 5px #fff;
   cursor: -webkit-grabbing;
   cursor: grabbing;
 }
