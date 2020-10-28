@@ -256,7 +256,7 @@ const ControlsWrapper = styled.div`
     z-index: 3;
   }
   .rc-slider-track{
-    background-color: ${props=>props.color?props.color: "#56b389"};
+    background-color: ${props=>props.color?props.color: "#323840"};
   }
 `;
 
