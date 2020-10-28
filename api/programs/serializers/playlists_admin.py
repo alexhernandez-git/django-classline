@@ -16,6 +16,9 @@ from api.programs.serializers import VideoModelSerializer
 
 from datetime import timedelta
 
+import random
+import string
+
 
 class PlaylistAdminTrackModelSerializer(serializers.ModelSerializer):
     video = VideoModelSerializer(read_only=True)
@@ -76,7 +79,9 @@ class PlaylistAdminModelSerializer(serializers.ModelSerializer):
             PlaylistAdminTrack.objects.create(
                 video=track['video'], position=track['position'], playlist=instance)
         picture = get_object_or_404(Video, id=tracks[0]['video'].id).picture
-        new_picture_name = picture.name.split("/")[-1]
+        rand_str = ''.join(random.choice(
+            string.ascii_letters + string.digits) for _ in range(5))
+        new_picture_name = picture.name.split("/")[-1] + rand_str
 
         instance.picture = File(picture, new_picture_name)
         return super(PlaylistAdminModelSerializer, self).update(instance, validated_data)
@@ -86,7 +91,9 @@ class PlaylistAdminModelSerializer(serializers.ModelSerializer):
         validated_data['program'] = self.context['program']
 
         picture = get_object_or_404(Video, id=tracks[0]['video']['id']).picture
-        new_picture_name = picture.name.split("/")[-1]
+        rand_str = ''.join(random.choice(
+            string.ascii_letters + string.digits) for _ in range(5))
+        new_picture_name = picture.name.split("/")[-1] + rand_str
         validated_data['picture'] = File(picture, new_picture_name)
         playlist = PlaylistAdmin.objects.create(**validated_data)
         for track in tracks:
