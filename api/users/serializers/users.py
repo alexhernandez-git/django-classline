@@ -585,7 +585,6 @@ class UserLoginSerializer(serializers.Serializer):
         regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
         # for custom mails use: '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
         if email and password:
-            print(email)
             if re.search(regex, email):
                 user_request = get_object_or_404(
                     User,

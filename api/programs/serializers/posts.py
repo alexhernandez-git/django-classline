@@ -12,6 +12,7 @@ from api.programs.models import Post, Comment
 
 
 from datetime import timedelta
+import re
 
 
 class PostModelSerializer(serializers.ModelSerializer):
@@ -72,8 +73,14 @@ class PostModelSerializer(serializers.ModelSerializer):
         )
         students_sp = program.students.through.objects.all().values_list('user__email')
         students_spe = [i[0] for i in students_sp]
-        msg = EmailMultiAlternatives(
-            subject, content, from_email, [students_spe])
-        msg.attach_alternative(content, "text/html")
-        msg.send()
+        regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+        new_email_ar = []
+        for email in students_spe:
+            if re.search(regex, email):
+                new_email_ar.append(email)
+        try:
+            msg = EmailMultiAlternatives(
+                subject, content, from_email, [new_email_ar])
+            msg.attach_alternative(content, "text/html")
+            msg.send()
         return result
