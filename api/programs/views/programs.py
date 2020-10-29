@@ -26,8 +26,7 @@ from api.programs.serializers import (
     CancelPublishProgramSerializer,
     CancelActiveProgramSerializer,
     ActiveEventBookingProgramSerializer,
-    CancelEventBookingProgramSerializer
-
+    CancelEventBookingProgramSerializer,
 )
 from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
@@ -87,7 +86,6 @@ class ProgramViewSet(mixins.CreateModelMixin,
             return ActiveProgramSerializer
         elif self.action == 'publish':
             return PublishProgramSerializer
-
         elif self.action == 'cancel_active':
             return CancelActiveProgramSerializer
         elif self.action == 'cancel_publish':

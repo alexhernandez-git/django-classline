@@ -28,7 +28,7 @@ class EventModelSerializer(serializers.ModelSerializer):
             'recurrent',
             'price',
             'currency',
-            'bookable'
+            'bookable',
 
         )
         # extra_kwargs = {'end': {'required': False}}

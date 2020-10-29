@@ -1,5 +1,9 @@
 """Work experience serializer serializer."""
 
+# Django
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+
 # Django REST Framework
 from rest_framework import serializers
 
@@ -49,8 +53,27 @@ class PostModelSerializer(serializers.ModelSerializer):
         return super().validate(attrs)
 
     def create(self, validated_data):
+        program = self.context['program']
+        user = self.context['user']
+        validated_data['program'] = program
+        validated_data['user'] = user
 
-        validated_data['program'] = self.context['program']
-        validated_data['user'] = self.context['user']
-
-        return super().create(validated_data)
+        result = super().create(validated_data)
+        subject = '{} ha compartido en el foro:'.format(
+            user.username)
+        from_email = 'Classline Academy <no-reply@classlineacademy.com>'
+        content = render_to_string(
+            'emails/programs/forum-notification.html',
+            {
+                'post': result,
+                'program': program,
+                'user': user
+            }
+        )
+        students_sp = program.students.through.objects.all().values_list('user__email')
+        students_spe = [i[0] for i in students_sp]
+        msg = EmailMultiAlternatives(
+            subject, content, from_email, [students_spe])
+        msg.attach_alternative(content, "text/html")
+        msg.send()
+        return result
