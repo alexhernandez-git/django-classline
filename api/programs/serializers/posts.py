@@ -83,4 +83,6 @@ class PostModelSerializer(serializers.ModelSerializer):
                 subject, content, from_email, [new_email_ar])
             msg.attach_alternative(content, "text/html")
             msg.send()
+        except:
+            pass
         return result
