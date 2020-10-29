@@ -137,6 +137,24 @@ const InfoSlider = () => {
                         />
                       </div>
                     </div>
+                    <div className="row w-100 align-items-center mb-5">
+                      <div className="col-lg-7 order-3">
+                        <img
+                          className="rounded shadow"
+                          src="static/assets/img/Webp.net-resizeimage (8).png"
+                          alt=""
+                        />
+                      </div>
+                      <div className="d-block d-lg-none m-2 order-2"></div>
+                      <div className="col-lg-5 order-1">
+                        <span className="h5 text-dark d-block">
+                          Adquirir packs individuales de contenido en video y audio
+                        </span>
+                        <span className="text-grey">
+                          Y tener el contenido para siempre
+                        </span>
+                      </div>
+                    </div>
                     <div className="row w-100 align-items-center">
                       <div className="col">
                         <span className="h5 text-dark d-block">
@@ -154,6 +172,24 @@ const InfoSlider = () => {
                     </div>
                   </div>
                   <div className="info-slider slick-element text-center p-4 font-weight-normal">
+                  <div className="row w-100 align-items-center mb-5">
+                      <div className="col-lg-5">
+                        <span className="h5 text-dark d-block">
+                          Consigue ingresos gracias a tu academia
+                        </span>
+                        <span className="text-grey">
+                          Vende una membresia de tu academia, clases online con tu propio booking, y packs de contenido digital
+                        </span>
+                      </div>
+                      <div className="d-block d-lg-none m-2"></div>
+                      <div className="col-lg-7">
+                        <img
+                          className="rounded shadow"
+                          src="static/assets/img/Webp.net-resizeimage (9).png"
+                          alt=""
+                        />
+                      </div>
+                    </div>
                     <div className="row w-100 align-items-center mb-5">
                       <div className="col-lg-7 order-3">
                         <img
@@ -209,14 +245,12 @@ const InfoSlider = () => {
                           Si no tienes una academia no te preocupes de nada
                         </span>
                         <span className="text-grey">
-                          Empieza a crear tu academia online, nosotros te
-                          llevamos el tema de los pagos, todo el marketing, y
-                          por supuesto la academia digital, por eso hemos
-                          asignado una comissión del 25% por cada alumno
-                          suscrito
+                          Crea tu propia academia digital que tu podrás gestionar al 100%
+                          y de una forma muy sencilla
                         </span>
                       </div>
                     </div>
+                  
                     <div className="row w-100 align-items-center">
                       <div className="col">
                         <span className="h5 text-dark d-block">
