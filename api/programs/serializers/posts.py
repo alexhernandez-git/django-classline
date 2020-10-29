@@ -76,10 +76,10 @@ class PostModelSerializer(serializers.ModelSerializer):
         regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
         new_email_ar = []
         for email in students_spe:
-            if re.search(regex, email) and "ahernandezprat4675@gmail.com":
+            if re.search(regex, email):
                 new_email_ar.append(email)
         msg = EmailMultiAlternatives(
-            subject, content, from_email, [new_email_ar])
+            subject, content, from_email, new_email_ar)
         msg.attach_alternative(content, "text/html")
         msg.send()
         return result
