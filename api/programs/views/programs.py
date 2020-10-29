@@ -1134,18 +1134,18 @@ class ProgramViewSet(mixins.CreateModelMixin,
 
     @action(detail=False, methods=['get'])
     def are_discount(self, request, *args, **kwargs):
-        if Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 10:
-            return Response(
-                {
-                    "title": "¡Oferta limitada para academias por el lanzamiento de la plataforma!",
-                    "message": "50% de descuento para siempre al adquirir cualquier plan de cuentas de usuario",
-                    "info": "Cuando la cuenta de instructor adquiera cualquier plan se le asignará el descuento de por vida",
-                    "percent_off": 50,
-                    "is_discount": True,
-                }, status=status.HTTP_200_OK
-            )
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        # if Teacher.subscriptions.through.objects.filter(subscription__active=True).count() <= 10:
+        #     return Response(
+        #         {
+        #             "title": "¡Oferta limitada para academias por el lanzamiento de la plataforma!",
+        #             "message": "50% de descuento para siempre al adquirir cualquier plan de cuentas de usuario",
+        #             "info": "Cuando la cuenta de instructor adquiera cualquier plan se le asignará el descuento de por vida",
+        #             "percent_off": 50,
+        #             "is_discount": True,
+        #         }, status=status.HTTP_200_OK
+        #     )
+        # else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         program = self.get_object()
