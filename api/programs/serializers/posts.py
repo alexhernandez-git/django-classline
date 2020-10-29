@@ -78,11 +78,8 @@ class PostModelSerializer(serializers.ModelSerializer):
         for email in students_spe:
             if re.search(regex, email):
                 new_email_ar.append(email)
-        try:
-            msg = EmailMultiAlternatives(
-                subject, content, from_email, [new_email_ar])
-            msg.attach_alternative(content, "text/html")
-            msg.send()
-        except:
-            pass
+        msg = EmailMultiAlternatives(
+            subject, content, from_email, [new_email_ar])
+        msg.attach_alternative(content, "text/html")
+        msg.send()
         return result
