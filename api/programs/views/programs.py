@@ -47,6 +47,7 @@ from api.programs.models import Program
 from api.users.models import User, Subscription, Teacher, Profile, Coupon
 
 # Serializers
+from datetime import datetime
 
 
 class ProgramViewSet(mixins.CreateModelMixin,
@@ -842,6 +843,13 @@ class ProgramViewSet(mixins.CreateModelMixin,
         students = program.students.all().count()
         if students > 0:
             return Response(data={'message': "No puedes eliminar una academia con alumnos"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        if Pack.objects.filter(program=program, published=True).exists():
+            return Response(data={'message': "No puedes eliminar una academia con packs publicados"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        currentTime = datetime.now().time()
+        if Event.objects.filter(program=program, event_buyed=True, start__gt=currentTime).exists():
+            return Response(data={'message': "No puedes eliminar una academia con eventos vendidos pendientes"},
                             status=status.HTTP_400_BAD_REQUEST)
         self.perform_destroy(program)
 

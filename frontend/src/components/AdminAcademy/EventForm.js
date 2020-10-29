@@ -52,6 +52,11 @@ export default function EventForm(props) {
           }
           placeholder="Añade un titulo"
         />
+        {meetupsReducer.meetup_create_error && 
+          meetupsReducer.meetup_create_error.data.title && 
+          meetupsReducer.meetup_create_error.data.title.map(error=>(
+                <small className="d-block text-red">{error}</small>
+        ))}
         {meetupsReducer.meetup_edit_error && 
         meetupsReducer.meetup_edit_error.data.title && 
         meetupsReducer.meetup_edit_error.data.title.map(error=>(
@@ -68,6 +73,11 @@ export default function EventForm(props) {
               : setArgs({ ...args, description: e.target.value })
           }
         />
+        {meetupsReducer.meetup_create_error && 
+          meetupsReducer.meetup_create_error.data.description && 
+          meetupsReducer.meetup_create_error.data.description.map(error=>(
+                <small className="d-block text-red">{error}</small>
+        ))}
         {meetupsReducer.meetup_edit_error && 
         meetupsReducer.meetup_edit_error.data.description && 
         meetupsReducer.meetup_edit_error.data.description.map(error=>(
@@ -102,6 +112,11 @@ export default function EventForm(props) {
               : setArgs({ ...args, videoconference: e.target.value })
             }
             />
+              {meetupsReducer.meetup_create_error && 
+                meetupsReducer.meetup_create_error.data.videoconference && 
+                meetupsReducer.meetup_create_error.data.videoconference.map(error=>(
+                      <small className="d-block text-red">{error}</small>
+              ))}
             {meetupsReducer.meetup_edit_error && 
                 meetupsReducer.meetup_edit_error.data.videoconference && 
                 meetupsReducer.meetup_edit_error.data.videoconference.map(error=>(
@@ -157,6 +172,11 @@ export default function EventForm(props) {
                     }}
                     
                   />
+                    {meetupsReducer.meetup_create_error && 
+                      meetupsReducer.meetup_create_error.data.price && 
+                      meetupsReducer.meetup_create_error.data.price.map(error=>(
+                            <small className="d-block text-red">{error}</small>
+                    ))}
                     {meetupsReducer.meetup_edit_error && 
                       meetupsReducer.meetup_edit_error.data.price && 
                       meetupsReducer.meetup_edit_error.data.price.map(error=>(
