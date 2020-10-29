@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'api.utils.apps.UtilsAppConfig',
     'api.programs.apps.ProgramsAppConfig',
     'api.users.apps.UsersAppConfig',
+    'api.taskapp.celery.CeleryAppConfig',
 
     # THIRD_PARTY_APPS
     'rest_framework',
@@ -57,7 +58,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     'storages',
     'gunicorn',
-    'anymail'
+    'anymail',
 ]
 
 MIDDLEWARE = [
@@ -351,4 +352,12 @@ WEBPACK_LOADER = {
         'BUNDLE_DIR_NAME': 'bundles/',
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
     }
+}
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_BROKER_URL = "https://sqs.eu-west-3.amazonaws.com/502869789067/classline-queue"
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    "region": "eu-west-3",
+    'queue_name_prefix': 'django_app-%s-' % 'c8jdhs)2-=c46n)i-9h8-8f#ko8x*dt@=e4eh65*5(@n#d&gw%',
+    'visibility_timeout': 360,
+    'polling_interval': 1
 }

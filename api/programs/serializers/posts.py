@@ -10,6 +10,8 @@ from rest_framework import serializers
 # Models
 from api.programs.models import Post, Comment
 
+# Celery
+from api.taskapp.tasks import send_notification_new_post
 
 from datetime import timedelta
 import re
@@ -60,26 +62,5 @@ class PostModelSerializer(serializers.ModelSerializer):
         validated_data['user'] = user
 
         result = super().create(validated_data)
-        subject = '{} ha compartido en el foro:'.format(
-            user.username)
-        from_email = 'Classline Academy <no-reply@classlineacademy.com>'
-        content = render_to_string(
-            'emails/programs/forum-notification.html',
-            {
-                'post': result,
-                'program': program,
-                'user': user
-            }
-        )
-        students_sp = program.students.through.objects.all().values_list('user__email')
-        students_spe = [i[0] for i in students_sp]
-        regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-        new_email_ar = []
-        for email in students_spe:
-            if re.search(regex, email):
-                new_email_ar.append(email)
-        msg = EmailMultiAlternatives(
-            subject, content, from_email, new_email_ar)
-        msg.attach_alternative(content, "text/html")
-        msg.send()
+        send_notification_new_post(user, program, result)
         return result
