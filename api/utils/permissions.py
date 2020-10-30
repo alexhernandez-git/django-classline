@@ -5,7 +5,7 @@ from rest_framework import mixins, viewsets
 from rest_framework.generics import get_object_or_404
 
 # Models
-from api.programs.models import Program, Post, Pack, ProgramTopic
+from api.programs.models import Program, Post, Pack, ProgramTopic, Event
 
 
 class AddProgramMixin(viewsets.GenericViewSet):
@@ -104,3 +104,29 @@ class AddTopicMixin(viewsets.GenericViewSet):
         )
 
         return super(AddTopicMixin, self).dispatch(request, *args, **kwargs)
+
+
+class AddEventMixin(viewsets.GenericViewSet):
+    """Add circle mixin
+
+    Manages adding a circle object to views
+    that require it.
+    """
+
+    def dispatch(self, request, *args, **kwargs):
+        """Return the normal dispatch but adds the circle model."""
+
+        id = self.kwargs['slug_id']
+
+        self.program = get_object_or_404(
+            Program,
+            code=id
+        )
+
+        event_id = self.kwargs['event_id']
+        self.event = get_object_or_404(
+            Event,
+            id=event_id
+        )
+
+        return super(AddEventMixin, self).dispatch(request, *args, **kwargs)

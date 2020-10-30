@@ -30,6 +30,7 @@ from api.programs.views.program_topics import ProgramTopicViewSet
 from api.programs.views.videos_topic import VideoTopicViewSet
 from api.programs.views.playlists_topic import PlaylistTopicViewSet
 from api.programs.views.podcasts_topic import PodcastTopicViewSet
+from api.programs.views.event_students import EventStudentViewSet
 router = DefaultRouter()
 
 router.register(r'programs', ProgramViewSet, basename='program')
@@ -53,6 +54,11 @@ router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/events',
     EventViewSet,
     basename='events'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/events/(?P<event_id>[-a-zA-Z0-9_]+)/event-students',
+    EventStudentViewSet,
+    basename='event-student'
 )
 router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/students',

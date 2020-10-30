@@ -132,11 +132,7 @@ const BookMeetups = (props) => {
                 view={"timeGridWeek"}
                 defaultView={"timeGridWeek"}
                 plugins={[timeGridPlugin, dayGridPlugin]}
-                header={{
-                  left: "prev,next today",
-                  center: "title",
-                  right: "timeGridWeek,timeGridDay",
-                }}
+           
                 weekends={true}
                 themeSystem="bootstrap"
                 timeZone="local"

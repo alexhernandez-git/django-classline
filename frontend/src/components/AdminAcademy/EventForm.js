@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { CirclePicker } from "react-color";
 import { AdminForm } from "src/components/ui/AdminForm";
-import Checkbox from "src/components/ui/Checkbox";
 import { CheckboxCustom } from "../ui/Checkbox";
 import NumberFormat from "react-number-format";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { ButtonCustom } from "../ui/ButtonCustom";
+import EventStudentsList from "../ui/EventStudentsList";
+import { fetchStudents } from "../../redux/actions/meetupStudents";
 export default function EventForm(props) {
   const meetupsReducer = useSelector((state) => state.meetupsReducer);
+  const meetupStudentsReducer = useSelector(state => state.meetupStudentsReducer)
   
   const {
     classData,
@@ -17,6 +20,7 @@ export default function EventForm(props) {
     price,
     setPrice,
   } = props;
+  const dispatch = useDispatch()
 
   const handleChangeComplete = (color) => {
     if (isEdit) {
@@ -36,10 +40,32 @@ export default function EventForm(props) {
       console.log(color);
     }
   }, [args, classData]);
-
+  const [showStudents, setShowStudents] = useState(false)
+  const handleShowStudents = () =>{
+    if (isEdit) {   
+      setShowStudents(true)
+    }
+  }
+  const handleCloseStudents = () =>{
+    setShowStudents(false)
+  }
+  useEffect(() => {
+    if (isEdit) {
+      dispatch(fetchStudents(args.id, args))
+    }
+  }, [])
   return (
     <div className="p-4">
       <AdminForm>
+        {showStudents ? 
+        <>
+          <div className="mb-4">
+            <ButtonCustom onClick={handleCloseStudents}>Volver</ButtonCustom>
+          </div>
+          <EventStudentsList/>
+        </>
+        :
+        <>
         <label>Titulo</label>
 
         <input
@@ -182,11 +208,23 @@ export default function EventForm(props) {
                       meetupsReducer.meetup_edit_error.data.price.map(error=>(
                             <small className="d-block text-red">{error}</small>
                     ))}
+                  {(isEdit && !meetupStudentsReducer.isLoading && meetupStudentsReducer.students) &&
+                  <>
+                  
+                    <label className="mt-4">Alumnos: {meetupStudentsReducer.students.results.length}</label>
+                    <div className="mt-2 mb-2">
+                      <ButtonCustom onClick={handleShowStudents}>Ver Alumnos</ButtonCustom>
+                    </div>
+                  </>
+                  }
                 </>
               )}
 
         <label className="mt-4">Color del evento</label>
         <CirclePicker color={color} onChangeComplete={handleChangeComplete} />
+        </>
+      }
+
       </AdminForm>
     </div>
   );

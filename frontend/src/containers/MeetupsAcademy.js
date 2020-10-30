@@ -81,12 +81,7 @@ const MeetupsAcademy = () => {
           <FullCalendar
             view={"timeGridWeek"}
             defaultView={"timeGridWeek"}
-            plugins={[timeGridPlugin, dayGridPlugin]}
-            header={{
-              left: "prev,next today",
-              center: "title",
-              right: "timeGridWeek,timeGridDay",
-            }}
+            plugins={[timeGridPlugin]}
             weekends={true}
             themeSystem="bootstrap"
             timeZone="local"

@@ -46,6 +46,7 @@ import topicReducer from "./topics/topicReducer";
 import videosTopicReducer from "./topics/videosTopicReducer";
 import playlistsTopicReducer from "./topics/playlistsTopicReducer";
 import podcastsTopicReducer from "./topics/podcastsTopicReducer";
+import meetupStudentsReducer from "./meetupStudentsReducer";
 
 
 export default combineReducers({
@@ -92,6 +93,8 @@ export default combineReducers({
   videosTopicReducer,
   playlistsTopicReducer,
   podcastsTopicReducer,
+  meetupStudentsReducer,
+  
   // Commercials reducers
   authCommercialsReducer,
   costumersReducer,

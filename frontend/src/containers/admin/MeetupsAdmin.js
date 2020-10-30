@@ -268,15 +268,11 @@ const meetups = () => {
       <ContainerCalendar className="container mt-4">
         <div className="calendar">
           <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            plugins={[timeGridPlugin, interactionPlugin]}
             locales={allLocales}
             view={"timeGridWeek"}
             defaultView={"timeGridWeek"}
-            header={{
-              left: "prev,next today",
-              center: "title",
-              right: "timeGridWeek,timeGridDay",
-            }}
+
             weekends={true}
             themeSystem="bootstrap"
             timeZone="local"
