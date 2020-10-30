@@ -55,6 +55,7 @@ import CheckoutPack from "../containers/CheckoutPack";
 import GeneralSearch from "../containers/GeneralSearch";
 import TopicSearch from "../containers/TopicSearch";
 import ConfigurationTopic from "../containers/admin/ConfigurationTopic";
+import CoursesAdmin from "src/containers/admin/CoursesAdmin";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -328,6 +329,11 @@ const Academy = () => {
                   />
                 </>
               }
+                <Route
+                    exact
+                    path="/academy/:program/admin/courses"
+                    component={CoursesAdmin}
+                  />
                 <Route
                   exact
                   path="/academy/:program/admin/topics"

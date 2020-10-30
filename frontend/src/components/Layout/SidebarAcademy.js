@@ -13,6 +13,7 @@ import {
   FaPhotoVideo,
   FaBox,
   FaIcons,
+  FaGraduationCap,
 } from "react-icons/fa";
 import { BsFillCollectionPlayFill, BsFillChatDotsFill } from "react-icons/bs";
 import { MdFolderShared, MdFolder, MdForum } from "react-icons/md";
@@ -124,6 +125,18 @@ const Sidebar = (props) => {
                 <FaIcons />
               </IconContext.Provider>{" "}
               Temas
+            </SecctionLink>
+          </Link>
+          <Link to={`/academy/${program}/admin/courses`}>
+            <SecctionLink active={/\/courses\/?$/.test(pathname)}>
+              <IconContext.Provider
+                value={{
+                  className: "sidebar-icon",
+                }}
+              >
+                <FaGraduationCap />
+              </IconContext.Provider>{" "}
+              Cursos
             </SecctionLink>
           </Link>
           <Link to={`/academy/${program}/admin/videos`}>

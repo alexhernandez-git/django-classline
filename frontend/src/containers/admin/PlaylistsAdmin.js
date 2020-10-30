@@ -21,7 +21,7 @@ import {
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
 import ContainerWrapper from "src/components/ui/Container";
-const CoursesAdmin = () => {
+const PlaylistsAdmin = () => {
   const MySwal = withReactContent(Swal);
 
   const main = useRef();
@@ -163,4 +163,4 @@ const CoursesAdmin = () => {
   );
 };
 
-export default CoursesAdmin;
+export default PlaylistsAdmin;

@@ -26,7 +26,6 @@ import styled from "@emotion/styled";
 import { 
   addPlaylistTopic, 
   fetchPlaylistsTopic, 
-  fetchPlaylistsTopicIncrease, 
   fetchPlaylistsTopicPagination, 
   removePlaylistTopic 
 } from "src/redux/actions/topics/playlistsTopic";
