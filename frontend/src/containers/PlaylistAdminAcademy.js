@@ -7,7 +7,7 @@ import VideoPlayer from "src/components/ui/VideoPlayer";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useParams, Link, useHistory } from "react-router-dom";
-import { fetchPlaylist } from "src/redux/actions/course";
+import { fetchPlaylist } from "src/redux/actions/playlistAdmin";
 const PlaylistPage = (props) => {
   const dispatch = useDispatch();
   const history = useHistory()
@@ -22,13 +22,13 @@ const PlaylistPage = (props) => {
       dispatchFetchVideo(videoId);
     }
   }, [videoId, programReducer.isLoading]);
-  const courseReducer = useSelector((state) => state.courseReducer);
+  const playlistAdminReducer = useSelector((state) => state.playlistAdminReducer);
   const goNext = () =>{
     const newTrackId = Number(trackId)  + 1
-    const maxPlaylistTrack = courseReducer.playlist.tracks.length
+    const maxPlaylistTrack = playlistAdminReducer.playlist.tracks.length
     if (newTrackId < maxPlaylistTrack) {
       history.push({
-        pathname:`/academy/${programReducer.program.code}/playlist/${courseReducer.playlist.id}/${newTrackId}`, 
+        pathname:`/academy/${programReducer.program.code}/playlist/${playlistAdminReducer.playlist.id}/${newTrackId}`, 
       })
     }
   }
@@ -36,7 +36,7 @@ const PlaylistPage = (props) => {
     const newTrackId = Number(trackId)  - 1
     if (newTrackId >= 0) {
     history.push({
-      pathname:`/academy/${programReducer.program.code}/playlist/${courseReducer.playlist.id}/${newTrackId}`, 
+      pathname:`/academy/${programReducer.program.code}/playlist/${playlistAdminReducer.playlist.id}/${newTrackId}`, 
     })
   }
   } 
@@ -51,18 +51,18 @@ const PlaylistPage = (props) => {
     <Main padding>
       <div className="row">
         <div className="col-md-6 col-lg-8">
-          {courseReducer.playlist &&
-            !courseReducer.isLoading &&
-            courseReducer.playlist.tracks.length > 0 && (
+          {playlistAdminReducer.playlist &&
+            !playlistAdminReducer.isLoading &&
+            playlistAdminReducer.playlist.tracks.length > 0 && (
               <VideoPlayer
-                video={courseReducer.playlist.tracks[trackId].video}
+                video={playlistAdminReducer.playlist.tracks[trackId].video}
                 goNext={goNext}
                 goPrevious={goPrevious}
                 isPlaylist={true}
               />
             )}
-          {courseReducer.isLoading && <span>Cargando...</span>}
-          {courseReducer.playlist.tracks.length == 0 && (
+          {playlistAdminReducer.isLoading && <span>Cargando...</span>}
+          {playlistAdminReducer.playlist.tracks.length == 0 && (
             <span>No hay videos en esta lista</span>
           )}
         </div>
@@ -70,15 +70,15 @@ const PlaylistPage = (props) => {
           <div className="d-block d-md-none m-5"></div>
 
           <div className="d-flex justify-content-center bg-dark text-white p-4 h2 mb-0">
-            <span>{courseReducer.playlist && courseReducer.playlist.name}</span>
+            <span>{playlistAdminReducer.playlist && playlistAdminReducer.playlist.name}</span>
           </div>
           <PlaylistScroll>
             <div className="p-3">
-              {courseReducer.playlist &&
-                courseReducer.playlist.tracks.map((track, index) => (
+              {playlistAdminReducer.playlist &&
+                playlistAdminReducer.playlist.tracks.map((track, index) => (
                   <Link
                     to={{
-                      pathname: `/academy/${programReducer.program.code}/playlist/${courseReducer.playlist.id}/${index}`,
+                      pathname: `/academy/${programReducer.program.code}/playlist/${playlistAdminReducer.playlist.id}/${index}`,
                       query: { track: track.id },
                     }}
                     params={{ track: track.id }}
@@ -97,7 +97,7 @@ const PlaylistPage = (props) => {
                     </PlaylistVideo>
                   </Link>
                 ))}
-              {courseReducer.isLoading && <span>Cargando...</span>}
+              {playlistAdminReducer.isLoading && <span>Cargando...</span>}
             </div>
           </PlaylistScroll>
         </div>

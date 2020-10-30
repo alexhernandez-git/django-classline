@@ -7,7 +7,7 @@ import styled from "@emotion/styled";
 import MainProgramInfo from "src/components/PackAcademy/MainProgramInfo";
 import ProgramBenefitsForm from "src/components/PackAcademy/ProgramBenefitsForm";
 import ProgramPresentation from "src/components/PackAcademy/ProgramPresentation";
-import ProgramConfiguration from "src/components/PackAcademy/ProgramConfiguration";
+import PackConfiguration from "src/components/PackAcademy/PackConfiguration";
 import { ButtonCustom } from "src/components/ui/ButtonCustom";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -161,7 +161,7 @@ const ConfigurationPack = (props) => {
                         </Tab.Pane>
 
                         <Tab.Pane eventKey={1} className="text-grey">
-                          <ProgramConfiguration
+                          <PackConfiguration
                             values={props.values}
                             setFieldValue={props.setFieldValue}
                           />

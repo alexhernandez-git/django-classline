@@ -14,15 +14,13 @@ import DocsAcademy from "src/containers/DocsAcademy";
 import MeetupsAcademy from "src/containers/MeetupsAcademy";
 import PodcastsAcademy from "src/containers/PodcastsAcademy";
 import VideoAcademy from "src/containers/VideoAcademy";
-import CoursesAcademy from "src/containers/CoursesAcademy";
+import PlaylistsAdminAcademy from "src/containers/PlaylistsAdminAcademy";
 import PlaylistAdminAcademy from "src/containers/PlaylistAdminAcademy";
 import ProfileAcademy from "src/containers/ProfileAcademy";
 import ConfigurationAdmin from "src/containers/admin/ConfigurationAdmin";
 import VideosAdmin from "src/containers/admin/VideosAdmin";
-import PlaylistsAdmin from "src/containers/admin/PlaylistsAdmin";
 import MeetupsAdmin from "src/containers/admin/MeetupsAdmin";
 import PodcastsAdmin from "src/containers/admin/PodcastsAdmin";
-import PlaylistFormAdmin from "src/containers/admin/PlaylistFormAdmin";
 import UsersAdmin from "src/containers/admin/UsersAdmin";
 import AccountsAdmin from "src/containers/admin/AccountsAdmin";
 import "static/assets/styles/styles.scss";
@@ -33,9 +31,9 @@ import { fetchProgram } from "../redux/actions/program";
 import IndexAcademy from "src/containers/IndexAcademy";
 import { fetchProgramRating } from "../redux/actions/rating";
 import { Helmet } from "react-helmet";
-import CoursesAdmin from "../containers/admin/CoursesAdmin";
-import CourseFormAdmin from "../containers/admin/CourseFormAdmin";
-import PlaylistsAcademy from "../containers/PlaylistsAcademy";
+import PlaylistsAcademy from "../containers/admin/PlaylistsAdmin";
+import PlaylistFormAdmin from "../containers/admin/PlaylistFormAdmin";
+import StudentPlaylistsAcademy from "../containers/PlaylistsAcademy";
 import ForumAcademy from "../containers/ForumAcademy";
 
 import PlaylistFormAcademy from "../containers/PlaylistFormAcademy";
@@ -202,7 +200,7 @@ const Academy = () => {
               path="/academy/:program/:topic?/playlists/:search?"
               component={
                 programReducer.program.are_admin_playlists
-                  ? CoursesAcademy
+                  ? PlaylistsAdminAcademy
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />
@@ -282,7 +280,7 @@ const Academy = () => {
             <Route
               exact
               path="/academy/:program/student-playlists/:search?"
-              component={PlaylistsAcademy}
+              component={StudentPlaylistsAcademy}
             />
             <Route
               exact
@@ -355,12 +353,12 @@ const Academy = () => {
                 <Route
                   exact
                   path="/academy/:program/admin/playlists/:search?"
-                  component={CoursesAdmin}
+                  component={PlaylistsAcademy}
                 />
                 <Route
                   exact
                   path="/academy/:program/admin/form/playlist"
-                  component={CourseFormAdmin}
+                  component={PlaylistFormAdmin}
                 />
                 <Route
                   exact

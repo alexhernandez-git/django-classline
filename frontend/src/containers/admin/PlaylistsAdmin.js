@@ -17,10 +17,11 @@ import {
   deletePlaylistEdit,
   deletePlaylist,
   fetchPlaylistsPagination,
-} from "src/redux/actions/playlists";
+} from "src/redux/actions/playlistsAdmin";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { IconContext } from "react-icons";
-const playlists = () => {
+import ContainerWrapper from "src/components/ui/Container";
+const CoursesAdmin = () => {
   const MySwal = withReactContent(Swal);
 
   const main = useRef();
@@ -29,13 +30,17 @@ const playlists = () => {
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
 
+  const playlistsAdminReducer = useSelector((state) => state.playlistsAdminReducer);
   useEffect(() => {
-    if (!programReducer.isLoading && programReducer.program) {
+    if (
+      !programReducer.isLoading &&
+      programReducer.program &&
+      playlistsAdminReducer.playlists.results.length == 0
+    ) {
       const dispatchFetchPlaylists = () => dispatch(fetchPlaylists());
       dispatchFetchPlaylists();
     }
   }, [programReducer.isLoading]);
-  const playlistsReducer = useSelector((state) => state.playlistsReducer);
   const handleSetEditPlaylist = (playlist) => {
     const dispatchSetEditPlaylist = (playlist) =>
       dispatch(setPlaylistEdit(playlist));
@@ -78,82 +83,84 @@ const playlists = () => {
   return (
     <Main padding ref={main}>
       <Filters
-        title="Cursos"
-        placeholder="Buscar lista"
+        title="Playlists"
+        placeholder="Buscar playlists"
         search={{ search: search, setSearch: setSearch }}
         onSubmit={handleSubmitSearch}
       />
-      <div className="d-flex justify-content-end mb-3">
-        <Link to={`/academy/${program}/admin/playlist/form`}>
-          <ButtonCustom onClick={handleDeleteEditPlaylist}>
-            Nueva Playlist
-          </ButtonCustom>
-        </Link>
-      </div>
-      {playlistsReducer.playlists &&
-        playlistsReducer.playlists.results.map((playlist) => (
-          <CourseCard
-            playlist={playlist}
-            key={playlist.id}
-            handleSetEditPlaylist={handleSetEditPlaylist}
-            handleDeletePlaylist={handleDeletePlaylist}
-          />
-        ))}
-      {playlistsReducer.isLoading && <span>Cargando...</span>}
-      {playlistsReducer.playlists &&
-        (playlistsReducer.playlists.previous ||
-          playlistsReducer.playlists.next) && (
-          <div className="d-flex justify-content-center my-5">
-            {playlistsReducer.playlists.previous ? (
-              <IconContext.Provider
-                value={{
-                  size: 50,
-                  className: "cursor-pointer",
-                }}
-              >
-                <IoIosArrowDropleft
-                  onClick={() =>
-                    handleChangePage(playlistsReducer.playlists.previous)
-                  }
-                />
-              </IconContext.Provider>
-            ) : (
-              <IconContext.Provider
-                value={{
-                  size: 50,
-                  color: "#a1a1a1",
-                }}
-              >
-                <IoIosArrowDropleft />
-              </IconContext.Provider>
-            )}
-            {playlistsReducer.playlists.next ? (
-              <IconContext.Provider
-                value={{
-                  size: 50,
-                  className: "cursor-pointer",
-                }}
-              >
-                <IoIosArrowDropright
-                  onClick={() =>
-                    handleChangePage(playlistsReducer.playlists.next)
-                  }
-                />
-              </IconContext.Provider>
-            ) : (
-              <IconContext.Provider
-                value={{
-                  size: 50,
-                  color: "#a1a1a1",
-                }}
-              >
-                <IoIosArrowDropright />
-              </IconContext.Provider>
-            )}
-          </div>
-        )}
+      <ContainerWrapper>
+        <div className="d-flex justify-content-end mb-3">
+          <Link to={`/academy/${program}/admin/form/playlist`}>
+            <ButtonCustom onClick={handleDeleteEditPlaylist}>
+              Nueva Playlist
+            </ButtonCustom>
+          </Link>
+        </div>
+        {playlistsAdminReducer.playlists &&
+          playlistsAdminReducer.playlists.results.map((playlist) => (
+            <CourseCard
+              playlist={playlist}
+              key={playlist.id}
+              handleSetEditPlaylist={handleSetEditPlaylist}
+              handleDeletePlaylist={handleDeletePlaylist}
+            />
+          ))}
+        {playlistsAdminReducer.isLoading && <span>Cargando...</span>}
+        {playlistsAdminReducer.playlists &&
+          (playlistsAdminReducer.playlists.previous ||
+            playlistsAdminReducer.playlists.next) && (
+            <div className="d-flex justify-content-center my-5">
+              {playlistsAdminReducer.playlists.previous ? (
+                <IconContext.Provider
+                  value={{
+                    size: 50,
+                    className: "cursor-pointer",
+                  }}
+                >
+                  <IoIosArrowDropleft
+                    onClick={() =>
+                      handleChangePage(playlistsAdminReducer.playlists.previous)
+                    }
+                  />
+                </IconContext.Provider>
+              ) : (
+                <IconContext.Provider
+                  value={{
+                    size: 50,
+                    color: "#a1a1a1",
+                  }}
+                >
+                  <IoIosArrowDropleft />
+                </IconContext.Provider>
+              )}
+              {playlistsAdminReducer.playlists.next ? (
+                <IconContext.Provider
+                  value={{
+                    size: 50,
+                    className: "cursor-pointer",
+                  }}
+                >
+                  <IoIosArrowDropright
+                    onClick={() =>
+                      handleChangePage(playlistsAdminReducer.playlists.next)
+                    }
+                  />
+                </IconContext.Provider>
+              ) : (
+                <IconContext.Provider
+                  value={{
+                    size: 50,
+                    color: "#a1a1a1",
+                  }}
+                >
+                  <IoIosArrowDropright />
+                </IconContext.Provider>
+              )}
+            </div>
+          )}
+      </ContainerWrapper>
     </Main>
   );
 };
 
-export default playlists;
+export default CoursesAdmin;

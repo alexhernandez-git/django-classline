@@ -6,7 +6,7 @@ import { textEllipsis } from "src/components/ui/TextEllipsis";
 
 import { useDispatch } from "react-redux";
 import { fetchVideos } from "src/redux/actions/videos";
-import { fetchPlaylists } from "src/redux/actions/courses";
+import { fetchPlaylists } from "src/redux/actions/playlistsAdmin";
 import { fetchPodcasts } from "src/redux/actions/podcasts";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";

@@ -13,7 +13,7 @@ import { IconContext } from "react-icons";
 import {
   fetchPlaylists,
   fetchPlaylistsIncrease
-} from "src/redux/actions/courses";
+} from "src/redux/actions/playlistsAdmin";
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -39,7 +39,7 @@ const PlaylistsTopic = (props) => {
   const {infinite_height} = props
   const main = useRef();
   const dispatch = useDispatch();
-  const coursesReducer = useSelector((state) => state.coursesReducer);
+  const playlistsAdminReducer = useSelector((state) => state.playlistsAdminReducer);
   const playlistsTopicReducer = useSelector((state) => state.playlistsTopicReducer);
   const topicReducer = useSelector((state) => state.topicReducer);
   const programReducer = useSelector((state) => state.programReducer);
@@ -170,8 +170,8 @@ const PlaylistsTopic = (props) => {
                       onSubmit={handleSubmitSearchPlaylists}
                     />
                     <AddPlaylistList>
-                      {coursesReducer.playlists &&
-                        coursesReducer.playlists.results.map((playlist) => (
+                      {playlistsAdminReducer.playlists &&
+                        playlistsAdminReducer.playlists.results.map((playlist) => (
                           <PlaylistPlaylist
                             className="d-flex justify-content-between align-items-center"
                             key={playlist.id}
@@ -187,8 +187,8 @@ const PlaylistsTopic = (props) => {
                             </IconContext.Provider>
                           </PlaylistPlaylist>
                         ))}
-                      {coursesReducer.isLoading && <span>Cargando...</span>}
-                      {coursesReducer.playlists && coursesReducer.playlists.next && (
+                      {playlistsAdminReducer.isLoading && <span>Cargando...</span>}
+                      {playlistsAdminReducer.playlists && playlistsAdminReducer.playlists.next && (
                         <div className="d-flex justify-content-center">
                           <ButtonCustom
                             onClick={fetchMorePlaylists}

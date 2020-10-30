@@ -9,10 +9,11 @@ import { ButtonCustom } from "src/components/ui/ButtonCustom";
 
 import { Formik, Form as FormFormik } from "formik";
 import { Form } from "react-bootstrap";
-import { createPlaylist, editPlaylist } from "src/redux/actions/playlists";
+import { createPlaylist, editPlaylist } from "src/redux/actions/playlistsAdmin";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
+import ContainerWrapper from "src/components/ui/Container";
 
 const PlaylistSchema = Yup.object().shape({
   name: Yup.string()
@@ -21,12 +22,12 @@ const PlaylistSchema = Yup.object().shape({
     .required("Este campo es obligatorio"),
 });
 
-const NewPlaylist = () => {
+const CourseFormAdmin = () => {
   const router = useHistory();
-  const playlistsReducer = useSelector((state) => state.playlistsReducer);
+  const playlistsAdminReducer = useSelector((state) => state.playlistsAdminReducer);
 
   const [tracks, setVideoCards] = useState(
-    playlistsReducer.playlist_edit ? playlistsReducer.playlist_edit.tracks : []
+    playlistsAdminReducer.playlist_edit ? playlistsAdminReducer.playlist_edit.tracks : []
   );
   const dispatch = useDispatch();
   return (
@@ -34,11 +35,11 @@ const NewPlaylist = () => {
       <Formik
         enableReinitialize={true}
         initialValues={{
-          name: playlistsReducer.playlist_edit
-            ? playlistsReducer.playlist_edit.name
+          name: playlistsAdminReducer.playlist_edit
+            ? playlistsAdminReducer.playlist_edit.name
             : "",
-          picture: playlistsReducer.playlist_edit
-            ? playlistsReducer.playlist_edit.picture
+          picture: playlistsAdminReducer.playlist_edit
+            ? playlistsAdminReducer.playlist_edit.picture
             : null,
         }}
         validationSchema={PlaylistSchema}
@@ -47,12 +48,12 @@ const NewPlaylist = () => {
             name: values.name,
             tracks: tracks,
           };
-          if (playlistsReducer.playlist_edit) {
+          if (playlistsAdminReducer.playlist_edit) {
             const dispatchEditPlaylist = (playlist) =>
               dispatch(editPlaylist(playlist));
             dispatchEditPlaylist({
               ...playlist,
-              id: playlistsReducer.playlist_edit.id,
+              id: playlistsAdminReducer.playlist_edit.id,
             });
           } else {
             const dispatchCreatePlaylist = (playlist) =>
@@ -70,19 +71,20 @@ const NewPlaylist = () => {
                   back="Volver"
                   button={
                     <ButtonCustom type="submit">
-                      {playlistsReducer.playlist_edit ? "Guardar" : "Crear"}
+                      {playlistsAdminReducer.playlist_edit ? "Guardar" : "Crear"}
                     </ButtonCustom>
                   }
                 />
-
-                <PlaylistForm
-                  values={props.values}
-                  setFieldValue={props.setFieldValue}
-                  videoCards={tracks}
-                  setVideoCards={setVideoCards}
-                  errors={props.errors}
-                  touched={props.touched}
-                />
+                <ContainerWrapper>
+                  <PlaylistForm
+                    values={props.values}
+                    setFieldValue={props.setFieldValue}
+                    videoCards={tracks}
+                    setVideoCards={setVideoCards}
+                    errors={props.errors}
+                    touched={props.touched}
+                  />
+                </ContainerWrapper>
               </FormFormik>
             </>
           );
@@ -102,4 +104,4 @@ const AddVideoList = styled.div`
   overflow: auto;
   border: 1px solid #ccc;
 `;
-export default NewPlaylist;
+export default CourseFormAdmin;

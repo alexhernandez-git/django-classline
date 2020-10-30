@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import App from "./routes/App";
 import Academy from "./routes/Academy";
 import Pack from "./routes/Pack";
-import DemoAcademy from "./routes/DemoAcademy";
 import { AppProvider } from "src/context/AppContext";
 // import "../../static/assets/styles/styles.scss";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
@@ -31,7 +30,6 @@ ReactDOM.render(
             <Route path="/pack/:program/:pack" component={Pack} />
             <Route path="/dashboard" component={Dashboard} />
             <Route path="/academy/:program" component={Academy} />
-            <Route path="/demo/academy/:program" component={DemoAcademy} />
             <Route path="/" component={App} />
           </Switch>
         </BrowserRouter>

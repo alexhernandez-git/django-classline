@@ -8,9 +8,9 @@ import recomendedVideosReducer from "./recomendedVideosReducer";
 import videoReducer from "./videoReducer";
 import videosReducer from "./videosReducer";
 import playlistsReducer from "./playlistsReducer";
-import coursesReducer from "./coursesReducer";
+import playlistsAdminReducer from "./playlistsAdminReducer";
 import playlistReducer from "./playlistReducer";
-import courseReducer from "./courseReducer";
+import playlistAdminReducer from "./playlistAdminReducer";
 import podcastsReducer from "./podcastsReducer";
 import meetupsReducer from "./meetupsReducer";
 import studentsReducer from "./studentsReducer";
@@ -58,9 +58,9 @@ export default combineReducers({
   recomendedVideosReducer,
   videoReducer,
   videosReducer,
-  coursesReducer,
+  playlistsAdminReducer,
   playlistsReducer,
-  courseReducer,
+  playlistAdminReducer,
   playlistReducer,
   podcastsReducer,
   meetupsReducer,
@@ -94,7 +94,7 @@ export default combineReducers({
   playlistsTopicReducer,
   podcastsTopicReducer,
   meetupStudentsReducer,
-  
+
   // Commercials reducers
   authCommercialsReducer,
   costumersReducer,
