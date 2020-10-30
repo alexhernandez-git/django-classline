@@ -22,6 +22,8 @@ class Video(CLineModel):
         'programs.Program', on_delete=models.CASCADE, related_name='program_videos')
     views = models.PositiveIntegerField(default=0)
     duration = models.FloatField(blank=True, null=True)
+    mega_bytes = models.FloatField(blank=True, null=True)
+    bytes = models.PositiveIntegerField(blank=True, null=True)
 
     picture = models.ImageField(
         'profile picture',

@@ -39,9 +39,21 @@ class VideoModelSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
 
+        mega_bytes = validated_data['video'].size / 1024 / 1024
+        bytes = validated_data['video'].size
+        validated_data['mega_bytes'] = mega_bytes
+        validated_data['bytes'] = bytes
         validated_data['program'] = self.context['program']
 
         return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        if 'video' in validated_data:
+            mega_bytes = validated_data['video'].size / 1024 / 1024
+            bytes = validated_data['video'].size
+            validated_data['mega_bytes'] = mega_bytes
+            validated_data['bytes'] = bytes
+        return super(VideoModelSerializer, self).update(instance, validated_data)
 
 
 class AddViewSerializer(serializers.Serializer):

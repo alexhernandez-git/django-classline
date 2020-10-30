@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 # Models
-from api.programs.models import Program, Student, Instructor, AllowedProgram, EventStudent, VideoPack, StudentPack
+from api.programs.models import Program, Student, Instructor, AllowedProgram, EventStudent, VideoPack, StudentPack, Video
 
 
 @admin.register(Program)
@@ -16,6 +16,12 @@ class Program(admin.ModelAdmin):
     list_filter = ('created', 'modified')
     search_fields = ('code', 'title', 'user__first_name',
                      'user__last_name', 'user__email')
+
+
+@admin.register(Video)
+class Video(admin.ModelAdmin):
+    """Profile model admin."""
+    list_display = ('code',)
 
 
 @admin.register(Student)
