@@ -19,6 +19,7 @@ import MainCourseInfo from "../../components/CourseAcademy/MainCourseInfo";
 import CourseBenefitsForm from "../../components/CourseAcademy/CourseBenefitsForm";
 import CoursePresentation from "../../components/CourseAcademy/CoursePresentation";
 import CourseConfiguration from "../../components/CourseAcademy/CourseConfiguration";
+import BlocksCourse from "../../components/CourseAcademy/BlocksCourse";
 
 const ConfigurationCourse = (props) => {
   const [key, setKey] = useState(0);
@@ -83,7 +84,10 @@ const ConfigurationCourse = (props) => {
   }, [program]);
   return (
     <Main padding>
-      <Filters title="Curso" />
+      <Filters 
+          title={program?.title}  
+          back="Volver"
+      />
       <ContainerTabs className="container">
         <Formik
           enableReinitialize={true}
@@ -134,7 +138,7 @@ const ConfigurationCourse = (props) => {
                         </Nav.Item>
                         <Nav.Item>
                           <Nav.Link eventKey={2} className="text-grey">
-                            <span>CONTENIDO</span>
+                            <span>BLOQUES</span>
                           </Nav.Link>
                         </Nav.Item>
                       </Nav>
@@ -155,6 +159,13 @@ const ConfigurationCourse = (props) => {
 
                         <Tab.Pane eventKey={1} className="text-grey">
                           <CourseConfiguration
+                            values={props.values}
+                            setFieldValue={props.setFieldValue}
+                          />
+                        </Tab.Pane>
+                        
+                        <Tab.Pane eventKey={2} className="text-grey">
+                          <BlocksCourse
                             values={props.values}
                             setFieldValue={props.setFieldValue}
                           />

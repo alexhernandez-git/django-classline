@@ -15,6 +15,8 @@ class LectureContent(CLineModel):
     item = models.OneToOneField(
         'programs.CourseItem', on_delete=models.CASCADE)
 
+    course = models.ForeignKey('programs.Course', on_delete=models.CASCADE)
+
     VIDEO = 'VI'
     TEXT = 'TX'
     TYPE_CHOICES = [

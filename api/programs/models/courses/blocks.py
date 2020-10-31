@@ -65,8 +65,10 @@ class CourseItemTrack(CLineModel):
     code = models.CharField(max_length=10, blank=True, null=True)
     block = models.ForeignKey(
         'programs.CourseBlock', on_delete=models.CASCADE)
-    lecture = models.ForeignKey(
+    item = models.ForeignKey(
         'programs.CourseItem', on_delete=models.CASCADE)
+    course = models.ForeignKey(
+        'programs.Course', on_delete=models.CASCADE)
     position = models.IntegerField()
 
     class Meta:
