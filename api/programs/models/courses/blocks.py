@@ -29,9 +29,7 @@ class CourseBlock(CLineModel):
         max_length=500
     )
     lectures = models.ManyToManyField(
-        'programs.CourseLecture', through='programs.CourseLectureTrack')
-    course = models.ForeignKey(
-        'programs.Course', on_delete=models.CASCADE, related_name='block_course')
+        'programs.CourseItem', through='programs.CourseItemTrack')
 
     is_private = models.BooleanField(default=False)
 
@@ -63,12 +61,12 @@ class CourseBlock(CLineModel):
         super(CourseBlock, self).save(**kwargs)
 
 
-class CourseLectureTrack(CLineModel):
+class CourseItemTrack(CLineModel):
     code = models.CharField(max_length=10, blank=True, null=True)
     block = models.ForeignKey(
         'programs.CourseBlock', on_delete=models.CASCADE)
     lecture = models.ForeignKey(
-        'programs.CourseLecture', on_delete=models.CASCADE)
+        'programs.CourseItem', on_delete=models.CASCADE)
     position = models.IntegerField()
 
     class Meta:
@@ -84,8 +82,8 @@ class CourseLectureTrack(CLineModel):
             while True:
                 slug_name = ''.join(random.choice(
                     string.ascii_letters + string.digits) for _ in range(10))
-                if not CourseLectureTrack.objects.filter(code=slug_name).exists():
+                if not CourseItemTrack.objects.filter(code=slug_name).exists():
                     self.code = slug_name
                     break
 
-        super(CourseLectureTrack, self).save(**kwargs)
+        super(CourseItemTrack, self).save(**kwargs)

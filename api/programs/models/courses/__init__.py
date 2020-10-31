@@ -1,7 +1,8 @@
 from .courses import Course, CourseBlockTrack
-from .blocks import CourseBlock, CourseLectureTrack
-from .lectures import CourseLecture
+from .blocks import CourseBlock, CourseItemTrack
+from .items import CourseItem
 from .course_benefits import CourseBenefit
-from .lectures_viewed import LectureViewed
-from .lectures_quesions import LectureQuestion
-from .lectures_answers import LectureAnswer
+from .items_viewed import ItemViewed
+from .items_quesions import ItemQuestion
+from .items_answers import ItemAnswer
+from .contents import LectionContent, LectionMaterial

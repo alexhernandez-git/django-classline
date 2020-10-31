@@ -10,7 +10,7 @@ import random
 import string
 
 
-class LectureQuestion(CLineModel):
+class ItemQuestion(CLineModel):
     """Teaches price model.
     A profile holds a user's public data like biography, picture,
     and statistics.
@@ -19,7 +19,7 @@ class LectureQuestion(CLineModel):
     title = models.CharField(max_length=100)
     question = models.TextField(max_length=1000)
     item = models.ForeignKey(
-        'programs.CourseLecture', on_delete=models.CASCADE, related_name='item_question')
+        'programs.CourseItem', on_delete=models.CASCADE, related_name='item_question')
     course = models.ForeignKey(
         'programs.Course', on_delete=models.CASCADE, related_name='couse_question')
 
@@ -36,7 +36,7 @@ class LectureQuestion(CLineModel):
             while True:
                 slug_name = ''.join(random.choice(
                     string.ascii_letters + string.digits) for _ in range(10))
-                if not LectureQuestion.objects.filter(code=slug_name).exists():
+                if not ItemQuestion.objects.filter(code=slug_name).exists():
                     self.code = slug_name
                     break
-        super(LectureQuestion, self).save(**kwargs)
+        super(ItemQuestion, self).save(**kwargs)

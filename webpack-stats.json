@@ -1,1 +1,1 @@
-{"status":"done","error":"ModuleNotFoundError","message":"Module not found: Error: Can't resolve './pack/node_modules/src/components/Layout/Filters' in '/home/alex/django-classline/frontend/src/containers/admin'","chunks":{"main":[{"name":"main.js","path":"/home/alex/django-classline/frontend/static/bundles/main.js"}]}}
+{"status":"compiling"}

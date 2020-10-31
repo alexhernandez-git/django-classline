@@ -28,5 +28,5 @@ from .program_topics import ProgramTopic
 from .videos_topic import VideoTopic
 from .playlists_topic import PlaylistTopic
 from .podcasts_topic import PodcastTopic
-from .courses import (Course, CourseBlockTrack, CourseBlock, CourseLectureTrack,
-                      CourseLecture, CourseBenefit, LectureViewed, LectureQuestion, LectureAnswer)
+from .courses import (Course, CourseBlockTrack, CourseBlock, CourseItemTrack,
+                      CourseItem, CourseBenefit, ItemViewed, ItemQuestion, ItemAnswer, LectionContent, LectionMaterial)

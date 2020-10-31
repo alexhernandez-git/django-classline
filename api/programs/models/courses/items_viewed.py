@@ -1,4 +1,4 @@
-"""Work experience model."""
+"""Prices model."""
 
 # Django
 from django.db import models
@@ -10,29 +10,28 @@ import random
 import string
 
 
-class LectureAnswer(CLineModel):
+class ItemViewed(CLineModel):
     """Teaches price model.
     A profile holds a user's public data like biography, picture,
     and statistics.
     """
     code = models.CharField(max_length=10, blank=True, null=True)
-    message = models.TextField(max_length=1000)
-    user = models.ForeignKey(
-        'users.User', on_delete=models.CASCADE, related_name='user_answer')
-    question = models.ForeignKey(
-        'programs.LectureQuestion', on_delete=models.CASCADE, related_name='question_answer')
+
+    item = models.ForeignKey('programs.CourseItem',
+                             on_delete=models.CASCADE)
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE)
 
     def __str__(self):
-        """Return description."""
-        return '{}'.format(self.message)
+        """Return price."""
+        return '{}'.format(self.user)
 
     def save(self, **kwargs):
-
         if not self.code:
             while True:
                 slug_name = ''.join(random.choice(
                     string.ascii_letters + string.digits) for _ in range(10))
-                if not LectureAnswer.objects.filter(code=slug_name).exists():
+                if not ItemViewed.objects.filter(code=slug_name).exists():
                     self.code = slug_name
                     break
-        super(LectureAnswer, self).save(**kwargs)
+
+        super(ItemViewed, self).save(**kwargs)
