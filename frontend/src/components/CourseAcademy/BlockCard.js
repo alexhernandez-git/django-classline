@@ -72,11 +72,11 @@ const BlockCard = ({
         moveCard={moveCard}
         ref={ref}
       >
-          <div className="d-flex justify-content-center p-2">
+          <BlockText className="d-flex justify-content-center p-2">
            <span>Bloque {index + 1}</span>
-          </div>
+          </BlockText>
 
-          <PackImage className="cursor-pointer">
+          <PackImage className="">
             <div className="video-content">
               <img
                 className="rounded"
@@ -118,6 +118,7 @@ const BlockCard = ({
 
 const PackContent = styled.div`
   width: 100%;
+  /* cursor: grab; */
   display: block;
   border-radius: 1rem;
   overflow: hidden;
@@ -125,6 +126,7 @@ const PackContent = styled.div`
   &:hover img {
     transform: scale(1.03);
   }
+  
 ` 
 
 const PackImage = styled.span`
@@ -152,5 +154,8 @@ const PackInfo = styled.div`
     background: #fff;
     z-index: 500;
   }
+`
+const BlockText = styled.div`
+  cursor: grab;
 `
 export default BlockCard;

@@ -16,7 +16,6 @@ const BlocksCourseRoutes = () => {
     return (
       <DndProvider backend={HTML5Backend}>
     
-      <Switch>
   
             <Route
               exact
@@ -29,7 +28,6 @@ const BlocksCourseRoutes = () => {
               component={BlocksItems}
             />
             
-      </Switch>
       </DndProvider>
 
     )

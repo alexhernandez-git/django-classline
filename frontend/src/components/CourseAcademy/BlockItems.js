@@ -148,7 +148,7 @@ const BlocksItems = (props) => {
     );
   };
   return (
-    <>
+    <div className="mt-5">
     <Filters title="Bloque 1: Administración y finanzas" back="Volver"/>
     <div className="row">
       <div className="col-md-6">
@@ -162,7 +162,7 @@ const BlocksItems = (props) => {
             </Col>
 
             <Col lg={{ offset: 1, span: 6 }}>
-              <input type="text" name="name" placeholder="Nombre..." />
+              <input type="text" name="name" placeholder="Nombre" />
 
             </Col>
           </Row>
@@ -229,7 +229,7 @@ const BlocksItems = (props) => {
    
       </div>
     </div>
-    </>
+    </div>
   );
 };
 const VideosForm = styled.form`

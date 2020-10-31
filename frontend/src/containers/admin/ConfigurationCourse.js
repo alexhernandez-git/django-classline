@@ -139,7 +139,7 @@ const ConfigurationCourse = (props) => {
                         </Nav.Item>
                         <Nav.Item>
                           <Nav.Link eventKey={2} className="text-grey">
-                            <span>BLOQUES</span>
+                            <span>CONTENIDO</span>
                           </Nav.Link>
                         </Nav.Item>
                       </Nav>
