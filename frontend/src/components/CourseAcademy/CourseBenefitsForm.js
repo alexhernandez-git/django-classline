@@ -6,7 +6,7 @@ import { MdCancel } from "react-icons/md";
 import { IconContext } from "react-icons";
 import { AdminForm } from "src/components/ui/AdminForm";
 import { FieldArray, Field } from "formik";
-const ProgramBenefitsForm = ({ values }) => {
+const CourseBenefitsForm = ({ values }) => {
   return (
     <div className="bg-white border p-3 rounded my-2  mb-4">
       <Row className="mb-4">
@@ -77,4 +77,4 @@ const ProgramBenefitsForm = ({ values }) => {
   );
 };
 
-export default ProgramBenefitsForm;
+export default CourseBenefitsForm;

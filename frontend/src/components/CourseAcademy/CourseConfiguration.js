@@ -9,7 +9,7 @@ import {
   ButtonCustom,
   ButtonCustomSuccess,
   ButtonCustomError,
-} from "../../containers/admin/packs/node_modules/src/components/ui/ButtonCustom";
+} from "src/components/ui/ButtonCustom";
 import Checkbox from "src/components/ui/Checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -70,9 +70,10 @@ const CourseConfiguration = (props) => {
       }
     });
   };
+
   return (
     <>
-      <div className="bg-white border p-3 rounded my-2 mb-4 pb-5">
+      {/* <div className="bg-white border p-3 rounded my-2 mb-4 pb-5">
         <span className="d-none d-md-block">Configuración del pack</span>
 
         <Row className="mb-5">
@@ -90,23 +91,6 @@ const CourseConfiguration = (props) => {
             <Checkbox name="are_videos" />
           </Col>
         </Row>
-{/* 
-        <Row className="mb-5">
-          <Col
-            lg={{ span: 4 }}
-            className="text-center d-lg-flex justify-content-end align-items-center"
-          >
-            <span className="m-0 font-weight-normal">Playlists</span>
-          </Col>
-
-          <Col
-            lg={{ offset: 1, span: 6 }}
-            className="d-flex justify-content-center d-lg-block"
-          >
-            <Checkbox name="are_admin_playlists" />
-          </Col>
-        </Row> */}
-
         <Row className="">
           <Col
             lg={{ span: 4 }}
@@ -122,25 +106,10 @@ const CourseConfiguration = (props) => {
             <Checkbox name="are_podcasts" />
           </Col>
         </Row>
-{/*      
-        <Row className="">
-          <Col
-            lg={{ span: 4 }}
-            className="text-center d-lg-flex justify-content-end align-items-center"
-          >
-            <span className="m-0 font-weight-normal">Recursos</span>
-          </Col>
 
-          <Col
-            lg={{ offset: 1, span: 6 }}
-            className="d-flex justify-content-center d-lg-block"
-          >
-            <Checkbox name="are_docs" />
-          </Col>
-        </Row> */}
-      </div>
+      </div> */}
       <div className="bg-white border p-3 rounded my-2 mb-4">
-      <span className="d-none d-md-block">Ponle un precio a tu pack</span>
+      <span className="d-none d-md-block">Ponle un precio a tu curso</span>
 
       <Row className="">
           <Col
@@ -225,7 +194,7 @@ const CourseConfiguration = (props) => {
             sm={{ span: 4 }}
             className="text-center d-sm-flex justify-content-end align-items-center"
           >
-            <span className="m-0 font-weight-normal">Publicar el pack</span>
+            <span className="m-0 font-weight-normal">Publicar el curso</span>
           </Col>
 
           <Col sm={{ offset: 1, span: 6 }}>
@@ -263,7 +232,7 @@ const CourseConfiguration = (props) => {
             sm={{ span: 4 }}
             className="text-center d-sm-flex justify-content-end align-items-center"
           >
-            <span className="m-0 font-weight-normal">Eliminar el pack</span>
+            <span className="m-0 font-weight-normal">Eliminar el curso</span>
           </Col>
 
           <Col sm={{ offset: 1, span: 6 }}>

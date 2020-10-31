@@ -67,9 +67,10 @@ const CardVideoDrag = ({
   return (
     <PlaylistVideo
       style={{ opacity }}
-      ref={ref}
       className="d-flex justify-content-between align-items-center"
+      ref={ref}
       moveCard={moveCard}
+
     >
       <IconContext.Provider
         value={{
@@ -78,7 +79,8 @@ const CardVideoDrag = ({
         }}
       >
         {" "}
-        <FaGripLines />
+        <FaGripLines 
+        />
       </IconContext.Provider>
 
       <VideoList video={video} />

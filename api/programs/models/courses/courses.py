@@ -29,8 +29,21 @@ class Course(CLineModel):
 
     program = models.ForeignKey(
         'programs.Program', on_delete=models.CASCADE, related_name='program_course')
+
     user = models.ForeignKey(
         'users.User', on_delete=models.CASCADE, related_name='user_course')
+
+    teacher = models.ForeignKey(
+        'users.Teacher', on_delete=models.CASCADE, related_name='course_teacher')
+
+    rating = models.FloatField(default=0)
+
+    students = models.ManyToManyField(
+        'users.User',
+        through='programs.CourseStudent'
+    )
+
+    published = models.BooleanField(default=False)
 
     is_private = models.BooleanField(default=False)
 

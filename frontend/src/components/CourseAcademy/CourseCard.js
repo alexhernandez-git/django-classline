@@ -1,91 +1,113 @@
-import React from "react";
+import { Link, useParams, useLocation } from "react-router-dom";
 import styled from "@emotion/styled";
-import { FaTrashAlt } from "react-icons/fa";
-import { MdEdit } from "react-icons/md";
-import { IconContext } from "react-icons";
-import { Link, useParams } from "react-router-dom";
-const PlaylistCard = (props) => {
+import { textEllipsis } from "src/components/ui/TextEllipsis";
+import moment from "moment";
+const CourseCard = (props) => {
+  console.log(props)
+  const { pathname } = useLocation();
   const { program } = useParams();
-  const { id, name, picture, tracks, created } = props.playlist;
+  const { code, title, picture, videos, podcasts,are_videos,are_podcasts, pack_price } = props.course;
+  function msToHMS(seconds) {
+    if (isNaN(seconds)) {
+      return "00:00";
+    }
+    const date = new Date(seconds * 1000);
+    const hh = date.getUTCHours();
+    const mm = date.getUTCMinutes();
+    const ss = date.getUTCSeconds().toString().padStart(2, "0");
+    if (hh) {
+      return `${hh}:${mm.toString().padStart(2, "0")}:${ss}`;
+    }
+    return `${mm}:${ss}`;
+  }
   return (
-    <VideoItem
-      className="my-course d-flex justify-content-between rounded bg-white"
-      style={{
-        height: "120px",
-      }}
+    <Link
+      to={
+        !/\/demo\//.test(pathname)
+          ? `/academy/${program}/admin/course/${code}`
+          : pathname
+      }
     >
-      <img
-        className="h-100 rounded-left"
-        style={{
-          width: "100px",
-          objectFit: "cover",
-        }}
-        variant="top"
-        src={picture ? picture : "../../../static/assets/img/no-foto.png"}
-      />
+      <PackContent>
 
-      <div className="my-course d-flex justify-content-between w-100 p-4">
-        <div className="title-div d-flex flex-column justify-content-between  text-break w-100">
-          <div className=" text-break">
-            <span
-              className="font-weight-bold text-break"
-              style={{
-                display: "-webkit-box",
-                WebkitLineClamp: "2",
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {name}
-            </span>
-          </div>
-          {/* <small
-            style={{
-              display: "-webkit-box",
-              WebkitLineClamp: "1",
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-         
-          </small> */}
-        </div>
-        <div className="d-none d-xl-flex align-items-center justify-content-center flex-column mx-4">
-          <span className="h5 m-0 font-weight-normal">{tracks.length}</span>
-          <small>Videos</small>
-        </div>
-        <div className="d-flex align-items-center justify-content-center ml-3">
-          <IconContext.Provider
-            value={{
-              size: 23,
-              className: "cursor-pointer",
-            }}
-          >
-            <Link to={`/academy/${program}/admin/form/course`}>
-              <MdEdit
-                onClick={() => props.handleSetEditPlaylist(props.playlist)}
+        <PackImage className="cursor-pointer">
+          <div className="video-content">
+            <img
+              className="rounded"
+              src={
+                picture ? picture : "../../../../static/assets/img/no-foto.png"
+              }
+              alt="video"
               />
-            </Link>
-          </IconContext.Provider>
-          <IconContext.Provider
-            value={{
-              size: 20,
-              className: "cursor-pointer ml-3",
-            }}
-          >
-            <FaTrashAlt onClick={() => props.handleDeletePlaylist(id)} />
-          </IconContext.Provider>
-        </div>
-      </div>
-    </VideoItem>
+          </div>
+        </PackImage>
+        <PackInfo>
+
+            <div className="video-text">
+
+              <div className="py-2 d-flex justify-content-between">
+                <span css={textEllipsis}>{title ? title : "Nuevo curso" }</span>
+                {pack_price && 
+                  <span css={textEllipsis} className="text-grey">{pack_price.label}</span>
+                }
+              </div>
+              <div className="text-grey">
+                {are_videos && 
+                <div>
+                  <small css={textEllipsis}>Lecciones: {videos}</small>
+                </div>
+                }
+                {/* <div>
+                  <small css={textEllipsis}>Playlists: 2</small>
+                </div>
+                <div>
+                  <small css={textEllipsis}>Recursos: 8</small>
+                </div>  */}
+              </div>
+
+
+            </div>
+        </PackInfo>
+          </PackContent>
+    </Link>
   );
 };
-const VideoItem = styled.div`
-  border-bottom: 1px solid #ccc;
-  &:last-of-type {
-    border: 0;
+
+const PackContent = styled.div`
+  width: 100%;
+  display: block;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  &:hover img {
+    transform: scale(1.03);
   }
+` 
+
+const PackImage = styled.span`
+  width: 100%;
+  display: block;
+  overflow: hidden;
+
+  img {
+    transition: 0.5s ease;
+    width: 100%;
+  }
+
+  .video-content {
+    position: relative;
+  }
+
 `;
-export default PlaylistCard;
+const PackInfo = styled.div`
+  .video-text {
+    align-items: center;
+    bottom: 0;
+    width: 100%;
+    padding: 1rem;
+    height: 20%;
+    background: #fff;
+    z-index: 500;
+  }
+`
+export default CourseCard;

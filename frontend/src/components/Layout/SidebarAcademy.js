@@ -75,7 +75,18 @@ const Sidebar = (props) => {
               Packs
             </SecctionLink>
           </Link>
-          
+          <Link to={`/academy/${program}/admin/courses`}>
+            <SecctionLink active={/\/courses\/?$/.test(pathname)}>
+              <IconContext.Provider
+                value={{
+                  className: "sidebar-icon",
+                }}
+              >
+                <FaGraduationCap />
+              </IconContext.Provider>{" "}
+              Cursos
+            </SecctionLink>
+          </Link>
           <Link to={`/academy/${program}/admin/instructors`}>
             <SecctionLink active={/\/instructors\/?$/.test(pathname)}>
               <IconContext.Provider
@@ -127,18 +138,7 @@ const Sidebar = (props) => {
               Temas
             </SecctionLink>
           </Link>
-          <Link to={`/academy/${program}/admin/courses`}>
-            <SecctionLink active={/\/courses\/?$/.test(pathname)}>
-              <IconContext.Provider
-                value={{
-                  className: "sidebar-icon",
-                }}
-              >
-                <FaGraduationCap />
-              </IconContext.Provider>{" "}
-              Cursos
-            </SecctionLink>
-          </Link>
+   
           <Link to={`/academy/${program}/admin/videos`}>
             <SecctionLink active={/\/videos\/?$/.test(pathname)}>
               <IconContext.Provider

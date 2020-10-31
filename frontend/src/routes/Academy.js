@@ -55,6 +55,7 @@ import CheckoutPack from "../containers/CheckoutPack";
 import GeneralSearch from "../containers/GeneralSearch";
 import TopicSearch from "../containers/TopicSearch";
 import ConfigurationTopic from "../containers/admin/ConfigurationTopic";
+import ConfigurationCourse from "../containers/admin/ConfigurationCourse";
 import CoursesAdmin from "src/containers/admin/CoursesAdmin";
 const Academy = () => {
   const dispatch = useDispatch();
@@ -317,6 +318,16 @@ const Academy = () => {
                     path="/academy/:program/admin/pack/:id"
                     component={ConfigurationPack}
                   />
+                    <Route
+                        exact
+                        path="/academy/:program/admin/courses"
+                        component={CoursesAdmin}
+                      />
+                      <Route
+                        exact
+                        path="/academy/:program/admin/course/:id"
+                        component={ConfigurationCourse}
+                      />
                   <Route
                     exact
                     path="/academy/:program/admin/accounts/:search?"
@@ -329,11 +340,6 @@ const Academy = () => {
                   />
                 </>
               }
-                <Route
-                    exact
-                    path="/academy/:program/admin/courses"
-                    component={CoursesAdmin}
-                  />
                 <Route
                   exact
                   path="/academy/:program/admin/topics"

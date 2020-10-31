@@ -43,6 +43,9 @@ class PurchasedItem(CLineModel):
     pack = models.ForeignKey(
         'programs.Pack', on_delete=models.SET_NULL, null=True, blank=True)
 
+    course = models.ForeignKey(
+        'programs.Course', on_delete=models.SET_NULL, null=True, blank=True)
+
     active = models.BooleanField(default=True)
 
     refunded = models.BooleanField(default=False)
@@ -50,6 +53,8 @@ class PurchasedItem(CLineModel):
     is_a_purchased_event = models.BooleanField(default=False)
 
     is_student_purchased_pack = models.BooleanField(default=False)
+
+    is_student_purchased_course = models.BooleanField(default=False)
 
     def __str__(self):
         """Return description."""

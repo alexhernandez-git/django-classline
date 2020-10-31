@@ -6,9 +6,10 @@ import {
 } from "src/components/ui/ButtonCustom";
 import Cropper from "react-cropper";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadPicture } from "src/redux/actions/pack";
+import { uploadPicture } from "src/redux/actions/program";
+import { uploadVideo } from "src/redux/actions/program";
 
-const ProgramPresentation = (props) => {
+const CoursePresentation = (props) => {
   const dispatch = useDispatch();
 
   const cropper = useRef(null);
@@ -21,7 +22,7 @@ const ProgramPresentation = (props) => {
   const handleShow = () => {
     setShow(true);
   };
-  const packReducer = useSelector((state) => state.packReducer);
+  const programReducer = useSelector((state) => state.programReducer);
 
   const [srcImage, setSrcImage] = useState(null);
   const [cropResult, setCropResult] = useState(
@@ -29,12 +30,10 @@ const ProgramPresentation = (props) => {
   );
   const [fileName, setFileName] = useState("");
   useEffect(() => {
-    if (!packReducer.isLoading && packReducer.pack) {
-      console.log(packReducer.pack.picture);
-      setCropResult(packReducer.pack.picture ? packReducer.pack.picture :"/static/assets/img/no-foto.png");
+    if (programReducer.program && programReducer.program.picture) {
+      setCropResult(programReducer.program.picture);
     }
-  }, [packReducer.pack?.picture]);
-  
+  }, []);
   const handleUploadImage = (e) => {
     e.preventDefault();
     handleShow();
@@ -90,7 +89,40 @@ const ProgramPresentation = (props) => {
 
     return new File([u8arr], filename, { type: mime });
   }
- 
+  const [videoSrc, setVideoSrc] = useState(null);
+  useEffect(() => {
+    if (
+      !programReducer.isLoading &&
+      programReducer.program.video_presentation
+    ) {
+      setVideoSrc(programReducer.program.video_presentation);
+    }
+  }, [programReducer.program]);
+  const handleUploadVideo = (e) => {
+    e.preventDefault();
+
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      setVideoSrc(reader.result);
+    };
+
+    if (files[0].size > 500000000) {
+      alert("El tamaño del video es muy grande");
+    } else if (files[0].type != "video/mp4") {
+      alert("El htmlFormato tiene que ser .mp4");
+    } else {
+      reader.readAsDataURL(files[0]);
+      const dispatchUploadVideo = (file) => dispatch(uploadVideo(file));
+      dispatchUploadVideo(files[0]);
+    }
+  };
   return (
     <div className="bg-white border p-3 rounded my-2">
       <span className="d-none d-md-block">Presentación</span>
@@ -128,7 +160,63 @@ const ProgramPresentation = (props) => {
           />
         </Col>
       </Row>
-      
+      <Row className="video-upload">
+        <Col
+          lg={{ span: 4 }}
+          className="text-center d-lg-flex justify-content-end align-items-center"
+        >
+          <span className="font-weight-normal d-block">
+            Video de presentación
+          </span>
+        </Col>
+        <Col lg={{ offset: 1, span: 6 }}>
+          {programReducer.video_uploading && (
+            <span className="d-block text-center">
+              Subiendo video, por favor espera...
+            </span>
+          )}
+          <label htmlFor="video-upload" className="cursor-pointer w-100">
+            {videoSrc ? (
+              <video
+                controls
+                style={{
+                  width: "100%",
+                  padding: "5px",
+                }}
+                // poster={cropResult}
+
+                src={videoSrc}
+                alt=""
+                className="my-3 border rounded"
+              />
+            ) : (
+              <img
+                controls
+                style={{
+                  width: "100%",
+                  padding: "5px",
+                }}
+                src={"../../../../static/assets/img/video-icon.png"}
+                alt=""
+                
+                className="my-3 border rounded"
+              />
+            )}
+          </label>
+          <label htmlFor="video-upload" css={ButtonStyle} className="w-100">
+            Subir video
+          </label>
+
+          <input
+            type="file"
+            id="video-upload"
+            className="d-none"
+            ref={inputFileVideo}
+            placeholder="Imagen"
+            onChange={handleUploadVideo}
+          />
+        </Col>
+      </Row>
 
       <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
@@ -151,4 +239,4 @@ const ProgramPresentation = (props) => {
   );
 };
 
-export default ProgramPresentation;
+export default CoursePresentation;

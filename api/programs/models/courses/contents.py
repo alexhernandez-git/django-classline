@@ -10,17 +10,16 @@ import random
 import string
 
 
-class LectionContent(CLineModel):
+class LectureContent(CLineModel):
+
     item = models.OneToOneField(
         'programs.CourseItem', on_delete=models.CASCADE)
 
     VIDEO = 'VI'
     TEXT = 'TX'
-    FILE = 'FI'
     TYPE_CHOICES = [
         (VIDEO, 'Video'),
         (TEXT, 'Text'),
-        (FILE, 'File'),
     ]
     type_choices = models.CharField(
         max_length=2,
@@ -34,20 +33,8 @@ class LectionContent(CLineModel):
         null=True,
         max_length=500
     )
-    file = models.FileField(
-        upload_to='programs/courses/contents/files/',
-        max_length=500,
-        blank=True,
-        null=True,
-    )
     text = models.TextField(max_length=5000, blank=True)
 
-    materiales = models.FileField(
-        upload_to='programs/courses/contents/materials/',
-        max_length=500,
-        blank=True,
-        null=True,
-    )
     duration = models.FloatField(blank=True, null=True)
     mega_bytes = models.FloatField(blank=True, null=True)
     bytes = models.PositiveIntegerField(blank=True, null=True)
@@ -61,24 +48,24 @@ class LectionContent(CLineModel):
     def save(self, **kwargs):
 
         try:
-            this = LectionContent.objects.get(id=self.id)
+            this = LectureContent.objects.get(id=self.id)
             if this.video != self.video:
                 this.video.delete(save=False)
         except:
             pass
         try:
-            this = LectionContent.objects.get(id=self.id)
+            this = LectureContent.objects.get(id=self.id)
             if this.file != self.file:
                 this.file.delete(save=False)
         except:
             pass
 
-        super(LectionContent, self).save(**kwargs)
+        super(LectureContent, self).save(**kwargs)
 
 
-class LectionMaterial(CLineModel):
+class LectureMaterial(CLineModel):
     content = models.ForeignKey(
-        'programs.LectionContent', on_delete=models.CASCADE, related_name='course_material_content')
+        'programs.LectureContent', on_delete=models.CASCADE, related_name='course_material_content')
 
     file = models.FileField(
         upload_to='programs/courses/contents/materials/',
@@ -97,10 +84,10 @@ class LectionMaterial(CLineModel):
     def save(self, **kwargs):
 
         try:
-            this = LectionMaterial.objects.get(id=self.id)
+            this = LectureMaterial.objects.get(id=self.id)
             if this.file != self.file:
                 this.file.delete(save=False)
         except:
             pass
 
-        super(LectionMaterial, self).save(**kwargs)
+        super(LectureMaterial, self).save(**kwargs)

@@ -16,6 +16,7 @@ import { IconContext } from "react-icons";
 import PackCard from "../../components/PackAcademy/PackCard";
 import styled from "@emotion/styled";
 import { createPack, fetchPacks, fetchPacksPagination } from "../../redux/actions/packs";
+import CourseCard from "../../components/CourseAcademy/CourseCard";
 const CoursesAdmin = () => {
   const MySwal = withReactContent(Swal);
   const history = useHistory()
@@ -72,8 +73,8 @@ const CoursesAdmin = () => {
               <GridVideos>
               {packsReducer.packs &&
                 packsReducer.packs.results.map((pack) => (
-                  <PackCard
-                    pack={pack}
+                  <CourseCard
+                    course={pack}
                     key={pack.id}
                   />
                 ))}
