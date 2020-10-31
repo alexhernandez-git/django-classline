@@ -324,8 +324,8 @@ const Academy = () => {
                         component={CoursesAdmin}
                       />
                       <Route
-                        exact
-                        path="/academy/:program/admin/course/:id"
+                        
+                        path="/academy/:program/admin/course/:course"
                         component={ConfigurationCourse}
                       />
                   <Route

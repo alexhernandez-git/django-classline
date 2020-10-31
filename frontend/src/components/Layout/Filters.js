@@ -11,13 +11,13 @@ const Filters = (props) => {
     <FilterContainer
       className={props.className ? props.className : "border-bottom mb-4"}
     >
-      <div className="d-md-flex justify-content-between mb-3 align-items-end">
+      <div className={props.centered ?  "d-md-flex justify-content-center mb-3 align-items-end" : "d-md-flex justify-content-between mb-3 align-items-end"}>
         {props.back && (
           <>
             <BackButton onClick={() => history.goBack()}>
               <IconContext.Provider
                 value={{
-                  size: 20,
+                  size: 16,
                   className: "global-class-name mr-2",
                 }}
                 >
@@ -54,5 +54,7 @@ const FilterButton = styled.span`
 `;
 const BackButton = styled.span`
   cursor: pointer;
+  align-items: center;
+  display: flex;
 `;
 export default Filters;

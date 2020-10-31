@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import update from "immutability-helper";
 import React, {useCallback, useState} from 'react'
 import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { HTML5Backend as HTML5BackendBlock } from 'react-dnd-html5-backend';
 import { ButtonCustom } from '../ui/ButtonCustom';
 import BlockCard from './BlockCard';
 
@@ -82,12 +82,12 @@ const BlocksCourse = () => {
         <>
         <div className="d-flex justify-content-end mb-3">
             <ButtonCustom>
-            Nuevo bloque
+                Nuevo bloque
             </ButtonCustom>
         </div>
             <GridBlocks>
 
-            <DndProvider backend={HTML5Backend}>
+            <DndProvider backend={HTML5BackendBlock}>
             {blockCards.map((card, i) => renderBlockCard(card, i))}
             </DndProvider>
         </GridBlocks>

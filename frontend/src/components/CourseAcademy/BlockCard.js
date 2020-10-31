@@ -11,7 +11,7 @@ const BlockCard = ({
   block,
 }) => {
   const { pathname } = useLocation();
-  const { program } = useParams();
+  const { program, course } = useParams();
   console.log(block)
   // const { code, title, picture, videos, podcasts,are_videos,are_podcasts, pack_price } = props.course;
   const ref = useRef(null);
@@ -66,6 +66,7 @@ const BlockCard = ({
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
   return (
+    <Link to={`/academy/${program}/admin/course/${course}/block/${block.name}`}>
       <PackContent
         style={{ opacity }}
         moveCard={moveCard}
@@ -110,6 +111,8 @@ const BlockCard = ({
               </div>
           </PackInfo>
           </PackContent>
+    </Link>
+
   );
 };
 
