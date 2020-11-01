@@ -196,9 +196,8 @@ const CoursePresentation = (props) => {
                   width: "100%",
                   padding: "5px",
                 }}
-                src={"../../../../static/assets/img/video-icon.png"}
+                src={"/static/assets/img/video-icon.png"}
                 alt=""
-                
                 className="my-3 border rounded"
               />
             )}
@@ -219,8 +218,7 @@ const CoursePresentation = (props) => {
       </Row>
 
       <Modal show={show} onHide={handleClose} size="lg">
-        <Modal.Header closeButton>
-        </Modal.Header>
+        <Modal.Header closeButton></Modal.Header>
 
         <Cropper
           ref={cropper}

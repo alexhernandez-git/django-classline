@@ -21,14 +21,9 @@ class CourseBlock(CLineModel):
         blank=True, null=True,
         max_length=500
     )
-    video_presentation = models.FileField(
-        'profile video',
-        upload_to='programs/courses/blocks/videos/',
-        blank=True,
-        null=True,
-        max_length=500
-    )
-    lectures = models.ManyToManyField(
+    description = models.TextField(max_length=1000, blank=True, null=True)
+
+    items = models.ManyToManyField(
         'programs.CourseItem', through='programs.CourseItemTrack')
 
     is_private = models.BooleanField(default=False)

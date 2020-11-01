@@ -27,7 +27,6 @@ class LectureContent(CLineModel):
         max_length=2,
         choices=TYPE_CHOICES,
     )
-
     video = models.FileField(
         'profile video',
         upload_to='programs/courses/contents/videos/',
@@ -37,6 +36,7 @@ class LectureContent(CLineModel):
     )
     text = models.TextField(max_length=5000, blank=True)
 
+    name =  models.CharField(max_length=500)
     duration = models.FloatField(blank=True, null=True)
     mega_bytes = models.FloatField(blank=True, null=True)
     bytes = models.PositiveIntegerField(blank=True, null=True)
@@ -45,7 +45,7 @@ class LectureContent(CLineModel):
 
     def __str__(self):
         """Return description."""
-        return '{}'.format(self.name)
+        return '{}'.format(self.item)
 
     def save(self, **kwargs):
 
@@ -76,6 +76,7 @@ class LectureMaterial(CLineModel):
         null=True,
     )
 
+    name =  models.CharField(max_length=500)
     mega_bytes = models.FloatField(blank=True, null=True)
     bytes = models.PositiveIntegerField(blank=True, null=True)
 

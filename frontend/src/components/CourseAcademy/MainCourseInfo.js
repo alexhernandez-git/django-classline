@@ -28,7 +28,7 @@ const MainCourseInfo = (props) => {
             <Field
               type="text"
               name="title"
-              placeholder="Titulo del pack"
+              placeholder="Titulo del curso"
               // value={values.title}
               // onChange={handleChange}
             />
@@ -78,8 +78,6 @@ const MainCourseInfo = (props) => {
             </Form.Group>
           </Col>
         </Row>
-
-
       </AdminForm>
     </div>
   );

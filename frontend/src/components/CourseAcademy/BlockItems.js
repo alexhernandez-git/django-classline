@@ -47,13 +47,11 @@ const BlocksItems = (props) => {
         position: itemCards.length,
       },
     ]);
-    setIsAddVideoOpen(false)
-
+    setIsAddVideoOpen(false);
   };
   useEffect(() => {
     console.log(itemCards);
   }, [itemCards]);
-
 
   const handleDeleteTrackVideo = (id) => {
     setItemCards((itemCards) => itemCards.filter((card) => card.id !== id));
@@ -72,43 +70,95 @@ const BlocksItems = (props) => {
     dispatchFetchVideosIncrease(limit + 12, search);
     setLimit((limit) => limit + 12);
   };
-  const addVideoRef = useRef()
+  const addVideoRef = useRef();
 
   useOutsideClick(addVideoRef, () => {
-    setIsAddVideoOpen(false)
+    setIsAddVideoOpen(false);
   });
 
   const [itemCards, setItemCards] = useState([
     {
-        id: 0,
-        position: 0,
-        block: {
-            name: "Finanzas personales"
-        } 
+      id: 0,
+      position: 0,
+      item: {
+        name: "Finanzas personales",
+        type_choices: "LE",
+        content: {
+          type_choices: "VI",
+          name: "video.mp4",
+          materials: [
+            {
+              name: "excel.xlsx",
+            },
+            {
+              name: "word.docx",
+            },
+          ],
+        },
+      },
     },
     {
-        id: 1,
-        position: 1,
-        block: {
-            name: "Criptomonedas"
-        } 
+      id: 1,
+      position: 1,
+      item: {
+        name: "Criptomonedas",
+        type_choices: "LE",
+        content: {
+          type_choices: "TE",
+          text:
+            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae voluptas veniam corrupti harum doloremque id maxime consequatur reiciendis nulla cupiditate, quidem nobis beatae hic. Dolorem aperiam consectetur aut magni omnis!",
+          materials: [
+            {
+              name: "excel.xlsx",
+            },
+            {
+              name: "word.docx",
+            },
+          ],
+        },
+      },
     },
     {
-        id:2,
-        position:2,
-        block: {
-            name: "Excel"
-        } 
+      id: 2,
+      position: 2,
+      item: {
+        name: "Excel",
+        type_choices: "LE",
+        content: {
+          type_choices: "VI",
+          name: "video.mp4",
+          materials: [
+            {
+              name: "excel.xlsx",
+            },
+            {
+              name: "word.docx",
+            },
+          ],
+        },
+      },
     },
     {
-        id: 3,
-        position: 3,
-        block: {
-            name: "Finanzas empresarieales"
-        } 
+      id: 3,
+      position: 3,
+      item: {
+        name: "Finanzas empresarieales",
+        type_choices: "LE",
+        content: {
+          type_choices: "VI",
+          name: "video.mp4",
+          materials: [
+            {
+              name: "excel.xlsx",
+            },
+            {
+              name: "word.docx",
+            },
+          ],
+        },
+      },
     },
-
-]) 
+  ]);
   const moveCard = useCallback(
     (dragIndex, hoverIndex) => {
       const dragCard = itemCards[dragIndex];
@@ -149,51 +199,41 @@ const BlocksItems = (props) => {
   };
   return (
     <div className="mt-5">
-    <Filters title="Bloque 1: Administración y finanzas" back="Volver"/>
-    <div className="row">
-      <div className="col-md-6">
-        <AdminForm>
-          <Row className="my-4">
-            <Col
-              lg={{ span: 4 }}
-              className="text-center d-lg-flex justify-content-end align-items-center"
-            >
-              <span className="m-0 font-weight-normal">Nombre</span>
-            </Col>
+      <Filters title="Bloque 1: Administración y finanzas" back="Volver" />
+      <div className="row">
+        <div className="col-md-6">
+          <AdminForm>
+            <Row className="my-4">
+              <Col
+                lg={{ span: 4 }}
+                className="text-center d-lg-flex justify-content-end align-items-center"
+              >
+                <span className="m-0 font-weight-normal">Nombre</span>
+              </Col>
 
-            <Col lg={{ offset: 1, span: 6 }}>
-              <input type="text" name="name" placeholder="Nombre" />
+              <Col lg={{ offset: 1, span: 6 }}>
+                <Field type="text" name="name" placeholder="Nombre" />
+              </Col>
+            </Row>
+            <Row className="my-4">
+              <Col
+                lg={{ span: 4 }}
+                className="text-center d-lg-flex justify-content-end align-items-center"
+              >
+                <span className="m-0 font-weight-normal">Descripción</span>
+              </Col>
 
-            </Col>
-          </Row>
-          <Row className="video-upload mb-4">
-            <Col
-              lg={{ span: 4 }}
-              className="text-center d-lg-flex justify-content-end align-items-center"
-            >
-              <span className="font-weight-normal">Imagen</span>
-            </Col>
-            <Col lg={{ offset: 1, span: 6 }}>
-              <label htmlFor="img-upload" className="w-100">
-                <img
-                  controls
-                  style={{
-                    width: "100%",
-                    padding: "5px",
-                  }}
-                  src={
-                    "../../../../../../static/assets/img/no-foto.png"
-                  }
-                  alt=""
-                  className="my-3 border rounded"
+              <Col lg={{ offset: 1, span: 6 }}>
+                <Field
+                  component="textarea"
+                  name="descripiton"
+                  placeholder="Descripción"
+                  style={{ height: "142px" }}
                 />
-              </label>
+              </Col>
+            </Row>
 
-              {/* <label htmlFor="img-upload" css={ButtonStyle} className="w-100">Subir imágen</label> */}
-            </Col>
-          </Row>
-
-          {/* <Row className="mb-4">
+            {/* <Row className="mb-4">
                         <Col lg={{ span: 4 }} className="text-center d-lg-flex justify-content-end align-items-center">
                             <span className="m-0 font-weight-normal">Descripción</span>
 
@@ -204,31 +244,69 @@ const BlocksItems = (props) => {
                             <textarea name="" id="" cols="30" rows="10" placeholder="Descripción"></textarea>
                         </Col>
                     </Row> */}
-        </AdminForm>
-      </div>
-      <div className="col-md-6 col-xl-5">
-        <div className="d-flex justify-content-between border-bottom pb-2 mb-3">
-          <span>Contenido</span>
-          <div className="d-flex align-items-center cursor-pointer">
-            <span>Añadir elemento</span>
-             <IconContext.Provider
+          </AdminForm>
+        </div>
+        <div className="col-md-6">
+          <AdminForm>
+            <Row className="video-upload mb-4">
+              <Col
+                lg={{ span: 4 }}
+                className="text-center d-lg-flex justify-content-end align-items-center"
+              >
+                <span className="font-weight-normal">Imagen</span>
+              </Col>
+              <Col lg={{ offset: 1, span: 6 }}>
+                <label htmlFor="img-upload" className="w-100">
+                  <img
+                    controls
+                    style={{
+                      width: "100%",
+                      padding: "5px",
+                    }}
+                    src={"../../../../../../static/assets/img/no-foto.png"}
+                    alt=""
+                    className="my-3 border rounded"
+                  />
+                </label>
+                <label htmlFor="img-upload" css={ButtonStyle} className="w-100">
+                  Subir imagen
+                </label>
+                {/* <label htmlFor="img-upload" css={ButtonStyle} className="w-100">Subir imágen</label> */}
+              </Col>
+            </Row>
+
+            {/* <Row className="mb-4">
+                        <Col lg={{ span: 4 }} className="text-center d-lg-flex justify-content-end align-items-center">
+                            <span className="m-0 font-weight-normal">Descripción</span>
+
+                        </Col>
+
+
+                        <Col lg={{ offset: 1, span: 6 }}>
+                            <textarea name="" id="" cols="30" rows="10" placeholder="Descripción"></textarea>
+                        </Col>
+                    </Row> */}
+          </AdminForm>
+        </div>
+        <div className="w-100">
+          <div className="d-flex justify-content-between border-bottom pb-2 mb-3">
+            <span>Contenido</span>
+            <div className="d-flex align-items-center cursor-pointer">
+              <span>Añadir elemento</span>
+              <IconContext.Provider
                 value={{
-                    size: 16,
-                    className: "global-class-name mr-2",
+                  size: 16,
+                  className: "global-class-name mr-2",
                 }}
-                >
+              >
                 <MdAdd />
               </IconContext.Provider>
-        </div>
-        
-        </div>
+            </div>
+          </div>
 
-      {itemCards.map((card, i) => renderItemCard(card, i))}
-
- 
-   
+          {itemCards.map((card, i) => renderItemCard(card, i))}
+        </div>
       </div>
-    </div>
     </div>
   );
 };

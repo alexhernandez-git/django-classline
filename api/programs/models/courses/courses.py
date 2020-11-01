@@ -26,6 +26,8 @@ class Course(CLineModel):
         max_length=500
     )
     name = models.CharField(max_length=100)
+    
+    description = models.TextField(max_length=1000, blank=True, null=True)
 
     program = models.ForeignKey(
         'programs.Program', on_delete=models.CASCADE, related_name='program_course')
