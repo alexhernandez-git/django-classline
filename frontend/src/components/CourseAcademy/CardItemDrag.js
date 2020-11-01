@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { useDrag, useDrop } from "react-dnd";
 import { IconContext } from "react-icons";
@@ -11,7 +11,13 @@ import {
   FaTrash,
   FaVideo,
 } from "react-icons/fa";
-import { MdAdd, MdEdit, MdKeyboardArrowDown, MdModeEdit } from "react-icons/md";
+import {
+  MdAdd,
+  MdEdit,
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp,
+  MdModeEdit,
+} from "react-icons/md";
 import { GrCirclePlay, GrDocumentText, GrFormAdd } from "react-icons/gr";
 import { ButtonCustom } from "../ui/ButtonCustom";
 
@@ -74,6 +80,10 @@ const CardItemDrag = ({
   });
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
+  const [isOpen, setIsOpen] = useState(false);
+  const handleToggleOpen = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <PlaylistVideo style={{ opacity }} ref={ref} moveCard={moveCard}>
       <div className="d-flex justify-content-between align-items-center">
@@ -128,7 +138,11 @@ const CardItemDrag = ({
               className: "global-class-name mr-3 cursor-pointer",
             }}
           >
-            <MdKeyboardArrowDown />
+            {isOpen ? (
+              <MdKeyboardArrowUp onClick={handleToggleOpen} />
+            ) : (
+              <MdKeyboardArrowDown onClick={handleToggleOpen} />
+            )}
           </IconContext.Provider>
           <IconContext.Provider
             value={{
@@ -140,87 +154,92 @@ const CardItemDrag = ({
           </IconContext.Provider>
         </div>
       </div>
-      <hr />
-      <div className="item-content">
-        <div className="d-flex justify-content-center align-items-center">
-          {item.type_choices == "LE" && item.content.type_choices == "VI" && (
-            <IconContext.Provider
-              value={{
-                size: 50,
-                className: "global-class-name",
-              }}
-            >
-              <FaFileVideo />
-            </IconContext.Provider>
-          )}
-          {item.type_choices == "LE" && item.content.type_choices == "TE" && (
-            <IconContext.Provider
-              value={{
-                size: 50,
-                className: "global-class-name",
-              }}
-            >
-              <FaFileAlt />
-            </IconContext.Provider>
-          )}
-        </div>
-        <div>
-          {item.type_choices == "LE" && item.content.type_choices == "VI" && (
-            <>
-              <div>
-                crea wallapop con php, poo, mvc, javascript, ajax, mysql....mp4
-              </div>
+      {isOpen && (
+        <>
+          <hr />
+          <div className="item-content">
+            <div className="d-flex justify-content-center align-items-center">
+              {item.type_choices == "LE" && item.content.type_choices == "VI" && (
+                <IconContext.Provider
+                  value={{
+                    size: 50,
+                    className: "global-class-name",
+                  }}
+                >
+                  <FaFileVideo />
+                </IconContext.Provider>
+              )}
+              {item.type_choices == "LE" && item.content.type_choices == "TE" && (
+                <IconContext.Provider
+                  value={{
+                    size: 50,
+                    className: "global-class-name",
+                  }}
+                >
+                  <FaFileAlt />
+                </IconContext.Provider>
+              )}
+            </div>
+            <div>
+              {item.type_choices == "LE" && item.content.type_choices == "VI" && (
+                <>
+                  <div>
+                    crea wallapop con php, poo, mvc, javascript, ajax,
+                    mysql....mp4
+                  </div>
 
-              <div>00:00</div>
-            </>
-          )}
-          <div className="d-flex align-items-center cursor-pointer">
-            <IconContext.Provider
-              value={{
-                size: 14,
-                className: "global-class-name mr-2 cursor-pointer",
-              }}
-            >
-              {" "}
-              <FaEdit />
-            </IconContext.Provider>
-            Editar contenido
+                  <div>00:00</div>
+                </>
+              )}
+              <div className="d-flex align-items-center cursor-pointer">
+                <IconContext.Provider
+                  value={{
+                    size: 14,
+                    className: "global-class-name mr-2 cursor-pointer",
+                  }}
+                >
+                  {" "}
+                  <FaEdit />
+                </IconContext.Provider>
+                Editar contenido
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <hr />
-      <div>
-        <div className="mb-3">
-          <ButtonCustom>
-            <IconContext.Provider
-              value={{
-                size: 22,
-                className: "global-class-name mr-2 cursor-pointer",
-                color: "#fff",
-              }}
-            >
-              {" "}
-              <MdAdd style={{ color: "#fff" }} />
-            </IconContext.Provider>
-            Descripción
-          </ButtonCustom>
-        </div>
-        <div>
-          <ButtonCustom>
-            <IconContext.Provider
-              value={{
-                size: 22,
-                className: "global-class-name mr-2 cursor-pointer",
-                color: "#fff",
-              }}
-            >
-              {" "}
-              <MdAdd style={{ color: "#fff" }} />
-            </IconContext.Provider>
-            Recursos
-          </ButtonCustom>
-        </div>
-      </div>
+          <hr />
+          <div>
+            <div className="mb-3">
+              <ButtonCustom>
+                <IconContext.Provider
+                  value={{
+                    size: 22,
+                    className: "global-class-name mr-2 cursor-pointer",
+                    color: "#fff",
+                  }}
+                >
+                  {" "}
+                  <MdAdd style={{ color: "#fff" }} />
+                </IconContext.Provider>
+                Descripción
+              </ButtonCustom>
+            </div>
+            <div>
+              <ButtonCustom>
+                <IconContext.Provider
+                  value={{
+                    size: 22,
+                    className: "global-class-name mr-2 cursor-pointer",
+                    color: "#fff",
+                  }}
+                >
+                  {" "}
+                  <MdAdd style={{ color: "#fff" }} />
+                </IconContext.Provider>
+                Recursos
+              </ButtonCustom>
+            </div>
+          </div>
+        </>
+      )}
     </PlaylistVideo>
   );
 };

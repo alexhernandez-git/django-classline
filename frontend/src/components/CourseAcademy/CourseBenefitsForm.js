@@ -11,7 +11,7 @@ const CourseBenefitsForm = ({ values }) => {
     <div className="bg-white border p-3 rounded my-2  mb-4">
       <Row className="mb-4">
         <Col className="d-md-flex justify-content-between">
-          <span className="d-none d-md-block">Beneficios de la academia</span>
+          <span className="d-none d-md-block">Beneficios del curso</span>
         </Col>
       </Row>
       <Row>

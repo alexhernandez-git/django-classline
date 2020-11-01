@@ -1,12 +1,16 @@
 import axios from "axios";
 
-import { COURSE_FETCH, COURSE_SUCCESS, COURSE_FAIL } from "../types";
+import {
+  PLAYLIST_ADMIN_FETCH,
+  PLAYLIST_ADMIN_SUCCESS,
+  PLAYLIST_ADMIN_FAIL,
+} from "../types";
 
 import { tokenConfig } from "./auth";
 // CHECK TOKEN & LOAD USER
 export const fetchPlaylist = (id) => (dispatch, getState) => {
   // User Loading
-  dispatch({ type: COURSE_FETCH });
+  dispatch({ type: PLAYLIST_ADMIN_FETCH });
 
   axios
     .get(
@@ -15,13 +19,13 @@ export const fetchPlaylist = (id) => (dispatch, getState) => {
     )
     .then((res) => {
       dispatch({
-        type: COURSE_SUCCESS,
+        type: PLAYLIST_ADMIN_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
-        type: COURSE_FAIL,
+        type: PLAYLIST_ADMIN_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

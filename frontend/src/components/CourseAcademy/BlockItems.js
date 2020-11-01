@@ -81,7 +81,7 @@ const BlocksItems = (props) => {
       id: 0,
       position: 0,
       item: {
-        name: "Finanzas personales",
+        name: "Capitulo 1: Finanzas personales",
         type_choices: "LE",
         content: {
           type_choices: "VI",
@@ -101,7 +101,7 @@ const BlocksItems = (props) => {
       id: 1,
       position: 1,
       item: {
-        name: "Criptomonedas",
+        name: "Capitulo 1: Criptomonedas",
         type_choices: "LE",
         content: {
           type_choices: "TE",
@@ -122,7 +122,7 @@ const BlocksItems = (props) => {
       id: 2,
       position: 2,
       item: {
-        name: "Excel",
+        name: "Capitulo 2: Excel",
         type_choices: "LE",
         content: {
           type_choices: "VI",
@@ -142,7 +142,7 @@ const BlocksItems = (props) => {
       id: 3,
       position: 3,
       item: {
-        name: "Finanzas empresarieales",
+        name: "Capitulo 2: Finanzas empresarieales",
         type_choices: "LE",
         content: {
           type_choices: "VI",
@@ -228,7 +228,7 @@ const BlocksItems = (props) => {
                   component="textarea"
                   name="descripiton"
                   placeholder="Descripción"
-                  style={{ height: "142px" }}
+                  style={{ height: "179px" }}
                 />
               </Col>
             </Row>
@@ -256,19 +256,23 @@ const BlocksItems = (props) => {
                 <span className="font-weight-normal">Imagen</span>
               </Col>
               <Col lg={{ offset: 1, span: 6 }}>
-                <label htmlFor="img-upload" className="w-100">
+                <label htmlFor="img-block-upload" className="w-100">
                   <img
                     controls
                     style={{
                       width: "100%",
                       padding: "5px",
                     }}
-                    src={"../../../../../../static/assets/img/no-foto.png"}
+                    src={"../../../../../../static/assets/img/img4x3.png"}
                     alt=""
                     className="my-3 border rounded"
                   />
                 </label>
-                <label htmlFor="img-upload" css={ButtonStyle} className="w-100">
+                <label
+                  htmlFor="img-block-upload"
+                  css={ButtonStyle}
+                  className="w-100"
+                >
                   Subir imagen
                 </label>
                 {/* <label htmlFor="img-upload" css={ButtonStyle} className="w-100">Subir imágen</label> */}

@@ -2,20 +2,20 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 import {
-  COURSES_FETCH,
-  COURSES_SUCCESS,
-  COURSES_FAIL,
-  SET_COURSE_EDIT,
-  DELETE_COURSE_EDIT,
-  EDIT_COURSE,
-  EDIT_COURSE_FAIL,
-  EDIT_COURSE_SUCCESS,
-  CREATE_COURSE,
-  CREATE_COURSE_FAIL,
-  CREATE_COURSE_SUCCESS,
-  DELETE_COURSE,
-  DELETE_COURSE_FAIL,
-  DELETE_COURSE_SUCCESS,
+  PLAYLISTS_ADMIN_FETCH,
+  PLAYLISTS_ADMIN_SUCCESS,
+  PLAYLISTS_ADMIN_FAIL,
+  SET_PLAYLIST_ADMIN_EDIT,
+  DELETE_PLAYLIST_ADMIN_EDIT,
+  EDIT_PLAYLIST_ADMIN,
+  EDIT_PLAYLIST_ADMIN_FAIL,
+  EDIT_PLAYLIST_ADMIN_SUCCESS,
+  CREATE_PLAYLIST_ADMIN,
+  CREATE_PLAYLIST_ADMIN_FAIL,
+  CREATE_PLAYLIST_ADMIN_SUCCESS,
+  DELETE_PLAYLIST_ADMIN,
+  DELETE_PLAYLIST_ADMIN_FAIL,
+  DELETE_PLAYLIST_ADMIN_SUCCESS,
 } from "../types";
 
 import { tokenConfig } from "./auth";
@@ -23,7 +23,7 @@ import { tokenConfig } from "./auth";
 // CHECK TOKEN & LOAD USER
 export const fetchPlaylists = (search = "") => (dispatch, getState) => {
   // User Loading
-  dispatch({ type: COURSES_FETCH });
+  dispatch({ type: PLAYLISTS_ADMIN_FETCH });
 
   axios
     .get(
@@ -34,32 +34,32 @@ export const fetchPlaylists = (search = "") => (dispatch, getState) => {
     )
     .then((res) => {
       dispatch({
-        type: COURSES_SUCCESS,
+        type: PLAYLISTS_ADMIN_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
-        type: COURSES_FAIL,
+        type: PLAYLISTS_ADMIN_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
 };
 export const fetchPlaylistsPagination = (url) => (dispatch, getState) => {
   // User Loading
-  dispatch({ type: COURSES_FETCH });
+  dispatch({ type: PLAYLISTS_ADMIN_FETCH });
 
   axios
     .get(url, tokenConfig(getState))
     .then((res) => {
       dispatch({
-        type: COURSES_SUCCESS,
+        type: PLAYLISTS_ADMIN_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
-        type: COURSES_FAIL,
+        type: PLAYLISTS_ADMIN_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
@@ -69,7 +69,7 @@ export const fetchPlaylistsIncrease = (limit, search = "") => (
   getState
 ) => {
   // User Loading
-  dispatch({ type: COURSES_FETCH });
+  dispatch({ type: PLAYLISTS_ADMIN_FETCH });
 
   axios
     .get(
@@ -80,13 +80,13 @@ export const fetchPlaylistsIncrease = (limit, search = "") => (
     )
     .then((res) => {
       dispatch({
-        type: COURSES_SUCCESS,
+        type: PLAYLISTS_ADMIN_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
-        type: COURSES_FAIL,
+        type: PLAYLISTS_ADMIN_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
@@ -95,7 +95,7 @@ export const setPlaylistEdit = (playlist) => (dispatch) => {
   // User Loading
 
   dispatch({
-    type: SET_COURSE_EDIT,
+    type: SET_PLAYLIST_ADMIN_EDIT,
     payload: playlist,
   });
 };
@@ -104,7 +104,7 @@ export const deletePlaylistEdit = () => (dispatch) => {
   // User Loading
 
   dispatch({
-    type: DELETE_COURSE_EDIT,
+    type: DELETE_PLAYLIST_ADMIN_EDIT,
   });
 };
 
@@ -112,7 +112,7 @@ export const editPlaylist = (playlist) => (dispatch, getState) => {
   delete playlist.picture;
   console.log(playlist);
   dispatch({
-    type: EDIT_COURSE,
+    type: EDIT_PLAYLIST_ADMIN,
   });
   axios
     .patch(
@@ -126,13 +126,13 @@ export const editPlaylist = (playlist) => (dispatch, getState) => {
       console.log("res", res);
 
       dispatch({
-        type: EDIT_COURSE_SUCCESS,
+        type: EDIT_PLAYLIST_ADMIN_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
-        type: EDIT_COURSE_FAIL,
+        type: EDIT_PLAYLIST_ADMIN_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
@@ -142,7 +142,7 @@ export const createPlaylist = (playlist) => (dispatch, getState) => {
   delete playlist.picture;
   console.log(playlist);
   dispatch({
-    type: CREATE_COURSE,
+    type: CREATE_PLAYLIST_ADMIN,
   });
 
   axios
@@ -153,13 +153,13 @@ export const createPlaylist = (playlist) => (dispatch, getState) => {
     )
     .then((res) => {
       dispatch({
-        type: CREATE_COURSE_SUCCESS,
+        type: CREATE_PLAYLIST_ADMIN_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
-        type: CREATE_COURSE_FAIL,
+        type: CREATE_PLAYLIST_ADMIN_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
@@ -167,7 +167,7 @@ export const createPlaylist = (playlist) => (dispatch, getState) => {
 
 export const deletePlaylist = (id) => (dispatch, getState) => {
   dispatch({
-    type: DELETE_COURSE,
+    type: DELETE_PLAYLIST_ADMIN,
     payload: id,
   });
 
@@ -178,7 +178,7 @@ export const deletePlaylist = (id) => (dispatch, getState) => {
     )
     .then(() => {
       dispatch({
-        type: DELETE_COURSE_SUCCESS,
+        type: DELETE_PLAYLIST_ADMIN_SUCCESS,
       });
       Swal.fire({
         title: "Eliminado!",
@@ -188,7 +188,7 @@ export const deletePlaylist = (id) => (dispatch, getState) => {
     })
     .catch((err) => {
       dispatch({
-        type: DELETE_COURSE_FAIL,
+        type: DELETE_PLAYLIST_ADMIN_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

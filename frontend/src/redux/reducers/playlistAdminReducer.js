@@ -1,4 +1,8 @@
-import { COURSE_FETCH, COURSE_SUCCESS, COURSE_FAIL } from "../types";
+import {
+  PLAYLIST_ADMIN_FETCH,
+  PLAYLIST_ADMIN_SUCCESS,
+  PLAYLIST_ADMIN_FAIL,
+} from "../types";
 
 const initialState = {
   isLoading: false,
@@ -10,19 +14,19 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case COURSE_FETCH:
+    case PLAYLIST_ADMIN_FETCH:
       return {
         ...state,
         isLoading: true,
       };
-    case COURSE_SUCCESS:
+    case PLAYLIST_ADMIN_SUCCESS:
       return {
         ...state,
         isLoading: false,
         playlist: action.payload,
       };
 
-    case COURSE_FAIL:
+    case PLAYLIST_ADMIN_FAIL:
       return {
         ...state,
         playlist: null,

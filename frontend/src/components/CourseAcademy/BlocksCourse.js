@@ -1,43 +1,41 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 import update from "immutability-helper";
-import React, {useCallback, useState} from 'react'
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend as HTML5BackendBlock } from 'react-dnd-html5-backend';
-import { ButtonCustom } from '../ui/ButtonCustom';
-import BlockCard from './BlockCard';
+import React, { useCallback, useState } from "react";
+import { DndProvider } from "react-dnd";
+import { ButtonCustom } from "../ui/ButtonCustom";
+import BlockCard from "./BlockCard";
 
 const BlocksCourse = () => {
-    const [blockCards, setBlockCards] = useState([
-        {
-            id: 0,
-            position: 0,
-            block: {
-                name: "Finanzas personales"
-            } 
-        },
-        {
-            id: 1,
-            position: 1,
-            block: {
-                name: "Criptomonedas"
-            } 
-        },
-        {
-            id:2,
-            position:2,
-            block: {
-                name: "Excel"
-            } 
-        },
-        {
-            id: 3,
-            position: 3,
-            block: {
-                name: "Finanzas empresarieales"
-            } 
-        },
-    
-    ]) 
+  const [blockCards, setBlockCards] = useState([
+    {
+      id: 0,
+      position: 0,
+      block: {
+        name: "Finanzas personales",
+      },
+    },
+    {
+      id: 1,
+      position: 1,
+      block: {
+        name: "Criptomonedas",
+      },
+    },
+    {
+      id: 2,
+      position: 2,
+      block: {
+        name: "Excel",
+      },
+    },
+    {
+      id: 3,
+      position: 3,
+      block: {
+        name: "Finanzas empresarieales",
+      },
+    },
+  ]);
   const moveCard = useCallback(
     (dragIndex, hoverIndex) => {
       const dragCard = blockCards[dragIndex];
@@ -67,34 +65,26 @@ const BlocksCourse = () => {
   );
   const renderBlockCard = (card, index) => {
     return (
-
-            <BlockCard
-                key={card.id}
-                index={index}
-                id={card.id}
-                moveCard={moveCard}
-                block={card.block}
-            />
-
+      <BlockCard
+        key={card.id}
+        index={index}
+        id={card.id}
+        moveCard={moveCard}
+        block={card.block}
+      />
     );
   };
-    return (
-        <>
-        <div className="d-flex justify-content-end mb-3">
-            <ButtonCustom>
-                Nuevo bloque
-            </ButtonCustom>
-        </div>
-            <GridBlocks>
-
-            <DndProvider backend={HTML5BackendBlock}>
-            {blockCards.map((card, i) => renderBlockCard(card, i))}
-            </DndProvider>
-        </GridBlocks>
-
-        </>
-    )
-}
+  return (
+    <>
+      <div className="d-flex justify-content-end mb-3">
+        <ButtonCustom>Nuevo bloque</ButtonCustom>
+      </div>
+      <GridBlocks>
+        {blockCards.map((card, i) => renderBlockCard(card, i))}
+      </GridBlocks>
+    </>
+  );
+};
 export const GridBlocks = styled.div`
   display: grid;
   grid-gap: 4rem 2rem;
@@ -107,4 +97,4 @@ export const GridBlocks = styled.div`
     grid-template-columns: repeat(1, 1fr);
   }
 `;
-export default BlocksCourse
+export default BlocksCourse;

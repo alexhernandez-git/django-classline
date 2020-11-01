@@ -1,18 +1,18 @@
 import {
-  COURSES_FETCH,
-  COURSES_SUCCESS,
-  COURSES_FAIL,
-  SET_COURSE_EDIT,
-  DELETE_COURSE_EDIT,
-  EDIT_COURSE,
-  EDIT_COURSE_FAIL,
-  EDIT_COURSE_SUCCESS,
-  CREATE_COURSE,
-  CREATE_COURSE_FAIL,
-  CREATE_COURSE_SUCCESS,
-  DELETE_COURSE,
-  DELETE_COURSE_FAIL,
-  DELETE_COURSE_SUCCESS,
+  PLAYLISTS_ADMIN_FETCH,
+  PLAYLISTS_ADMIN_SUCCESS,
+  PLAYLISTS_ADMIN_FAIL,
+  SET_PLAYLIST_ADMIN_EDIT,
+  DELETE_PLAYLIST_ADMIN_EDIT,
+  EDIT_PLAYLIST_ADMIN,
+  EDIT_PLAYLIST_ADMIN_FAIL,
+  EDIT_PLAYLIST_ADMIN_SUCCESS,
+  CREATE_PLAYLIST_ADMIN,
+  CREATE_PLAYLIST_ADMIN_FAIL,
+  CREATE_PLAYLIST_ADMIN_SUCCESS,
+  DELETE_PLAYLIST_ADMIN,
+  DELETE_PLAYLIST_ADMIN_FAIL,
+  DELETE_PLAYLIST_ADMIN_SUCCESS,
 } from "../types";
 
 const initialState = {
@@ -33,41 +33,41 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case COURSES_FETCH:
+    case PLAYLISTS_ADMIN_FETCH:
       return {
         ...state,
         isLoading: true,
       };
-    case COURSES_SUCCESS:
+    case PLAYLISTS_ADMIN_SUCCESS:
       return {
         ...state,
         isLoading: false,
         playlists: action.payload,
       };
 
-    case COURSES_FAIL:
+    case PLAYLISTS_ADMIN_FAIL:
       return {
         ...state,
         playlists: null,
         isLoading: false,
         error: action.payload,
       };
-    case SET_COURSE_EDIT:
+    case SET_PLAYLIST_ADMIN_EDIT:
       return {
         ...state,
         playlist_edit: action.payload,
       };
-    case DELETE_COURSE_EDIT:
+    case DELETE_PLAYLIST_ADMIN_EDIT:
       return {
         ...state,
         playlist_edit: null,
       };
-    case EDIT_COURSE:
+    case EDIT_PLAYLIST_ADMIN:
       return {
         ...state,
         playlist_editing: true,
       };
-    case EDIT_COURSE_SUCCESS:
+    case EDIT_PLAYLIST_ADMIN_SUCCESS:
       return {
         ...state,
         playlist_editing: false,
@@ -81,18 +81,18 @@ export default function (state = initialState, action) {
         },
       };
 
-    case EDIT_COURSE_FAIL:
+    case EDIT_PLAYLIST_ADMIN_FAIL:
       return {
         ...state,
         playlist_editing: false,
         playlist_edit_error: action.payload,
       };
-    case CREATE_COURSE:
+    case CREATE_PLAYLIST_ADMIN:
       return {
         ...state,
         playlist_creating: true,
       };
-    case CREATE_COURSE_SUCCESS:
+    case CREATE_PLAYLIST_ADMIN_SUCCESS:
       return {
         ...state,
         playlist_creating: false,
@@ -102,19 +102,19 @@ export default function (state = initialState, action) {
         },
       };
 
-    case CREATE_COURSE_FAIL:
+    case CREATE_PLAYLIST_ADMIN_FAIL:
       return {
         ...state,
         playlist_creating: false,
         playlist_create_error: action.payload,
       };
-    case DELETE_COURSE:
+    case DELETE_PLAYLIST_ADMIN:
       return {
         ...state,
         playlist_delete: action.payload,
         playlist_deleting: true,
       };
-    case DELETE_COURSE_SUCCESS:
+    case DELETE_PLAYLIST_ADMIN_SUCCESS:
       return {
         ...state,
         playlist_deleting: false,
@@ -127,7 +127,7 @@ export default function (state = initialState, action) {
         playlist_delete: null,
       };
 
-    case DELETE_COURSE_FAIL:
+    case DELETE_PLAYLIST_ADMIN_FAIL:
       return {
         ...state,
         playlist_deleting: false,
