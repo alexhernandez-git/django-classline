@@ -16,11 +16,11 @@ import {
   publishPack,
   cancelPublishedPack,
   removePack,
-} from "src/redux/actions/pack";
+} from "src/redux/actions/courses/course";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Link, useHistory, useParams } from "react-router-dom";
-import Prices from "static/data/prices/eur_prices_pack";
+import Prices from "static/data/prices/eur_prices_course";
 import SelectPrice from "./SelectPrice";
 import { Field } from "formik";
 
@@ -28,7 +28,7 @@ const CourseConfiguration = (props) => {
   const MySwal = withReactContent(Swal);
   const { program } = useParams();
   const dispatch = useDispatch();
-  const packReducer = useSelector((state) => state.packReducer);
+  const courseReducer = useSelector((state) => state.courseReducer);
   const authReducer = useSelector((state) => state.authReducer);
   const programReducer = useSelector((state) => state.programReducer);
   const history = useHistory();
@@ -95,7 +95,7 @@ const CourseConfiguration = (props) => {
   return (
     <>
       {/* <div className="bg-white border p-3 rounded my-2 mb-4 pb-5">
-        <span className="d-none d-md-block">Configuración del pack</span>
+        <span className="d-none d-md-block">Configuración del course</span>
 
         <Row className="mb-5">
           <Col
@@ -259,7 +259,7 @@ const CourseConfiguration = (props) => {
           </Col>
 
           <Col sm={{ offset: 1, span: 6 }}>
-            {packReducer.pack && packReducer.pack.published ? (
+            {courseReducer.course && courseReducer.course.published ? (
               <div className="d-sm-flex justify-content-between d-block">
                 <span className="text-secondary mr-3 font-weight-bold text-center d-block d-sm-inline">
                   Publicada
@@ -276,14 +276,14 @@ const CourseConfiguration = (props) => {
                 Publicar
               </ButtonCustomSuccess>
             )}
-            {packReducer.publish_error &&
-              packReducer.publish_error.data.non_field_errors &&
-              packReducer.publish_error.data.non_field_errors.map((error) => (
+            {courseReducer.publish_error &&
+              courseReducer.publish_error.data.non_field_errors &&
+              courseReducer.publish_error.data.non_field_errors.map((error) => (
                 <small className="d-block text-red">{error}</small>
               ))}
-            {packReducer.canceling_published_error &&
-              packReducer.canceling_published_error.data.non_field_errors &&
-              packReducer.canceling_published_error.data.non_field_errors.map(
+            {courseReducer.canceling_published_error &&
+              courseReducer.canceling_published_error.data.non_field_errors &&
+              courseReducer.canceling_published_error.data.non_field_errors.map(
                 (error) => <small className="d-block text-red">{error}</small>
               )}
           </Col>
@@ -301,10 +301,10 @@ const CourseConfiguration = (props) => {
               Eliminar
             </ButtonCustomError>
 
-            {packReducer.removing_pack_error &&
-              packReducer.removing_pack_error.data.message && (
+            {courseReducer.removing_course_error &&
+              courseReducer.removing_course_error.data.message && (
                 <small className="d-block text-red">
-                  {packReducer.removing_pack_error.data.message}
+                  {courseReducer.removing_course_error.data.message}
                 </small>
               )}
           </Col>

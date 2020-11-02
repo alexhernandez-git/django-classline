@@ -25,7 +25,7 @@ import BlocksCourseRoutes from "../../components/CourseAcademy/BlocksCourseRoute
 const ConfigurationCourse = (props) => {
   const [key, setKey] = useState(0);
   const dispatch = useDispatch();
-  const courseObject = useSelector((state) => state.courseReducer.course);
+  const courseReducer = useSelector((state) => state.courseReducer);
   const programReducer = useSelector((state) => state.programReducer);
 
   const { program, course } = useParams();
@@ -54,27 +54,31 @@ const ConfigurationCourse = (props) => {
     brand_color: null,
   });
   useEffect(() => {
-    if (courseObject) {
+    if (!courseReducer.isLoading && courseReducer.course) {
       setCourseState({
-        id: courseObject.id,
-        code: courseObject.code,
-        title: courseObject.title,
-        subtitle: courseObject.subtitle,
-        description: courseObject.description,
-        benefits: courseObject.benefits,
-        students: courseObject.students,
-        course_price: courseObject.course_price,
-        course_language: courseObject.course_language,
-        instructor: courseObject.instructor,
-        published: courseObject.published,
-        brand_color: courseObject.brand_color,
+        id: courseReducer.course.id,
+        code: courseReducer.course.code,
+        title: courseReducer.course.title ? courseReducer.course.title : "",
+        subtitle: courseReducer.course.subtitle
+          ? courseReducer.course.subtitle
+          : "",
+        description: courseReducer.course.description
+          ? courseReducer.course.description
+          : "",
+        benefits: courseReducer.course.benefits,
+        students: courseReducer.course.students,
+        course_price: courseReducer.course.course_price,
+        course_language: courseReducer.course.course_language,
+        instructor: courseReducer.course.instructor,
+        published: courseReducer.course.published,
+        brand_color: courseReducer.course.brand_color,
       });
     }
-  }, [courseObject]);
+  }, [!courseReducer.isLoading, courseReducer.course]);
   return (
     <Main padding>
       <Filters
-        title={courseObject?.title}
+        title={courseReducer.course?.title}
         back="Volver"
         to={`/academy/${program}/admin/courses`}
       />

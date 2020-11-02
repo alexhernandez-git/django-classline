@@ -44,6 +44,29 @@ const MainCourseInfo = (props) => {
             lg={{ span: 4 }}
             className="text-center d-lg-flex justify-content-end align-items-center"
           >
+            <span className="m-0 font-weight-normal">Subtitulo</span>
+          </Col>
+
+          <Col lg={{ offset: 1, span: 6 }}>
+            <Field
+              type="text"
+              name="subtitle"
+              placeholder="Subtitulo del curso"
+              // value={values.subtitle}
+              // onChange={handleChange}
+            />
+            {packReducer.save_error &&
+              packReducer.save_error.data.subtitle &&
+              packReducer.save_error.data.subtitle.map((error) => (
+                <small className="d-block text-red">{error}</small>
+              ))}
+          </Col>
+        </Row>
+        <Row className="mb-4">
+          <Col
+            lg={{ span: 4 }}
+            className="text-center d-lg-flex justify-content-end align-items-center"
+          >
             <span className="m-0 font-weight-normal">Descripción</span>
           </Col>
 
