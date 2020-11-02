@@ -48,6 +48,9 @@ class Course(CLineModel):
         through='programs.CourseStudent'
     )
 
+    blocks = models.ManyToManyField(
+        'programs.CourseBlock', through='programs.CourseBlockTrack')
+
     published = models.BooleanField(default=False)
     published_in_program = models.BooleanField(default=False)
 

@@ -29,7 +29,7 @@ export const fetchPlaylists = (search = "") => (dispatch, getState) => {
     .get(
       `/api/programs/${
         getState().programReducer.program.code
-      }/courses/?search=${search}`,
+      }/playlists-admin/?search=${search}`,
       tokenConfig(getState)
     )
     .then((res) => {
@@ -75,7 +75,7 @@ export const fetchPlaylistsIncrease = (limit, search = "") => (
     .get(
       `/api/programs/${
         getState().programReducer.program.code
-      }/courses/?search=${search}&limit=${limit}`,
+      }/playlists-admin/?search=${search}&limit=${limit}`,
       tokenConfig(getState)
     )
     .then((res) => {

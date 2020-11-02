@@ -16,7 +16,8 @@ from api.programs.models import (
     Course,
     CoursePrice,
     CourseLanguage,
-    CourseBenefit
+    CourseBenefit,
+    CourseBlockTrack
 )
 
 # Serializes
@@ -190,6 +191,7 @@ class CourseModifyModelSerializer(serializers.ModelSerializer):
             CourseBenefit.objects.filter(course=instance.pk).delete()
             for benefit in self.context['benefits']:
                 CourseBenefit.objects.create(**benefit, course=instance)
+       
         return super(CourseModifyModelSerializer, self).update(instance, validated_data)
 
 
@@ -205,7 +207,7 @@ class PublishCourseSerializer(serializers.Serializer):
         if not course.picture:
             raise serializers.ValidationError(
                 'El curso no tiene una imágen')
-                
+
         if not self.context['publish_in_program']:
             if not CoursePrice.objects.filter(course=course).exists():
                 if not course.user.profile.stripe_account_id:
@@ -260,4 +262,23 @@ class AddStudentCourseSerializer(serializers.Serializer):
 
         instance.save()
         return instance
+
+
+
+class CourseBlockTrackModelSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        """Meta class."""
+
+        model = CourseBlockTrack
+        fields = (
+            'id',
+            'block',
+            'position',
+        )
+        # extra_kwargs = {'end': {'required': False}}
+        read_only_fields = (
+            'id',
+        )
+    
 
