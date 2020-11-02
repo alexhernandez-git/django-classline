@@ -4,15 +4,15 @@ import { Main } from "src/components/ui/Main";
 import Filters from "src/components/Layout/Filters";
 import { Tab, Nav, Col, Row } from "react-bootstrap";
 import styled from "@emotion/styled";
-import MainProgramInfo from "src/components/AdminAcademy/MainProgramInfo";
-import ProgramBenefitsForm from "src/components/AdminAcademy/ProgramBenefitsForm";
-import ProgramPresentation from "src/components/AdminAcademy/ProgramPresentation";
-import ProgramConfiguration from "src/components/AdminAcademy/ProgramConfiguration";
 import { ButtonCustom } from "src/components/ui/ButtonCustom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchProgram, saveProgram } from "src/redux/actions/program";
+import {
+  fetchCourse,
+  saveCourse,
+  resetCoursesErrors,
+} from "src/redux/actions/courses/course";
 
 import { Formik, Form } from "formik";
 import MainCourseInfo from "../../components/CourseAcademy/MainCourseInfo";
@@ -25,78 +25,66 @@ import BlocksCourseRoutes from "../../components/CourseAcademy/BlocksCourseRoute
 const ConfigurationCourse = (props) => {
   const [key, setKey] = useState(0);
   const dispatch = useDispatch();
-  const program = useSelector((state) => state.programReducer.program);
+  const courseObject = useSelector((state) => state.courseReducer.course);
+  const programReducer = useSelector((state) => state.programReducer);
 
-  const router = useParams();
+  const { program, course } = useParams();
 
-  const [programState, setProgramState] = useState({
+  useEffect(() => {
+    if (!programReducer.isLoading && programReducer.program && course) {
+      const dispatchFetchCourses = (course) => dispatch(fetchCourse(course));
+      dispatchFetchCourses(course);
+      const dispatchResetCoursesErrors = () => dispatch(resetCoursesErrors());
+      dispatchResetCoursesErrors();
+    }
+  }, [programReducer.isLoading]);
+  const [courseState, setCourseState] = useState({
     id: null,
+    code: null,
     title: "",
     subtitle: "",
     description: "",
     benefits: [],
-    are_meetups: false,
-    meetups: null,
-    are_videos: false,
-    videos: null,
-    are_admin_playlists: false,
-    courses: null,
-    are_podcasts: false,
-    podcasts: null,
     students: null,
-    program_price: null,
-    program_language: "",
+    course_price: null,
+    course_language: "",
     instructor: {},
-    is_published: false,
-    are_docs: true,
-    are_forum: true,
-    event_booking: false,
-    event_booking_calendar: false,
-    brand_color: null
+    published: false,
+
+    brand_color: null,
   });
   useEffect(() => {
-    if (program) {
-      setProgramState({
-        id: program.id,
-        title: program.title,
-        subtitle: program.subtitle,
-        description: program.description,
-        benefits: program.benefits,
-        are_meetups: program.are_meetups,
-        meetups: program.meetups,
-        are_videos: program.are_videos,
-        videos: program.videos,
-        are_admin_playlists: program.are_admin_playlists,
-        courses: program.courses,
-        are_podcasts: program.are_podcasts,
-        are_docs: program.are_docs,
-        are_forum: program.are_forum,
-        podcasts: program.podcasts,
-        students: program.students,
-        program_price: program.program_price,
-        program_language: program.program_language,
-        instructor: program.instructor,
-        is_published: program.is_published,
-        event_booking: program.event_booking,
-        event_booking_calendar: program.event_booking_calendar,
-        brand_color: program.brand_color
+    if (courseObject) {
+      setCourseState({
+        id: courseObject.id,
+        code: courseObject.code,
+        title: courseObject.title,
+        subtitle: courseObject.subtitle,
+        description: courseObject.description,
+        benefits: courseObject.benefits,
+        students: courseObject.students,
+        course_price: courseObject.course_price,
+        course_language: courseObject.course_language,
+        instructor: courseObject.instructor,
+        published: courseObject.published,
+        brand_color: courseObject.brand_color,
       });
     }
-  }, [program]);
+  }, [courseObject]);
   return (
     <Main padding>
-      <Filters 
-          title={program?.title}  
-          back="Volver"
+      <Filters
+        title={courseObject?.title}
+        back="Volver"
+        to={`/academy/${program}/admin/courses`}
       />
       <ContainerTabs className="container">
         <Formik
           enableReinitialize={true}
-          initialValues={programState}
+          initialValues={courseState}
           onSubmit={(values) => {
-            const dispatchSaveProgram = (program) =>
-              dispatch(saveProgram(program));
-            dispatchSaveProgram(values);
+            const dispatchSaveCourse = (course) => dispatch(saveCourse(course));
+            dispatchSaveCourse(values);
           }}
         >
           {(props) => {
@@ -164,14 +152,13 @@ const ConfigurationCourse = (props) => {
                             setFieldValue={props.setFieldValue}
                           />
                         </Tab.Pane>
-                        
+
                         <Tab.Pane eventKey={2} className="text-grey">
                           <BlocksCourseRoutes
                             values={props.values}
                             setFieldValue={props.setFieldValue}
                           />
                         </Tab.Pane>
-                        
                       </Tab.Content>
                     </Col>
                   </Row>

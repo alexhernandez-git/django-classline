@@ -94,7 +94,8 @@ const Podcasts = () => {
             podcastsPackReducer.podcasts.results.map((podcast_pack) => {
               const active =
                 podcastsPackReducer.podcast_playing &&
-                podcastsPackReducer.podcast_playing.id == podcast_pack.podcast.id;
+                podcastsPackReducer.podcast_playing.id ==
+                  podcast_pack.podcast.id;
               return (
                 <Podcast
                   handlePlay={handlePlay}

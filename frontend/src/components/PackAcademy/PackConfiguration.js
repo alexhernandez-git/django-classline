@@ -13,7 +13,6 @@ import {
 import Checkbox from "src/components/ui/Checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import {
-
   publishPack,
   cancelPublishedPack,
   removePack,
@@ -31,7 +30,7 @@ const PackConfiguration = (props) => {
   const dispatch = useDispatch();
   const packReducer = useSelector((state) => state.packReducer);
   const authReducer = useSelector((state) => state.authReducer);
-  const history = useHistory()
+  const history = useHistory();
   const handlePublishPack = () => {
     const dispatchPublishPack = () => dispatch(publishPack());
     dispatchPublishPack();
@@ -90,7 +89,7 @@ const PackConfiguration = (props) => {
             <Checkbox name="are_videos" />
           </Col>
         </Row>
-{/* 
+        {/* 
         <Row className="mb-5">
           <Col
             lg={{ span: 4 }}
@@ -122,7 +121,7 @@ const PackConfiguration = (props) => {
             <Checkbox name="are_podcasts" />
           </Col>
         </Row>
-{/*      
+        {/*      
         <Row className="">
           <Col
             lg={{ span: 4 }}
@@ -140,9 +139,9 @@ const PackConfiguration = (props) => {
         </Row> */}
       </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
-      <span className="d-none d-md-block">Ponle un precio a tu pack</span>
+        <span className="d-none d-md-block">Ponle un precio a tu pack</span>
 
-      <Row className="">
+        <Row className="">
           <Col
             lg={{ span: 4 }}
             className="text-center d-lg-flex justify-content-end align-items-center"
@@ -152,11 +151,11 @@ const PackConfiguration = (props) => {
 
           <Col lg={{ offset: 1, span: 6 }}>
             <Form.Group controlId="formGroupName">
-            <Field name="lang" options={Prices} component={SelectPrice} />
+              <Field name="lang" options={Prices} component={SelectPrice} />
             </Form.Group>
           </Col>
         </Row>
-        </div>
+      </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Conectar con stripe</span>
 
@@ -215,11 +214,10 @@ const PackConfiguration = (props) => {
           </Col>
         </Row>
       </div>
-    
+
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Acciones</span>
 
-        
         <Row className="mb-4">
           <Col
             sm={{ span: 4 }}
@@ -248,9 +246,9 @@ const PackConfiguration = (props) => {
             )}
             {packReducer.publish_error &&
               packReducer.publish_error.data.non_field_errors &&
-              packReducer.publish_error.data.non_field_errors.map(
-                (error) => <small className="d-block text-red">{error}</small>
-              )}
+              packReducer.publish_error.data.non_field_errors.map((error) => (
+                <small className="d-block text-red">{error}</small>
+              ))}
             {packReducer.canceling_published_error &&
               packReducer.canceling_published_error.data.non_field_errors &&
               packReducer.canceling_published_error.data.non_field_errors.map(

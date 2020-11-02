@@ -1,6 +1,6 @@
 import React from "react";
 import Select from "react-select";
-import Prices from "static/data/prices/eur_prices_pack";
+import Prices from "static/data/prices/eur_prices_course";
 
 export const SelectPrice = ({ field, form, ...props }) => {
   const { options } = props;
@@ -13,13 +13,13 @@ export const SelectPrice = ({ field, form, ...props }) => {
       placeholder={<div>Selecciona tu precio</div>}
       menuShouldScrollIntoView={false}
       value={
-        !form.values.pack_price
+        !form.values.course_price
           ? false
           : Prices.filter(
-              (price) => price.level == form.values.pack_price.level
+              (price) => price.level == form.values.course_price.level
             )
       }
-      onChange={(value) => form.setFieldValue("pack_price", value)}
+      onChange={(value) => form.setFieldValue("course_price", value)}
       className="w-100 mr-2"
       styles={{
         control: (base, state) => ({

@@ -13,7 +13,7 @@ import string
 class CourseBlock(CLineModel):
     code = models.CharField(max_length=10, blank=True, null=True)
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, blank=True, null=True)
 
     picture = models.ImageField(
         'profile picture',

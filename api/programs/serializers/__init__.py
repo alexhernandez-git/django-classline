@@ -27,3 +27,4 @@ from .program_topics import *
 from .videos_topic import *
 from .podcasts_topic import *
 from .playlists_topic import *
+from .courses import *

@@ -6,8 +6,7 @@ import {
 } from "src/components/ui/ButtonCustom";
 import Cropper from "react-cropper";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadPicture } from "src/redux/actions/program";
-import { uploadVideo } from "src/redux/actions/program";
+import { uploadPicture, uploadVideo } from "src/redux/actions/courses/course";
 
 const CoursePresentation = (props) => {
   const dispatch = useDispatch();
@@ -22,18 +21,24 @@ const CoursePresentation = (props) => {
   const handleShow = () => {
     setShow(true);
   };
-  const programReducer = useSelector((state) => state.programReducer);
+  const courseReducer = useSelector((state) => state.courseReducer);
 
   const [srcImage, setSrcImage] = useState(null);
   const [cropResult, setCropResult] = useState(
     "/static/assets/img/no-foto.png"
   );
   const [fileName, setFileName] = useState("");
+
   useEffect(() => {
-    if (programReducer.program && programReducer.program.picture) {
-      setCropResult(programReducer.program.picture);
+    if (!courseReducer.isLoading && courseReducer.course) {
+      console.log(courseReducer.course.picture);
+      setCropResult(
+        courseReducer.course.picture
+          ? courseReducer.course.picture
+          : "/static/assets/img/no-foto.png"
+      );
     }
-  }, []);
+  }, [courseReducer.course?.picture]);
   const handleUploadImage = (e) => {
     e.preventDefault();
     handleShow();
@@ -90,14 +95,17 @@ const CoursePresentation = (props) => {
     return new File([u8arr], filename, { type: mime });
   }
   const [videoSrc, setVideoSrc] = useState(null);
+
   useEffect(() => {
-    if (
-      !programReducer.isLoading &&
-      programReducer.program.video_presentation
-    ) {
-      setVideoSrc(programReducer.program.video_presentation);
+    if (!courseReducer.isLoading && courseReducer.course) {
+      console.log(courseReducer.course.video_presentation);
+      setVideoSrc(
+        courseReducer.course.video_presentation &&
+          courseReducer.course.video_presentation
+      );
     }
-  }, [programReducer.program]);
+  }, [courseReducer.course?.video_presentation]);
+
   const handleUploadVideo = (e) => {
     e.preventDefault();
 
@@ -170,7 +178,7 @@ const CoursePresentation = (props) => {
           </span>
         </Col>
         <Col lg={{ offset: 1, span: 6 }}>
-          {programReducer.video_uploading && (
+          {courseReducer.video_uploading && (
             <span className="d-block text-center">
               Subiendo video, por favor espera...
             </span>

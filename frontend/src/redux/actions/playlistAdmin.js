@@ -14,7 +14,9 @@ export const fetchPlaylist = (id) => (dispatch, getState) => {
 
   axios
     .get(
-      `/api/programs/${getState().programReducer.program.code}/courses/${id}`,
+      `/api/programs/${
+        getState().programReducer.program.code
+      }/playlists-admin/${id}`,
       tokenConfig(getState)
     )
     .then((res) => {

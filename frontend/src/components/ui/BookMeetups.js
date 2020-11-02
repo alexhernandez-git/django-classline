@@ -132,7 +132,6 @@ const BookMeetups = (props) => {
                 view={"timeGridWeek"}
                 defaultView={"timeGridWeek"}
                 plugins={[timeGridPlugin, dayGridPlugin]}
-           
                 weekends={true}
                 themeSystem="bootstrap"
                 timeZone="local"

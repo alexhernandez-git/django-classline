@@ -31,6 +31,7 @@ from api.programs.views.videos_topic import VideoTopicViewSet
 from api.programs.views.playlists_topic import PlaylistTopicViewSet
 from api.programs.views.podcasts_topic import PodcastTopicViewSet
 from api.programs.views.event_students import EventStudentViewSet
+from api.programs.views.courses.courses import CourseViewSet
 router = DefaultRouter()
 
 router.register(r'programs', ProgramViewSet, basename='program')
@@ -76,9 +77,9 @@ router.register(
     basename='ratings'
 )
 router.register(
-    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/courses',
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/playlists-admin',
     PlaylistAdminViewSet,
-    basename='courses'
+    basename='playlists-admin'
 )
 router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/files',
@@ -169,6 +170,11 @@ router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/topics/(?P<topic_id>[-a-zA-Z0-9_]+)/podcasts-topic',
     PodcastTopicViewSet,
     basename='podcasts-topic'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/courses',
+    CourseViewSet,
+    basename='courses'
 )
 urlpatterns = [
     path('', include(router.urls))

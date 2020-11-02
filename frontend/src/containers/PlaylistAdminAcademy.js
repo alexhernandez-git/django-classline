@@ -10,7 +10,7 @@ import { useParams, Link, useHistory } from "react-router-dom";
 import { fetchPlaylist } from "src/redux/actions/playlistAdmin";
 const PlaylistPage = (props) => {
   const dispatch = useDispatch();
-  const history = useHistory()
+  const history = useHistory();
   const router = useParams();
   const programReducer = useSelector((state) => state.programReducer);
   const videoId = router.id;
@@ -22,24 +22,26 @@ const PlaylistPage = (props) => {
       dispatchFetchVideo(videoId);
     }
   }, [videoId, programReducer.isLoading]);
-  const playlistAdminReducer = useSelector((state) => state.playlistAdminReducer);
-  const goNext = () =>{
-    const newTrackId = Number(trackId)  + 1
-    const maxPlaylistTrack = playlistAdminReducer.playlist.tracks.length
+  const playlistAdminReducer = useSelector(
+    (state) => state.playlistAdminReducer
+  );
+  const goNext = () => {
+    const newTrackId = Number(trackId) + 1;
+    const maxPlaylistTrack = playlistAdminReducer.playlist.tracks.length;
     if (newTrackId < maxPlaylistTrack) {
       history.push({
-        pathname:`/academy/${programReducer.program.code}/playlist/${playlistAdminReducer.playlist.id}/${newTrackId}`, 
-      })
+        pathname: `/academy/${programReducer.program.code}/playlist/${playlistAdminReducer.playlist.id}/${newTrackId}`,
+      });
     }
-  }
+  };
   const goPrevious = () => {
-    const newTrackId = Number(trackId)  - 1
+    const newTrackId = Number(trackId) - 1;
     if (newTrackId >= 0) {
-    history.push({
-      pathname:`/academy/${programReducer.program.code}/playlist/${playlistAdminReducer.playlist.id}/${newTrackId}`, 
-    })
-  }
-  } 
+      history.push({
+        pathname: `/academy/${programReducer.program.code}/playlist/${playlistAdminReducer.playlist.id}/${newTrackId}`,
+      });
+    }
+  };
   // const playlistVideoRef = useRef(null)
   // useEffect(() => {
   //   console.log(playlistVideoRef);
@@ -70,7 +72,10 @@ const PlaylistPage = (props) => {
           <div className="d-block d-md-none m-5"></div>
 
           <div className="d-flex justify-content-center bg-dark text-white p-4 h2 mb-0">
-            <span>{playlistAdminReducer.playlist && playlistAdminReducer.playlist.name}</span>
+            <span>
+              {playlistAdminReducer.playlist &&
+                playlistAdminReducer.playlist.name}
+            </span>
           </div>
           <PlaylistScroll>
             <div className="p-3">

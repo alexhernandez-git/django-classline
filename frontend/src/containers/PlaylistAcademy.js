@@ -24,23 +24,23 @@ const PlaylistPage = (props) => {
   }, [videoId, programReducer.isLoading]);
   const playlistReducer = useSelector((state) => state.playlistReducer);
 
-  const goNext = () =>{
-    const newTrackId = Number(trackId)  + 1
-    const maxPlaylistTrack = playlistReducer.playlist.tracks.length
+  const goNext = () => {
+    const newTrackId = Number(trackId) + 1;
+    const maxPlaylistTrack = playlistReducer.playlist.tracks.length;
     if (newTrackId < maxPlaylistTrack) {
       history.push({
-        pathname:`/academy/${programReducer.program.code}/student-playlist/${playlistReducer.playlist.id}/${newTrackId}`, 
-      })
+        pathname: `/academy/${programReducer.program.code}/student-playlist/${playlistReducer.playlist.id}/${newTrackId}`,
+      });
     }
-  }
+  };
   const goPrevious = () => {
-    const newTrackId = Number(trackId)  - 1
+    const newTrackId = Number(trackId) - 1;
     if (newTrackId >= 0) {
-    history.push({
-      pathname:`/academy/${programReducer.program.code}/student-playlist/${playlistReducer.playlist.id}/${newTrackId}`, 
-    })
-  }
-  } 
+      history.push({
+        pathname: `/academy/${programReducer.program.code}/student-playlist/${playlistReducer.playlist.id}/${newTrackId}`,
+      });
+    }
+  };
   // const playlistVideoRef = useRef(null)
   // useEffect(() => {
   //   console.log(playlistVideoRef);
@@ -52,7 +52,6 @@ const PlaylistPage = (props) => {
   return (
     <Main padding>
       <div className="row">
-
         <div className="col-md-6 col-lg-8">
           {playlistReducer.playlist &&
             !playlistReducer.isLoading &&

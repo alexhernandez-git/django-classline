@@ -18,19 +18,19 @@ export const SelectLang = ({ field, form, ...props }) => {
           boxShadow: "none", // no box-shadow
         }),
       }}
-      // value={packContext.myProgramState.pack_language}
+      // value={courseContext.myProgramState.course_language}
 
       getOptionLabel={(option) => option.label + " / " + option.nativeName}
       placeholder={<div>Selecciona tu idioma</div>}
       menuShouldScrollIntoView={false}
       value={
-        !form.values.pack_language
+        !form.values.course_language
           ? false
           : Lenguages.filter(
-              (lang) => lang.value == form.values.pack_language.value
+              (lang) => lang.value == form.values.course_language.value
             )
       }
-      onChange={(value) => form.setFieldValue("pack_language", value)}
+      onChange={(value) => form.setFieldValue("course_language", value)}
       theme={(theme) => ({
         ...theme,
         colors: {

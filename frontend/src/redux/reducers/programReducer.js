@@ -127,7 +127,7 @@ export default function (state = initialState, action) {
         picture_uploading: false,
         program: {
           ...state.program,
-          pricture: action.payload,
+          picture: action.payload,
         },
       };
     case PROGRAM_PICTURE_FAIL:

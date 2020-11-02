@@ -4,34 +4,35 @@ import { Main } from "src/components/ui/Main";
 import Filters from "src/components/Layout/Filters";
 import { Tab, Nav, Col, Row } from "react-bootstrap";
 import styled from "@emotion/styled";
-import MainProgramInfo from "src/components/PackAcademy/MainProgramInfo";
-import ProgramBenefitsForm from "src/components/PackAcademy/ProgramBenefitsForm";
-import ProgramPresentation from "src/components/PackAcademy/ProgramPresentation";
+import PackPresentation from "src/components/PackAcademy/PackPresentation";
 import PackConfiguration from "src/components/PackAcademy/PackConfiguration";
 import { ButtonCustom } from "src/components/ui/ButtonCustom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-
 import { Formik, Form } from "formik";
 import VideosPack from "./pack/VideosAdminPack";
 import PodcastsPack from "./pack/PodcastsAdminPack";
-import { fetchPack, savePack,resetPacksErrors } from "../../redux/actions/pack";
+import {
+  fetchPack,
+  savePack,
+  resetPacksErrors,
+} from "../../redux/actions/pack";
 
 const ConfigurationPack = (props) => {
   const [key, setKey] = useState(0);
   const dispatch = useDispatch();
   const packReducer = useSelector((state) => state.packReducer);
   const programReducer = useSelector((state) => state.programReducer);
-  const {  id } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     if (!programReducer.isLoading && programReducer.program && id) {
       const dispatchFetchPacks = (id) => dispatch(fetchPack(id));
       dispatchFetchPacks(id);
-      const dispatchResetPacksErrors = () => dispatch(resetPacksErrors())
-      dispatchResetPacksErrors()
+      const dispatchResetPacksErrors = () => dispatch(resetPacksErrors());
+      dispatchResetPacksErrors();
     }
   }, [programReducer.isLoading]);
 
@@ -55,7 +56,9 @@ const ConfigurationPack = (props) => {
       setPackState({
         id: packReducer.pack.id,
         title: packReducer.pack.title ? packReducer.pack.title : "",
-        description: packReducer.pack.description ? packReducer.pack.description : "",
+        description: packReducer.pack.description
+          ? packReducer.pack.description
+          : "",
         are_videos: packReducer.pack.are_videos,
         videos: packReducer.pack.videos,
         are_podcasts: packReducer.pack.are_podcasts,
@@ -72,18 +75,13 @@ const ConfigurationPack = (props) => {
   }, [packReducer.isLoading, packReducer.pack]);
   return (
     <Main padding>
-      <Filters 
-        title={packReducer.pack?.title}  
-        back="Volver"
-      
-      />
+      <Filters title={packReducer.pack?.title} back="Volver" />
       <ContainerTabs className="container">
         <Formik
           enableReinitialize={true}
           initialValues={packState}
           onSubmit={(values) => {
-            const dispatchSavePack = (pack) =>
-              dispatch(savePack(pack));
+            const dispatchSavePack = (pack) => dispatch(savePack(pack));
             dispatchSavePack(values);
           }}
         >
@@ -118,7 +116,6 @@ const ConfigurationPack = (props) => {
                             <span>INFORMACIÓN PRINCIPAL</span>
                           </Nav.Link>
                         </Nav.Item>
-    
 
                         <Nav.Item>
                           <Nav.Link eventKey={1} className="text-grey">
@@ -153,11 +150,11 @@ const ConfigurationPack = (props) => {
                     <Col className="pl-3 pr-3 pb-5">
                       <Tab.Content>
                         <Tab.Pane eventKey={0} className="text-grey">
-                          <MainProgramInfo
+                          <MainPackInfo
                             values={props.values}
                             setFieldValue={props.setFieldValue}
                           />
-                          <ProgramPresentation />
+                          <PackPresentation />
                         </Tab.Pane>
 
                         <Tab.Pane eventKey={1} className="text-grey">
@@ -166,7 +163,7 @@ const ConfigurationPack = (props) => {
                             setFieldValue={props.setFieldValue}
                           />
                         </Tab.Pane>
-                        
+
                         <Tab.Pane eventKey={2} className="text-grey">
                           <VideosPack
                             values={props.values}
@@ -177,7 +174,6 @@ const ConfigurationPack = (props) => {
                           <PodcastsPack
                             values={props.values}
                             setFieldValue={props.setFieldValue}
-
                           />
                         </Tab.Pane>
                         {/* <Tab.Pane eventKey={3} className="text-grey">

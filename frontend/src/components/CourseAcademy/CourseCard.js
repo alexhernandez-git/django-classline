@@ -3,10 +3,10 @@ import styled from "@emotion/styled";
 import { textEllipsis } from "src/components/ui/TextEllipsis";
 import moment from "moment";
 const CourseCard = (props) => {
-  console.log(props)
+  console.log(props);
   const { pathname } = useLocation();
   const { program } = useParams();
-  const { code, title, picture, videos, podcasts,are_videos,are_podcasts, pack_price } = props.course;
+  const { code, title, picture, videos, pack_price } = props.course;
   function msToHMS(seconds) {
     if (isNaN(seconds)) {
       return "00:00";
@@ -29,7 +29,6 @@ const CourseCard = (props) => {
       }
     >
       <PackContent>
-
         <PackImage className="cursor-pointer">
           <div className="video-content">
             <img
@@ -38,37 +37,33 @@ const CourseCard = (props) => {
                 picture ? picture : "../../../../static/assets/img/no-foto.png"
               }
               alt="video"
-              />
+            />
           </div>
         </PackImage>
         <PackInfo>
-
-            <div className="video-text">
-
-              <div className="py-2 d-flex justify-content-between">
-                <span css={textEllipsis}>{title ? title : "Nuevo curso" }</span>
-                {pack_price && 
-                  <span css={textEllipsis} className="text-grey">{pack_price.label}</span>
-                }
+          <div className="video-text">
+            <div className="py-2 d-flex justify-content-between">
+              <span css={textEllipsis}>{title ? title : "Nuevo curso"}</span>
+              {pack_price && (
+                <span css={textEllipsis} className="text-grey">
+                  {pack_price.label}
+                </span>
+              )}
+            </div>
+            <div className="text-grey">
+              <div>
+                <small css={textEllipsis}>Lecciones: 2</small>
               </div>
-              <div className="text-grey">
-                {are_videos && 
-                <div>
-                  <small css={textEllipsis}>Lecciones: {videos}</small>
-                </div>
-                }
-                {/* <div>
+              {/* <div>
                   <small css={textEllipsis}>Playlists: 2</small>
                 </div>
                 <div>
                   <small css={textEllipsis}>Recursos: 8</small>
                 </div>  */}
-              </div>
-
-
             </div>
+          </div>
         </PackInfo>
-          </PackContent>
+      </PackContent>
     </Link>
   );
 };
@@ -82,7 +77,7 @@ const PackContent = styled.div`
   &:hover img {
     transform: scale(1.03);
   }
-` 
+`;
 
 const PackImage = styled.span`
   width: 100%;
@@ -97,7 +92,6 @@ const PackImage = styled.span`
   .video-content {
     position: relative;
   }
-
 `;
 const PackInfo = styled.div`
   .video-text {
@@ -109,5 +103,5 @@ const PackInfo = styled.div`
     background: #fff;
     z-index: 500;
   }
-`
+`;
 export default CourseCard;

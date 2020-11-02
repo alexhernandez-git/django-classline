@@ -13,7 +13,6 @@ import {
 import Checkbox from "src/components/ui/Checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import {
-
   publishPack,
   cancelPublishedPack,
   removePack,
@@ -31,7 +30,8 @@ const CourseConfiguration = (props) => {
   const dispatch = useDispatch();
   const packReducer = useSelector((state) => state.packReducer);
   const authReducer = useSelector((state) => state.authReducer);
-  const history = useHistory()
+  const programReducer = useSelector((state) => state.programReducer);
+  const history = useHistory();
   const handlePublishPack = () => {
     const dispatchPublishPack = () => dispatch(publishPack());
     dispatchPublishPack();
@@ -67,6 +67,27 @@ const CourseConfiguration = (props) => {
       if (result.value) {
         const dispatchRemovePack = (history) => dispatch(removePack(history));
         dispatchRemovePack(history);
+      }
+    });
+  };
+  const handleActiveProgram = () => {
+    const dispatchActiveProgram = () => dispatch(activeProgram());
+    dispatchActiveProgram();
+  };
+  const handleCancelActivedProgram = () => {
+    MySwal.fire({
+      title: "Estas seguro?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Desactivar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        const dispatchCancelActivedProgram = () =>
+          dispatch(cancelActivedProgram());
+        dispatchCancelActivedProgram();
       }
     });
   };
@@ -109,9 +130,9 @@ const CourseConfiguration = (props) => {
 
       </div> */}
       <div className="bg-white border p-3 rounded my-2 mb-4">
-      <span className="d-none d-md-block">Ponle un precio a tu curso</span>
+        <span className="d-none d-md-block">Ponle un precio a tu curso</span>
 
-      <Row className="">
+        <Row className="">
           <Col
             lg={{ span: 4 }}
             className="text-center d-lg-flex justify-content-end align-items-center"
@@ -121,11 +142,11 @@ const CourseConfiguration = (props) => {
 
           <Col lg={{ offset: 1, span: 6 }}>
             <Form.Group controlId="formGroupName">
-            <Field name="lang" options={Prices} component={SelectPrice} />
+              <Field name="lang" options={Prices} component={SelectPrice} />
             </Form.Group>
           </Col>
         </Row>
-        </div>
+      </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Conectar con stripe</span>
 
@@ -184,17 +205,57 @@ const CourseConfiguration = (props) => {
           </Col>
         </Row>
       </div>
-    
+
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Acciones</span>
 
-        
         <Row className="mb-4">
           <Col
             sm={{ span: 4 }}
             className="text-center d-sm-flex justify-content-end align-items-center"
           >
-            <span className="m-0 font-weight-normal">Publicar el curso</span>
+            <span className="m-0 font-weight-normal">
+              Publicar en la academia
+            </span>
+          </Col>
+
+          <Col sm={{ offset: 1, span: 6 }}>
+            {programReducer.program && programReducer.program.actived ? (
+              <div className="d-sm-flex justify-content-between">
+                <span className="text-secondary mr-3 font-weight-bold text-center d-block d-sm-inline">
+                  Publicar
+                </span>
+                <ButtonCustomError
+                  type="button"
+                  onClick={handleCancelActivedProgram}
+                >
+                  Despublicar
+                </ButtonCustomError>
+              </div>
+            ) : (
+              <ButtonCustomSuccess type="button" onClick={handleActiveProgram}>
+                Publicar
+              </ButtonCustomSuccess>
+            )}
+            {programReducer.active_error &&
+              programReducer.active_error.data.non_field_errors &&
+              programReducer.active_error.data.non_field_errors.map((error) => (
+                <small className="d-block text-red">{error}</small>
+              ))}
+            {programReducer.canceling_actived_error &&
+              programReducer.canceling_actived_error.data.non_field_errors &&
+              programReducer.canceling_actived_error.data.non_field_errors.map(
+                (error) => <small className="d-block text-red">{error}</small>
+              )}
+          </Col>
+        </Row>
+
+        <Row className="mb-4">
+          <Col
+            sm={{ span: 4 }}
+            className="text-center d-sm-flex justify-content-end align-items-center"
+          >
+            <span className="m-0 font-weight-normal">Publicar para vender</span>
           </Col>
 
           <Col sm={{ offset: 1, span: 6 }}>
@@ -217,9 +278,9 @@ const CourseConfiguration = (props) => {
             )}
             {packReducer.publish_error &&
               packReducer.publish_error.data.non_field_errors &&
-              packReducer.publish_error.data.non_field_errors.map(
-                (error) => <small className="d-block text-red">{error}</small>
-              )}
+              packReducer.publish_error.data.non_field_errors.map((error) => (
+                <small className="d-block text-red">{error}</small>
+              ))}
             {packReducer.canceling_published_error &&
               packReducer.canceling_published_error.data.non_field_errors &&
               packReducer.canceling_published_error.data.non_field_errors.map(

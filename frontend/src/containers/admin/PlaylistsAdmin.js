@@ -30,7 +30,9 @@ const PlaylistsAdmin = () => {
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
 
-  const playlistsAdminReducer = useSelector((state) => state.playlistsAdminReducer);
+  const playlistsAdminReducer = useSelector(
+    (state) => state.playlistsAdminReducer
+  );
   useEffect(() => {
     if (
       !programReducer.isLoading &&

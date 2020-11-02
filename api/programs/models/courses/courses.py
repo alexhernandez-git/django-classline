@@ -25,7 +25,10 @@ class Course(CLineModel):
         null=True,
         max_length=500
     )
-    name = models.CharField(max_length=100)
+    title = models.CharField(max_length=60, blank=True, null=True)
+
+    subtitle = models.CharField(max_length=120, blank=True, null=True)
+
     
     description = models.TextField(max_length=1000, blank=True, null=True)
 
@@ -46,12 +49,13 @@ class Course(CLineModel):
     )
 
     published = models.BooleanField(default=False)
+    published_in_program = models.BooleanField(default=False)
 
     is_private = models.BooleanField(default=False)
 
     def __str__(self):
         """Return description."""
-        return '{}'.format(self.name)
+        return '{}'.format(self.title)
 
     def save(self, **kwargs):
         try:
