@@ -13,9 +13,11 @@ import {
 import Checkbox from "src/components/ui/Checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  publishPack,
-  cancelPublishedPack,
-  removePack,
+  publishCourse,
+  cancelPublishedCourse,
+  publishCourseProgram,
+  cancelPublishedProgramCourse,
+  removeCourse,
 } from "src/redux/actions/courses/course";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -30,14 +32,13 @@ const CourseConfiguration = (props) => {
   const dispatch = useDispatch();
   const courseReducer = useSelector((state) => state.courseReducer);
   const authReducer = useSelector((state) => state.authReducer);
-  const programReducer = useSelector((state) => state.programReducer);
   const history = useHistory();
-  const handlePublishPack = () => {
-    const dispatchPublishPack = () => dispatch(publishPack());
-    dispatchPublishPack();
+  const handlePublishCourse = () => {
+    const dispatchPublishCourse = () => dispatch(publishCourse());
+    dispatchPublishCourse();
   };
 
-  const handleCancelPublishedPack = () => {
+  const handleCancelPublishedCourse = () => {
     MySwal.fire({
       title: "Estas seguro?",
       icon: "warning",
@@ -48,13 +49,13 @@ const CourseConfiguration = (props) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        const dispatchCancelPublishedPack = () =>
-          dispatch(cancelPublishedPack());
-        dispatchCancelPublishedPack();
+        const dispatchCancelPublishedCourse = () =>
+          dispatch(cancelPublishedCourse());
+        dispatchCancelPublishedCourse();
       }
     });
   };
-  const handleRemovePack = () => {
+  const handleRemoveCourse = () => {
     MySwal.fire({
       title: "Estas seguro?",
       icon: "warning",
@@ -65,29 +66,30 @@ const CourseConfiguration = (props) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        const dispatchRemovePack = (history) => dispatch(removePack(history));
-        dispatchRemovePack(history);
+        const dispatchRemoveCourse = (history) =>
+          dispatch(removeCourse(history));
+        dispatchRemoveCourse(history);
       }
     });
   };
-  const handleActiveProgram = () => {
-    const dispatchActiveProgram = () => dispatch(activeProgram());
-    dispatchActiveProgram();
+  const handlePublishProgramCourse = () => {
+    const dispatchPublishProgram = () => dispatch(publishCourseProgram());
+    dispatchPublishProgram();
   };
-  const handleCancelActivedProgram = () => {
+  const handleCancelPublishProgramCourse = () => {
     MySwal.fire({
       title: "Estas seguro?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Desactivar",
+      confirmButtonText: "Despublicar",
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        const dispatchCancelActivedProgram = () =>
-          dispatch(cancelActivedProgram());
-        dispatchCancelActivedProgram();
+        const dispatchCancelPublishedProgramCourse = () =>
+          dispatch(cancelPublishedProgramCourse());
+        dispatchCancelPublishedProgramCourse();
       }
     });
   };
@@ -220,31 +222,35 @@ const CourseConfiguration = (props) => {
           </Col>
 
           <Col sm={{ offset: 1, span: 6 }}>
-            {programReducer.program && programReducer.program.actived ? (
+            {courseReducer.course &&
+            courseReducer.course.published_in_program ? (
               <div className="d-sm-flex justify-content-between">
                 <span className="text-secondary mr-3 font-weight-bold text-center d-block d-sm-inline">
                   Publicar
                 </span>
                 <ButtonCustomError
                   type="button"
-                  onClick={handleCancelActivedProgram}
+                  onClick={handleCancelPublishProgramCourse}
                 >
                   Despublicar
                 </ButtonCustomError>
               </div>
             ) : (
-              <ButtonCustomSuccess type="button" onClick={handleActiveProgram}>
+              <ButtonCustomSuccess
+                type="button"
+                onClick={handlePublishProgramCourse}
+              >
                 Publicar
               </ButtonCustomSuccess>
             )}
-            {programReducer.active_error &&
-              programReducer.active_error.data.non_field_errors &&
-              programReducer.active_error.data.non_field_errors.map((error) => (
-                <small className="d-block text-red">{error}</small>
-              ))}
-            {programReducer.canceling_actived_error &&
-              programReducer.canceling_actived_error.data.non_field_errors &&
-              programReducer.canceling_actived_error.data.non_field_errors.map(
+            {courseReducer.publish_program_error &&
+              courseReducer.publish_program_error.data.non_field_errors &&
+              courseReducer.publish_program_error.data.non_field_errors.map(
+                (error) => <small className="d-block text-red">{error}</small>
+              )}
+            {courseReducer.canceling_published_error &&
+              courseReducer.canceling_published_error.data.non_field_errors &&
+              courseReducer.canceling_published_error.data.non_field_errors.map(
                 (error) => <small className="d-block text-red">{error}</small>
               )}
           </Col>
@@ -266,13 +272,13 @@ const CourseConfiguration = (props) => {
                 </span>
                 <ButtonCustomError
                   type="button"
-                  onClick={handleCancelPublishedPack}
+                  onClick={handleCancelPublishedCourse}
                 >
                   Despublicar
                 </ButtonCustomError>
               </div>
             ) : (
-              <ButtonCustomSuccess type="button" onClick={handlePublishPack}>
+              <ButtonCustomSuccess type="button" onClick={handlePublishCourse}>
                 Publicar
               </ButtonCustomSuccess>
             )}
@@ -297,7 +303,7 @@ const CourseConfiguration = (props) => {
           </Col>
 
           <Col sm={{ offset: 1, span: 6 }}>
-            <ButtonCustomError type="button" onClick={handleRemovePack}>
+            <ButtonCustomError type="button" onClick={handleRemoveCourse}>
               Eliminar
             </ButtonCustomError>
 

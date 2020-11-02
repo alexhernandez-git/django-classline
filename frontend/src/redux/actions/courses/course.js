@@ -16,9 +16,15 @@ import {
   COURSE_PUBLISH,
   COURSE_PUBLISH_SUCCESS,
   COURSE_PUBLISH_FAIL,
+  COURSE_PUBLISH_PROGRAM,
+  COURSE_PUBLISH_PROGRAM_SUCCESS,
+  COURSE_PUBLISH_PROGRAM_FAIL,
   COURSE_CANCEL_PUBLISH,
   COURSE_CANCEL_PUBLISH_SUCCESS,
   COURSE_CANCEL_PUBLISH_FAIL,
+  COURSE_CANCEL_PUBLISH_PROGRAM,
+  COURSE_CANCEL_PUBLISH_PROGRAM_SUCCESS,
+  COURSE_CANCEL_PUBLISH_PROGRAM_FAIL,
   REMOVE_COURSE,
   REMOVE_COURSE_SUCCESS,
   REMOVE_COURSE_FAIL,
@@ -194,6 +200,61 @@ export const cancelPublishedCourse = () => (dispatch, getState) => {
     .catch((err) => {
       dispatch({
         type: COURSE_CANCEL_PUBLISH_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+export const publishCourseProgram = () => (dispatch, getState) => {
+  dispatch({ type: COURSE_PUBLISH_PROGRAM });
+  axios
+    .patch(
+      `/api/programs/${getState().programReducer.program.code}/courses/${
+        getState().courseReducer.course.code
+      }/publish_in_program/`,
+      {},
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log(res);
+      Swal.fire({
+        title: "Publicado!",
+        icon: "success",
+        confirmButtonText: "Ok",
+      });
+      dispatch({
+        type: COURSE_PUBLISH_PROGRAM_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: COURSE_PUBLISH_PROGRAM_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const cancelPublishedProgramCourse = () => (dispatch, getState) => {
+  dispatch({ type: COURSE_CANCEL_PUBLISH_PROGRAM });
+
+  axios
+    .patch(
+      `/api/programs/${getState().programReducer.program.code}/courses/${
+        getState().courseReducer.course.code
+      }/cancel_publish_in_program/`,
+      {},
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log(res);
+      dispatch({
+        type: COURSE_CANCEL_PUBLISH_PROGRAM_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: COURSE_CANCEL_PUBLISH_PROGRAM_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

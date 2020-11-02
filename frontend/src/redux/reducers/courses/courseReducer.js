@@ -17,6 +17,12 @@ import {
   COURSE_CANCEL_PUBLISH,
   COURSE_CANCEL_PUBLISH_SUCCESS,
   COURSE_CANCEL_PUBLISH_FAIL,
+  COURSE_PUBLISH_PROGRAM,
+  COURSE_PUBLISH_PROGRAM_SUCCESS,
+  COURSE_PUBLISH_PROGRAM_FAIL,
+  COURSE_CANCEL_PUBLISH_PROGRAM,
+  COURSE_CANCEL_PUBLISH_PROGRAM_SUCCESS,
+  COURSE_CANCEL_PUBLISH_PROGRAM_FAIL,
   REMOVE_COURSE,
   REMOVE_COURSE_SUCCESS,
   REMOVE_COURSE_FAIL,
@@ -33,6 +39,8 @@ const initialState = {
   picture_error: null,
   publishing: false,
   publish_error: null,
+  publishing_program: false,
+  publish_program_error: null,
   canceling_published: false,
   canceling_published_error: null,
   removing_course: false,
@@ -160,6 +168,44 @@ export default function (state = initialState, action) {
         canceling_published: false,
         canceling_published_error: action.payload,
       };
+    case COURSE_PUBLISH_PROGRAM:
+      return {
+        ...state,
+        publishing_program: true,
+      };
+    case COURSE_PUBLISH_PROGRAM_SUCCESS:
+      return {
+        ...state,
+        publishing_program: false,
+        publish_program_error: null,
+
+        course: action.payload,
+      };
+    case COURSE_PUBLISH_PROGRAM_FAIL:
+      return {
+        ...state,
+        publishing_program: false,
+        publish_program_error: action.payload,
+      };
+    case COURSE_CANCEL_PUBLISH_PROGRAM:
+      return {
+        ...state,
+        canceling_published_program: true,
+      };
+    case COURSE_CANCEL_PUBLISH_PROGRAM_SUCCESS:
+      return {
+        ...state,
+        canceling_published_program: false,
+        canceling_published_program_error: null,
+
+        course: action.payload,
+      };
+    case COURSE_CANCEL_PUBLISH_PROGRAM_FAIL:
+      return {
+        ...state,
+        canceling_published_program: false,
+        canceling_published_program_error: action.payload,
+      };
     case REMOVE_COURSE:
       return {
         ...state,
@@ -183,6 +229,7 @@ export default function (state = initialState, action) {
         ...state,
         removing_course_error: null,
         publish_error: null,
+        publish_program_error: null,
 
         canceling_published_error: null,
         picture_error: null,

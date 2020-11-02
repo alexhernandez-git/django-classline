@@ -83,6 +83,10 @@ class CourseViewSet(mixins.CreateModelMixin,
             return PublishCourseSerializer
         elif self.action == 'cancel_publish':
             return CancelPublishCourseSerializer
+        elif self.action == 'publish_in_program':
+            return PublishCourseSerializer
+        elif self.action == 'cancel_publish_in_program':
+            return CancelPublishCourseSerializer
         return CourseModelSerializer
 
     def get_permissions(self):
@@ -146,6 +150,46 @@ class CourseViewSet(mixins.CreateModelMixin,
         return Response(data)
 
     @action(detail=True, methods=['put', 'patch'])
+    def publish_in_program(self, request, *args, **kwargs):
+        course = self.get_object()
+        serializer_class = self.get_serializer_class()
+
+        partial = request.method == 'PATCH'
+        serializer = serializer_class(
+            course,
+            data=request.data,
+            partial=partial,
+            context={"publish_in_program": True}
+
+        )
+        serializer.is_valid(raise_exception=True)
+
+        course = serializer.save()
+
+        data = CourseModifyModelSerializer(course).data
+        return Response(data)
+
+    @action(detail=True, methods=['put', 'patch'])
+    def cancel_publish_in_program(self, request, *args, **kwargs):
+        course = self.get_object()
+        serializer_class = self.get_serializer_class()
+
+        partial = request.method == 'PATCH'
+
+        serializer = serializer_class(
+            course,
+            data=request.data,
+            partial=partial,
+            context={"publish_in_program": True}
+        )
+        serializer.is_valid(raise_exception=True)
+
+        course = serializer.save()
+
+        data = CourseModifyModelSerializer(course).data
+        return Response(data)
+
+    @action(detail=True, methods=['put', 'patch'])
     def publish(self, request, *args, **kwargs):
         course = self.get_object()
         serializer_class = self.get_serializer_class()
@@ -155,7 +199,9 @@ class CourseViewSet(mixins.CreateModelMixin,
         serializer = serializer_class(
             course,
             data=request.data,
-            partial=partial
+            partial=partial,
+            context={"publish_in_program": False}
+
         )
         serializer.is_valid(raise_exception=True)
 
@@ -174,7 +220,9 @@ class CourseViewSet(mixins.CreateModelMixin,
         serializer = serializer_class(
             course,
             data=request.data,
-            partial=partial
+            partial=partial,
+            context={"publish_in_program": False}
+
         )
         serializer.is_valid(raise_exception=True)
 

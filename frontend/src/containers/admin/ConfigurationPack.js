@@ -19,6 +19,7 @@ import {
   savePack,
   resetPacksErrors,
 } from "../../redux/actions/pack";
+import MainPackInfo from "src/components/PackAcademy/MainPackInfo";
 
 const ConfigurationPack = (props) => {
   const [key, setKey] = useState(0);

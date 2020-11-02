@@ -10,7 +10,7 @@ import { Field } from "formik";
 import SelectLang from "./SelectLang";
 import { useSelector } from "react-redux";
 
-const MainCourseInfo = (props) => {
+const MainPackInfo = (props) => {
   const packReducer = useSelector((state) => state.packReducer);
   return (
     <div className="bg-white border p-3 rounded my-2 mb-4">
@@ -78,11 +78,9 @@ const MainCourseInfo = (props) => {
             </Form.Group>
           </Col>
         </Row>
-
-
       </AdminForm>
     </div>
   );
 };
 
-export default MainCourseInfo;
+export default MainPackInfo;

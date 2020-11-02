@@ -52,6 +52,8 @@ class CourseModelSerializer(serializers.ModelSerializer):
             'students_count',
             'students',
             'instructor',
+            'published_in_program',
+
             'benefits',
             'video_presentation',
             'published',
@@ -139,6 +141,7 @@ class CourseModifyModelSerializer(serializers.ModelSerializer):
             'instructor',
             'benefits',
             'published',
+            'published_in_program',
             'video_presentation',
 
         )
@@ -194,17 +197,20 @@ class PublishCourseSerializer(serializers.Serializer):
 
     def validate(self, data):
         course = self.instance
-        if not CoursePrice.objects.filter(course=course).exists():
-            raise serializers.ValidationError(
-                'El curso no tiene un precio especificado')
+        if not self.context['publish_in_program']:
+            if not CoursePrice.objects.filter(course=course).exists():
+                raise serializers.ValidationError(
+                    'El curso no tiene un precio especificado')
 
         if not course.picture:
             raise serializers.ValidationError(
                 'El curso no tiene una imágen')
-
-        if not course.user.profile.stripe_account_id:
-            raise serializers.ValidationError(
-                'Necesitas conectarte con stripe para poder recibir pagos')
+                
+        if not self.context['publish_in_program']:
+            if not CoursePrice.objects.filter(course=course).exists():
+                if not course.user.profile.stripe_account_id:
+                    raise serializers.ValidationError(
+                        'Necesitas conectarte con stripe para poder recibir pagos')
 
         if len(course.title) == 0:
             raise serializers.ValidationError('Se requiere un titulo')
@@ -212,8 +218,11 @@ class PublishCourseSerializer(serializers.Serializer):
         return data
 
     def update(self, instance, validated_data):
+        if self.context['publish_in_program']:
+            instance.published_in_program = True
 
-        instance.published = True
+        else:
+            instance.published = True
         instance.save()
         return instance
 
@@ -221,8 +230,11 @@ class PublishCourseSerializer(serializers.Serializer):
 class CancelPublishCourseSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
+        if self.context['publish_in_program']:
+            instance.published_in_program = False
 
-        instance.published = False
+        else:
+            instance.published = False
         instance.save()
         return instance
 
