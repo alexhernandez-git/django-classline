@@ -12,6 +12,7 @@ import BlockCard from "./BlockCard";
 
 const BlocksCourse = () => {
   const blocksReducer = useSelector((state) => state.blocksReducer);
+  const courseReducer = useSelector((state) => state.courseReducer);
   const dispatch = useDispatch();
   const [blockCards, setBlockCards] = useState([]);
   console.log(blockCards);
@@ -22,12 +23,16 @@ const BlocksCourse = () => {
   }, [blocksReducer.isLoading, blocksReducer.blocks]);
   useEffect(() => {
     console.log(blockCards);
-    if (!blocksReducer.isLoading && blockCards != blocksReducer.blocks) {
+    if (
+      !courseReducer.isLoading &&
+      courseReducer.course &&
+      !blocksReducer.isLoading &&
+      blockCards != blocksReducer.blocks
+    ) {
       // const timeoutId = setTimeout(() => {
       //   console.log("entra");
       // }, 1000);
       // return () => clearTimeout(timeoutId);
-      console.log("entra");
       dispatch(updateBlocksOrder());
     }
   }, [blockCards]);
@@ -98,6 +103,7 @@ export const AddBlock = styled.div`
   cursor: pointer;
   width: 100%;
   display: block;
+  padding: 1rem;
   border-radius: 1rem;
   overflow: hidden;
   display: flex;

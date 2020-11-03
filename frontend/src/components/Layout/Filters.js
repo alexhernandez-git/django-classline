@@ -4,6 +4,7 @@ import { IconContext } from "react-icons";
 import { FaArrowLeft } from "react-icons/fa";
 import SearchBar from "../ui/SearchBar";
 import { useHistory } from "react-router-dom";
+import { ButtonCustom } from "../ui/ButtonCustom";
 
 const Filters = (props) => {
   const history = useHistory();
@@ -38,21 +39,26 @@ const Filters = (props) => {
           </>
         )}
         {props.title && <Title>{props.title}</Title>}
-        <div>
-          {props.placeholder && (
-            <SearchBar
-              placeholder={props.placeholder}
-              search={props.search}
-              onSubmit={props.onSubmit}
-            />
-          )}
-          {props.button && props.button}
-        </div>
+        {props.saveButton && <ButtonCustom>{props.saveButton}</ButtonCustom>}
+        {(props.placeholder || props.button) && (
+          <div>
+            {props.placeholder && (
+              <SearchBar
+                placeholder={props.placeholder}
+                search={props.search}
+                onSubmit={props.onSubmit}
+              />
+            )}
+            {props.button && props.button}
+          </div>
+        )}
       </div>
     </FilterContainer>
   );
 };
-const Title = styled.h3``;
+const Title = styled.h3`
+  margin: 0;
+`;
 const FilterContainer = styled.div`
   max-width: 120rem;
   margin: auto;

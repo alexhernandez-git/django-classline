@@ -216,6 +216,7 @@ export default function (state = initialState, action) {
         ...state,
         removing_course: false,
         removing_course_error: null,
+        isLoading: true,
         course: null,
       };
     case REMOVE_COURSE_FAIL:

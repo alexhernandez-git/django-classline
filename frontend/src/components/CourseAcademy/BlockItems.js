@@ -199,7 +199,13 @@ const BlocksItems = (props) => {
   };
   return (
     <div className="mt-5">
-      <Filters title="Bloque 1: Administración y finanzas" back="Volver" />
+      <Filters
+        title="Bloque 1: Administración y finanzas"
+        back="Volver"
+        saveButton="Guardar Bloque"
+        saveButtonFunciton
+      />
+
       <div className="row">
         <div className="col-md-6">
           <AdminForm>
