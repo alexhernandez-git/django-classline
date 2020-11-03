@@ -30,6 +30,7 @@ class CourseBlockModelSerializer(serializers.ModelSerializer):
         model = CourseBlock
         fields = (
             'id',
+            'code',
             'name',
             'picture',
             'description',
