@@ -7,6 +7,9 @@ import {
   CREATE_BLOCK,
   CREATE_BLOCK_FAIL,
   CREATE_BLOCK_SUCCESS,
+  UPDATE_BLOCKS_ORDER,
+  UPDATE_BLOCKS_ORDER_SUCCESS,
+  UPDATE_BLOCKS_ORDER_FAIL,
 } from "../../types";
 
 import { tokenConfig } from "../auth";
@@ -112,6 +115,40 @@ export const createBlock = (history) => (dispatch, getState) => {
       console.log("error", err.response);
       dispatch({
         type: CREATE_BLOCK_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const updateBlocksOrder = () => (dispatch, getState) => {
+  dispatch({
+    type: UPDATE_BLOCKS_ORDER,
+  });
+  axios
+    .patch(
+      `/api/programs/${getState().programReducer.program.code}/courses/${
+        getState().courseReducer.course.code
+      }/update_blocks/`,
+      { tracks: getState().blocksReducer.blocks },
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log("res", res);
+
+      dispatch({
+        type: UPDATE_BLOCKS_ORDER_SUCCESS,
+        payload: res.data,
+      });
+      // history.push(
+      //   `/academy/${getState().programReducer.program.code}/admin/course/${
+      //     res.data.code
+      //   }`
+      // );
+    })
+    .catch((err) => {
+      console.log("error", err.response);
+      dispatch({
+        type: UPDATE_BLOCKS_ORDER_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

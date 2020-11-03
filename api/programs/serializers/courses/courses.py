@@ -17,7 +17,8 @@ from api.programs.models import (
     CoursePrice,
     CourseLanguage,
     CourseBenefit,
-    CourseBlockTrack
+    CourseBlockTrack,
+    CourseBlock
 )
 
 # Serializes
@@ -187,10 +188,18 @@ class CourseModifyModelSerializer(serializers.ModelSerializer):
             CourseLanguage.objects.filter(course=instance).delete()
             language = CourseLanguage.objects.create(
                 **self.context['language'], course=instance)
-        if self.context['benefits'] != None:
+        if 'benefits' in self.context and  self.context['benefits'] != None:
             CourseBenefit.objects.filter(course=instance.pk).delete()
             for benefit in self.context['benefits']:
                 CourseBenefit.objects.create(**benefit, course=instance)
+       
+        # Actualizar el precio de la clase
+        if 'tracks' in self.context and self.context['tracks'] != None:
+            tracks = self.context['tracks']
+            for track in tracks:
+                track_object = get_object_or_404(CourseBlockTrack, id=track['id'])
+                track_object.position = track['position']
+                track_object.save()
        
         return super(CourseModifyModelSerializer, self).update(instance, validated_data)
 

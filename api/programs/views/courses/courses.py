@@ -23,6 +23,7 @@ from api.programs.serializers import (
     AddStudentCourseSerializer,
     PublishCourseSerializer,
     CancelPublishCourseSerializer,
+    CourseBlockTrackModelSerializer
 )
 from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
@@ -77,7 +78,7 @@ class CourseViewSet(mixins.CreateModelMixin,
         """Return serializer based on action."""
         if self.action == 'create':
             return CourseCreateSerializer
-        if self.action in ['update', 'partial_update', 'get_accounts', 'cancel_accounts']:
+        if self.action in ['update', 'partial_update', 'get_accounts', 'cancel_accounts','update_blocks']:
             return CourseModifyModelSerializer
         elif self.action == 'publish':
             return PublishCourseSerializer
@@ -383,7 +384,7 @@ class CourseViewSet(mixins.CreateModelMixin,
         )
         serializer.is_valid(raise_exception=True)
 
-        course = serializer.save()
+        course.tracks = serializer.save()
 
         data = CourseModelSerializer(course).data
         return Response(data)
@@ -408,8 +409,7 @@ class CourseViewSet(mixins.CreateModelMixin,
         serializer.is_valid(raise_exception=True)
 
         course = serializer.save()
-
-        data = CourseModelSerializer(course).data
+        data = CourseBlockTrackModelSerializer(course.blocks.through.objects.all(),many=True).data
         return Response(data)
 
     def create(self, request, *args, **kwargs):

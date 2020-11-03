@@ -9,12 +9,13 @@ from django.db.models import Max
 from rest_framework import serializers
 
 # Models
-from api.programs.models import CourseBlock, Video, CourseBlockTrack,CourseItem,CourseItemTrack
+from api.programs.models import CourseBlock, Video, CourseBlockTrack,CourseItem,CourseItemTrack,CourseBlockTrack
 
 
 from datetime import timedelta
 import random
 import string
+
 
 
 
@@ -54,12 +55,13 @@ class CourseBlockModelSerializer(serializers.ModelSerializer):
     # def update(self, instance, validated_data):
     #     # Actualizar el precio de la clase
     #     tracks = self.context['tracks']
+    #     course = self.context['course']
 
-    #     CourseBlockTrack.objects.filter(block=instance).delete()
+    #     CourseBlockTrack.objects.filter(course=course).delete()
     #     for track in tracks:
-    #         track['item'] = get_object_or_404(CourseItem, id=track['item']['id'])
+    #         track['block'] = get_object_or_404(CourseBlock, id=track['block']['id'])
     #         CourseBlockTrack.objects.create(
-    #             item=track['item'], position=track['position'], block=instance)
+    #             block=track['block'], position=track['position'], course=course)
        
     #     return super(CourseBlockModelSerializer, self).update(instance, validated_data)
 
@@ -74,36 +76,3 @@ class CourseBlockModelSerializer(serializers.ModelSerializer):
     #             item=track['item'], position=track['position'], block=block)
 
     #     return block
-
-
-class CourseBlockTrackModelSerializer(serializers.ModelSerializer):
-    block = CourseBlockModelSerializer(read_only=True)
-    class Meta:
-        """Meta class."""
-
-        model = CourseBlockTrack
-        fields = (
-            'id',
-            'block',
-            'position',
-        )
-        # extra_kwargs = {'end': {'required': False}}
-        read_only_fields = (
-            'id',
-        )
-
-
-class CourseBlockTrackCreateModelSerializer(serializers.Serializer):
-    def create(self,data): 
-        course = self.context['course']
-        block_tracks = CourseBlockTrack.objects.filter(course=course)
-        position = block_tracks.aggregate(Max('position'))
-        if position['position__max'] != None:
-            new_block_track = CourseBlockTrack.objects.create(
-                course=course, block=CourseBlock.objects.create(), position=(position['position__max'] + 1)
-            )
-        else:
-            new_block_track = CourseBlockTrack.objects.create(
-                course=course, block=CourseBlock.objects.create(), position=0
-            )
-        return new_block_track

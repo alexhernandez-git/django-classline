@@ -83,3 +83,5 @@ class CourseBlockTrackViewSet(mixins.CreateModelMixin,
 
         data = CourseBlockTrackModelSerializer(track, many=False).data
         return Response(data, status=status.HTTP_201_CREATED)
+
+  

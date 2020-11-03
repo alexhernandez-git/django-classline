@@ -4,7 +4,7 @@ import { textEllipsis } from "src/components/ui/TextEllipsis";
 import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { ItemTypes } from "../ItemTypes/ItemTypes";
-const BlockCard = ({ moveCard, id, index, block }) => {
+const BlockCard = ({ moveCard, id, index, block, blockCards }) => {
   const { pathname } = useLocation();
   const { program, course } = useParams();
   console.log(block);

@@ -3,7 +3,10 @@ import update from "immutability-helper";
 import React, { useCallback, useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
-import { createBlock } from "../../redux/actions/courses/blocks";
+import {
+  createBlock,
+  updateBlocksOrder,
+} from "../../redux/actions/courses/blocks";
 import { ButtonCustom } from "../ui/ButtonCustom";
 import BlockCard from "./BlockCard";
 
@@ -14,10 +17,20 @@ const BlocksCourse = () => {
   console.log(blockCards);
   useEffect(() => {
     if (!blocksReducer.isLoading) {
-      console.log(blocksReducer.blocks);
       setBlockCards(blocksReducer.blocks);
     }
   }, [blocksReducer.isLoading, blocksReducer.blocks]);
+  useEffect(() => {
+    console.log(blockCards);
+    if (!blocksReducer.isLoading && blockCards != blocksReducer.blocks) {
+      // const timeoutId = setTimeout(() => {
+      //   console.log("entra");
+      // }, 1000);
+      // return () => clearTimeout(timeoutId);
+      console.log("entra");
+      dispatch(updateBlocksOrder());
+    }
+  }, [blockCards]);
   const moveCard = useCallback(
     (dragIndex, hoverIndex) => {
       const dragCard = blockCards[dragIndex];
@@ -53,6 +66,7 @@ const BlocksCourse = () => {
         id={card.id}
         moveCard={moveCard}
         block={card.block}
+        blockCards={blockCards}
       />
     );
   };
