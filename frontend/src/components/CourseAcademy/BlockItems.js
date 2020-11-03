@@ -295,20 +295,10 @@ const BlocksItems = (props) => {
         <div className="w-100">
           <div className="d-flex justify-content-between border-bottom pb-2 mb-3">
             <span>Contenido</span>
-            <div className="d-flex align-items-center cursor-pointer">
-              <span>Añadir elemento</span>
-              <IconContext.Provider
-                value={{
-                  size: 16,
-                  className: "global-class-name mr-2",
-                }}
-              >
-                <MdAdd />
-              </IconContext.Provider>
-            </div>
           </div>
 
           {itemCards.map((card, i) => renderItemCard(card, i))}
+          <AddItem>Añadir elemento</AddItem>
         </div>
       </div>
     </div>
@@ -330,5 +320,15 @@ const AddVideoList = styled.div`
   max-height: 40vh;
   overflow: auto;
   border: 1px solid #ccc;
+`;
+const AddItem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  border: 1px dashed #ccc;
 `;
 export default BlocksItems;

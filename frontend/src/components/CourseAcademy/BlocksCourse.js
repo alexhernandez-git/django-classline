@@ -76,11 +76,9 @@ const BlocksCourse = () => {
   };
   return (
     <>
-      <div className="d-flex justify-content-end mb-3">
-        <ButtonCustom>Nuevo bloque</ButtonCustom>
-      </div>
       <GridBlocks>
         {blockCards.map((card, i) => renderBlockCard(card, i))}
+        <AddBlock>Añadir Bloque</AddBlock>
       </GridBlocks>
     </>
   );
@@ -96,5 +94,16 @@ export const GridBlocks = styled.div`
   @media screen and (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr);
   }
+`;
+export const AddBlock = styled.div`
+  cursor: pointer;
+  width: 100%;
+  display: block;
+  border-radius: 1rem;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed #ccc;
 `;
 export default BlocksCourse;

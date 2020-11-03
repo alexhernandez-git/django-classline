@@ -388,6 +388,30 @@ class CourseViewSet(mixins.CreateModelMixin,
         data = CourseModelSerializer(course).data
         return Response(data)
 
+    @action(detail=True, methods=['patch'])
+    def update_blocks(self, request, *args, **kwargs):
+        course = self.get_object()
+        serializer_class = self.get_serializer_class()
+
+        partial = request.method == 'PATCH'
+
+        serializer = serializer_class(
+            course,
+            data=request.data,
+            context={
+                'tracks': request.data['tracks'],
+                'course': course,
+                'request': request
+            },
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+
+        course = serializer.save()
+
+        data = CourseModelSerializer(course).data
+        return Response(data)
+
     def create(self, request, *args, **kwargs):
         """Call by owners to finish a ride."""
         serializer_class = self.get_serializer_class()

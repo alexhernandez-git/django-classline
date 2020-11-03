@@ -85,7 +85,6 @@ class Course(CLineModel):
 
 
 class CourseBlockTrack(CLineModel):
-    code = models.CharField(max_length=10, blank=True, null=True)
     course = models.ForeignKey(
         'programs.Course', on_delete=models.CASCADE)
     block = models.ForeignKey(
@@ -99,14 +98,3 @@ class CourseBlockTrack(CLineModel):
         """Return description."""
         return '{}'.format(self.course)
 
-    def save(self, **kwargs):
-
-        if not self.code:
-            while True:
-                slug_name = ''.join(random.choice(
-                    string.ascii_letters + string.digits) for _ in range(10))
-                if not CourseBlockTrack.objects.filter(code=slug_name).exists():
-                    self.code = slug_name
-                    break
-
-        super(CourseBlockTrack, self).save(**kwargs)

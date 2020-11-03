@@ -263,22 +263,5 @@ class AddStudentCourseSerializer(serializers.Serializer):
         instance.save()
         return instance
 
-
-
-class CourseBlockTrackModelSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        """Meta class."""
-
-        model = CourseBlockTrack
-        fields = (
-            'id',
-            'block',
-            'position',
-        )
-        # extra_kwargs = {'end': {'required': False}}
-        read_only_fields = (
-            'id',
-        )
     
 
