@@ -41,6 +41,8 @@ class CourseBlockTrackViewSet(mixins.CreateModelMixin,
 
     serializer_class = CourseBlockTrackModelSerializer
     lookup_field = 'id'
+    pagination_class = None
+
     filter_backends = [SearchFilter]
     search_fields = ['block__title', 'block__description']
 

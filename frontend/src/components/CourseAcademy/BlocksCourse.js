@@ -1,41 +1,23 @@
 import styled from "@emotion/styled";
 import update from "immutability-helper";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
+import { useDispatch, useSelector } from "react-redux";
+import { createBlock } from "../../redux/actions/courses/blocks";
 import { ButtonCustom } from "../ui/ButtonCustom";
 import BlockCard from "./BlockCard";
 
 const BlocksCourse = () => {
-  const [blockCards, setBlockCards] = useState([
-    {
-      id: 0,
-      position: 0,
-      block: {
-        name: "Finanzas personales",
-      },
-    },
-    {
-      id: 1,
-      position: 1,
-      block: {
-        name: "Criptomonedas",
-      },
-    },
-    {
-      id: 2,
-      position: 2,
-      block: {
-        name: "Excel",
-      },
-    },
-    {
-      id: 3,
-      position: 3,
-      block: {
-        name: "Finanzas empresarieales",
-      },
-    },
-  ]);
+  const blocksReducer = useSelector((state) => state.blocksReducer);
+  const dispatch = useDispatch();
+  const [blockCards, setBlockCards] = useState([]);
+  console.log(blockCards);
+  useEffect(() => {
+    if (!blocksReducer.isLoading) {
+      console.log(blocksReducer.blocks);
+      setBlockCards(blocksReducer.blocks);
+    }
+  }, [blocksReducer.isLoading, blocksReducer.blocks]);
   const moveCard = useCallback(
     (dragIndex, hoverIndex) => {
       const dragCard = blockCards[dragIndex];
@@ -74,11 +56,14 @@ const BlocksCourse = () => {
       />
     );
   };
+  const handleAddBlock = () => {
+    dispatch(createBlock());
+  };
   return (
     <>
       <GridBlocks>
         {blockCards.map((card, i) => renderBlockCard(card, i))}
-        <AddBlock>Añadir Bloque</AddBlock>
+        <AddBlock onClick={handleAddBlock}>Añadir Bloque</AddBlock>
       </GridBlocks>
     </>
   );
@@ -105,5 +90,6 @@ export const AddBlock = styled.div`
   justify-content: center;
   align-items: center;
   border: 1px dashed #ccc;
+  height: fit-content;
 `;
 export default BlocksCourse;

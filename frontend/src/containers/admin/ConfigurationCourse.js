@@ -13,7 +13,7 @@ import {
   saveCourse,
   resetCoursesErrors,
 } from "src/redux/actions/courses/course";
-
+import { fetchBlocks } from "src/redux/actions/courses/blocks";
 import { Formik, Form } from "formik";
 import MainCourseInfo from "../../components/CourseAcademy/MainCourseInfo";
 import CourseBenefitsForm from "../../components/CourseAcademy/CourseBenefitsForm";
@@ -34,10 +34,17 @@ const ConfigurationCourse = (props) => {
     if (!programReducer.isLoading && programReducer.program && course) {
       const dispatchFetchCourses = (course) => dispatch(fetchCourse(course));
       dispatchFetchCourses(course);
+
       const dispatchResetCoursesErrors = () => dispatch(resetCoursesErrors());
       dispatchResetCoursesErrors();
     }
   }, [programReducer.isLoading]);
+  useEffect(() => {
+    if (!courseReducer.isLoading && courseReducer.course) {
+      const dispatchFetchBlocks = () => dispatch(fetchBlocks());
+      dispatchFetchBlocks();
+    }
+  }, [courseReducer.isLoading]);
   const [courseState, setCourseState] = useState({
     id: null,
     code: null,

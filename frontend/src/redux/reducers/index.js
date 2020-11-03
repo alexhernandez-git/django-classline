@@ -49,6 +49,7 @@ import podcastsTopicReducer from "./topics/podcastsTopicReducer";
 import meetupStudentsReducer from "./meetupStudentsReducer";
 import coursesReducer from "./courses/coursesReducer";
 import courseReducer from "./courses/courseReducer";
+import blocksReducer from "./courses/blocksReducer";
 
 export default combineReducers({
   authReducer,
@@ -97,6 +98,7 @@ export default combineReducers({
   meetupStudentsReducer,
   coursesReducer,
   courseReducer,
+  blocksReducer,
 
   // Commercials reducers
   authCommercialsReducer,
