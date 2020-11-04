@@ -48,11 +48,11 @@ class CourseBlockViewSet(mixins.CreateModelMixin,
         queryset = CourseBlock.objects.all()
         return queryset
         
-    def get_permissions(self):
-        """Assign permissions based on action."""
-        permissions = []
-        if self.action in ["retrieve"]:
-            permissions.append(IsAuthenticated)
+    # def get_permissions(self):
+    #     """Assign permissions based on action."""
+    #     permissions = []
+    #     if self.action in ["retrieve"]:
+    #         permissions.append(IsAuthenticated)
 
-        return [permission() for permission in permissions]
+    #     return [permission() for permission in permissions]
 

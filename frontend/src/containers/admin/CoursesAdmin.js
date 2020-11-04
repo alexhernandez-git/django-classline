@@ -21,11 +21,9 @@ import {
 } from "../../redux/actions/courses/courses";
 import CourseCard from "../../components/CourseAcademy/CourseCard";
 const CoursesAdmin = () => {
-  const MySwal = withReactContent(Swal);
   const history = useHistory();
   const main = useRef();
 
-  const { program } = useParams();
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
 

@@ -7,7 +7,6 @@ import { ItemTypes } from "../ItemTypes/ItemTypes";
 const BlockCard = ({ moveCard, id, index, block, blockCards }) => {
   const { pathname } = useLocation();
   const { program, course } = useParams();
-  console.log(block);
   // const { code, title, picture, videos, podcasts,are_videos,are_podcasts, pack_price } = props.course;
   const ref = useRef(null);
   const [, drop] = useDrop({
@@ -61,7 +60,7 @@ const BlockCard = ({ moveCard, id, index, block, blockCards }) => {
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
   return (
-    <Link to={`/academy/${program}/admin/course/${course}/block/${block.name}`}>
+    <Link to={`/academy/${program}/admin/course/${course}/block/${block.code}`}>
       <PackContent style={{ opacity }} moveCard={moveCard} ref={ref}>
         <BlockText className="d-flex justify-content-center p-2">
           <span>Bloque {index + 1}</span>
@@ -71,7 +70,11 @@ const BlockCard = ({ moveCard, id, index, block, blockCards }) => {
           <div className="video-content">
             <img
               className="rounded"
-              src={"../../../../static/assets/img/img4x3.png"}
+              src={
+                block.picture
+                  ? block.picture
+                  : "../../../../static/assets/img/img4x3.png"
+              }
               alt="video"
             />
           </div>

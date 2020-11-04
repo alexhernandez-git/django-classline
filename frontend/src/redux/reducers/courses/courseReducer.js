@@ -37,6 +37,8 @@ const initialState = {
   save_error: null,
   picture_uploading: false,
   picture_error: null,
+  video_uploading: false,
+  video_error: null,
   publishing: false,
   publish_error: null,
   publishing_program: false,

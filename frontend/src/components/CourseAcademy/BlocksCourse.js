@@ -22,7 +22,6 @@ const BlocksCourse = () => {
     }
   }, [blocksReducer.isLoading, blocksReducer.blocks]);
   useEffect(() => {
-    console.log(blockCards);
     if (
       !courseReducer.isLoading &&
       courseReducer.course &&

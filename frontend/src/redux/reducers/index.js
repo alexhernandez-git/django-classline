@@ -50,6 +50,7 @@ import meetupStudentsReducer from "./meetupStudentsReducer";
 import coursesReducer from "./courses/coursesReducer";
 import courseReducer from "./courses/courseReducer";
 import blocksReducer from "./courses/blocksReducer";
+import blockReducer from "./courses/blockReducer";
 
 export default combineReducers({
   authReducer,
@@ -99,6 +100,7 @@ export default combineReducers({
   coursesReducer,
   courseReducer,
   blocksReducer,
+  blockReducer,
 
   // Commercials reducers
   authCommercialsReducer,

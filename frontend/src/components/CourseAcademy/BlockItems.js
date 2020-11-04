@@ -13,45 +13,30 @@ import DndVideoList from "src/components/ui/DndVideoList";
 import SearchBar from "src/components/ui/SearchBar";
 import { fetchVideos, fetchVideosIncrease } from "src/redux/actions/videos";
 import { useDispatch, useSelector } from "react-redux";
+import { Formik, Form as FormFormik, Field } from "formik";
 
-import { Field } from "formik";
 import { ButtonCustom } from "../ui/ButtonCustom";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import CardItemDrag from "./CardItemDrag";
 import update from "immutability-helper";
+import { useParams } from "react-router-dom";
+import { fetchBlock, saveBlock } from "../../redux/actions/courses/block";
 
 const BlocksItems = (props) => {
   const dispatch = useDispatch();
   const inputFileVideo = useRef(null);
   const inputFileImg = useRef(null);
   const [isAddVideoOpen, setIsAddVideoOpen] = useState(false);
-  const handleToggleAddVideo = () => {
-    setIsAddVideoOpen((isAddVideoOpen) => (isAddVideoOpen ? false : true));
-  };
-  const programReducer = useSelector((state) => state.programReducer);
 
+  const courseReducer = useSelector((state) => state.courseReducer);
+  const blockReducer = useSelector((state) => state.blockReducer);
+  const { block } = useParams();
   useEffect(() => {
-    if (!programReducer.isLoading && programReducer.program) {
-      const dispatchFetchVideos = () => dispatch(fetchVideos());
-      dispatchFetchVideos();
+    if (!courseReducer.isLoading && courseReducer.course && block) {
+      const dispatchFetchBlock = (block) => dispatch(fetchBlock(block));
+      dispatchFetchBlock(block);
     }
-  }, [programReducer.isLoading]);
-  const videosReducer = useSelector((state) => state.videosReducer);
-
-  const handleAddVideo = (video) => {
-    setItemCards((itemCards) => [
-      ...itemCards,
-      {
-        id: Math.random().toString(36).substring(7),
-        video: video,
-        position: itemCards.length,
-      },
-    ]);
-    setIsAddVideoOpen(false);
-  };
-  useEffect(() => {
-    console.log(itemCards);
-  }, [itemCards]);
+  }, [courseReducer.isLoading, block]);
 
   const handleDeleteTrackVideo = (id) => {
     setItemCards((itemCards) => itemCards.filter((card) => card.id !== id));
@@ -197,116 +182,139 @@ const BlocksItems = (props) => {
       />
     );
   };
-  return (
+  return blockReducer.isLoading ? (
+    "Cargando..."
+  ) : (
     <div className="mt-5">
-      <Filters
-        title="Bloque 1: Administración y finanzas"
-        back="Volver"
-        saveButton="Guardar Bloque"
-        saveButtonFunciton
-      />
+      <Formik
+        enableReinitialize={true}
+        initialValues={blockReducer.block}
+        onSubmit={(values) => {
+          const dispatchSaveBlock = (course) => dispatch(saveBlock(course));
+          dispatchSaveBlock(values);
+        }}
+      >
+        {(props) => {
+          return (
+            <FormFormik>
+              <Filters
+                title={blockReducer.block.title}
+                back="Volver"
+                saveButton="Guardar Bloque"
+                saveButtonFunciton
+              />
 
-      <div className="row">
-        <div className="col-md-6">
-          <AdminForm>
-            <Row className="my-4">
-              <Col
-                lg={{ span: 4 }}
-                className="text-center d-lg-flex justify-content-end align-items-center"
-              >
-                <span className="m-0 font-weight-normal">Nombre</span>
-              </Col>
+              <div className="row">
+                <div className="col-md-6">
+                  <AdminForm>
+                    <Row className="my-4">
+                      <Col
+                        lg={{ span: 4 }}
+                        className="text-center d-lg-flex justify-content-end align-items-center"
+                      >
+                        <span className="m-0 font-weight-normal">Nombre</span>
+                      </Col>
 
-              <Col lg={{ offset: 1, span: 6 }}>
-                <Field type="text" name="name" placeholder="Nombre" />
-              </Col>
-            </Row>
-            <Row className="my-4">
-              <Col
-                lg={{ span: 4 }}
-                className="text-center d-lg-flex justify-content-end align-items-center"
-              >
-                <span className="m-0 font-weight-normal">Descripción</span>
-              </Col>
+                      <Col lg={{ offset: 1, span: 6 }}>
+                        <Field type="text" name="name" placeholder="Nombre" />
+                      </Col>
+                    </Row>
+                    <Row className="my-4">
+                      <Col
+                        lg={{ span: 4 }}
+                        className="text-center d-lg-flex justify-content-end align-items-center"
+                      >
+                        <span className="m-0 font-weight-normal">
+                          Descripción
+                        </span>
+                      </Col>
 
-              <Col lg={{ offset: 1, span: 6 }}>
-                <Field
-                  component="textarea"
-                  name="descripiton"
-                  placeholder="Descripción"
-                  style={{ height: "179px" }}
-                />
-              </Col>
-            </Row>
+                      <Col lg={{ offset: 1, span: 6 }}>
+                        <Field
+                          component="textarea"
+                          name="descripiton"
+                          placeholder="Descripción"
+                          style={{ height: "179px" }}
+                        />
+                      </Col>
+                    </Row>
 
-            {/* <Row className="mb-4">
-                        <Col lg={{ span: 4 }} className="text-center d-lg-flex justify-content-end align-items-center">
-                            <span className="m-0 font-weight-normal">Descripción</span>
+                    {/* <Row className="mb-4">
+                                <Col lg={{ span: 4 }} className="text-center d-lg-flex justify-content-end align-items-center">
+                                    <span className="m-0 font-weight-normal">Descripción</span>
 
-                        </Col>
-
-
-                        <Col lg={{ offset: 1, span: 6 }}>
-                            <textarea name="" id="" cols="30" rows="10" placeholder="Descripción"></textarea>
-                        </Col>
-                    </Row> */}
-          </AdminForm>
-        </div>
-        <div className="col-md-6">
-          <AdminForm>
-            <Row className="video-upload mb-4">
-              <Col
-                lg={{ span: 4 }}
-                className="text-center d-lg-flex justify-content-end align-items-center"
-              >
-                <span className="font-weight-normal">Imagen</span>
-              </Col>
-              <Col lg={{ offset: 1, span: 6 }}>
-                <label htmlFor="img-block-upload" className="w-100">
-                  <img
-                    controls
-                    style={{
-                      width: "100%",
-                      padding: "5px",
-                    }}
-                    src={"../../../../../../static/assets/img/img4x3.png"}
-                    alt=""
-                    className="my-3 border rounded"
-                  />
-                </label>
-                <label
-                  htmlFor="img-block-upload"
-                  css={ButtonStyle}
-                  className="w-100"
-                >
-                  Subir imagen
-                </label>
-                {/* <label htmlFor="img-upload" css={ButtonStyle} className="w-100">Subir imágen</label> */}
-              </Col>
-            </Row>
-
-            {/* <Row className="mb-4">
-                        <Col lg={{ span: 4 }} className="text-center d-lg-flex justify-content-end align-items-center">
-                            <span className="m-0 font-weight-normal">Descripción</span>
-
-                        </Col>
+                                </Col>
 
 
-                        <Col lg={{ offset: 1, span: 6 }}>
-                            <textarea name="" id="" cols="30" rows="10" placeholder="Descripción"></textarea>
-                        </Col>
-                    </Row> */}
-          </AdminForm>
-        </div>
-        <div className="w-100">
-          <div className="d-flex justify-content-between border-bottom pb-2 mb-3">
-            <span>Contenido</span>
-          </div>
+                                <Col lg={{ offset: 1, span: 6 }}>
+                                    <textarea name="" id="" cols="30" rows="10" placeholder="Descripción"></textarea>
+                                </Col>
+                            </Row> */}
+                  </AdminForm>
+                </div>
+                <div className="col-md-6">
+                  <AdminForm>
+                    <Row className="video-upload mb-4">
+                      <Col
+                        lg={{ span: 4 }}
+                        className="text-center d-lg-flex justify-content-end align-items-center"
+                      >
+                        <span className="font-weight-normal">Imagen</span>
+                      </Col>
+                      <Col lg={{ offset: 1, span: 6 }}>
+                        <label htmlFor="img-block-upload" className="w-100">
+                          <img
+                            controls
+                            style={{
+                              width: "100%",
+                              padding: "5px",
+                            }}
+                            src={
+                              props.values.picture
+                                ? props.values.picture
+                                : "../../../../../../static/assets/img/img4x3.png"
+                            }
+                            alt=""
+                            className="my-3 border rounded"
+                          />
+                        </label>
+                        <label
+                          htmlFor="img-block-upload"
+                          css={ButtonStyle}
+                          className="w-100"
+                        >
+                          Subir imagen
+                        </label>
+                        {/* <label htmlFor="img-upload" css={ButtonStyle} className="w-100">Subir imágen</label> */}
+                      </Col>
+                    </Row>
 
-          {itemCards.map((card, i) => renderItemCard(card, i))}
-          <AddItem>Añadir elemento</AddItem>
-        </div>
-      </div>
+                    {/* <Row className="mb-4">
+                                <Col lg={{ span: 4 }} className="text-center d-lg-flex justify-content-end align-items-center">
+                                    <span className="m-0 font-weight-normal">Descripción</span>
+
+                                </Col>
+
+
+                                <Col lg={{ offset: 1, span: 6 }}>
+                                    <textarea name="" id="" cols="30" rows="10" placeholder="Descripción"></textarea>
+                                </Col>
+                            </Row> */}
+                  </AdminForm>
+                </div>
+                <div className="w-100">
+                  <div className="d-flex justify-content-between border-bottom pb-2 mb-3">
+                    <span>Contenido</span>
+                  </div>
+
+                  {itemCards.map((card, i) => renderItemCard(card, i))}
+                  <AddItem>Añadir elemento</AddItem>
+                </div>
+              </div>
+            </FormFormik>
+          );
+        }}
+      </Formik>
     </div>
   );
 };

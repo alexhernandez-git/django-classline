@@ -52,7 +52,7 @@ const CourseCard = (props) => {
             </div>
             <div className="text-grey">
               <div>
-                <small css={textEllipsis}>Lecciones: 2</small>
+                <small css={textEllipsis}>Lecciones: 52</small>
               </div>
               {/* <div>
                   <small css={textEllipsis}>Playlists: 2</small>

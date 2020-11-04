@@ -147,7 +147,6 @@ class AddCourseMixin(viewsets.GenericViewSet):
             Program,
             code=id
         )
-
         course_id = self.kwargs['course_id']
         self.course = get_object_or_404(
             Course,
