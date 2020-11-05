@@ -90,10 +90,12 @@ const BlocksCourse = () => {
           </div>
         )}
       </div>
-      <GridBlocks>
-        {sortEdit
-          ? blockCards.map((card, i) => renderBlockCard(card, i))
-          : blockCards.map((card, i) => (
+      {sortEdit ? (
+        blockCards.map((card, i) => renderBlockCard(card, i))
+      ) : (
+        <>
+          <GridBlocks>
+            {blockCards.map((card, i) => (
               <Link
                 to={`/academy/${program}/admin/course/${course}/block/${card.block.code}`}
               >
@@ -137,8 +139,10 @@ const BlocksCourse = () => {
                 </PackContent>
               </Link>
             ))}
-        <AddBlock onClick={handleAddBlock}>Añadir Bloque</AddBlock>
-      </GridBlocks>
+            <AddBlock onClick={handleAddBlock}>Añadir Bloque</AddBlock>
+          </GridBlocks>
+        </>
+      )}
     </>
   );
 };

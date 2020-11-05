@@ -43,9 +43,7 @@ const BlockPresentation = (props) => {
   };
 
   const [srcImage, setSrcImage] = useState(null);
-  const [cropResult, setCropResult] = useState(
-    "/static/assets/img/no-foto.png"
-  );
+  const [cropResult, setCropResult] = useState("/static/assets/img/img4x3.png");
   const [fileName, setFileName] = useState("");
 
   useEffect(() => {
@@ -54,7 +52,7 @@ const BlockPresentation = (props) => {
       setCropResult(
         blockReducer.block.picture
           ? blockReducer.block.picture
-          : "/static/assets/img/no-foto.png"
+          : "/static/assets/img/img4x3.png"
       );
     }
   }, [blockReducer.block?.picture]);
