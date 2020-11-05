@@ -145,7 +145,6 @@ const CoursePresentation = (props) => {
         <Col lg={{ offset: 1, span: 6 }}>
           <label htmlFor="img-upload" className="cursor-pointer w-100">
             <img
-              controls
               style={{
                 width: "100%",
                 padding: "5px",

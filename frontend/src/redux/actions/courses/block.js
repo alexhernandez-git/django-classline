@@ -17,15 +17,10 @@ import {
 } from "../../types";
 
 import { tokenConfig } from "../auth";
-// CHECK TOKEN & LOAD USER
+
 export const fetchBlock = (id) => (dispatch, getState) => {
-  // User Loading
   dispatch({ type: BLOCK_FETCH });
-  console.log(
-    `/api/programs/${getState().programReducer.program.code}/courses/${
-      getState().courseReducer.course.code
-    }/blocks/${id}/`
-  );
+
   axios
     .get(
       `/api/programs/${getState().programReducer.program.code}/courses/${
@@ -45,18 +40,12 @@ export const fetchBlock = (id) => (dispatch, getState) => {
         type: BLOCK_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
-      // if (process.browser) {
-      //     document.location.href = `https://classlineacademy.com`
-      // }
     });
 };
+
 export const saveBlock = (course) => (dispatch, getState) => {
   dispatch({ type: BLOCK_SAVE });
-  // dispatch({
-  //     type: BLOCK_PICTURE_SUCCESS,
-  //     payload: '/static/img/taichi.jpg'
-  // })
-  console.log(getState().courseReducer);
+
   axios
     .patch(
       `/api/programs/${getState().programReducer.program.code}/courses/${
@@ -66,7 +55,6 @@ export const saveBlock = (course) => (dispatch, getState) => {
       tokenConfig(getState)
     )
     .then((res) => {
-      console.log(res);
       Swal.fire({
         title: "Guardado!",
         icon: "success",
@@ -84,6 +72,7 @@ export const saveBlock = (course) => (dispatch, getState) => {
       });
     });
 };
+
 export const uploadPicture = (picture) => (dispatch, getState) => {
   dispatch({ type: BLOCK_PICTURE_UPLOAD });
   // dispatch({

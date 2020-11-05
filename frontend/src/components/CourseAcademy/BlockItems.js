@@ -21,6 +21,7 @@ import CardItemDrag from "./CardItemDrag";
 import update from "immutability-helper";
 import { useParams } from "react-router-dom";
 import { fetchBlock, saveBlock } from "../../redux/actions/courses/block";
+import BlockPresentation from "./BlockPresentation";
 
 const BlocksItems = (props) => {
   const dispatch = useDispatch();
@@ -188,9 +189,13 @@ const BlocksItems = (props) => {
     <div className="mt-5">
       <Formik
         enableReinitialize={true}
-        initialValues={blockReducer.block}
+        initialValues={{
+          name: blockReducer.block.name,
+          description: blockReducer.block.description,
+        }}
         onSubmit={(values) => {
-          const dispatchSaveBlock = (course) => dispatch(saveBlock(course));
+          console.log(values);
+          const dispatchSaveBlock = (block) => dispatch(saveBlock(block));
           dispatchSaveBlock(values);
         }}
       >
@@ -198,12 +203,10 @@ const BlocksItems = (props) => {
           return (
             <FormFormik>
               <Filters
-                title={blockReducer.block.title}
+                title={blockReducer.block.name}
                 back="Volver"
                 saveButton="Guardar Bloque"
-                saveButtonFunciton
               />
-
               <div className="row">
                 <div className="col-md-6">
                   <AdminForm>
@@ -231,8 +234,8 @@ const BlocksItems = (props) => {
 
                       <Col lg={{ offset: 1, span: 6 }}>
                         <Field
+                          name="description"
                           component="textarea"
-                          name="descripiton"
                           placeholder="Descripción"
                           style={{ height: "179px" }}
                         />
@@ -253,54 +256,7 @@ const BlocksItems = (props) => {
                   </AdminForm>
                 </div>
                 <div className="col-md-6">
-                  <AdminForm>
-                    <Row className="video-upload mb-4">
-                      <Col
-                        lg={{ span: 4 }}
-                        className="text-center d-lg-flex justify-content-end align-items-center"
-                      >
-                        <span className="font-weight-normal">Imagen</span>
-                      </Col>
-                      <Col lg={{ offset: 1, span: 6 }}>
-                        <label htmlFor="img-block-upload" className="w-100">
-                          <img
-                            controls
-                            style={{
-                              width: "100%",
-                              padding: "5px",
-                            }}
-                            src={
-                              props.values.picture
-                                ? props.values.picture
-                                : "../../../../../../static/assets/img/img4x3.png"
-                            }
-                            alt=""
-                            className="my-3 border rounded"
-                          />
-                        </label>
-                        <label
-                          htmlFor="img-block-upload"
-                          css={ButtonStyle}
-                          className="w-100"
-                        >
-                          Subir imagen
-                        </label>
-                        {/* <label htmlFor="img-upload" css={ButtonStyle} className="w-100">Subir imágen</label> */}
-                      </Col>
-                    </Row>
-
-                    {/* <Row className="mb-4">
-                                <Col lg={{ span: 4 }} className="text-center d-lg-flex justify-content-end align-items-center">
-                                    <span className="m-0 font-weight-normal">Descripción</span>
-
-                                </Col>
-
-
-                                <Col lg={{ offset: 1, span: 6 }}>
-                                    <textarea name="" id="" cols="30" rows="10" placeholder="Descripción"></textarea>
-                                </Col>
-                            </Row> */}
-                  </AdminForm>
+                  <BlockPresentation />
                 </div>
                 <div className="w-100">
                   <div className="d-flex justify-content-between border-bottom pb-2 mb-3">

@@ -7,7 +7,6 @@ import {
   createBlock,
   updateBlocksOrder,
 } from "../../redux/actions/courses/blocks";
-import { ButtonCustom } from "../ui/ButtonCustom";
 import BlockCard from "./BlockCard";
 
 const BlocksCourse = () => {

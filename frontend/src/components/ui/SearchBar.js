@@ -5,10 +5,8 @@ import { IconContext } from "react-icons";
 
 const SearchBar = (props) => {
   return (
-
-    
-    <Search 
-       onSubmit={(e) => e.preventDefault()}
+    <Search
+      onSubmit={(e) => e.preventDefault()}
       onKeyDown={(e) => {
         console.log(e.keyCode);
         if (e.keyCode == 13 || e.keyCode == "Enter") {
@@ -16,7 +14,7 @@ const SearchBar = (props) => {
         }
       }}
     >
-    <input 
+      <input
         autoFocus
         type="text"
         placeholder={props.placeholder}
@@ -28,15 +26,15 @@ const SearchBar = (props) => {
           <FaSearch />
         </IconContext.Provider>
       </button>
-  </Search>
+    </Search>
   );
 };
 const Search = styled.div`
   display: flex;
   justify-content: center;
-  height:fit-content;
-  input{
-    padding:1rem 1rem 1rem 2rem;
+  height: fit-content;
+  input {
+    padding: 1rem 1rem 1rem 2rem;
 
     /* max-width:30rem; */
     width: 100%;
@@ -45,23 +43,22 @@ const Search = styled.div`
 
     overflow: hidden;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-    border:none;
+    border: none;
   }
-  button{
-    padding:1rem;
-    max-width:5rem;
+  button {
+    padding: 1rem;
+    max-width: 5rem;
     width: 100%;
     display: block;
-    border-radius: 0 2rem  2rem 0;
+    border-radius: 0 2rem 2rem 0;
     overflow: hidden;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-    border:none;
+    border: none;
   }
-  button:hover{
+  button:hover {
     opacity: 0.7;
   }
-
-`
+`;
 
 const SearchBarComponent = styled.form`
   grid-area: search;

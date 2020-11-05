@@ -39,7 +39,9 @@ const Filters = (props) => {
           </>
         )}
         {props.title && <Title>{props.title}</Title>}
-        {props.saveButton && <ButtonCustom>{props.saveButton}</ButtonCustom>}
+        {props.saveButton && (
+          <ButtonCustom type="submit">{props.saveButton}</ButtonCustom>
+        )}
         {(props.placeholder || props.button) && (
           <div>
             {props.placeholder && (
