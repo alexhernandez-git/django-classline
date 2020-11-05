@@ -8,6 +8,9 @@ import {
   UPDATE_BLOCKS_ORDER,
   UPDATE_BLOCKS_ORDER_SUCCESS,
   UPDATE_BLOCKS_ORDER_FAIL,
+  REMOVE_BLOCK_IN_BLOCKS,
+  UPDATE_BLOCK_IN_BLOCKS,
+  UPDATE_BLOCK_PICTURE_IN_BLOCKS,
 } from "../../types";
 
 const initialState = {
@@ -58,7 +61,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         block_creating: false,
-        blocks: [action.payload, ...state.blocks],
+        blocks: [...state.blocks, action.payload],
       };
 
     case CREATE_BLOCK_FAIL:
@@ -79,6 +82,39 @@ export default function (state = initialState, action) {
         block_order_updating: false,
         blocks: action.payload,
       };
+    case UPDATE_BLOCK_IN_BLOCKS:
+      return {
+        ...state,
+        blocks: state.blocks.map((block) => {
+          if (block.block.code == action.payload.code) {
+            return {
+              ...block,
+              block: {
+                ...action.payload,
+              },
+            };
+          } else {
+            return block;
+          }
+        }),
+      };
+    case UPDATE_BLOCK_PICTURE_IN_BLOCKS:
+      return {
+        ...state,
+        blocks: state.blocks.map((block) => {
+          if (block.block.code == action.payload.code) {
+            return {
+              ...block,
+              block: {
+                ...block.block,
+                picture: action.payload.picture,
+              },
+            };
+          } else {
+            return block;
+          }
+        }),
+      };
 
     case UPDATE_BLOCKS_ORDER_FAIL:
       return {
@@ -86,6 +122,15 @@ export default function (state = initialState, action) {
         block_order_updating: false,
         block_order_update_error: action.payload,
       };
+
+    case REMOVE_BLOCK_IN_BLOCKS:
+      return {
+        ...state,
+        blocks: state.blocks.filter(
+          (block) => block.block.code != action.payload
+        ),
+      };
+
     default:
       return state;
   }

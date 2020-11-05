@@ -60,47 +60,43 @@ const BlockCard = ({ moveCard, id, index, block, blockCards }) => {
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
   return (
-    <Link to={`/academy/${program}/admin/course/${course}/block/${block.code}`}>
-      <PackContent style={{ opacity }} moveCard={moveCard} ref={ref}>
-        <BlockText className="d-flex justify-content-center p-2">
-          <span>Bloque {index + 1}</span>
-        </BlockText>
+    <PackContent style={{ opacity }} moveCard={moveCard} ref={ref}>
+      <BlockText className="d-flex justify-content-center p-2">
+        <span>Bloque {index + 1}</span>
+      </BlockText>
 
-        <PackImage className="">
-          <div className="video-content">
-            <img
-              className="rounded"
-              src={
-                block.picture
-                  ? block.picture
-                  : "../../../../static/assets/img/img4x3.png"
-              }
-              alt="video"
-            />
+      <PackImage className="">
+        <div className="video-content">
+          <img
+            className="rounded"
+            src={
+              block.picture ? block.picture : "/static/assets/img/img4x3.png"
+            }
+            alt="video"
+          />
+        </div>
+      </PackImage>
+      <PackInfo>
+        <div className="video-text">
+          <div className="py-2 d-flex justify-content-between">
+            <span css={textEllipsis}>
+              {block.name ? block.name : "Nuevo bloque"}
+            </span>
           </div>
-        </PackImage>
-        <PackInfo>
-          <div className="video-text">
-            <div className="py-2 d-flex justify-content-between">
-              <span css={textEllipsis}>
-                {block.name ? block.name : "Nuevo bloque"}
-              </span>
+          <div className="text-grey">
+            <div>
+              <small css={textEllipsis}>Lecciones: 5</small>
             </div>
-            <div className="text-grey">
-              <div>
-                <small css={textEllipsis}>Lecciones: 5</small>
-              </div>
-              {/* <div>
+            {/* <div>
                     <small css={textEllipsis}>Playlists: 2</small>
                   </div>
                   <div>
                     <small css={textEllipsis}>Recursos: 8</small>
                   </div>  */}
-            </div>
           </div>
-        </PackInfo>
-      </PackContent>
-    </Link>
+        </div>
+      </PackInfo>
+    </PackContent>
   );
 };
 
@@ -108,6 +104,8 @@ const PackContent = styled.div`
   width: 100%;
   /* cursor: grab; */
   display: block;
+  cursor: grab;
+
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
@@ -141,7 +139,5 @@ const PackInfo = styled.div`
     z-index: 500;
   }
 `;
-const BlockText = styled.div`
-  cursor: grab;
-`;
+const BlockText = styled.div``;
 export default BlockCard;

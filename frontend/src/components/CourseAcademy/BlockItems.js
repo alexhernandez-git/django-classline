@@ -19,16 +19,23 @@ import { ButtonCustom } from "../ui/ButtonCustom";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import CardItemDrag from "./CardItemDrag";
 import update from "immutability-helper";
-import { useParams } from "react-router-dom";
-import { fetchBlock, saveBlock } from "../../redux/actions/courses/block";
+import { useHistory, useParams } from "react-router-dom";
+import {
+  fetchBlock,
+  removeBlock,
+  saveBlock,
+} from "../../redux/actions/courses/block";
 import BlockPresentation from "./BlockPresentation";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 const BlocksItems = (props) => {
   const dispatch = useDispatch();
+  const MySwal = withReactContent(Swal);
+
   const inputFileVideo = useRef(null);
   const inputFileImg = useRef(null);
   const [isAddVideoOpen, setIsAddVideoOpen] = useState(false);
-
+  const history = useHistory();
   const courseReducer = useSelector((state) => state.courseReducer);
   const blockReducer = useSelector((state) => state.blockReducer);
   const { block } = useParams();
@@ -39,23 +46,6 @@ const BlocksItems = (props) => {
     }
   }, [courseReducer.isLoading, block]);
 
-  const handleDeleteTrackVideo = (id) => {
-    setItemCards((itemCards) => itemCards.filter((card) => card.id !== id));
-  };
-  const [search, setSearch] = useState("");
-
-  const handleSubmitSearch = (e) => {
-    e.preventDefault();
-    const dispatchFetchVideos = (search) => dispatch(fetchVideos(search));
-    dispatchFetchVideos(search);
-  };
-  const [limit, setLimit] = useState(12);
-  const fetchMoreVideos = () => {
-    const dispatchFetchVideosIncrease = (limit, search) =>
-      dispatch(fetchVideosIncrease(limit, search));
-    dispatchFetchVideosIncrease(limit + 12, search);
-    setLimit((limit) => limit + 12);
-  };
   const addVideoRef = useRef();
 
   useOutsideClick(addVideoRef, () => {
@@ -172,6 +162,22 @@ const BlocksItems = (props) => {
     },
     [itemCards]
   );
+  const hanldeRemoveBlock = (e) => {
+    e.preventDefault();
+    MySwal.fire({
+      title: "Estas seguro?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(removeBlock(history));
+      }
+    });
+  };
   const renderItemCard = (card, index) => {
     return (
       <CardItemDrag
@@ -237,7 +243,7 @@ const BlocksItems = (props) => {
                           name="description"
                           component="textarea"
                           placeholder="Descripción"
-                          style={{ height: "179px" }}
+                          style={{ height: "217px" }}
                         />
                       </Col>
                     </Row>
@@ -257,6 +263,20 @@ const BlocksItems = (props) => {
                 </div>
                 <div className="col-md-6">
                   <BlockPresentation />
+                  <Row className="my-4">
+                    <Col
+                      lg={{ span: 4 }}
+                      className="text-center d-lg-flex justify-content-end align-items-center"
+                    >
+                      <span className="m-0 font-weight-normal">Eliminar</span>
+                    </Col>
+
+                    <Col lg={{ offset: 1, span: 6 }}>
+                      <ButtonCustomError onClick={hanldeRemoveBlock}>
+                        Eliminar bloque
+                      </ButtonCustomError>
+                    </Col>
+                  </Row>
                 </div>
                 <div className="w-100">
                   <div className="d-flex justify-content-between border-bottom pb-2 mb-3">

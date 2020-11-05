@@ -124,7 +124,7 @@ const BlockPresentation = (props) => {
             <span className="font-weight-normal">Imagen</span>
           </Col>
           <Col lg={{ offset: 1, span: 6 }}>
-            <label htmlFor="img-block-upload" className="w-100">
+            <label htmlFor="img-block-upload" className="w-100 cursor-pointer">
               <img
                 controls
                 style={{

@@ -14,6 +14,9 @@ import {
   REMOVE_BLOCK_SUCCESS,
   REMOVE_BLOCK_FAIL,
   RESET_BLOCKS_ERRORS,
+  REMOVE_BLOCK_IN_BLOCKS,
+  UPDATE_BLOCK_IN_BLOCKS,
+  UPDATE_BLOCK_PICTURE_IN_BLOCKS,
 } from "../../types";
 
 import { tokenConfig } from "../auth";
@@ -64,6 +67,10 @@ export const saveBlock = (course) => (dispatch, getState) => {
         type: BLOCK_SAVE_SUCCESS,
         payload: res.data,
       });
+      dispatch({
+        type: UPDATE_BLOCK_IN_BLOCKS,
+        payload: res.data,
+      });
     })
     .catch((err) => {
       dispatch({
@@ -90,10 +97,13 @@ export const uploadPicture = (picture) => (dispatch, getState) => {
       tokenConfig(getState)
     )
     .then((res) => {
-      console.log(res);
       dispatch({
         type: BLOCK_PICTURE_SUCCESS,
         payload: res.data.picture,
+      });
+      dispatch({
+        type: UPDATE_BLOCK_PICTURE_IN_BLOCKS,
+        payload: { code: res.data.code, picture: res.data.picture },
       });
     })
     .catch((err) => {
@@ -114,9 +124,23 @@ export const removeBlock = (history) => (dispatch, getState) => {
       tokenConfig(getState)
     )
     .then((res) => {
-      history.back();
+      history.push(
+        `/academy/${getState().programReducer.program.code}/admin/course/${
+          getState().courseReducer.course.code
+        }/`
+      );
+      console.log(getState().blockReducer.block.code);
+      dispatch({
+        type: REMOVE_BLOCK_IN_BLOCKS,
+        payload: getState().blockReducer.block.code,
+      });
       dispatch({
         type: REMOVE_BLOCK_SUCCESS,
+      });
+      Swal.fire({
+        title: "Eliminado!",
+        icon: "success",
+        confirmButtonText: "Ok",
       });
     })
     .catch((err) => {
