@@ -8,6 +8,8 @@ import {
   FaFileAlt,
   FaFileVideo,
   FaGripLines,
+  FaPlus,
+  FaTimes,
   FaTrash,
   FaVideo,
 } from "react-icons/fa";
@@ -90,15 +92,24 @@ const CardItemDrag = ({
     setIsOpen(!isOpen);
   };
   const [addContent, setAddContent] = useState(false);
+  const handleAddContent = (e) => {
+    e.preventDefault();
+    setAddContent(true);
+    setIsOpen(true);
+  };
+  const handleCloseAddContent = (e) => {
+    e.preventDefault();
+    setAddContent(false);
+    setIsOpen(false);
+  };
   return (
     <PlaylistVideo style={{ opacity }} ref={ref} moveCard={moveCard}>
-      {console.log(newItem)}
       {card?.is_new ? (
         <>
           {!newItem.name && !newItem.type_choices ? (
             <div className="d-flex align-items-center justify-content-around">
               <div
-                className="cursor-pointer"
+                className="cursor-pointer d-flex align-items-center"
                 onClick={() => setNewItem({ ...newItem, type_choices: "LE" })}
               >
                 <IconContext.Provider
@@ -111,8 +122,8 @@ const CardItemDrag = ({
                 </IconContext.Provider>
                 <span className="font-weight-bold">Lección</span>
               </div>
-              <div
-                className="cursor-pointer"
+              {/* <div
+                className="cursor-pointer d-flex align-items-center"
                 onClick={() => setNewItem({ ...newItem, type_choices: "TE" })}
               >
                 <IconContext.Provider
@@ -124,7 +135,7 @@ const CardItemDrag = ({
                   <SiAddthis />
                 </IconContext.Provider>
                 <span className="font-weight-bold">Test</span>
-              </div>
+              </div> */}
             </div>
           ) : (
             <AdminForm>
@@ -156,7 +167,7 @@ const CardItemDrag = ({
         </>
       ) : (
         <>
-          <div className="d-flex justify-content-between align-items-center">
+          <div className="d-sm-flex justify-content-between align-items-center">
             <div className="d-flex align-items-center">
               {item.type_choices == "LE" && "Lección"} {index + 1}:{" "}
               {item.type_choices == "LE" &&
@@ -204,122 +215,191 @@ const CardItemDrag = ({
               </div>
             </div>
             <div className="d-flex align-items-center">
-              <IconContext.Provider
-                value={{
-                  size: 22,
-                  className: "global-class-name mr-3 cursor-pointer",
-                }}
-              >
-                {isOpen ? (
-                  <MdKeyboardArrowUp onClick={handleToggleOpen} />
-                ) : (
-                  <MdKeyboardArrowDown onClick={handleToggleOpen} />
-                )}
-              </IconContext.Provider>
-              <IconContext.Provider
+              {item?.content?.type_choices != "VI" &&
+              item?.content?.type_choices != "TE" ? (
+                <div className="mr-3">
+                  {addContent ? (
+                    <>
+                      <ButtonCustom
+                        className="align-items-center"
+                        onClick={(e) => {
+                          handleCloseAddContent(e);
+                        }}
+                      >
+                        <IconContext.Provider
+                          value={{
+                            size: 12,
+                            className: "global-class-name mr-2",
+                          }}
+                        >
+                          <FaTimes />
+                        </IconContext.Provider>
+                        Cerrar
+                      </ButtonCustom>
+                    </>
+                  ) : (
+                    <>
+                      <ButtonCustom
+                        className="align-items-center"
+                        onClick={(e) => {
+                          handleAddContent(e);
+                        }}
+                      >
+                        <IconContext.Provider
+                          value={{
+                            size: 12,
+                            className: "global-class-name mr-2",
+                          }}
+                        >
+                          <FaPlus />
+                        </IconContext.Provider>
+                        Contenido
+                      </ButtonCustom>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <IconContext.Provider
+                    value={{
+                      size: 22,
+                      className: "global-class-name mr-3 cursor-pointer",
+                    }}
+                  >
+                    {isOpen ? (
+                      <MdKeyboardArrowUp onClick={handleToggleOpen} />
+                    ) : (
+                      <MdKeyboardArrowDown onClick={handleToggleOpen} />
+                    )}
+                  </IconContext.Provider>
+                </>
+              )}
+              {/* <IconContext.Provider
                 value={{
                   size: 22,
                   className: "global-class-name",
                 }}
               >
                 <FaGripLines />
-              </IconContext.Provider>
+              </IconContext.Provider> */}
             </div>
           </div>
           {isOpen && (
             <>
               <hr />
-              <div className="item-content">
-                {addContent && <></>}
-                {(item?.content?.type_choices == "VI" ||
-                  item?.content?.type_choices == "TE") && (
-                  <>
-                    <div className="d-flex justify-content-center align-items-center">
-                      {item.type_choices == "LE" &&
-                        item?.content?.type_choices == "VI" && (
-                          <IconContext.Provider
-                            value={{
-                              size: 50,
-                              className: "global-class-name",
-                            }}
-                          >
-                            <FaFileVideo />
-                          </IconContext.Provider>
-                        )}
-                      {item.type_choices == "LE" &&
-                        item?.content?.type_choices == "TE" && (
-                          <IconContext.Provider
-                            value={{
-                              size: 50,
-                              className: "global-class-name",
-                            }}
-                          >
-                            <FaFileAlt />
-                          </IconContext.Provider>
-                        )}
+              {addContent ? (
+                <>
+                  <div className="d-flex justify-content-around mt-4">
+                    <div
+                      className="d-flex flex-column align-items-center justify-content-center cursor-pointer"
+                      onClick={() => {}}
+                    >
+                      <IconContext.Provider
+                        value={{
+                          size: 50,
+                          className: "global-class-name",
+                        }}
+                      >
+                        <FaFileVideo />
+                      </IconContext.Provider>
+                      <span>Añadir video</span>
                     </div>
-                    <div>
-                      {item.type_choices == "LE" &&
-                        item?.content?.type_choices == "VI" && (
-                          <>
-                            <div>
-                              crea wallapop con php, poo, mvc, javascript, ajax,
-                              mysql....mp4
-                            </div>
-
-                            <div>00:00</div>
-                            <div className="d-flex align-items-center cursor-pointer">
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="item-content">
+                    {(item?.content?.type_choices == "VI" ||
+                      item?.content?.type_choices == "TE") && (
+                      <>
+                        <div className="d-flex justify-content-center align-items-center">
+                          {item.type_choices == "LE" &&
+                            item?.content?.type_choices == "VI" && (
                               <IconContext.Provider
                                 value={{
-                                  size: 14,
-                                  className:
-                                    "global-class-name mr-2 cursor-pointer",
+                                  size: 50,
+                                  className: "global-class-name",
                                 }}
                               >
-                                {" "}
-                                <FaEdit />
+                                <FaFileVideo />
                               </IconContext.Provider>
-                              Editar contenido
-                            </div>
-                          </>
-                        )}
+                            )}
+                          {item.type_choices == "LE" &&
+                            item?.content?.type_choices == "TE" && (
+                              <IconContext.Provider
+                                value={{
+                                  size: 50,
+                                  className: "global-class-name",
+                                }}
+                              >
+                                <FaFileAlt />
+                              </IconContext.Provider>
+                            )}
+                        </div>
+                        <div>
+                          {item.type_choices == "LE" &&
+                            item?.content?.type_choices == "VI" && (
+                              <>
+                                <div>
+                                  crea wallapop con php, poo, mvc, javascript,
+                                  ajax, mysql....mp4
+                                </div>
+
+                                <div>00:00</div>
+                                <div className="d-flex align-items-center cursor-pointer">
+                                  <IconContext.Provider
+                                    value={{
+                                      size: 14,
+                                      className:
+                                        "global-class-name mr-2 cursor-pointer",
+                                    }}
+                                  >
+                                    {" "}
+                                    <FaEdit />
+                                  </IconContext.Provider>
+                                  Editar contenido
+                                </div>
+                              </>
+                            )}
+                        </div>
+                        <hr />
+                      </>
+                    )}
+                  </div>
+                  <div>
+                    <div className="mb-3">
+                      <ButtonCustom>
+                        <IconContext.Provider
+                          value={{
+                            size: 22,
+                            className: "global-class-name mr-2 cursor-pointer",
+                            color: "#fff",
+                          }}
+                        >
+                          {" "}
+                          <MdAdd style={{ color: "#fff" }} />
+                        </IconContext.Provider>
+                        Descripción
+                      </ButtonCustom>
                     </div>
-                    <hr />
-                  </>
-                )}
-              </div>
-              <div>
-                <div className="mb-3">
-                  <ButtonCustom>
-                    <IconContext.Provider
-                      value={{
-                        size: 22,
-                        className: "global-class-name mr-2 cursor-pointer",
-                        color: "#fff",
-                      }}
-                    >
-                      {" "}
-                      <MdAdd style={{ color: "#fff" }} />
-                    </IconContext.Provider>
-                    Descripción
-                  </ButtonCustom>
-                </div>
-                <div>
-                  <ButtonCustom>
-                    <IconContext.Provider
-                      value={{
-                        size: 22,
-                        className: "global-class-name mr-2 cursor-pointer",
-                        color: "#fff",
-                      }}
-                    >
-                      {" "}
-                      <MdAdd style={{ color: "#fff" }} />
-                    </IconContext.Provider>
-                    Recursos
-                  </ButtonCustom>
-                </div>
-              </div>
+                    <div>
+                      <ButtonCustom>
+                        <IconContext.Provider
+                          value={{
+                            size: 22,
+                            className: "global-class-name mr-2 cursor-pointer",
+                            color: "#fff",
+                          }}
+                        >
+                          {" "}
+                          <MdAdd style={{ color: "#fff" }} />
+                        </IconContext.Provider>
+                        Recursos
+                      </ButtonCustom>
+                    </div>
+                  </div>
+                </>
+              )}
             </>
           )}
         </>
