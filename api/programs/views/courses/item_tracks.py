@@ -76,6 +76,7 @@ class CourseItemTrackViewSet(mixins.CreateModelMixin,
             context={
                 'request': request,
                 'name': request.data['name'],
+                'type_choices': request.data['type_choices'],
                 'block': self.block,
                 'course': self.course
             },

@@ -18,8 +18,10 @@ import {
   MdKeyboardArrowUp,
   MdModeEdit,
 } from "react-icons/md";
+import { SiAddthis } from "react-icons/si";
 import { GrCirclePlay, GrDocumentText, GrFormAdd } from "react-icons/gr";
 import { ButtonCustom } from "../ui/ButtonCustom";
+import { AdminForm } from "../ui/AdminForm";
 
 // import VideoList from "./VideoList";
 const CardItemDrag = ({
@@ -27,7 +29,10 @@ const CardItemDrag = ({
   id,
   index,
   item,
-  handleDeleteTrackVideo,
+  card,
+  newItem,
+  setNewItem,
+  handleCreateItem,
 }) => {
   const ref = useRef(null);
   const [, drop] = useDrop({
@@ -84,165 +89,245 @@ const CardItemDrag = ({
   const handleToggleOpen = () => {
     setIsOpen(!isOpen);
   };
+  const [addContent, setAddContent] = useState(false);
   return (
     <PlaylistVideo style={{ opacity }} ref={ref} moveCard={moveCard}>
-      <div className="d-flex justify-content-between align-items-center">
-        <div className="d-flex align-items-center">
-          {item.type_choices == "LE" && "Lección"} {index + 1}:{" "}
-          {item.type_choices == "LE" && item.content.type_choices == "VI" && (
-            <IconContext.Provider
-              value={{
-                size: 14,
-                className: "global-class-name mx-2 cursor-pointer",
-              }}
-            >
-              <GrCirclePlay />
-            </IconContext.Provider>
-          )}
-          {item.type_choices == "LE" && item.content.type_choices == "TE" && (
-            <IconContext.Provider
-              value={{
-                size: 14,
-                className: "global-class-name mx-2 cursor-pointer",
-              }}
-            >
-              <GrDocumentText />
-            </IconContext.Provider>
-          )}
-          {item.name}
-          <div className="item-actions">
-            <IconContext.Provider
-              value={{
-                size: 14,
-                className: "global-class-name ml-4 cursor-pointer",
-              }}
-            >
-              {" "}
-              <FaEdit />
-            </IconContext.Provider>
-            <IconContext.Provider
-              value={{
-                size: 14,
-                className: "global-class-name ml-4 cursor-pointer",
-              }}
-            >
-              {" "}
-              <FaTrash onClick={() => handleDeleteTrackVideo(id)} />
-            </IconContext.Provider>
-          </div>
-        </div>
-        <div className="d-flex align-items-center">
-          <IconContext.Provider
-            value={{
-              size: 22,
-              className: "global-class-name mr-3 cursor-pointer",
-            }}
-          >
-            {isOpen ? (
-              <MdKeyboardArrowUp onClick={handleToggleOpen} />
-            ) : (
-              <MdKeyboardArrowDown onClick={handleToggleOpen} />
-            )}
-          </IconContext.Provider>
-          <IconContext.Provider
-            value={{
-              size: 22,
-              className: "global-class-name",
-            }}
-          >
-            <FaGripLines />
-          </IconContext.Provider>
-        </div>
-      </div>
-      {isOpen && (
+      {console.log(newItem)}
+      {card?.is_new ? (
         <>
-          <hr />
-          <div className="item-content">
-            <div className="d-flex justify-content-center align-items-center">
-              {item.type_choices == "LE" && item.content.type_choices == "VI" && (
+          {!newItem.name && !newItem.type_choices ? (
+            <div className="d-flex align-items-center justify-content-around">
+              <div
+                className="cursor-pointer"
+                onClick={() => setNewItem({ ...newItem, type_choices: "LE" })}
+              >
                 <IconContext.Provider
                   value={{
-                    size: 50,
-                    className: "global-class-name",
+                    size: 20,
+                    className: "global-class-name mx-2 cursor-pointer",
                   }}
                 >
-                  <FaFileVideo />
+                  <SiAddthis />
                 </IconContext.Provider>
-              )}
-              {item.type_choices == "LE" && item.content.type_choices == "TE" && (
+                <span className="font-weight-bold">Lección</span>
+              </div>
+              <div
+                className="cursor-pointer"
+                onClick={() => setNewItem({ ...newItem, type_choices: "TE" })}
+              >
                 <IconContext.Provider
                   value={{
-                    size: 50,
-                    className: "global-class-name",
+                    size: 20,
+                    className: "global-class-name mx-2 cursor-pointer",
                   }}
                 >
-                  <FaFileAlt />
+                  <SiAddthis />
                 </IconContext.Provider>
-              )}
+                <span className="font-weight-bold">Test</span>
+              </div>
             </div>
-            <div>
-              {item.type_choices == "LE" && item.content.type_choices == "VI" && (
+          ) : (
+            <AdminForm>
+              {newItem.type_choices == "LE" ? (
                 <>
-                  <div>
-                    crea wallapop con php, poo, mvc, javascript, ajax,
-                    mysql....mp4
+                  <div className="new-element-div">
+                    <label htmlFor="">Nueva lección</label>
+                    <input
+                      type="text"
+                      name=""
+                      id=""
+                      value={newItem.name}
+                      onChange={(e) =>
+                        setNewItem({ ...newItem, name: e.target.value })
+                      }
+                    />
                   </div>
-
-                  <div>00:00</div>
+                  <div className="d-flex justify-content-end mt-3">
+                    <ButtonCustom onClick={(e) => handleCreateItem(e)}>
+                      Crear
+                    </ButtonCustom>
+                  </div>
                 </>
+              ) : (
+                <></>
               )}
-              <div className="d-flex align-items-center cursor-pointer">
+            </AdminForm>
+          )}
+        </>
+      ) : (
+        <>
+          <div className="d-flex justify-content-between align-items-center">
+            <div className="d-flex align-items-center">
+              {item.type_choices == "LE" && "Lección"} {index + 1}:{" "}
+              {item.type_choices == "LE" &&
+                item?.content?.type_choices == "VI" && (
+                  <IconContext.Provider
+                    value={{
+                      size: 14,
+                      className: "global-class-name mx-2 cursor-pointer",
+                    }}
+                  >
+                    <GrCirclePlay />
+                  </IconContext.Provider>
+                )}
+              {item.type_choices == "LE" &&
+                item?.content?.type_choices == "TE" && (
+                  <IconContext.Provider
+                    value={{
+                      size: 14,
+                      className: "global-class-name mx-2 cursor-pointer",
+                    }}
+                  >
+                    <GrDocumentText />
+                  </IconContext.Provider>
+                )}
+              {item.name}
+              <div className="item-actions">
                 <IconContext.Provider
                   value={{
                     size: 14,
-                    className: "global-class-name mr-2 cursor-pointer",
+                    className: "global-class-name ml-4 cursor-pointer",
                   }}
                 >
                   {" "}
                   <FaEdit />
                 </IconContext.Provider>
-                Editar contenido
+                <IconContext.Provider
+                  value={{
+                    size: 14,
+                    className: "global-class-name ml-4 cursor-pointer",
+                  }}
+                >
+                  {" "}
+                  <FaTrash onClick={() => handleDeleteTrackVideo(id)} />
+                </IconContext.Provider>
               </div>
             </div>
-          </div>
-          <hr />
-          <div>
-            <div className="mb-3">
-              <ButtonCustom>
-                <IconContext.Provider
-                  value={{
-                    size: 22,
-                    className: "global-class-name mr-2 cursor-pointer",
-                    color: "#fff",
-                  }}
-                >
-                  {" "}
-                  <MdAdd style={{ color: "#fff" }} />
-                </IconContext.Provider>
-                Descripción
-              </ButtonCustom>
-            </div>
-            <div>
-              <ButtonCustom>
-                <IconContext.Provider
-                  value={{
-                    size: 22,
-                    className: "global-class-name mr-2 cursor-pointer",
-                    color: "#fff",
-                  }}
-                >
-                  {" "}
-                  <MdAdd style={{ color: "#fff" }} />
-                </IconContext.Provider>
-                Recursos
-              </ButtonCustom>
+            <div className="d-flex align-items-center">
+              <IconContext.Provider
+                value={{
+                  size: 22,
+                  className: "global-class-name mr-3 cursor-pointer",
+                }}
+              >
+                {isOpen ? (
+                  <MdKeyboardArrowUp onClick={handleToggleOpen} />
+                ) : (
+                  <MdKeyboardArrowDown onClick={handleToggleOpen} />
+                )}
+              </IconContext.Provider>
+              <IconContext.Provider
+                value={{
+                  size: 22,
+                  className: "global-class-name",
+                }}
+              >
+                <FaGripLines />
+              </IconContext.Provider>
             </div>
           </div>
+          {isOpen && (
+            <>
+              <hr />
+              <div className="item-content">
+                {addContent && <></>}
+                {(item?.content?.type_choices == "VI" ||
+                  item?.content?.type_choices == "TE") && (
+                  <>
+                    <div className="d-flex justify-content-center align-items-center">
+                      {item.type_choices == "LE" &&
+                        item?.content?.type_choices == "VI" && (
+                          <IconContext.Provider
+                            value={{
+                              size: 50,
+                              className: "global-class-name",
+                            }}
+                          >
+                            <FaFileVideo />
+                          </IconContext.Provider>
+                        )}
+                      {item.type_choices == "LE" &&
+                        item?.content?.type_choices == "TE" && (
+                          <IconContext.Provider
+                            value={{
+                              size: 50,
+                              className: "global-class-name",
+                            }}
+                          >
+                            <FaFileAlt />
+                          </IconContext.Provider>
+                        )}
+                    </div>
+                    <div>
+                      {item.type_choices == "LE" &&
+                        item?.content?.type_choices == "VI" && (
+                          <>
+                            <div>
+                              crea wallapop con php, poo, mvc, javascript, ajax,
+                              mysql....mp4
+                            </div>
+
+                            <div>00:00</div>
+                            <div className="d-flex align-items-center cursor-pointer">
+                              <IconContext.Provider
+                                value={{
+                                  size: 14,
+                                  className:
+                                    "global-class-name mr-2 cursor-pointer",
+                                }}
+                              >
+                                {" "}
+                                <FaEdit />
+                              </IconContext.Provider>
+                              Editar contenido
+                            </div>
+                          </>
+                        )}
+                    </div>
+                    <hr />
+                  </>
+                )}
+              </div>
+              <div>
+                <div className="mb-3">
+                  <ButtonCustom>
+                    <IconContext.Provider
+                      value={{
+                        size: 22,
+                        className: "global-class-name mr-2 cursor-pointer",
+                        color: "#fff",
+                      }}
+                    >
+                      {" "}
+                      <MdAdd style={{ color: "#fff" }} />
+                    </IconContext.Provider>
+                    Descripción
+                  </ButtonCustom>
+                </div>
+                <div>
+                  <ButtonCustom>
+                    <IconContext.Provider
+                      value={{
+                        size: 22,
+                        className: "global-class-name mr-2 cursor-pointer",
+                        color: "#fff",
+                      }}
+                    >
+                      {" "}
+                      <MdAdd style={{ color: "#fff" }} />
+                    </IconContext.Provider>
+                    Recursos
+                  </ButtonCustom>
+                </div>
+              </div>
+            </>
+          )}
         </>
       )}
     </PlaylistVideo>
   );
 };
+
 const PlaylistVideo = styled.div`
   padding: 1rem;
   background: #fff;
@@ -259,6 +344,14 @@ const PlaylistVideo = styled.div`
   &:hover {
     .item-actions {
       display: flex;
+    }
+  }
+  .new-element-div {
+    display: flex;
+    align-items: center;
+    label {
+      min-width: 140px;
+      margin-bottom: 0;
     }
   }
 `;

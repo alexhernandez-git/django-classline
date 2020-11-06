@@ -19,7 +19,6 @@ const BlocksCourse = () => {
   const dispatch = useDispatch();
 
   const [blockCards, setBlockCards] = useState([]);
-  console.log(blockCards);
   useEffect(() => {
     if (!blocksReducer.isLoading) {
       setBlockCards(blocksReducer.blocks);

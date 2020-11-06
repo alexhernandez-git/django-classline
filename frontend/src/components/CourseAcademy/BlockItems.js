@@ -28,6 +28,7 @@ import {
 import BlockPresentation from "./BlockPresentation";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { createItem, fetchItems } from "../../redux/actions/courses/items";
 const BlocksItems = (props) => {
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
@@ -38,6 +39,7 @@ const BlocksItems = (props) => {
   const history = useHistory();
   const courseReducer = useSelector((state) => state.courseReducer);
   const blockReducer = useSelector((state) => state.blockReducer);
+  const itemsReducer = useSelector((state) => state.itemsReducer);
   const { block } = useParams();
   useEffect(() => {
     if (!courseReducer.isLoading && courseReducer.course && block) {
@@ -45,96 +47,25 @@ const BlocksItems = (props) => {
       dispatchFetchBlock(block);
     }
   }, [courseReducer.isLoading, block]);
-
+  useEffect(() => {
+    if (!blockReducer.isLoading && blockReducer.block) {
+      const dispatchFetchItems = () => dispatch(fetchItems());
+      dispatchFetchItems();
+    }
+  }, [blockReducer.isLoading]);
   const addVideoRef = useRef();
 
   useOutsideClick(addVideoRef, () => {
     setIsAddVideoOpen(false);
   });
 
-  const [itemCards, setItemCards] = useState([
-    {
-      id: 0,
-      position: 0,
-      item: {
-        name: "Capitulo 1: Finanzas personales",
-        type_choices: "LE",
-        content: {
-          type_choices: "VI",
-          name: "video.mp4",
-          materials: [
-            {
-              name: "excel.xlsx",
-            },
-            {
-              name: "word.docx",
-            },
-          ],
-        },
-      },
-    },
-    {
-      id: 1,
-      position: 1,
-      item: {
-        name: "Capitulo 1: Criptomonedas",
-        type_choices: "LE",
-        content: {
-          type_choices: "TE",
-          text:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae voluptas veniam corrupti harum doloremque id maxime consequatur reiciendis nulla cupiditate, quidem nobis beatae hic. Dolorem aperiam consectetur aut magni omnis!",
-          materials: [
-            {
-              name: "excel.xlsx",
-            },
-            {
-              name: "word.docx",
-            },
-          ],
-        },
-      },
-    },
-    {
-      id: 2,
-      position: 2,
-      item: {
-        name: "Capitulo 2: Excel",
-        type_choices: "LE",
-        content: {
-          type_choices: "VI",
-          name: "video.mp4",
-          materials: [
-            {
-              name: "excel.xlsx",
-            },
-            {
-              name: "word.docx",
-            },
-          ],
-        },
-      },
-    },
-    {
-      id: 3,
-      position: 3,
-      item: {
-        name: "Capitulo 2: Finanzas empresarieales",
-        type_choices: "LE",
-        content: {
-          type_choices: "VI",
-          name: "video.mp4",
-          materials: [
-            {
-              name: "excel.xlsx",
-            },
-            {
-              name: "word.docx",
-            },
-          ],
-        },
-      },
-    },
-  ]);
+  const [itemCards, setItemCards] = useState([]);
+  useEffect(() => {
+    if (!itemsReducer.isLoading) {
+      setItemCards(itemsReducer.items);
+    }
+  }, [itemsReducer.isLoading, itemsReducer.items]);
+
   const moveCard = useCallback(
     (dragIndex, hoverIndex) => {
       const dragCard = itemCards[dragIndex];
@@ -178,6 +109,47 @@ const BlocksItems = (props) => {
       }
     });
   };
+  const handleAddItem = () => {
+    console.log(itemCards);
+    let result = 0;
+    if (itemCards.length > 0) {
+      result = Math.max.apply(
+        Math,
+        itemCards.map(function (o) {
+          return o.position;
+        })
+      );
+      result + 1;
+    }
+    console.log(result);
+    setItemCards((itemCards) => [
+      ...itemCards,
+      {
+        is_new: true,
+        position: result,
+        item: {
+          name: "",
+          type_choices: null,
+        },
+        id: Math.random().toString(36).substring(7),
+        code: Math.random().toString(36).substring(7),
+      },
+    ]);
+  };
+  const [newItem, setNewItem] = useState({
+    name: "",
+    type_choices: "",
+  });
+  const handleCreateItem = (e) => {
+    e.preventDefault();
+    dispatch(createItem(newItem));
+  };
+  useEffect(() => {
+    setNewItem({
+      name: "",
+      type_choices: "",
+    });
+  }, [itemCards]);
   const renderItemCard = (card, index) => {
     return (
       <CardItemDrag
@@ -186,9 +158,14 @@ const BlocksItems = (props) => {
         id={card.id}
         moveCard={moveCard}
         item={card.item}
+        card={card}
+        newItem={newItem}
+        setNewItem={setNewItem}
+        handleCreateItem={handleCreateItem}
       />
     );
   };
+
   return blockReducer.isLoading ? (
     "Cargando..."
   ) : (
@@ -284,7 +261,7 @@ const BlocksItems = (props) => {
                   </div>
 
                   {itemCards.map((card, i) => renderItemCard(card, i))}
-                  <AddItem>Añadir elemento</AddItem>
+                  <AddItem onClick={handleAddItem}>Añadir elemento</AddItem>
                 </div>
               </div>
             </FormFormik>

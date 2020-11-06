@@ -24,7 +24,6 @@ class CourseItem(CLineModel):
     type_choices = models.CharField(
         max_length=2,
         choices=TYPE_CHOICES,
-        blank=True, null=True
     )
     is_private = models.BooleanField(default=False)
 
