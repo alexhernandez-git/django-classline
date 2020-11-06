@@ -28,7 +28,12 @@ import {
 import BlockPresentation from "./BlockPresentation";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { createItem, fetchItems } from "../../redux/actions/courses/items";
+import {
+  createItem,
+  fetchItems,
+  removeItem,
+  saveItem,
+} from "../../redux/actions/courses/items";
 const BlocksItems = (props) => {
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
@@ -144,6 +149,26 @@ const BlocksItems = (props) => {
     e.preventDefault();
     dispatch(createItem(newItem));
   };
+  const handleDeleteItem = (e, item) => {
+    e.preventDefault();
+    MySwal.fire({
+      title: "Estas seguro?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(removeItem(item));
+      }
+    });
+  };
+
+  const handleEditItem = (id, name) => {
+    dispatch(saveItem(id, name));
+  };
   useEffect(() => {
     setNewItem({
       name: "",
@@ -162,6 +187,9 @@ const BlocksItems = (props) => {
         newItem={newItem}
         setNewItem={setNewItem}
         handleCreateItem={handleCreateItem}
+        handleEditItem={handleEditItem}
+        handleRemoveItem={handleDeleteItem}
+        itemCards={itemCards}
       />
     );
   };
@@ -178,8 +206,9 @@ const BlocksItems = (props) => {
         }}
         onSubmit={(values) => {
           console.log(values);
-          const dispatchSaveBlock = (block) => dispatch(saveBlock(block));
-          dispatchSaveBlock(values);
+          const dispatchSaveBlock = (block, itemCards) =>
+            dispatch(saveBlock(block, itemCards));
+          dispatchSaveBlock(values, itemCards);
         }}
       >
         {(props) => {

@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 
 import {
   ITEMS_FETCH,
@@ -7,9 +8,12 @@ import {
   CREATE_ITEM,
   CREATE_ITEM_FAIL,
   CREATE_ITEM_SUCCESS,
-  UPDATE_ITEMS_ORDER,
-  UPDATE_ITEMS_ORDER_SUCCESS,
-  UPDATE_ITEMS_ORDER_FAIL,
+  REMOVE_ITEM,
+  REMOVE_ITEM_FAIL,
+  REMOVE_ITEM_SUCCESS,
+  ITEM_SAVE,
+  ITEM_SAVE_SUCCESS,
+  ITEM_SAVE_FAIL,
 } from "../../types";
 
 import { tokenConfig } from "../auth";
@@ -125,35 +129,58 @@ export const createItem = (item) => (dispatch, getState) => {
     });
 };
 
-export const updateItemsOrder = () => (dispatch, getState) => {
-  dispatch({
-    type: UPDATE_ITEMS_ORDER,
-  });
+export const removeItem = (item) => (dispatch, getState) => {
+  dispatch({ type: REMOVE_ITEM, payload: item });
+  axios
+    .delete(
+      `/api/programs/${getState().programReducer.program.code}/courses/${
+        getState().courseReducer.course.code
+      }/blocks/${getState().blockReducer.block.code}/items/${item}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      dispatch({
+        type: REMOVE_ITEM_SUCCESS,
+      });
+      Swal.fire({
+        title: "Eliminado!",
+        icon: "success",
+        confirmButtonText: "Ok",
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: REMOVE_ITEM_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const saveItem = (id, name) => (dispatch, getState) => {
+  dispatch({ type: ITEM_SAVE });
+
   axios
     .patch(
       `/api/programs/${getState().programReducer.program.code}/courses/${
         getState().courseReducer.course.code
-      }/update_blocks/`,
-      { tracks: getState().blocksReducer.blocks },
+      }/blocks/${getState().blockReducer.block.code}/items/${id}/`,
+      { name: name },
       tokenConfig(getState)
     )
     .then((res) => {
-      console.log("res", res);
-
+      Swal.fire({
+        title: "Guardado!",
+        icon: "success",
+        confirmButtonText: "Ok",
+      });
       dispatch({
-        type: UPDATE_ITEMS_ORDER_SUCCESS,
+        type: ITEM_SAVE_SUCCESS,
         payload: res.data,
       });
-      // history.push(
-      //   `/academy/${getState().programReducer.program.code}/admin/course/${
-      //     res.data.code
-      //   }`
-      // );
     })
     .catch((err) => {
-      console.log("error", err.response);
       dispatch({
-        type: UPDATE_ITEMS_ORDER_FAIL,
+        type: ITEM_SAVE_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

@@ -143,19 +143,12 @@ export default function (state = initialState, action) {
     case REMOVE_ITEM_SUCCESS:
       return {
         ...state,
-        items: state.items.map((item) => {
-          if (item.item.code == action.payload.code) {
-            return {
-              ...item,
-              item: {
-                ...action.payload,
-              },
-            };
-          } else {
-            return item;
-          }
-        }),
+        items: state.items.filter(
+          (item) => item.item.code != state.item_delete
+        ),
         item_deleting: false,
+        item_delete: null,
+
         item_delete_error: null,
       };
     case REMOVE_ITEM_FAIL:

@@ -47,7 +47,28 @@ class CourseBlockViewSet(mixins.CreateModelMixin,
         """Restrict list to public-only."""
         queryset = CourseBlock.objects.all()
         return queryset
-        
+
+    def update(self, request, *args, **kwargs):
+        course = self.get_object()
+        serializer_class = self.get_serializer_class()
+
+        partial = request.method == 'PATCH'
+
+        serializer = serializer_class(
+            course,
+            data=request.data,
+            context={
+                'tracks': request.data['tracks'],
+                'course': course,
+                'request': request
+            },
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+
+        block = serializer.save()
+        data = CourseBlockModelSerializer(block,many=False).data
+        return Response(data)
     # def get_permissions(self):
     #     """Assign permissions based on action."""
     #     permissions = []

@@ -46,15 +46,16 @@ export const fetchBlock = (id) => (dispatch, getState) => {
     });
 };
 
-export const saveBlock = (course) => (dispatch, getState) => {
+export const saveBlock = (block, items) => (dispatch, getState) => {
   dispatch({ type: BLOCK_SAVE });
+  const new_block = { ...block, tracks: items };
 
   axios
     .patch(
       `/api/programs/${getState().programReducer.program.code}/courses/${
         getState().courseReducer.course.code
       }/blocks/${getState().blockReducer.block.code}/`,
-      course,
+      new_block,
       tokenConfig(getState)
     )
     .then((res) => {

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { useDrag, useDrop } from "react-dnd";
 import { IconContext } from "react-icons";
@@ -35,6 +35,9 @@ const CardItemDrag = ({
   newItem,
   setNewItem,
   handleCreateItem,
+  handleRemoveItem,
+  itemCards,
+  handleEditItem,
 }) => {
   const ref = useRef(null);
   const [, drop] = useDrop({
@@ -102,6 +105,22 @@ const CardItemDrag = ({
     setAddContent(false);
     setIsOpen(false);
   };
+  const [isNameEdit, setIsNameEdit] = useState(false);
+
+  const [newName, setNewName] = useState(item.name);
+
+  const handleCancelEditItem = () => {
+    setNewName(item.name);
+    setIsNameEdit(false);
+  };
+  useEffect(() => {
+    handleCancelEditItem();
+  }, [itemCards]);
+  const handleThisEditItem = (e, id, name) => {
+    e.preventDefault();
+    handleEditItem(id, name);
+    handleCancelEditItem();
+  };
   return (
     <PlaylistVideo style={{ opacity }} ref={ref} moveCard={moveCard}>
       {card?.is_new ? (
@@ -167,123 +186,154 @@ const CardItemDrag = ({
         </>
       ) : (
         <>
-          <div className="d-sm-flex justify-content-between align-items-center">
-            <div className="d-flex align-items-center">
+          {isNameEdit ? (
+            <>
               {item.type_choices == "LE" && "Lección"} {index + 1}:{" "}
-              {item.type_choices == "LE" &&
-                item?.content?.type_choices == "VI" && (
-                  <IconContext.Provider
-                    value={{
-                      size: 14,
-                      className: "global-class-name mx-2 cursor-pointer",
-                    }}
+              <AdminForm>
+                <div className="my-3">
+                  <input
+                    type="text"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                  />
+                </div>
+                <div className="d-sm-flex mt-2 justify-content-end">
+                  <ButtonCustom
+                    onClick={(e) => handleThisEditItem(e, item.code, newName)}
+                    className="mr-2"
                   >
-                    <GrCirclePlay />
-                  </IconContext.Provider>
-                )}
-              {item.type_choices == "LE" &&
-                item?.content?.type_choices == "TE" && (
-                  <IconContext.Provider
-                    value={{
-                      size: 14,
-                      className: "global-class-name mx-2 cursor-pointer",
-                    }}
-                  >
-                    <GrDocumentText />
-                  </IconContext.Provider>
-                )}
-              {item.name}
-              <div className="item-actions">
-                <IconContext.Provider
-                  value={{
-                    size: 14,
-                    className: "global-class-name ml-4 cursor-pointer",
-                  }}
-                >
-                  {" "}
-                  <FaEdit />
-                </IconContext.Provider>
-                <IconContext.Provider
-                  value={{
-                    size: 14,
-                    className: "global-class-name ml-4 cursor-pointer",
-                  }}
-                >
-                  {" "}
-                  <FaTrash onClick={() => handleDeleteTrackVideo(id)} />
-                </IconContext.Provider>
-              </div>
-            </div>
-            <div className="d-flex align-items-center">
-              {item?.content?.type_choices != "VI" &&
-              item?.content?.type_choices != "TE" ? (
-                <div className="mr-3">
-                  {addContent ? (
-                    <>
-                      <ButtonCustom
-                        className="align-items-center"
-                        onClick={(e) => {
-                          handleCloseAddContent(e);
+                    Editar
+                  </ButtonCustom>
+                  <ButtonCustom onClick={handleCancelEditItem}>
+                    Cancelar
+                  </ButtonCustom>
+                </div>
+              </AdminForm>
+            </>
+          ) : (
+            <>
+              <div className="d-sm-flex justify-content-between align-items-center">
+                <div className="d-flex align-items-center">
+                  {item.type_choices == "LE" && "Lección"} {index + 1}:{" "}
+                  {item.type_choices == "LE" &&
+                    item?.content?.type_choices == "VI" && (
+                      <IconContext.Provider
+                        value={{
+                          size: 14,
+                          className: "global-class-name mx-2 cursor-pointer",
                         }}
                       >
-                        <IconContext.Provider
-                          value={{
-                            size: 12,
-                            className: "global-class-name mr-2",
-                          }}
-                        >
-                          <FaTimes />
-                        </IconContext.Provider>
-                        Cerrar
-                      </ButtonCustom>
-                    </>
+                        <GrCirclePlay />
+                      </IconContext.Provider>
+                    )}
+                  {item.type_choices == "LE" &&
+                    item?.content?.type_choices == "TE" && (
+                      <IconContext.Provider
+                        value={{
+                          size: 14,
+                          className: "global-class-name mx-2 cursor-pointer",
+                        }}
+                      >
+                        <GrDocumentText />
+                      </IconContext.Provider>
+                    )}
+                  {item.name}
+                  <div className="item-actions">
+                    <IconContext.Provider
+                      value={{
+                        size: 14,
+                        className: "global-class-name ml-4 cursor-pointer",
+                      }}
+                    >
+                      {" "}
+                      <FaEdit onClick={() => setIsNameEdit(true)} />
+                    </IconContext.Provider>
+                    <IconContext.Provider
+                      value={{
+                        size: 14,
+                        className: "global-class-name ml-4 cursor-pointer",
+                      }}
+                    >
+                      {" "}
+                      {console.log(item)}
+                      <FaTrash
+                        onClick={(e) => handleRemoveItem(e, item.code)}
+                      />
+                    </IconContext.Provider>
+                  </div>
+                </div>
+                <div className="d-flex align-items-center">
+                  {item?.content?.type_choices != "VI" &&
+                  item?.content?.type_choices != "TE" ? (
+                    <div className="mr-3">
+                      {addContent ? (
+                        <>
+                          <ButtonCustom
+                            className="align-items-center"
+                            onClick={(e) => {
+                              handleCloseAddContent(e);
+                            }}
+                          >
+                            <IconContext.Provider
+                              value={{
+                                size: 12,
+                                className: "global-class-name mr-2",
+                              }}
+                            >
+                              <FaTimes />
+                            </IconContext.Provider>
+                            Cerrar
+                          </ButtonCustom>
+                        </>
+                      ) : (
+                        <>
+                          <ButtonCustom
+                            className="align-items-center"
+                            onClick={(e) => {
+                              handleAddContent(e);
+                            }}
+                          >
+                            <IconContext.Provider
+                              value={{
+                                size: 12,
+                                className: "global-class-name mr-2",
+                              }}
+                            >
+                              <FaPlus />
+                            </IconContext.Provider>
+                            Contenido
+                          </ButtonCustom>
+                        </>
+                      )}
+                    </div>
                   ) : (
                     <>
-                      <ButtonCustom
-                        className="align-items-center"
-                        onClick={(e) => {
-                          handleAddContent(e);
+                      <IconContext.Provider
+                        value={{
+                          size: 22,
+                          className: "global-class-name mr-3 cursor-pointer",
                         }}
                       >
-                        <IconContext.Provider
-                          value={{
-                            size: 12,
-                            className: "global-class-name mr-2",
-                          }}
-                        >
-                          <FaPlus />
-                        </IconContext.Provider>
-                        Contenido
-                      </ButtonCustom>
+                        {isOpen ? (
+                          <MdKeyboardArrowUp onClick={handleToggleOpen} />
+                        ) : (
+                          <MdKeyboardArrowDown onClick={handleToggleOpen} />
+                        )}
+                      </IconContext.Provider>
                     </>
                   )}
-                </div>
-              ) : (
-                <>
-                  <IconContext.Provider
-                    value={{
-                      size: 22,
-                      className: "global-class-name mr-3 cursor-pointer",
-                    }}
-                  >
-                    {isOpen ? (
-                      <MdKeyboardArrowUp onClick={handleToggleOpen} />
-                    ) : (
-                      <MdKeyboardArrowDown onClick={handleToggleOpen} />
-                    )}
-                  </IconContext.Provider>
-                </>
-              )}
-              {/* <IconContext.Provider
+                  {/* <IconContext.Provider
                 value={{
                   size: 22,
                   className: "global-class-name",
                 }}
-              >
+                >
                 <FaGripLines />
               </IconContext.Provider> */}
-            </div>
-          </div>
+                </div>
+              </div>
+            </>
+          )}
           {isOpen && (
             <>
               <hr />
