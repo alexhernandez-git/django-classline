@@ -43,3 +43,14 @@ class CourseBlockModelSerializer(serializers.ModelSerializer):
 
     def get_items(self, obj):
         return CourseItemTrack.objects.filter(block=obj).count()
+
+    def update(self, instance, validated_data):
+           
+        # Actualizar el tracks
+        if 'tracks' in self.context and self.context['tracks'] != None:
+            tracks = self.context['tracks']
+            for track in tracks:
+                track_object = get_object_or_404(CourseItemTrack, id=track['id'])
+                track_object.position = track['position']
+                track_object.save()
+        return super(CourseBlockModelSerializer, self).update(instance, validated_data)

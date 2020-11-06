@@ -41,7 +41,7 @@ class CourseItemViewSet(mixins.CreateModelMixin,
 
     serializer_class = CourseItemModelSerializer
     lookup_field = 'code'
-
+    pagination_class = None
 
     def get_queryset(self):
         """Restrict list to public-only."""

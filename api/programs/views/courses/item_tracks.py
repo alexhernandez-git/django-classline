@@ -25,7 +25,7 @@ from api.programs.serializers import CourseItemTrackModelSerializer,CourseItemTr
 from api.users.serializers import ProfileModelSerializer
 
 # Utils
-from api.utils.permissions import AddCourseMixin
+from api.utils.permissions import AddBlockMixin
 
 from datetime import datetime, timedelta
 import pytz
@@ -36,7 +36,7 @@ class CourseItemTrackViewSet(mixins.CreateModelMixin,
                           mixins.RetrieveModelMixin,
                           mixins.UpdateModelMixin,
                           mixins.DestroyModelMixin,
-                          AddCourseMixin):
+                          AddBlockMixin):
     """Circle view set."""
 
     serializer_class = CourseItemTrackModelSerializer
@@ -75,7 +75,9 @@ class CourseItemTrackViewSet(mixins.CreateModelMixin,
             data=request.data,
             context={
                 'request': request,
-                'block': self.block
+                'name': request.data['name'],
+                'block': self.block,
+                'course': self.course
             },
         )
         serializer.is_valid(raise_exception=True)

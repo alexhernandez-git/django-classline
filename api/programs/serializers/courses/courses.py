@@ -193,7 +193,7 @@ class CourseModifyModelSerializer(serializers.ModelSerializer):
             for benefit in self.context['benefits']:
                 CourseBenefit.objects.create(**benefit, course=instance)
        
-        # Actualizar el precio de la clase
+        # Actualizar el tracks
         if 'tracks' in self.context and self.context['tracks'] != None:
             tracks = self.context['tracks']
             for track in tracks:
