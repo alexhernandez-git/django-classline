@@ -33,6 +33,7 @@ const CardItemContent = ({
   item,
   addContent,
   itemCards,
+  handleAddVideo,
 }) => {
   return (
     <>
@@ -42,7 +43,7 @@ const CardItemContent = ({
           <div className="d-flex justify-content-around mt-4">
             <div
               className="d-flex flex-column align-items-center justify-content-center cursor-pointer"
-              onClick={() => {}}
+              onClick={handleAddVideo}
             >
               <IconContext.Provider
                 value={{
@@ -90,10 +91,7 @@ const CardItemContent = ({
                   {item.type_choices == "LE" &&
                     item?.content?.type_choices == "VI" && (
                       <>
-                        <div>
-                          crea wallapop con php, poo, mvc, javascript, ajax,
-                          mysql....mp4
-                        </div>
+                        <div>{item?.content?.title}</div>
 
                         <div>00:00</div>
                         <div className="d-flex align-items-center cursor-pointer">

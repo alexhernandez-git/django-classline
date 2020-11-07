@@ -36,6 +36,8 @@ class LectureContent(CLineModel):
     )
     text = models.TextField(max_length=5000, blank=True)
 
+    name = models.CharField(max_length=500, blank=True)
+
     duration = models.FloatField(blank=True, null=True)
     mega_bytes = models.FloatField(blank=True, null=True)
     bytes = models.PositiveIntegerField(blank=True, null=True)

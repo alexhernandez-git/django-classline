@@ -339,6 +339,7 @@ const CardItemDrag = ({
           {isOpen && (
             <CardItemContent
               addContent={addContent}
+              item={item}
               handleAddVideo={handleAddVideo}
             />
           )}

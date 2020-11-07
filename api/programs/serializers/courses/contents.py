@@ -21,7 +21,9 @@ class LectureContentModelSerializer(serializers.ModelSerializer):
             'text',
             'duration',
             'mega_bytes',
-            'item'
+            'description',
+            'item',
+            'name'
 
         )
         read_only_fields = (

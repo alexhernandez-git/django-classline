@@ -9,7 +9,7 @@ from django.core.files import File
 from rest_framework import serializers
 
 # Models
-from api.programs.models import CourseItem
+from api.programs.models import CourseItem,LectureContent
 
 # Serializers
 
@@ -22,7 +22,7 @@ import string
 
 class CourseItemModelSerializer(serializers.ModelSerializer):
     """Profile model serializer."""
-
+    content = serializers.SerializerMethodField(read_only=True)
     class Meta:
         """Meta class."""
 
@@ -33,14 +33,20 @@ class CourseItemModelSerializer(serializers.ModelSerializer):
             'name',
             'type_choices',
             'is_private',
+            'content'
         )
         # extra_kwargs = {'end': {'required': False}}
         read_only_fields = (
             'id',
         )
 
-    # def get_items(self, obj):
-    #     return CourseItemTrack.objects.filter(block=obj).count()
+    def get_content(self, obj):
+        from api.programs.serializers import LectureContentModelSerializer
+        content = LectureContent.objects.filter(item=obj.id)
+        if len(content) > 0:
+            return LectureContentModelSerializer(content[0], many=False).data
+        else: 
+            return None
 
     # def update(self, instance, validated_data):
            
