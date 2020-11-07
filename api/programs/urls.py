@@ -36,6 +36,7 @@ from api.programs.views.courses.block_tracks import CourseBlockTrackViewSet
 from api.programs.views.courses.blocks import CourseBlockViewSet
 from api.programs.views.courses.item_tracks import CourseItemTrackViewSet
 from api.programs.views.courses.items import CourseItemViewSet
+from api.programs.views.courses.contents import LectureContentViewSet
 router = DefaultRouter()
 
 router.register(r'programs', ProgramViewSet, basename='program')
@@ -199,6 +200,11 @@ router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/courses/(?P<course_id>[-a-zA-Z0-9_]+)/blocks/(?P<block_id>[-a-zA-Z0-9_]+)/items',
     CourseItemViewSet,
     basename='blocks'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/courses/(?P<course_id>[-a-zA-Z0-9_]+)/items/(?P<item_id>[-a-zA-Z0-9_]+)/contents',
+    LectureContentViewSet,
+    basename='contents'
 )
 urlpatterns = [
     path('', include(router.urls))

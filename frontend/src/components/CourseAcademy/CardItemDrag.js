@@ -24,6 +24,7 @@ import { SiAddthis } from "react-icons/si";
 import { GrCirclePlay, GrDocumentText, GrFormAdd } from "react-icons/gr";
 import { ButtonCustom } from "../ui/ButtonCustom";
 import { AdminForm } from "../ui/AdminForm";
+import CardItemContent from "./CardItemContent";
 
 // import VideoList from "./VideoList";
 const CardItemDrag = ({
@@ -121,6 +122,7 @@ const CardItemDrag = ({
     handleEditItem(id, name);
     handleCancelEditItem();
   };
+  const handleAddVideo = () => {};
   return (
     <PlaylistVideo style={{ opacity }} ref={ref} moveCard={moveCard}>
       {card?.is_new ? (
@@ -335,122 +337,10 @@ const CardItemDrag = ({
             </>
           )}
           {isOpen && (
-            <>
-              <hr />
-              {addContent ? (
-                <>
-                  <div className="d-flex justify-content-around mt-4">
-                    <div
-                      className="d-flex flex-column align-items-center justify-content-center cursor-pointer"
-                      onClick={() => {}}
-                    >
-                      <IconContext.Provider
-                        value={{
-                          size: 50,
-                          className: "global-class-name",
-                        }}
-                      >
-                        <FaFileVideo />
-                      </IconContext.Provider>
-                      <span>Añadir video</span>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="item-content">
-                    {(item?.content?.type_choices == "VI" ||
-                      item?.content?.type_choices == "TE") && (
-                      <>
-                        <div className="d-flex justify-content-center align-items-center">
-                          {item.type_choices == "LE" &&
-                            item?.content?.type_choices == "VI" && (
-                              <IconContext.Provider
-                                value={{
-                                  size: 50,
-                                  className: "global-class-name",
-                                }}
-                              >
-                                <FaFileVideo />
-                              </IconContext.Provider>
-                            )}
-                          {item.type_choices == "LE" &&
-                            item?.content?.type_choices == "TE" && (
-                              <IconContext.Provider
-                                value={{
-                                  size: 50,
-                                  className: "global-class-name",
-                                }}
-                              >
-                                <FaFileAlt />
-                              </IconContext.Provider>
-                            )}
-                        </div>
-                        <div>
-                          {item.type_choices == "LE" &&
-                            item?.content?.type_choices == "VI" && (
-                              <>
-                                <div>
-                                  crea wallapop con php, poo, mvc, javascript,
-                                  ajax, mysql....mp4
-                                </div>
-
-                                <div>00:00</div>
-                                <div className="d-flex align-items-center cursor-pointer">
-                                  <IconContext.Provider
-                                    value={{
-                                      size: 14,
-                                      className:
-                                        "global-class-name mr-2 cursor-pointer",
-                                    }}
-                                  >
-                                    {" "}
-                                    <FaEdit />
-                                  </IconContext.Provider>
-                                  Editar contenido
-                                </div>
-                              </>
-                            )}
-                        </div>
-                        <hr />
-                      </>
-                    )}
-                  </div>
-                  <div>
-                    <div className="mb-3">
-                      <ButtonCustom>
-                        <IconContext.Provider
-                          value={{
-                            size: 22,
-                            className: "global-class-name mr-2 cursor-pointer",
-                            color: "#fff",
-                          }}
-                        >
-                          {" "}
-                          <MdAdd style={{ color: "#fff" }} />
-                        </IconContext.Provider>
-                        Descripción
-                      </ButtonCustom>
-                    </div>
-                    <div>
-                      <ButtonCustom>
-                        <IconContext.Provider
-                          value={{
-                            size: 22,
-                            className: "global-class-name mr-2 cursor-pointer",
-                            color: "#fff",
-                          }}
-                        >
-                          {" "}
-                          <MdAdd style={{ color: "#fff" }} />
-                        </IconContext.Provider>
-                        Recursos
-                      </ButtonCustom>
-                    </div>
-                  </div>
-                </>
-              )}
-            </>
+            <CardItemContent
+              addContent={addContent}
+              handleAddVideo={handleAddVideo}
+            />
           )}
         </>
       )}

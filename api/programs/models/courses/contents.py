@@ -36,10 +36,11 @@ class LectureContent(CLineModel):
     )
     text = models.TextField(max_length=5000, blank=True)
 
-    name =  models.CharField(max_length=500)
     duration = models.FloatField(blank=True, null=True)
     mega_bytes = models.FloatField(blank=True, null=True)
     bytes = models.PositiveIntegerField(blank=True, null=True)
+
+    description = models.TextField(max_length=1000, blank=True)
 
     is_private = models.BooleanField(default=False)
 
@@ -55,12 +56,6 @@ class LectureContent(CLineModel):
                 this.video.delete(save=False)
         except:
             pass
-        try:
-            this = LectureContent.objects.get(id=self.id)
-            if this.file != self.file:
-                this.file.delete(save=False)
-        except:
-            pass
 
         super(LectureContent, self).save(**kwargs)
 
@@ -68,7 +63,7 @@ class LectureContent(CLineModel):
 class LectureMaterial(CLineModel):
     content = models.ForeignKey(
         'programs.LectureContent', on_delete=models.CASCADE, related_name='course_material_content')
-
+    course = models.ForeignKey('programs.Course', on_delete=models.CASCADE)
     file = models.FileField(
         upload_to='programs/courses/contents/materials/',
         max_length=500,

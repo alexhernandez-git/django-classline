@@ -5,3 +5,4 @@ from .blocks import *
 from .block_tracks import *
 from .items import *
 from .item_tracks import *
+from .contents import *
