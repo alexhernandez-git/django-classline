@@ -20,6 +20,9 @@ import {
   UPDATE_ITEM_FILE,
   UPDATE_ITEM_FILE_SUCCESS,
   UPDATE_ITEM_FILE_FAIL,
+  UPDATE_ITEM_CONTENT,
+  UPDATE_ITEM_CONTENT_SUCCESS,
+  UPDATE_ITEM_CONTENT_FAIL,
 } from "../../types";
 
 import { tokenConfig } from "../auth";
@@ -163,6 +166,36 @@ export const updateItemFile = (content, item, content_id) => (
       console.log("error", err.response);
       dispatch({
         type: UPDATE_ITEM_FILE_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const updateContentDescription = (descripiton, item, content_id) => (
+  dispatch,
+  getState
+) => {
+  dispatch({
+    type: UPDATE_ITEM_CONTENT,
+  });
+  axios
+    .patch(
+      `/api/programs/${getState().programReducer.program.code}/courses/${
+        getState().courseReducer.course.code
+      }/items/${item}/contents/${content_id}/`,
+      { description: descripiton },
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log(res.data);
+      dispatch({
+        type: UPDATE_ITEM_CONTENT_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: UPDATE_ITEM_CONTENT_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

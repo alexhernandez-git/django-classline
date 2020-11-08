@@ -25,10 +25,14 @@ import { GrCirclePlay, GrDocumentText, GrFormAdd } from "react-icons/gr";
 import { ButtonCustom } from "../ui/ButtonCustom";
 import { AdminForm } from "../ui/AdminForm";
 import { useDispatch } from "react-redux";
+import { textEllipsis } from "src/components/ui/TextEllipsis";
+
 import {
+  updateContentDescription,
   updateItemFile,
   uploadItemFile,
 } from "../../redux/actions/courses/items";
+import EditContentDescription from "../ui/EditContentDescription";
 
 // import VideoList from "./VideoList";
 const CardItemContent = ({
@@ -92,6 +96,38 @@ const CardItemContent = ({
     }
     return `${mm}:${ss}`;
   }
+  const [addDescription, setAddDescription] = useState(false);
+  const [newDescription, setNewDescription] = useState(
+    item?.content?.description
+  );
+  const handleOpenAddDescription = () => {
+    setAddDescription(true);
+  };
+  const handleCloseAddDescription = () => {
+    setAddDescription(false);
+  };
+  const [editDescription, setEditDescription] = useState(false);
+  const handleOpenEditDescription = () => {
+    setEditDescription(true);
+  };
+  const handleCloseEditDescription = () => {
+    setEditDescription(false);
+  };
+  const handleEditDescription = (e, item, content, description, type) => {
+    e.preventDefault();
+    dispatch(updateContentDescription(description, item, content));
+    if (type == "add") {
+      handleCloseAddDescription();
+    } else {
+      handleCloseEditDescription();
+    }
+    setNewDescription("");
+  };
+  useEffect(() => {
+    if (item?.content?.description) {
+      setNewDescription(item?.content?.description);
+    }
+  }, [item]);
   return (
     <>
       <hr />
@@ -123,7 +159,6 @@ const CardItemContent = ({
       ) : (
         <>
           <div className="item-content">
-            {console.log("newItem", item)}
             {(item?.content?.type_choices == "VI" ||
               item?.content?.type_choices == "TE") && (
               <>
@@ -185,26 +220,73 @@ const CardItemContent = ({
                       </>
                     )}
                 </div>
-                <hr />
               </>
             )}
           </div>
+          <hr />
           <div>
-            <div className="mb-3">
-              <ButtonCustom>
-                <IconContext.Provider
-                  value={{
-                    size: 22,
-                    className: "global-class-name mr-2 cursor-pointer",
-                    color: "#fff",
-                  }}
-                >
-                  {" "}
-                  <MdAdd style={{ color: "#fff" }} />
-                </IconContext.Provider>
-                Descripción
-              </ButtonCustom>
-            </div>
+            {item?.content?.description ? (
+              <div className="mb-3">
+                {editDescription ? (
+                  <EditContentDescription
+                    newDescription={newDescription}
+                    setNewDescription={setNewDescription}
+                    handleEditDescription={handleEditDescription}
+                    handleCloseEditDescription={handleEditDescription}
+                    type="edit"
+                    item={item}
+                  />
+                ) : (
+                  <>
+                    <span css={textEllipsis}>{item?.content?.description}</span>
+                    <div
+                      className="d-flex align-items-center cursor-pointer"
+                      onClick={handleOpenEditDescription}
+                    >
+                      <IconContext.Provider
+                        value={{
+                          size: 14,
+                          className: "global-class-name mr-2 cursor-pointer",
+                        }}
+                      >
+                        {" "}
+                        <FaEdit />
+                      </IconContext.Provider>
+                      Editar descripción
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <>
+                <div className="mb-3">
+                  {addDescription ? (
+                    <EditContentDescription
+                      newDescription={newDescription}
+                      setNewDescription={setNewDescription}
+                      handleEditDescription={handleEditDescription}
+                      handleCloseAddDescription={handleCloseAddDescription}
+                      type="add"
+                      item={item}
+                    />
+                  ) : (
+                    <ButtonCustom onClick={handleOpenAddDescription}>
+                      <IconContext.Provider
+                        value={{
+                          size: 22,
+                          className: "global-class-name mr-2 cursor-pointer",
+                          color: "#fff",
+                        }}
+                      >
+                        {" "}
+                        <MdAdd style={{ color: "#fff" }} />
+                      </IconContext.Provider>
+                      Descripción
+                    </ButtonCustom>
+                  )}
+                </div>
+              </>
+            )}
             <div>
               <ButtonCustom>
                 <IconContext.Provider

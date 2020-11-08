@@ -21,6 +21,9 @@ import {
   UPDATE_ITEM_FILE,
   UPDATE_ITEM_FILE_SUCCESS,
   UPDATE_ITEM_FILE_FAIL,
+  UPDATE_ITEM_CONTENT,
+  UPDATE_ITEM_CONTENT_SUCCESS,
+  UPDATE_ITEM_CONTENT_FAIL,
   UPLOAD_ITEM_MATERIAL,
   UPLOAD_ITEM_MATERIAL_SUCCESS,
   UPLOAD_ITEM_MATERIAL_FAIL,
@@ -47,7 +50,9 @@ const initialState = {
   item_file_uploading: false,
   item_file_upload_error: null,
   item_file_updating: false,
-  item_file_updating: null,
+  item_file_update_error: null,
+  item_content_updating: false,
+  item_content_update_error: null,
   item_material_uploading: false,
   item_material_upload_error: null,
 };
@@ -230,6 +235,37 @@ export default function (state = initialState, action) {
         ...state,
         item_file_updating: false,
         item_file_update_error: action.payload,
+      };
+    case UPDATE_ITEM_CONTENT:
+      return {
+        ...state,
+        item_content_updating: true,
+      };
+    case UPDATE_ITEM_CONTENT_SUCCESS:
+      return {
+        ...state,
+        item_content_updating: false,
+        item_content_update_error: null,
+
+        items: state.items.map((item) => {
+          if (item.item.id == action.payload.item) {
+            return {
+              ...item,
+              item: {
+                ...item.item,
+                content: action.payload,
+              },
+            };
+          } else {
+            return item;
+          }
+        }),
+      };
+    case UPDATE_ITEM_CONTENT_FAIL:
+      return {
+        ...state,
+        item_content_updating: false,
+        item_content_update_error: action.payload,
       };
     // Item files
     case UPLOAD_ITEM_MATERIAL:
