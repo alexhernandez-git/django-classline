@@ -44,6 +44,12 @@ const initialState = {
   item_order_update: null,
   item_order_updating: false,
   item_order_update_error: null,
+  item_file_uploading: false,
+  item_file_upload_error: null,
+  item_file_updating: false,
+  item_file_updating: null,
+  item_material_uploading: false,
+  item_material_upload_error: null,
 };
 
 export default function (state = initialState, action) {
@@ -194,17 +200,48 @@ export default function (state = initialState, action) {
         item_file_uploading: false,
         item_file_upload_error: action.payload,
       };
+    case UPDATE_ITEM_FILE:
+      return {
+        ...state,
+        item_file_updating: true,
+      };
+    case UPDATE_ITEM_FILE_SUCCESS:
+      return {
+        ...state,
+        item_file_updating: false,
+        item_file_update_error: null,
+
+        items: state.items.map((item) => {
+          if (item.item.id == action.payload.item) {
+            return {
+              ...item,
+              item: {
+                ...item.item,
+                content: action.payload,
+              },
+            };
+          } else {
+            return item;
+          }
+        }),
+      };
+    case UPDATE_ITEM_FILE_FAIL:
+      return {
+        ...state,
+        item_file_updating: false,
+        item_file_update_error: action.payload,
+      };
     // Item files
     case UPLOAD_ITEM_MATERIAL:
       return {
         ...state,
-        item_file_uploading: true,
+        item_material_uploading: true,
       };
     case UPLOAD_ITEM_MATERIAL_SUCCESS:
       return {
         ...state,
-        item_file_uploading: false,
-        item_file_upload_error: null,
+        item_material_uploading: false,
+        item_material_upload_error: null,
 
         items: state.items.map((item) => {
           if (item.item.code == action.payload.code) {
@@ -223,8 +260,8 @@ export default function (state = initialState, action) {
     case UPLOAD_ITEM_MATERIAL_FAIL:
       return {
         ...state,
-        item_file_uploading: false,
-        item_file_upload_error: action.payload,
+        item_material_uploading: false,
+        item_material_upload_error: action.payload,
       };
 
     default:

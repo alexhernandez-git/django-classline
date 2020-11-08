@@ -17,6 +17,9 @@ import {
   UPLOAD_ITEM_FILE,
   UPLOAD_ITEM_FILE_SUCCESS,
   UPLOAD_ITEM_FILE_FAIL,
+  UPDATE_ITEM_FILE,
+  UPDATE_ITEM_FILE_SUCCESS,
+  UPDATE_ITEM_FILE_FAIL,
 } from "../../types";
 
 import { tokenConfig } from "../auth";
@@ -126,6 +129,40 @@ export const uploadItemFile = (content, item) => (dispatch, getState) => {
       console.log("error", err.response);
       dispatch({
         type: UPLOAD_ITEM_FILE_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const updateItemFile = (content, item, content_id) => (
+  dispatch,
+  getState
+) => {
+  dispatch({
+    type: UPDATE_ITEM_FILE,
+  });
+  const fd = new FormData();
+  fd.append("video", content.video, content.video.name);
+  fd.append("name", content.video.name);
+  axios
+    .patch(
+      `/api/programs/${getState().programReducer.program.code}/courses/${
+        getState().courseReducer.course.code
+      }/items/${item}/contents/${content_id}/`,
+      fd,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log(res.data);
+      dispatch({
+        type: UPDATE_ITEM_FILE_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log("error", err.response);
+      dispatch({
+        type: UPDATE_ITEM_FILE_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

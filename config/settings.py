@@ -361,3 +361,5 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
     'visibility_timeout': 360,
     'polling_interval': 1
 }
+
+FILE_UPLOAD_HANDLERS = ['django.core.files.uploadhandler.TemporaryFileUploadHandler']

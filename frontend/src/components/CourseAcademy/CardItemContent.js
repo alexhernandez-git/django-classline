@@ -25,7 +25,10 @@ import { GrCirclePlay, GrDocumentText, GrFormAdd } from "react-icons/gr";
 import { ButtonCustom } from "../ui/ButtonCustom";
 import { AdminForm } from "../ui/AdminForm";
 import { useDispatch } from "react-redux";
-import { uploadItemFile } from "../../redux/actions/courses/items";
+import {
+  updateItemFile,
+  uploadItemFile,
+} from "../../redux/actions/courses/items";
 
 // import VideoList from "./VideoList";
 const CardItemContent = ({
@@ -38,7 +41,7 @@ const CardItemContent = ({
   itemCards,
 }) => {
   const dispatch = useDispatch();
-  const handleAddVideo = (e) => {
+  const handleAddVideo = (e, edit) => {
     e.preventDefault();
 
     let files;
@@ -63,9 +66,16 @@ const CardItemContent = ({
         video: files[0],
         type_choices: "VI",
       };
-      const dispatchUploadVideo = (content) =>
-        dispatch(uploadItemFile(content, item.code));
-      dispatchUploadVideo(content);
+      if (edit) {
+        const dispatchUpdateVideo = (content) =>
+          dispatch(updateItemFile(content, item.code, item.content.id));
+        dispatchUpdateVideo(content);
+      } else {
+        const dispatchUploadVideo = (content) =>
+          dispatch(uploadItemFile(content, item.code));
+        dispatchUploadVideo(content);
+      }
+
       setAddContent(false);
     }
   };
@@ -106,7 +116,7 @@ const CardItemContent = ({
               type="file"
               id="video_content_upload"
               className="d-none"
-              onChange={handleAddVideo}
+              onChange={(e) => handleAddVideo(e, false)}
             />
           </div>
         </>
@@ -151,19 +161,27 @@ const CardItemContent = ({
                           {item?.content?.duration &&
                             msToHMS(item?.content?.duration)}
                         </div>
-                        <div className="d-flex align-items-center cursor-pointer">
-                          <IconContext.Provider
-                            value={{
-                              size: 14,
-                              className:
-                                "global-class-name mr-2 cursor-pointer",
-                            }}
-                          >
-                            {" "}
-                            <FaEdit />
-                          </IconContext.Provider>
-                          Cambiar video
-                        </div>
+                        <label htmlFor="update_video_item">
+                          <div className="d-flex align-items-center cursor-pointer">
+                            <IconContext.Provider
+                              value={{
+                                size: 14,
+                                className:
+                                  "global-class-name mr-2 cursor-pointer",
+                              }}
+                            >
+                              {" "}
+                              <FaEdit />
+                            </IconContext.Provider>
+                            Cambiar video
+                          </div>
+                        </label>
+                        <input
+                          type="file"
+                          id="update_video_item"
+                          className="d-none"
+                          onChange={(e) => handleAddVideo(e, true)}
+                        />
                       </>
                     )}
                 </div>

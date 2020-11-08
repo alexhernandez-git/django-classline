@@ -39,7 +39,6 @@ class LectureContentModelSerializer(serializers.ModelSerializer):
         if 'video' in validated_data:
             clip = VideoFileClip(validated_data['video'].temporary_file_path())
 
-            
             mega_bytes = validated_data['video'].size / 1024 / 1024
             bytes = validated_data['video'].size
             validated_data['duration'] = clip.duration
