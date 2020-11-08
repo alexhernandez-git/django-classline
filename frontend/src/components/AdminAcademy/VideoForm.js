@@ -92,7 +92,6 @@ const VideoForm = (props) => {
       files = e.target.files;
     }
     const reader = new FileReader();
-    console.log(reader);
 
     reader.onload = () => {
       setSrcVideo(reader.result);

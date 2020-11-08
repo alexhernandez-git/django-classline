@@ -62,3 +62,6 @@ django-storages[boto3]==1.9.1
 
 # Email
 django-anymail[sendgrid]==7.2.1
+
+# Video
+moviepy==1.0.3

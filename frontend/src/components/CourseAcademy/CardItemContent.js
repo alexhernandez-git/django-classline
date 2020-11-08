@@ -24,6 +24,8 @@ import { SiAddthis } from "react-icons/si";
 import { GrCirclePlay, GrDocumentText, GrFormAdd } from "react-icons/gr";
 import { ButtonCustom } from "../ui/ButtonCustom";
 import { AdminForm } from "../ui/AdminForm";
+import { useDispatch } from "react-redux";
+import { uploadItemFile } from "../../redux/actions/courses/items";
 
 // import VideoList from "./VideoList";
 const CardItemContent = ({
@@ -32,34 +34,86 @@ const CardItemContent = ({
   index,
   item,
   addContent,
+  setAddContent,
   itemCards,
-  handleAddVideo,
 }) => {
+  const dispatch = useDispatch();
+  const handleAddVideo = (e) => {
+    e.preventDefault();
+
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+
+    // reader.onload = () => {
+    //   setVideoSrc(reader.result);
+    // };
+
+    if (files[0].size > 500000000) {
+      alert("El tamaño del video es muy grande");
+    } else if (files[0].type != "video/mp4") {
+      alert("El htmlFormato tiene que ser .mp4");
+    } else {
+      reader.readAsDataURL(files[0]);
+      const content = {
+        video: files[0],
+        type_choices: "VI",
+      };
+      const dispatchUploadVideo = (content) =>
+        dispatch(uploadItemFile(content, item.code));
+      dispatchUploadVideo(content);
+      setAddContent(false);
+    }
+  };
+  function msToHMS(seconds) {
+    if (isNaN(seconds)) {
+      return "00:00";
+    }
+    const date = new Date(seconds * 1000);
+    const hh = date.getUTCHours();
+    const mm = date.getUTCMinutes();
+    const ss = date.getUTCSeconds().toString().padStart(2, "0");
+    if (hh) {
+      return `${hh}:${mm.toString().padStart(2, "0")}:${ss}`;
+    }
+    return `${mm}:${ss}`;
+  }
   return (
     <>
       <hr />
       {addContent ? (
         <>
           <div className="d-flex justify-content-around mt-4">
-            <div
-              className="d-flex flex-column align-items-center justify-content-center cursor-pointer"
-              onClick={handleAddVideo}
-            >
-              <IconContext.Provider
-                value={{
-                  size: 50,
-                  className: "global-class-name",
-                }}
-              >
-                <FaFileVideo />
-              </IconContext.Provider>
-              <span>Añadir video</span>
-            </div>
+            <label htmlFor="video_content_upload">
+              <div className="d-flex flex-column align-items-center justify-content-center cursor-pointer">
+                <IconContext.Provider
+                  value={{
+                    size: 50,
+                    className: "global-class-name",
+                  }}
+                >
+                  <FaFileVideo />
+                </IconContext.Provider>
+                <span>Añadir video</span>
+              </div>
+            </label>
+
+            <input
+              type="file"
+              id="video_content_upload"
+              className="d-none"
+              onChange={handleAddVideo}
+            />
           </div>
         </>
       ) : (
         <>
           <div className="item-content">
+            {console.log("newItem", item)}
             {(item?.content?.type_choices == "VI" ||
               item?.content?.type_choices == "TE") && (
               <>
@@ -91,9 +145,12 @@ const CardItemContent = ({
                   {item.type_choices == "LE" &&
                     item?.content?.type_choices == "VI" && (
                       <>
-                        <div>{item?.content?.title}</div>
+                        <div>{item?.content?.name}</div>
 
-                        <div>00:00</div>
+                        <div>
+                          {item?.content?.duration &&
+                            msToHMS(item?.content?.duration)}
+                        </div>
                         <div className="d-flex align-items-center cursor-pointer">
                           <IconContext.Provider
                             value={{
@@ -105,7 +162,7 @@ const CardItemContent = ({
                             {" "}
                             <FaEdit />
                           </IconContext.Provider>
-                          Editar contenido
+                          Cambiar video
                         </div>
                       </>
                     )}

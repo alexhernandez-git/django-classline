@@ -18,6 +18,9 @@ import {
   UPLOAD_ITEM_FILE,
   UPLOAD_ITEM_FILE_SUCCESS,
   UPLOAD_ITEM_FILE_FAIL,
+  UPDATE_ITEM_FILE,
+  UPDATE_ITEM_FILE_SUCCESS,
+  UPDATE_ITEM_FILE_FAIL,
   UPLOAD_ITEM_MATERIAL,
   UPLOAD_ITEM_MATERIAL_SUCCESS,
   UPLOAD_ITEM_MATERIAL_FAIL,
@@ -172,12 +175,12 @@ export default function (state = initialState, action) {
         item_file_upload_error: null,
 
         items: state.items.map((item) => {
-          if (item.item.code == action.payload.code) {
+          if (item.item.id == action.payload.item) {
             return {
               ...item,
               item: {
                 ...item.item,
-                picture: action.payload.picture,
+                content: action.payload,
               },
             };
           } else {

@@ -14,6 +14,9 @@ import {
   ITEM_SAVE,
   ITEM_SAVE_SUCCESS,
   ITEM_SAVE_FAIL,
+  UPLOAD_ITEM_FILE,
+  UPLOAD_ITEM_FILE_SUCCESS,
+  UPLOAD_ITEM_FILE_FAIL,
 } from "../../types";
 
 import { tokenConfig } from "../auth";
@@ -94,36 +97,35 @@ export const fetchItemsIncrease = (limit, search = "") => (
     });
 };
 
-export const createItem = (item) => (dispatch, getState) => {
+export const uploadItemFile = (content, item) => (dispatch, getState) => {
   dispatch({
-    type: CREATE_ITEM,
+    type: UPLOAD_ITEM_FILE,
   });
-  console.log("item".item);
+  const fd = new FormData();
+  fd.append("type_choices", content.type_choices);
+  if (content.type_choices == "VI") {
+    fd.append("video", content.video, content.video.name);
+    fd.append("name", content.video.name);
+  }
   axios
     .post(
       `/api/programs/${getState().programReducer.program.code}/courses/${
         getState().courseReducer.course.code
-      }/blocks/${getState().blockReducer.block.code}/item-tracks/`,
-      item,
+      }/items/${item}/contents/`,
+      fd,
       tokenConfig(getState)
     )
     .then((res) => {
-      console.log("res", res);
-
+      console.log(res.data);
       dispatch({
-        type: CREATE_ITEM_SUCCESS,
+        type: UPLOAD_ITEM_FILE_SUCCESS,
         payload: res.data,
       });
-      // history.push(
-      //   `/academy/${getState().programReducer.program.code}/admin/course/${
-      //     res.data.code
-      //   }`
-      // );
     })
     .catch((err) => {
       console.log("error", err.response);
       dispatch({
-        type: CREATE_ITEM_FAIL,
+        type: UPLOAD_ITEM_FILE_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });
@@ -181,6 +183,41 @@ export const saveItem = (id, name) => (dispatch, getState) => {
     .catch((err) => {
       dispatch({
         type: ITEM_SAVE_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const createItem = (item) => (dispatch, getState) => {
+  dispatch({
+    type: CREATE_ITEM,
+  });
+  console.log("item".item);
+  axios
+    .post(
+      `/api/programs/${getState().programReducer.program.code}/courses/${
+        getState().courseReducer.course.code
+      }/blocks/${getState().blockReducer.block.code}/item-tracks/`,
+      item,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log("res", res);
+
+      dispatch({
+        type: CREATE_ITEM_SUCCESS,
+        payload: res.data,
+      });
+      // history.push(
+      //   `/academy/${getState().programReducer.program.code}/admin/course/${
+      //     res.data.code
+      //   }`
+      // );
+    })
+    .catch((err) => {
+      console.log("error", err.response);
+      dispatch({
+        type: CREATE_ITEM_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

@@ -25,6 +25,7 @@ import { GrCirclePlay, GrDocumentText, GrFormAdd } from "react-icons/gr";
 import { ButtonCustom } from "../ui/ButtonCustom";
 import { AdminForm } from "../ui/AdminForm";
 import CardItemContent from "./CardItemContent";
+import { uploadItemFile } from "../../redux/actions/courses/items";
 
 // import VideoList from "./VideoList";
 const CardItemDrag = ({
@@ -122,7 +123,7 @@ const CardItemDrag = ({
     handleEditItem(id, name);
     handleCancelEditItem();
   };
-  const handleAddVideo = () => {};
+
   return (
     <PlaylistVideo style={{ opacity }} ref={ref} moveCard={moveCard}>
       {card?.is_new ? (
@@ -257,7 +258,6 @@ const CardItemDrag = ({
                       }}
                     >
                       {" "}
-                      {console.log(item)}
                       <FaTrash
                         onClick={(e) => handleRemoveItem(e, item.code)}
                       />
@@ -340,7 +340,7 @@ const CardItemDrag = ({
             <CardItemContent
               addContent={addContent}
               item={item}
-              handleAddVideo={handleAddVideo}
+              setAddContent={setAddContent}
             />
           )}
         </>
