@@ -53,12 +53,11 @@ class CourseBlockViewSet(mixins.CreateModelMixin,
         serializer_class = self.get_serializer_class()
 
         partial = request.method == 'PATCH'
-
         serializer = serializer_class(
             course,
             data=request.data,
             context={
-                'tracks': request.data['tracks'],
+                'tracks': request.data.get('tracks',None),
                 'course': course,
                 'request': request
             },

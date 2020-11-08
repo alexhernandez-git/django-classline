@@ -100,26 +100,33 @@ const CardItemContent = ({
   const [newDescription, setNewDescription] = useState(
     item?.content?.description
   );
-  const handleOpenAddDescription = () => {
+  const handleOpenAddDescription = (e) => {
+    e.preventDefault();
+
     setAddDescription(true);
   };
-  const handleCloseAddDescription = () => {
+  const handleCloseAddDescription = (e) => {
+    e.preventDefault();
+
     setAddDescription(false);
   };
   const [editDescription, setEditDescription] = useState(false);
-  const handleOpenEditDescription = () => {
+  const handleOpenEditDescription = (e) => {
+    e.preventDefault();
     setEditDescription(true);
   };
-  const handleCloseEditDescription = () => {
+  const handleCloseEditDescription = (e) => {
+    e.preventDefault();
+
     setEditDescription(false);
   };
   const handleEditDescription = (e, item, content, description, type) => {
     e.preventDefault();
     dispatch(updateContentDescription(description, item, content));
     if (type == "add") {
-      handleCloseAddDescription();
+      handleCloseAddDescription(e);
     } else {
-      handleCloseEditDescription();
+      handleCloseEditDescription(e);
     }
     setNewDescription("");
   };
@@ -232,7 +239,7 @@ const CardItemContent = ({
                     newDescription={newDescription}
                     setNewDescription={setNewDescription}
                     handleEditDescription={handleEditDescription}
-                    handleCloseEditDescription={handleEditDescription}
+                    handleCloseEditDescription={handleCloseEditDescription}
                     type="edit"
                     item={item}
                   />

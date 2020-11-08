@@ -35,10 +35,11 @@ const EditContentDescription = ({
             {type == "add" ? "Añadir" : "Editar"}
           </ButtonCustom>
           <ButtonCustom
+            type="button"
             onClick={
               type == "add"
-                ? handleCloseAddDescription
-                : handleCloseEditDescription
+                ? (e) => handleCloseAddDescription(e)
+                : (e) => handleCloseEditDescription(e)
             }
           >
             Cancelar
