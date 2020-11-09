@@ -118,6 +118,7 @@ const CardItemContent = ({
     }
     setAddContent(false);
   };
+
   function msToHMS(seconds) {
     if (isNaN(seconds)) {
       return "00:00";
@@ -389,7 +390,7 @@ const CardItemContent = ({
                 </div>
               </>
             )}
-            <div>
+            {/* <div>
               <ButtonCustom>
                 <IconContext.Provider
                   value={{
@@ -403,7 +404,7 @@ const CardItemContent = ({
                 </IconContext.Provider>
                 Recursos
               </ButtonCustom>
-            </div>
+            </div> */}
           </div>
         </>
       )}

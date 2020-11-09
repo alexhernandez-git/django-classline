@@ -163,24 +163,27 @@ const CardItemDrag = ({
             <AdminForm>
               {newItem.type_choices == "LE" ? (
                 <>
-                  <form onSubmit={(e) => handleCreateItem(e)}>
-                    <div className="new-element-div">
-                      <label htmlFor="">Nueva lección</label>
-                      <input
-                        type="text"
-                        name=""
-                        id=""
-                        autoFocus
-                        value={newItem.name}
-                        onChange={(e) =>
-                          setNewItem({ ...newItem, name: e.target.value })
-                        }
-                      />
-                    </div>
-                    <div className="d-flex justify-content-end mt-3">
-                      <ButtonCustom type="submit">Crear</ButtonCustom>
-                    </div>
-                  </form>
+                  <div className="new-element-div">
+                    <label htmlFor="">Nueva lección</label>
+                    <input
+                      type="text"
+                      name=""
+                      id=""
+                      autoFocus
+                      value={newItem.name}
+                      onChange={(e) =>
+                        setNewItem({ ...newItem, name: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="d-flex justify-content-end mt-3">
+                    <ButtonCustom
+                      type="button"
+                      onClick={(e) => handleCreateItem(e)}
+                    >
+                      Crear
+                    </ButtonCustom>
+                  </div>
                 </>
               ) : (
                 <></>
@@ -194,26 +197,25 @@ const CardItemDrag = ({
             <>
               {item.type_choices == "LE" && "Lección"} {index + 1}:{" "}
               <AdminForm>
-                <form
-                  onSubmit={(e) => handleThisEditItem(e, item.code, newName)}
-                >
-                  <div className="my-3">
-                    <input
-                      type="text"
-                      value={newName}
-                      autoFocus
-                      onChange={(e) => setNewName(e.target.value)}
-                    />
-                  </div>
-                  <div className="d-sm-flex mt-2 justify-content-end">
-                    <ButtonCustom type="submit" className="mr-2">
-                      Editar
-                    </ButtonCustom>
-                    <ButtonCustom onClick={handleCancelEditItem}>
-                      Cancelar
-                    </ButtonCustom>
-                  </div>
-                </form>
+                <div className="my-3">
+                  <input
+                    type="text"
+                    value={newName}
+                    autoFocus
+                    onChange={(e) => setNewName(e.target.value)}
+                  />
+                </div>
+                <div className="d-sm-flex mt-2 justify-content-end">
+                  <ButtonCustom
+                    className="mr-2"
+                    onClick={(e) => handleThisEditItem(e, item.code, newName)}
+                  >
+                    Editar
+                  </ButtonCustom>
+                  <ButtonCustom onClick={handleCancelEditItem}>
+                    Cancelar
+                  </ButtonCustom>
+                </div>
               </AdminForm>
             </>
           ) : (
