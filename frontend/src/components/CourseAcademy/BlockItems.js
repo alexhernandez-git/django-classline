@@ -284,19 +284,19 @@ const BlocksItems = (props) => {
                     </Col>
                   </Row>
                 </div>
-                <div className="w-100">
-                  <div className="d-flex justify-content-between border-bottom pb-2 mb-3">
-                    <span>Contenido</span>
-                  </div>
-
-                  {itemCards.map((card, i) => renderItemCard(card, i))}
-                  <AddItem onClick={handleAddItem}>Añadir elemento</AddItem>
-                </div>
               </div>
             </FormFormik>
           );
         }}
       </Formik>
+      <div className="w-100">
+        <div className="d-flex justify-content-between border-bottom pb-2 mb-3">
+          <span>Contenido</span>
+        </div>
+
+        {itemCards.map((card, i) => renderItemCard(card, i))}
+        <AddItem onClick={handleAddItem}>Añadir elemento</AddItem>
+      </div>
     </div>
   );
 };

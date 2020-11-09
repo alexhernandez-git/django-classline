@@ -88,7 +88,7 @@ export const uploadPicture = (picture) => (dispatch, getState) => {
   //     payload: '/static/img/taichi.jpg'
   // })
   const fd = new FormData();
-  fd.append("picture", picture, picture.name);
+  fd.append("picture", picture, Math.random().toString(36) + picture.name);
   axios
     .patch(
       `/api/programs/${getState().programReducer.program.code}/courses/${

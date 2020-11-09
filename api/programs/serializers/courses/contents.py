@@ -19,6 +19,7 @@ class LectureContentModelSerializer(serializers.ModelSerializer):
             'id',
             'type_choices',
             'video',
+            'file',
             'text',
             'duration',
             'mega_bytes',
@@ -39,12 +40,19 @@ class LectureContentModelSerializer(serializers.ModelSerializer):
         if 'video' in validated_data:
             clip = VideoFileClip(validated_data['video'].temporary_file_path())
 
-            mega_bytes = validated_data['video'].size / 1024 / 1024
-            bytes = validated_data['video'].size
+            mega_bytes = round(validated_data['video'].size / 1024 / 1024,2)
+            bytes = round(validated_data['video'].size,2)
             validated_data['duration'] = clip.duration
             validated_data['mega_bytes'] = mega_bytes
             validated_data['bytes'] = bytes
-        
+
+        if 'file' in validated_data:
+
+            mega_bytes = round(validated_data['file'].size / 1024 / 1024, 2)
+            bytes = round(validated_data['file'].size,2)
+            validated_data['mega_bytes'] = mega_bytes
+            validated_data['bytes'] = bytes
+
         validated_data['course'] = course
         validated_data['item'] = item
 
@@ -54,10 +62,17 @@ class LectureContentModelSerializer(serializers.ModelSerializer):
         if 'video' in validated_data:
             clip = VideoFileClip(validated_data['video'].temporary_file_path())
 
-            mega_bytes = validated_data['video'].size / 1024 / 1024
-            bytes = validated_data['video'].size
+            mega_bytes = round(validated_data['video'].size / 1024 / 1024, 2)
+            bytes = round(validated_data['video'].size, 2)
             validated_data['mega_bytes'] = mega_bytes
             validated_data['bytes'] = bytes
             validated_data['duration'] = clip.duration
+
+        if 'file' in validated_data:
+
+            mega_bytes = round(validated_data['file'].size / 1024 / 1024, 2)
+            bytes = round(validated_data['file'].size, 2)
+            validated_data['mega_bytes'] = mega_bytes
+            validated_data['bytes'] = bytes
 
         return super(LectureContentModelSerializer, self).update(instance, validated_data)

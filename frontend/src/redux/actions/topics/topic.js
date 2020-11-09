@@ -1,8 +1,6 @@
-
 import axios from "axios";
 import Swal from "sweetalert2";
 import {
-
   TOPIC_FETCH,
   TOPIC_SUCCESS,
   TOPIC_FAIL,
@@ -12,11 +10,10 @@ import {
   TOPIC_SAVE,
   TOPIC_SAVE_SUCCESS,
   TOPIC_SAVE_FAIL,
-
   REMOVE_TOPIC,
   REMOVE_TOPIC_SUCCESS,
   REMOVE_TOPIC_FAIL,
-  RESET_TOPICS_ERRORS
+  RESET_TOPICS_ERRORS,
 } from "../../types";
 
 import { tokenConfig } from "../auth";
@@ -26,9 +23,7 @@ export const fetchTopic = (id) => (dispatch, getState) => {
   dispatch({ type: TOPIC_FETCH });
 
   axios
-    .get(`/api/programs/${
-      getState().programReducer.program.code
-    }/topics/${id}`)
+    .get(`/api/programs/${getState().programReducer.program.code}/topics/${id}`)
     .then((res) => {
       console.log(res);
 
@@ -55,7 +50,9 @@ export const saveTopic = (topic) => (dispatch, getState) => {
   // })
   axios
     .patch(
-      `/api/programs/${getState().programReducer.program.code}/topics/${getState().topicReducer.topic.code}/`,
+      `/api/programs/${getState().programReducer.program.code}/topics/${
+        getState().topicReducer.topic.code
+      }/`,
       topic,
       tokenConfig(getState)
     )
@@ -85,10 +82,12 @@ export const uploadPicture = (picture) => (dispatch, getState) => {
   //     payload: '/static/img/taichi.jpg'
   // })
   const fd = new FormData();
-  fd.append("picture", picture, picture.name);
+  fd.append("picture", picture, Math.random().toString(36) + picture.name);
   axios
     .patch(
-      `/api/programs/${getState().programReducer.program.code}/topics/${getState().topicReducer.topic.code}/`,
+      `/api/programs/${getState().programReducer.program.code}/topics/${
+        getState().topicReducer.topic.code
+      }/`,
       fd,
       tokenConfig(getState)
     )
@@ -111,15 +110,18 @@ export const removeTopic = (history) => (dispatch, getState) => {
   dispatch({ type: REMOVE_TOPIC });
   axios
     .delete(
-      `/api/programs/${getState().programReducer.program.code}/topics/${getState().topicReducer.topic.code}/`,
+      `/api/programs/${getState().programReducer.program.code}/topics/${
+        getState().topicReducer.topic.code
+      }/`,
       tokenConfig(getState)
     )
     .then((res) => {
-      history.push(`/academy/${getState().programReducer.program.code}/admin/topics`);
+      history.push(
+        `/academy/${getState().programReducer.program.code}/admin/topics`
+      );
       dispatch({
         type: REMOVE_TOPIC_SUCCESS,
       });
-
     })
     .catch((err) => {
       dispatch({
@@ -131,6 +133,6 @@ export const removeTopic = (history) => (dispatch, getState) => {
 
 export const resetTopicsErrors = () => (dispatch) => {
   dispatch({
-    type: RESET_TOPICS_ERRORS
-  })
-}
+    type: RESET_TOPICS_ERRORS,
+  });
+};

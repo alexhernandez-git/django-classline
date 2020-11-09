@@ -109,9 +109,21 @@ export const uploadItemFile = (content, item) => (dispatch, getState) => {
   });
   const fd = new FormData();
   fd.append("type_choices", content.type_choices);
+
   if (content.type_choices == "VI") {
-    fd.append("video", content.video, content.video.name);
+    fd.append(
+      "video",
+      content.video,
+      Math.random().toString(36) + content.video.name
+    );
     fd.append("name", content.video.name);
+  } else if (content.type_choices == "MA") {
+    fd.append(
+      "file",
+      content.file,
+      Math.random().toString(36) + content.file.name
+    );
+    fd.append("name", content.file.name);
   }
   axios
     .post(
@@ -145,8 +157,21 @@ export const updateItemFile = (content, item, content_id) => (
     type: UPDATE_ITEM_FILE,
   });
   const fd = new FormData();
-  fd.append("video", content.video, content.video.name);
-  fd.append("name", content.video.name);
+  if (content.type_choices == "VI") {
+    fd.append(
+      "video",
+      content.video,
+      Math.random().toString(36) + content.video.name
+    );
+    fd.append("name", content.video.name);
+  } else if (content.type_choices == "MA") {
+    fd.append(
+      "file",
+      content.file,
+      Math.random().toString(36) + content.file.name
+    );
+    fd.append("name", content.file.name);
+  }
   axios
     .patch(
       `/api/programs/${getState().programReducer.program.code}/courses/${

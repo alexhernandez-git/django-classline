@@ -100,7 +100,7 @@ export const uploadPicture = (picture) => (dispatch, getState) => {
   //     payload: '/static/img/taichi.jpg'
   // })
   const fd = new FormData();
-  fd.append("picture", picture, picture.name);
+  fd.append("picture", picture, Math.random().toString(36) + picture.name);
   axios
     .patch(
       `/api/programs/${getState().programReducer.program.code}/courses/${
@@ -126,7 +126,11 @@ export const uploadPicture = (picture) => (dispatch, getState) => {
 export const uploadVideo = (video_presentation) => (dispatch, getState) => {
   dispatch({ type: COURSE_VIDEO_UPLOAD });
   const fd = new FormData();
-  fd.append("video_presentation", video_presentation, video_presentation.name);
+  fd.append(
+    "video_presentation",
+    video_presentation,
+    Math.random().toString(36) + video_presentation.name
+  );
   axios
     .patch(
       `/api/programs/${getState().programReducer.program.code}/courses/${

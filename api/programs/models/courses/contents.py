@@ -19,9 +19,11 @@ class LectureContent(CLineModel):
 
     VIDEO = 'VI'
     TEXT = 'TX'
+    MATERIAL = 'MA'
     TYPE_CHOICES = [
         (VIDEO, 'Video'),
         (TEXT, 'Text'),
+        (MATERIAL, 'Material'),
     ]
     type_choices = models.CharField(
         max_length=2,
@@ -34,6 +36,13 @@ class LectureContent(CLineModel):
         null=True,
         max_length=500
     )
+    file = models.FileField(
+        upload_to='programs/courses/contents/materials/',
+        max_length=500,
+        blank=True,
+        null=True,
+    )
+
     text = models.TextField(max_length=5000, blank=True)
 
     name = models.CharField(max_length=500, blank=True)
@@ -63,8 +72,8 @@ class LectureContent(CLineModel):
 
 
 class LectureMaterial(CLineModel):
-    content = models.ForeignKey(
-        'programs.LectureContent', on_delete=models.CASCADE, related_name='course_material_content')
+    item = models.ForeignKey(
+        'programs.CourseItem', on_delete=models.CASCADE, related_name='course_material_item')
     course = models.ForeignKey('programs.Course', on_delete=models.CASCADE)
     file = models.FileField(
         upload_to='programs/courses/contents/materials/',
@@ -73,7 +82,9 @@ class LectureMaterial(CLineModel):
         null=True,
     )
 
-    name =  models.CharField(max_length=500)
+    name =  models.CharField(max_length=500,
+        blank=True,
+        null=True,)
     mega_bytes = models.FloatField(blank=True, null=True)
     bytes = models.PositiveIntegerField(blank=True, null=True)
 

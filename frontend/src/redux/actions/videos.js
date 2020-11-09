@@ -157,9 +157,17 @@ export const createVideo = (video) => (dispatch, getState) => {
   fd.append("duration", video.duration);
 
   if (video.picture && video.picture.name !== undefined) {
-    fd.append("picture", video.picture, video.picture.name);
+    fd.append(
+      "picture",
+      video.picture,
+      Math.random().toString(36) + video.picture.name
+    );
   }
-  fd.append("video", video.video, video.video.name);
+  fd.append(
+    "video",
+    video.video,
+    Math.random().toString(36) + video.video.name
+  );
   axios
     .post(
       `/api/programs/${getState().programReducer.program.code}/videos/`,

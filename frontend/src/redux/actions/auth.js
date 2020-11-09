@@ -106,7 +106,11 @@ export const updateProfile = (profile) => (dispatch, getState) => {
   dispatch({ type: UPDATE_PROFILE });
   let data = new FormData();
   if (profile.picture && profile.picture.name) {
-    data.append("picture", profile.picture, profile.picture.name);
+    data.append(
+      "picture",
+      profile.picture,
+      Math.random().toString(36) + profile.picture.name
+    );
   }
 
   axios

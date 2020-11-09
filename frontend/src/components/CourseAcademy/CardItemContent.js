@@ -83,6 +83,41 @@ const CardItemContent = ({
       setAddContent(false);
     }
   };
+  const handleUploadFile = (e, edit) => {
+    e.preventDefault();
+
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+
+    if (files[0].size > 2000000) {
+      alert("El tamaño del archivo es muy grande");
+    } else {
+      // reader.onload = () => {
+      //   setSrcFile(reader.result);
+      // };
+      reader.readAsDataURL(files[0]);
+      // setFieldValue("file", files[0]);
+      const content = {
+        file: files[0],
+        type_choices: "MA",
+      };
+      if (edit) {
+        const dispatchUpdateMaterial = (content) =>
+          dispatch(updateItemFile(content, item.code, item.content.id));
+        dispatchUpdateMaterial(content);
+      } else {
+        const dispatchUploadMaterial = (content) =>
+          dispatch(uploadItemFile(content, item.code));
+        dispatchUploadMaterial(content);
+      }
+    }
+    setAddContent(false);
+  };
   function msToHMS(seconds) {
     if (isNaN(seconds)) {
       return "00:00";
@@ -161,13 +196,34 @@ const CardItemContent = ({
               className="d-none"
               onChange={(e) => handleAddVideo(e, false)}
             />
+            <label htmlFor="file_content_upload">
+              <div className="d-flex flex-column align-items-center justify-content-center cursor-pointer">
+                <IconContext.Provider
+                  value={{
+                    size: 50,
+                    className: "global-class-name",
+                  }}
+                >
+                  <FaFileAlt />
+                </IconContext.Provider>
+                <span>Añadir material</span>
+              </div>
+            </label>
+
+            <input
+              type="file"
+              id="file_content_upload"
+              className="d-none"
+              onChange={(e) => handleUploadFile(e, false)}
+            />
           </div>
         </>
       ) : (
         <>
           <div className="item-content">
             {(item?.content?.type_choices == "VI" ||
-              item?.content?.type_choices == "TE") && (
+              item?.content?.type_choices == "TE" ||
+              item?.content?.type_choices == "MA") && (
               <>
                 <div className="d-flex justify-content-center align-items-center">
                   {item.type_choices == "LE" &&
@@ -183,6 +239,17 @@ const CardItemContent = ({
                     )}
                   {item.type_choices == "LE" &&
                     item?.content?.type_choices == "TE" && (
+                      <IconContext.Provider
+                        value={{
+                          size: 50,
+                          className: "global-class-name",
+                        }}
+                      >
+                        <FaFileAlt />
+                      </IconContext.Provider>
+                    )}
+                  {item.type_choices == "LE" &&
+                    item?.content?.type_choices == "MA" && (
                       <IconContext.Provider
                         value={{
                           size: 50,
@@ -223,6 +290,34 @@ const CardItemContent = ({
                           id="update_video_item"
                           className="d-none"
                           onChange={(e) => handleAddVideo(e, true)}
+                        />
+                      </>
+                    )}
+                  {item.type_choices == "LE" &&
+                    item?.content?.type_choices == "MA" && (
+                      <>
+                        <div>{item?.content?.name}</div>
+
+                        <label htmlFor="update_material_item">
+                          <div className="d-flex align-items-center cursor-pointer">
+                            <IconContext.Provider
+                              value={{
+                                size: 14,
+                                className:
+                                  "global-class-name mr-2 cursor-pointer",
+                              }}
+                            >
+                              {" "}
+                              <FaEdit />
+                            </IconContext.Provider>
+                            Cambiar material
+                          </div>
+                        </label>
+                        <input
+                          type="file"
+                          id="update_material_item"
+                          className="d-none"
+                          onChange={(e) => handleUploadFile(e, true)}
                         />
                       </>
                     )}
