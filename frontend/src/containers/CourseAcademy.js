@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useParams, Link, useHistory } from "react-router-dom";
 import { fetchPlaylist } from "src/redux/actions/playlistAdmin";
+import CourseList from "../components/ui/CourseList";
+import CourseSwitch from "../components/ui/CourseSwitch";
 const CourseAcademy = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -50,18 +52,24 @@ const CourseAcademy = (props) => {
   //   }
   // }, [trackId])
   return (
-    <Main padding>
+    <Main style={{ padding: "1rem" }}>
+      <CourseHeader>
+        {playlistAdminReducer.playlist && playlistAdminReducer.playlist.name}
+      </CourseHeader>
       <div className="row">
         <div className="col-md-6 col-lg-8">
           {playlistAdminReducer.playlist &&
             !playlistAdminReducer.isLoading &&
             playlistAdminReducer.playlist.tracks.length > 0 && (
-              <VideoPlayer
-                video={playlistAdminReducer.playlist.tracks[trackId].video}
-                goNext={goNext}
-                goPrevious={goPrevious}
-                isPlaylist={true}
-              />
+              <>
+                <VideoPlayer
+                  video={playlistAdminReducer.playlist.tracks[trackId].video}
+                  goNext={goNext}
+                  goPrevious={goPrevious}
+                  isPlaylist={true}
+                />
+                <CourseSwitch />
+              </>
             )}
           {playlistAdminReducer.isLoading && <span>Cargando...</span>}
           {playlistAdminReducer.playlist.tracks.length == 0 && (
@@ -71,11 +79,8 @@ const CourseAcademy = (props) => {
         <div className="col-md-6 col-lg-4">
           <div className="d-block d-md-none m-5"></div>
 
-          <div className="d-flex justify-content-center bg-dark text-white p-4 h2 mb-0">
-            <span>
-              {playlistAdminReducer.playlist &&
-                playlistAdminReducer.playlist.name}
-            </span>
+          <div className="d-flex justify-content-center p-4 h2 mb-0 shadow rounded">
+            <span className="font-weight-bold">Contenido del curso</span>
           </div>
           <PlaylistScroll>
             <div className="p-3">
@@ -98,7 +103,7 @@ const CourseAcademy = (props) => {
                       // ref={index == trackId ? playlistVideoRef : null}
                     >
                       <span className="mr-4">{index + 1}</span>
-                      <Video video={track.video} />
+                      <CourseList video={track.video} />
                     </PlaylistVideo>
                   </Link>
                 ))}
@@ -110,9 +115,16 @@ const CourseAcademy = (props) => {
     </Main>
   );
 };
+const CourseHeader = styled.div`
+  padding: 1.5rem;
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  border-radius: 0.25rem !important;
+`;
 const PlaylistScroll = styled.div`
   background: #fff;
-  max-height: 80vh;
+  max-height: calc(100vh - 21rem);
   overflow: auto;
   box-shadow: inset 0 0 20px 0px #ccc;
 `;

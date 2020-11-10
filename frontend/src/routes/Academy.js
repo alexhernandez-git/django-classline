@@ -26,7 +26,11 @@ import AccountsAdmin from "src/containers/admin/AccountsAdmin";
 import "static/assets/styles/styles.scss";
 import ScrollToTop from "src/utils/ScrollToTop";
 import { useDispatch, useSelector } from "react-redux";
-import { loadUser, resetAuthErrors, setIsInstructor } from "../redux/actions/auth";
+import {
+  loadUser,
+  resetAuthErrors,
+  setIsInstructor,
+} from "../redux/actions/auth";
 import { fetchProgram } from "../redux/actions/program";
 import IndexAcademy from "src/containers/IndexAcademy";
 import { fetchProgramRating } from "../redux/actions/rating";
@@ -38,6 +42,7 @@ import ForumAcademy from "../containers/ForumAcademy";
 
 import PlaylistFormAcademy from "../containers/PlaylistFormAcademy";
 import PlaylistAcademy from "../containers/PlaylistAcademy";
+import CourseAcademy from "../containers/CourseAcademy";
 import SharedDocsAcademy from "../containers/SharedDocsAcademy";
 import DocsAdmin from "../containers/admin/DocsAdmin";
 import PostAcademy from "../containers/PostAcademy";
@@ -98,25 +103,26 @@ const Academy = () => {
       (program) => program.code == programId && authReducer.haveAccess
     );
     const isInstructor = authReducer.user.teacher.instructor_in.find(
-      (allowed_program) => allowed_program.program.code == programId && authReducer.haveAccess
-      );
-    if (isStudent || isAdmin|| isInstructor) {
+      (allowed_program) =>
+        allowed_program.program.code == programId && authReducer.haveAccess
+    );
+    if (isStudent || isAdmin || isInstructor) {
       return true;
     } else {
       return false;
     }
   };
 
-    const isInstructor = () => {
-      return  authReducer.user.teacher.instructor_in.some(
-          (allowed_program) =>allowed_program.program.code == programId
-          );
-    };
-    const isAdmin = () =>{
-     return authReducer.user.teacher.programs.some(
-        (program) => program.code == programId
-        ) 
-    }
+  const isInstructor = () => {
+    return authReducer.user.teacher.instructor_in.some(
+      (allowed_program) => allowed_program.program.code == programId
+    );
+  };
+  const isAdmin = () => {
+    return authReducer.user.teacher.programs.some(
+      (program) => program.code == programId
+    );
+  };
   return programReducer.isLoading ? (
     "Cargando..."
   ) : (
@@ -168,10 +174,12 @@ const Academy = () => {
           path="/academy/:program/pack/detail"
           component={CheckoutPack}
         />
-        
+
         {authReducer.isLoading ? (
           "Cargando..."
-        ) : !authReducer.isAuthenticated ?<Redirect to={`/academy/${programId}`}/> :haveAccess() ? (
+        ) : !authReducer.isAuthenticated ? (
+          <Redirect to={`/academy/${programId}`} />
+        ) : haveAccess() ? (
           <Layout>
             <Route
               exact
@@ -206,6 +214,7 @@ const Academy = () => {
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />
+
             <Route
               exact
               path="/academy/:program/:topic?/podcasts/:search?"
@@ -224,7 +233,17 @@ const Academy = () => {
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />
-      
+
+            <Route
+              exact
+              path="/academy/:program/course/:id/:track?"
+              component={
+                programReducer.program.are_admin_playlists
+                  ? CourseAcademy
+                  : () => <Redirect to={`/academy/${programId}/home`} />
+              }
+            />
+
             <Route
               exact
               path="/academy/:program/playlist/:id/:track?"
@@ -234,7 +253,7 @@ const Academy = () => {
                   : () => <Redirect to={`/academy/${programId}/home`} />
               }
             />
-  
+
             <Route
               exact
               path="/academy/:program/meetups"
@@ -299,63 +318,62 @@ const Academy = () => {
               path="/academy/:program/post/:id"
               component={PostAcademy}
             />
-            {authReducer.user && isInstructor() ||isAdmin() ? (
+            {(authReducer.user && isInstructor()) || isAdmin() ? (
               <>
-                {isAdmin() &&
-                <>
-                  <Route
-                  exact
-                  path="/academy/:program/admin"
-                  component={ConfigurationAdmin}
-                  />
-                  <Route
-                    exact
-                    path="/academy/:program/admin/packs"
-                    component={PacksAdmin}
-                  />
-                  <Route
-                    exact
-                    path="/academy/:program/admin/pack/:id"
-                    component={ConfigurationPack}
-                  />
+                {isAdmin() && (
+                  <>
                     <Route
-                        exact
-                        path="/academy/:program/admin/courses"
-                        component={CoursesAdmin}
-                      />
-                      <Route
-                        
-                        path="/academy/:program/admin/course/:course"
-                        component={ConfigurationCourse}
-                      />
-                  <Route
-                    exact
-                    path="/academy/:program/admin/accounts/:search?"
-                    component={AccountsAdmin}
-                  />
-                  <Route
-                    exact
-                    path="/academy/:program/admin/instructors/:search?"
-                    component={InstructorAccountsAdmin}
-                  />
-                </>
-              }
+                      exact
+                      path="/academy/:program/admin"
+                      component={ConfigurationAdmin}
+                    />
+                    <Route
+                      exact
+                      path="/academy/:program/admin/packs"
+                      component={PacksAdmin}
+                    />
+                    <Route
+                      exact
+                      path="/academy/:program/admin/pack/:id"
+                      component={ConfigurationPack}
+                    />
+                    <Route
+                      exact
+                      path="/academy/:program/admin/courses"
+                      component={CoursesAdmin}
+                    />
+                    <Route
+                      path="/academy/:program/admin/course/:course"
+                      component={ConfigurationCourse}
+                    />
+                    <Route
+                      exact
+                      path="/academy/:program/admin/accounts/:search?"
+                      component={AccountsAdmin}
+                    />
+                    <Route
+                      exact
+                      path="/academy/:program/admin/instructors/:search?"
+                      component={InstructorAccountsAdmin}
+                    />
+                  </>
+                )}
                 <Route
                   exact
                   path="/academy/:program/admin/topics"
                   component={TopicsAdmin}
                 />
                 <Route
-                    exact
-                    path="/academy/:program/admin/topic/:id"
-                    component={ConfigurationTopic}
-                  />
-                <Route
-                exact
-                path="/academy/:program/admin/users/:search?"
-                component={UsersAdmin}
+                  exact
+                  path="/academy/:program/admin/topic/:id"
+                  component={ConfigurationTopic}
                 />
-              
+                <Route
+                  exact
+                  path="/academy/:program/admin/users/:search?"
+                  component={UsersAdmin}
+                />
+
                 <Route
                   exact
                   path="/academy/:program/admin/videos/:search?"

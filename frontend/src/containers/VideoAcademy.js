@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
 import { fetchVideo } from "src/redux/actions/video";
-
+import moment from "moment";
 import { Link } from "react-router-dom";
 const video = () => {
   const dispatch = useDispatch();
@@ -42,7 +42,24 @@ const video = () => {
       <div className="row">
         <div className="col-md-6 col-lg-8">
           {videoReducer.video && !videoReducer.isLoading && (
-            <VideoPlayer video={videoReducer.video} />
+            <>
+              <VideoPlayer video={videoReducer.video} />
+              {videoReducer.video.title && (
+                <div className="d-flex justify-content-between mt-4">
+                  <div>
+                    <span className="d-block">{videoReducer.video.title}</span>
+                    <small>
+                      {/* {views} visualizaciones · {moment(created).format("DD-MM-YYYY")} */}
+                      {videoReducer.video.created &&
+                        moment(videoReducer.video.created).format("DD-MM-YYYY")}
+                    </small>
+                  </div>
+                </div>
+              )}
+              {videoReducer.video.description && (
+                <div className="mt-2">{video.description}</div>
+              )}
+            </>
           )}
           {videoReducer.isLoading && <span>Cargando...</span>}
         </div>
@@ -57,6 +74,7 @@ const video = () => {
                       <Link to={`/academy/${program}/video/${video.id}`}>
                         <div className="cursor-pointer">
                           <Video video={video} key={video.id} />
+
                           <hr />
                         </div>
                       </Link>
