@@ -23,6 +23,8 @@ import {
   UPDATE_ITEM_CONTENT,
   UPDATE_ITEM_CONTENT_SUCCESS,
   UPDATE_ITEM_CONTENT_FAIL,
+  DECREASE_ITEM,
+  INCREASE_ITEM,
 } from "../../types";
 
 import { tokenConfig } from "../auth";
@@ -239,6 +241,10 @@ export const removeItem = (item) => (dispatch, getState) => {
       dispatch({
         type: REMOVE_ITEM_SUCCESS,
       });
+      dispatch({
+        type: DECREASE_ITEM,
+        payload: getState().blockReducer.block.id,
+      });
       Swal.fire({
         title: "Eliminado!",
         icon: "success",
@@ -303,11 +309,10 @@ export const createItem = (item) => (dispatch, getState) => {
         type: CREATE_ITEM_SUCCESS,
         payload: res.data,
       });
-      // history.push(
-      //   `/academy/${getState().programReducer.program.code}/admin/course/${
-      //     res.data.code
-      //   }`
-      // );
+      dispatch({
+        type: INCREASE_ITEM,
+        payload: getState().blockReducer.block.id,
+      });
     })
     .catch((err) => {
       console.log("error", err.response);

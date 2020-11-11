@@ -7,6 +7,9 @@ import {
   CREATE_COURSE,
   CREATE_COURSE_FAIL,
   CREATE_COURSE_SUCCESS,
+  PROGRAM_COURSES_FETCH,
+  PROGRAM_COURSES_SUCCESS,
+  PROGRAM_COURSES_FAIL,
 } from "../../types";
 
 import { tokenConfig } from "../auth";
@@ -55,33 +58,6 @@ export const fetchCoursesPagination = (url) => (dispatch, getState) => {
       });
     });
 };
-export const fetchCoursesIncrease = (limit, search = "") => (
-  dispatch,
-  getState
-) => {
-  // User Loading
-  dispatch({ type: COURSES_FETCH });
-
-  axios
-    .get(
-      `/api/programs/${
-        getState().programReducer.program.code
-      }/courses/list_program_courses/?search=${search}&limit=${limit}`,
-      tokenConfig(getState)
-    )
-    .then((res) => {
-      dispatch({
-        type: COURSES_SUCCESS,
-        payload: res.data,
-      });
-    })
-    .catch((err) => {
-      dispatch({
-        type: COURSES_FAIL,
-        payload: { data: err.response.data, status: err.response.status },
-      });
-    });
-};
 
 export const createCourse = (history) => (dispatch, getState) => {
   dispatch({
@@ -110,6 +86,51 @@ export const createCourse = (history) => (dispatch, getState) => {
       console.log("error", err.response);
       dispatch({
         type: CREATE_COURSE_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+// CHECK TOKEN & LOAD USER
+export const fetchProgramCourses = (search = "") => (dispatch, getState) => {
+  // User Loading
+  dispatch({ type: PROGRAM_COURSES_FETCH });
+
+  axios
+    .get(
+      `/api/programs/${
+        getState().programReducer.program.code
+      }/courses/list_program_courses/?search=${search}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      dispatch({
+        type: PROGRAM_COURSES_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: PROGRAM_COURSES_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+export const fetchProgramCoursesPagination = (url) => (dispatch, getState) => {
+  // User Loading
+  dispatch({ type: PROGRAM_COURSES_FETCH });
+
+  axios
+    .get(url, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: PROGRAM_COURSES_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: PROGRAM_COURSES_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

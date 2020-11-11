@@ -14,6 +14,7 @@ import {
   FaBox,
   FaIcons,
   FaGraduationCap,
+  FaUniversity,
 } from "react-icons/fa";
 import { BsFillCollectionPlayFill, BsFillChatDotsFill } from "react-icons/bs";
 import { MdFolderShared, MdFolder, MdForum } from "react-icons/md";
@@ -28,91 +29,90 @@ const Sidebar = (props) => {
   const { program } = useParams();
   const programReducer = useSelector((state) => state.programReducer);
   const authReducer = useSelector((state) => state.authReducer);
-  const isInstructorButNotAdmin = () =>{
-    if ( 
+  const isInstructorButNotAdmin = () => {
+    if (
       authReducer.user.teacher.instructor_in.some(
-        (allowed_program) =>allowed_program.program.code == program
-        )
-        &&
-        !authReducer.user.teacher.programs.some(
-          (program) => program.code == program
-          )
-    ){
-      return true
-    }else{
-      return false
+        (allowed_program) => allowed_program.program.code == program
+      ) &&
+      !authReducer.user.teacher.programs.some(
+        (program) => program.code == program
+      )
+    ) {
+      return true;
+    } else {
+      return false;
     }
-  }
+  };
   return programReducer.isLoading ? (
     "Cargando..."
   ) : (
     <ContainerSidebar sidebarActive={sidebarActive}>
       {/\/admin\/?/.test(pathname) ? (
         <>
-          {!isInstructorButNotAdmin() &&
-          <>
-          <Link to={`/academy/${program}/admin`}>
-            <SecctionLink active={/\/admin\/?$/.test(pathname)}>
-              <IconContext.Provider
-                value={{
-                  className: "sidebar-icon",
-                }}
-              >
-                <FaCog />
-              </IconContext.Provider>{" "}
-              Academia
-            </SecctionLink>
-          </Link>
-          <Link to={`/academy/${program}/admin/packs`}>
-            <SecctionLink active={/\/packs\/?$/.test(pathname)}>
-              <IconContext.Provider
-                value={{
-                  className: "sidebar-icon",
-                }}
-              >
-                <FaBox />
-              </IconContext.Provider>{" "}
-              Packs
-            </SecctionLink>
-          </Link>
-          <Link to={`/academy/${program}/admin/courses`}>
-            <SecctionLink active={/\/courses\/?$/.test(pathname)}>
-              <IconContext.Provider
-                value={{
-                  className: "sidebar-icon",
-                }}
-              >
-                <FaGraduationCap />
-              </IconContext.Provider>{" "}
-              Cursos
-            </SecctionLink>
-          </Link>
-          <Link to={`/academy/${program}/admin/instructors`}>
-            <SecctionLink active={/\/instructors\/?$/.test(pathname)}>
-              <IconContext.Provider
-                value={{
-                  className: "sidebar-icon",
-                }}
-              >
-                <FaChalkboardTeacher />
-              </IconContext.Provider>{" "}
-              Instructores
-            </SecctionLink>
-          </Link>
-          <Link to={`/academy/${program}/admin/accounts`}>
-            <SecctionLink active={/\/accounts\/?$/.test(pathname)}>
-              <IconContext.Provider
-                value={{
-                  className: "sidebar-icon",
-                }}
-              >
-                <FaUsers />
-              </IconContext.Provider>{" "}
-              Cuentas
-            </SecctionLink>
-          </Link>
-          </>
-          }
+          {!isInstructorButNotAdmin() && (
+            <>
+              <Link to={`/academy/${program}/admin`}>
+                <SecctionLink active={/\/admin\/?$/.test(pathname)}>
+                  <IconContext.Provider
+                    value={{
+                      className: "sidebar-icon",
+                    }}
+                  >
+                    <FaCog />
+                  </IconContext.Provider>{" "}
+                  Academia
+                </SecctionLink>
+              </Link>
+              <Link to={`/academy/${program}/admin/packs`}>
+                <SecctionLink active={/\/packs\/?$/.test(pathname)}>
+                  <IconContext.Provider
+                    value={{
+                      className: "sidebar-icon",
+                    }}
+                  >
+                    <FaBox />
+                  </IconContext.Provider>{" "}
+                  Packs
+                </SecctionLink>
+              </Link>
+              <Link to={`/academy/${program}/admin/courses`}>
+                <SecctionLink active={/\/courses\/?$/.test(pathname)}>
+                  <IconContext.Provider
+                    value={{
+                      className: "sidebar-icon",
+                    }}
+                  >
+                    <FaGraduationCap />
+                  </IconContext.Provider>{" "}
+                  Cursos
+                </SecctionLink>
+              </Link>
+              <Link to={`/academy/${program}/admin/instructors`}>
+                <SecctionLink active={/\/instructors\/?$/.test(pathname)}>
+                  <IconContext.Provider
+                    value={{
+                      className: "sidebar-icon",
+                    }}
+                  >
+                    <FaChalkboardTeacher />
+                  </IconContext.Provider>{" "}
+                  Instructores
+                </SecctionLink>
+              </Link>
+              <Link to={`/academy/${program}/admin/accounts`}>
+                <SecctionLink active={/\/accounts\/?$/.test(pathname)}>
+                  <IconContext.Provider
+                    value={{
+                      className: "sidebar-icon",
+                    }}
+                  >
+                    <FaUsers />
+                  </IconContext.Provider>{" "}
+                  Cuentas
+                </SecctionLink>
+              </Link>
+            </>
+          )}
           <Link to={`/academy/${program}/admin/users`}>
             <SecctionLink active={/\/users\/?$/.test(pathname)}>
               <IconContext.Provider
@@ -125,7 +125,7 @@ const Sidebar = (props) => {
               Alumnos
             </SecctionLink>
           </Link>
-          
+
           <Link to={`/academy/${program}/admin/topics`}>
             <SecctionLink active={/\/topics\/?$/.test(pathname)}>
               <IconContext.Provider
@@ -138,7 +138,7 @@ const Sidebar = (props) => {
               Temas
             </SecctionLink>
           </Link>
-   
+
           <Link to={`/academy/${program}/admin/videos`}>
             <SecctionLink active={/\/videos\/?$/.test(pathname)}>
               <IconContext.Provider
@@ -324,10 +324,12 @@ const Sidebar = (props) => {
             </Link>
           )}
 
-          {programReducer.program.are_forum  && (
+          {programReducer.program.are_forum && (
             <Link
               to={
-                /\/demo\/?/.test(pathname) ? pathname :`/academy/${program}/forum`
+                /\/demo\/?/.test(pathname)
+                  ? pathname
+                  : `/academy/${program}/forum`
               }
             >
               <SecctionLink active={/\/forum\/?$/.test(pathname)}>
@@ -343,12 +345,30 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
+          <Link
+            to={`${
+              /\/demo\/?/.test(pathname) ? "/demo" : ""
+            }/academy/${program}/courses`}
+          >
+            <SecctionLink active={/\/courses\/?$/.test(pathname)}>
+              <IconContext.Provider
+                value={{
+                  className: "sidebar-icon",
+                }}
+              >
+                <FaGraduationCap />
+              </IconContext.Provider>{" "}
+              Cursos
+            </SecctionLink>
+          </Link>
           <hr />
 
-          {programReducer.program.are_videos  && (
+          {programReducer.program.are_videos && (
             <Link
-              to={            
-                /\/demo\/?/.test(pathname) ? pathname :`/academy/${program}/student-playlists`
+              to={
+                /\/demo\/?/.test(pathname)
+                  ? pathname
+                  : `/academy/${program}/student-playlists`
               }
             >
               <SecctionLink active={/\/student-playlists\/?$/.test(pathname)}>
@@ -363,10 +383,12 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
-          {programReducer.program.are_docs  && (
+          {programReducer.program.are_docs && (
             <Link
               to={
-                /\/demo\/?/.test(pathname) ? pathname :`/academy/${program}/shared-docs`
+                /\/demo\/?/.test(pathname)
+                  ? pathname
+                  : `/academy/${program}/shared-docs`
               }
             >
               <SecctionLink active={/\/shared-docs\/?$/.test(pathname)}>

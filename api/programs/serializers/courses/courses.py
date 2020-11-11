@@ -18,7 +18,9 @@ from api.programs.models import (
     CourseLanguage,
     CourseBenefit,
     CourseBlockTrack,
-    CourseBlock
+    CourseBlock,
+    CourseItemTrack,
+    LectureContent
 )
 
 # Serializes
@@ -29,6 +31,7 @@ from .benefits import CourseBenefitModelSerializer
 # Utils
 from datetime import timedelta
 
+from django.db.models import Sum
 
 class CourseModelSerializer(serializers.ModelSerializer):
     """Profile model serializer."""
@@ -37,6 +40,9 @@ class CourseModelSerializer(serializers.ModelSerializer):
     students_count = serializers.SerializerMethodField(read_only=True)
     instructor = serializers.SerializerMethodField(read_only=True)
     benefits = serializers.SerializerMethodField(read_only=True)
+    blocks = serializers.SerializerMethodField(read_only=True)
+    items = serializers.SerializerMethodField(read_only=True)
+    total_duration = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         """Meta class."""
@@ -59,6 +65,9 @@ class CourseModelSerializer(serializers.ModelSerializer):
             'benefits',
             'video_presentation',
             'published',
+            'blocks',
+            'items',
+            'total_duration'
         )
 
         read_only_fields = (
@@ -91,6 +100,20 @@ class CourseModelSerializer(serializers.ModelSerializer):
         benefits = CourseBenefit.objects.filter(course=obj.id)
         return CourseBenefitModelSerializer(benefits, many=True).data
 
+
+    def get_benefits(self, obj):
+        benefits = CourseBenefit.objects.filter(course=obj.id)
+        return CourseBenefitModelSerializer(benefits, many=True).data
+
+    def get_blocks(self, obj):
+        return obj.blocks.count()
+
+    def get_items(self, obj):
+        items = CourseItemTrack.objects.filter(course=obj.id).count()
+        return items
+
+    def get_total_duration(self, obj):
+        return LectureContent.objects.filter(course=obj.id, type_choices="VI").aggregate(Sum('duration'))['duration__sum']
 
 class CourseCreateSerializer(serializers.ModelSerializer):
     """Profile model serializer."""
@@ -216,12 +239,11 @@ class PublishCourseSerializer(serializers.Serializer):
         if not course.picture:
             raise serializers.ValidationError(
                 'El curso no tiene una imágen')
-
+        # import pdb; pdb.set_trace()
         if not self.context['publish_in_program']:
-            if not CoursePrice.objects.filter(course=course).exists():
-                if not course.user.profile.stripe_account_id:
-                    raise serializers.ValidationError(
-                        'Necesitas conectarte con stripe para poder recibir pagos')
+            if not course.user.profile.stripe_account_id:
+                raise serializers.ValidationError(
+                    'Necesitas conectarte con stripe para poder recibir pagos')
 
         if len(course.title) == 0:
             raise serializers.ValidationError('Se requiere un titulo')

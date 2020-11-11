@@ -11,6 +11,8 @@ import {
   REMOVE_BLOCK_IN_BLOCKS,
   UPDATE_BLOCK_IN_BLOCKS,
   UPDATE_BLOCK_PICTURE_IN_BLOCKS,
+  INCREASE_ITEM,
+  DECREASE_ITEM,
 } from "../../types";
 
 const initialState = {
@@ -130,7 +132,41 @@ export default function (state = initialState, action) {
           (block) => block.block.code != action.payload
         ),
       };
-
+    case DECREASE_ITEM:
+      return {
+        ...state,
+        blocks: state.blocks.map((block) => {
+          if (block.block.id == action.payload) {
+            return {
+              ...block,
+              block: {
+                ...block.block,
+                items: block.block.items - 1,
+              },
+            };
+          } else {
+            return block;
+          }
+        }),
+      };
+    case INCREASE_ITEM:
+      return {
+        ...state,
+        blocks: state.blocks.map((block) => {
+          if (block.block.id == action.payload) {
+            console.log(block);
+            return {
+              ...block,
+              block: {
+                ...block.block,
+                items: block.block.items + 1,
+              },
+            };
+          } else {
+            return block;
+          }
+        }),
+      };
     default:
       return state;
   }

@@ -6,7 +6,16 @@ const CourseCard = (props) => {
   console.log(props);
   const { pathname } = useLocation();
   const { program } = useParams();
-  const { code, title, picture, videos, pack_price } = props.course;
+  const {
+    code,
+    title,
+    picture,
+    videos,
+    pack_price,
+    blocks,
+    items,
+    total_duration,
+  } = props.course;
   function msToHMS(seconds) {
     if (isNaN(seconds)) {
       return "00:00";
@@ -51,8 +60,19 @@ const CourseCard = (props) => {
               )}
             </div>
             <div className="text-grey">
+              {total_duration && (
+                <div>
+                  <small css={textEllipsis}>
+                    Duración: {msToHMS(total_duration)}
+                  </small>
+                </div>
+              )}
+              <hr />
               <div>
-                <small css={textEllipsis}>Lecciones: 52</small>
+                <small css={textEllipsis}>Bloques: {blocks && blocks}</small>
+              </div>
+              <div>
+                <small css={textEllipsis}>Lecciones: {items && items}</small>
               </div>
               {/* <div>
                   <small css={textEllipsis}>Playlists: 2</small>

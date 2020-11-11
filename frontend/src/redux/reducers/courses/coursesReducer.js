@@ -5,6 +5,9 @@ import {
   CREATE_COURSE,
   CREATE_COURSE_FAIL,
   CREATE_COURSE_SUCCESS,
+  PROGRAM_COURSES_FETCH,
+  PROGRAM_COURSES_SUCCESS,
+  PROGRAM_COURSES_FAIL,
 } from "../../types";
 
 const initialState = {
@@ -23,18 +26,20 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case PROGRAM_COURSES_FETCH:
     case COURSES_FETCH:
       return {
         ...state,
         isLoading: true,
       };
+    case PROGRAM_COURSES_SUCCESS:
     case COURSES_SUCCESS:
       return {
         ...state,
         isLoading: false,
         courses: action.payload,
       };
-
+    case PROGRAM_COURSES_FAIL:
     case COURSES_FAIL:
       return {
         ...state,

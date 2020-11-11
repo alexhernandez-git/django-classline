@@ -409,7 +409,7 @@ class CourseViewSet(mixins.CreateModelMixin,
         serializer.is_valid(raise_exception=True)
 
         course = serializer.save()
-        data = CourseBlockTrackModelSerializer(course.blocks.through.objects.all(),many=True).data
+        data = CourseBlockTrackModelSerializer(course.blocks.through.objects.filter(course=course),many=True).data
         return Response(data)
 
     def create(self, request, *args, **kwargs):

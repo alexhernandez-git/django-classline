@@ -39,6 +39,7 @@ import PlaylistsAcademy from "../containers/admin/PlaylistsAdmin";
 import PlaylistFormAdmin from "../containers/admin/PlaylistFormAdmin";
 import StudentPlaylistsAcademy from "../containers/PlaylistsAcademy";
 import ForumAcademy from "../containers/ForumAcademy";
+import CoursesAcademy from "../containers/CoursesAcademy";
 
 import PlaylistFormAcademy from "../containers/PlaylistFormAcademy";
 import PlaylistAcademy from "../containers/PlaylistAcademy";
@@ -237,13 +238,13 @@ const Academy = () => {
             <Route
               exact
               path="/academy/:program/course/:id/:track?"
-              component={
-                programReducer.program.are_admin_playlists
-                  ? CourseAcademy
-                  : () => <Redirect to={`/academy/${programId}/home`} />
-              }
+              component={CourseAcademy}
             />
-
+            <Route
+              exact
+              path="/academy/:program/courses/:search?"
+              component={CoursesAcademy}
+            />
             <Route
               exact
               path="/academy/:program/playlist/:id/:track?"

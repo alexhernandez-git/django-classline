@@ -124,7 +124,9 @@ const BlocksCourse = () => {
                       </div>
                       <div className="text-grey">
                         <div>
-                          <small css={textEllipsis}>Lecciones: 5</small>
+                          <small css={textEllipsis}>
+                            Lecciones: {card.block.items}
+                          </small>
                         </div>
                         {/* <div>
                         <small css={textEllipsis}>Playlists: 2</small>

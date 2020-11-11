@@ -111,7 +111,7 @@ const BlockCard = ({ moveCard, id, index, block, blockCards, noMove }) => {
             <small>{block.description}</small>
           </div>
           <div>
-            <small>Items: 54</small>
+            <small>Items: {block.items}</small>
           </div>
         </div>
       </div>
