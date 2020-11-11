@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import Video from "src/components/ui/Video";
 import styled from "@emotion/styled";
 import { Link, useParams, useLocation } from "react-router-dom";
-import Course from "src/components/ui/Course";
+import Playlist from "src/components/ui/Playlist";
 import { useSelector } from "react-redux";
 import { SlickSlider } from "../ui/SlickSlider";
 
@@ -11,9 +11,7 @@ const SearchPlaylists = () => {
   const { pathname } = useLocation();
 
   const { program } = useParams();
-  const coursesReducer = useSelector(
-    (state) => state.coursesReducer
-  );
+  const coursesReducer = useSelector((state) => state.coursesReducer);
   let settings = null;
   if (!coursesReducer.isLoading) {
     settings = {
@@ -50,14 +48,13 @@ const SearchPlaylists = () => {
       <SlickSlider>
         <div className="">
           <span>Playlists</span>
-
         </div>
 
         <Slider {...settings}>
           {coursesReducer.playlists.results &&
             coursesReducer.playlists.results.map((playlist) => (
               <div className="p-2 cursor-pointer" key={playlist.id}>
-                <Course playlist={playlist} />
+                <Playlist playlist={playlist} />
               </div>
             ))}
         </Slider>

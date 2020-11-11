@@ -3,10 +3,10 @@ import styled from "@emotion/styled";
 import { textEllipsis } from "src/components/ui/TextEllipsis";
 import moment from "moment";
 const CourseCard = (props) => {
-  console.log(props);
   const { pathname } = useLocation();
   const { program } = useParams();
   const {
+    id,
     code,
     title,
     picture,
@@ -16,6 +16,7 @@ const CourseCard = (props) => {
     items,
     total_duration,
   } = props.course;
+  const { type } = props;
   function msToHMS(seconds) {
     if (isNaN(seconds)) {
       return "00:00";
@@ -33,7 +34,9 @@ const CourseCard = (props) => {
     <Link
       to={
         !/\/demo\//.test(pathname)
-          ? `/academy/${program}/admin/course/${code}`
+          ? type == "ADMIN"
+            ? `/academy/${program}/admin/course/${code}`
+            : `/academy/${program}/course/${code}`
           : pathname
       }
     >

@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import Video from "src/components/ui/Video";
 import styled from "@emotion/styled";
 import { Link, useParams, useLocation } from "react-router-dom";
-import Course from "src/components/ui/Course";
+import Playlist from "src/components/ui/Playlist";
 import { useSelector } from "react-redux";
 import { SlickSlider } from "../ui/SlickSlider";
 
@@ -50,14 +50,13 @@ const SearchPlaylists = () => {
       <SlickSlider>
         <div className="">
           <span>Playlists</span>
-     
         </div>
 
         <Slider {...settings}>
           {playlistsTopicReducer.playlists.results &&
             playlistsTopicReducer.playlists.results.map((playlist_topic) => (
               <div className="p-2 cursor-pointer" key={playlist_topic.id}>
-                <Course playlist={playlist_topic.playlist} />
+                <Playlist playlist={playlist_topic.playlist} />
               </div>
             ))}
         </Slider>

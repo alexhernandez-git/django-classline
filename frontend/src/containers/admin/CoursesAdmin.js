@@ -71,7 +71,7 @@ const CoursesAdmin = () => {
             <GridVideos>
               {coursesReducer.courses &&
                 coursesReducer.courses.results.map((course) => (
-                  <CourseCard course={course} key={course.id} />
+                  <CourseCard course={course} key={course.id} type="ADMIN" />
                 ))}
             </GridVideos>
             {coursesReducer.isLoading && <span>Cargando...</span>}

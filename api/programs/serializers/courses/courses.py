@@ -296,3 +296,70 @@ class AddStudentCourseSerializer(serializers.Serializer):
 
     
 
+
+class CoursePlayingModelSerializer(serializers.ModelSerializer):
+    """Profile model serializer."""
+    course_language = serializers.SerializerMethodField(read_only=True)
+    students_count = serializers.SerializerMethodField(read_only=True)
+    instructor = serializers.SerializerMethodField(read_only=True)
+    benefits = serializers.SerializerMethodField(read_only=True)
+    blocks = serializers.SerializerMethodField(read_only=True)
+    items = serializers.SerializerMethodField(read_only=True)
+    total_duration = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        """Meta class."""
+
+        model = Course
+        fields = (
+            'id',
+            'code',
+            'title',
+            'subtitle',
+            'description',
+            'course_language',
+            'picture',
+            'students_count',
+            'students',
+            'instructor',
+            'published_in_program',
+            'video_presentation',
+            'published',
+            'blocks',
+            'items',
+            'total_duration',
+            'blocks',
+        )
+
+        read_only_fields = (
+            'id',
+        )
+
+
+    def get_students_count(self, obj):
+        from api.users.serializers.users import UserTeacherCountModelSerializer
+        students = obj.students.all().count()
+        return students
+
+
+    def get_course_language(self, obj):
+        language = CourseLanguage.objects.filter(course=obj)
+        if language.count() > 0:
+            return CourseLanguageModelSerializer(language[0], many=False).data
+
+    def get_instructor(self, obj):
+        from api.users.serializers.users import UserTeacherCountModelSerializer
+        return UserTeacherCountModelSerializer(obj.user, read_only=True).data
+
+
+    def get_benefits(self, obj):
+        benefits = CourseBenefit.objects.filter(course=obj.id)
+        return CourseBenefitModelSerializer(benefits, many=True).data
+
+    def get_blocks(self, obj):
+        from api.programs.serializers import CourseBlockTrackModelSerializer
+        blocks = CourseBlock.objects.filter(course=obj.id)
+        return CourseBlockTrackModelSerializer(blocks, many=True).data
+
+    def get_total_duration(self, obj):
+        return LectureContent.objects.filter(course=obj.id, type_choices="VI").aggregate(Sum('duration'))['duration__sum']
