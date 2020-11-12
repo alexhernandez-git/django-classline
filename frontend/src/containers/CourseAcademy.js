@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Video from "src/components/ui/VideoList";
 import Layout from "src/components/Layout/Layout";
 import { Main } from "src/components/ui/Main";
@@ -7,32 +7,33 @@ import VideoPlayer from "src/components/ui/VideoPlayer";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useParams, Link, useHistory } from "react-router-dom";
-import { fetchPlaylist } from "src/redux/actions/playlistAdmin";
 import CourseList from "../components/ui/CourseList";
 import CourseSwitch from "../components/ui/CourseSwitch";
+import { fetchPlayingCourse } from "../redux/actions/courses/playingCourse";
 const CourseAcademy = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const router = useParams();
   const programReducer = useSelector((state) => state.programReducer);
-  const videoId = router.id;
+  const courseId = router.id;
   const trackId = router.track ? router.track : 0;
 
   useEffect(() => {
-    if (videoId && !programReducer.isLoading) {
-      const dispatchFetchVideo = (id) => dispatch(fetchPlaylist(id));
-      dispatchFetchVideo(videoId);
+    if (courseId && !programReducer.isLoading) {
+      const dispatchFetchPlayingCourse = (id) =>
+        dispatch(fetchPlayingCourse(id));
+      dispatchFetchPlayingCourse(courseId);
     }
-  }, [videoId, programReducer.isLoading]);
-  const playlistAdminReducer = useSelector(
-    (state) => state.playlistAdminReducer
+  }, [courseId, programReducer.isLoading]);
+  const playingCourseReducer = useSelector(
+    (state) => state.playingCourseReducer
   );
   const goNext = () => {
     const newTrackId = Number(trackId) + 1;
-    const maxPlaylistTrack = playlistAdminReducer.playlist.tracks.length;
+    const maxPlaylistTrack = playingCourseReducer.course.tracks.length;
     if (newTrackId < maxPlaylistTrack) {
       history.push({
-        pathname: `/academy/${programReducer.program.code}/playlist/${playlistAdminReducer.playlist.id}/${newTrackId}`,
+        pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.id}/${newTrackId}`,
       });
     }
   };
@@ -40,40 +41,64 @@ const CourseAcademy = (props) => {
     const newTrackId = Number(trackId) - 1;
     if (newTrackId >= 0) {
       history.push({
-        pathname: `/academy/${programReducer.program.code}/playlist/${playlistAdminReducer.playlist.id}/${newTrackId}`,
+        pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.id}/${newTrackId}`,
       });
     }
   };
-  // const playlistVideoRef = useRef(null)
+  // const courseVideoRef = useRef(null)
   // useEffect(() => {
-  //   console.log(playlistVideoRef);
-  //   if (playlistVideoRef.current) {
-  //     playlistVideoRef.current.scrollIntoView();
+  //   console.log(courseVideoRef);
+  //   if (courseVideoRef.current) {
+  //     courseVideoRef.current.scrollIntoView();
   //   }
   // }, [trackId])
-  return (
+  const [itemPlaying, setItemPlaying] = useState(trackId ? trackId : 0);
+  useEffect(() => {
+    setItemPlaying(trackId);
+  }, [trackId]);
+  const getTrackId = (id) => {
+    console.log(id);
+    const result = playingCourseReducer.course.items.find(
+      (track) => track.item.id == id
+    );
+    console.log("result", playingCourseReducer.course.items.indexOf(result));
+    return playingCourseReducer.course.items.indexOf(result);
+  };
+
+  return playingCourseReducer.isLoading ? (
+    <span>Cargando...</span>
+  ) : (
     <Main style={{ padding: "1rem" }}>
       <CourseHeader>
-        {playlistAdminReducer.playlist && playlistAdminReducer.playlist.name}
+        {playingCourseReducer.course && playingCourseReducer.course.title}
       </CourseHeader>
       <div className="row">
         <div className="col-md-6 col-lg-8">
-          {playlistAdminReducer.playlist &&
-            !playlistAdminReducer.isLoading &&
-            playlistAdminReducer.playlist.tracks.length > 0 && (
+          {playingCourseReducer.course &&
+            playingCourseReducer.course.items.length > 0 && (
               <>
-                <VideoPlayer
-                  video={playlistAdminReducer.playlist.tracks[trackId].video}
-                  goNext={goNext}
-                  goPrevious={goPrevious}
-                  isPlaylist={true}
-                />
+                {itemPlaying && (
+                  <>
+                    {playingCourseReducer.course.items[itemPlaying].item.name}
+                    {/* {playingCourseReducer.course.items[itemPlaying].item
+                      .type_choices == "VI" && (
+                      <VideoPlayer
+                        video={
+                          playingCourseReducer.course.items.item[itemPlaying]
+                        }
+                        goNext={goNext}
+                        goPrevious={goPrevious}
+                        isPlaylist={true}
+                      />
+                    )} */}
+                  </>
+                )}
                 <CourseSwitch />
               </>
             )}
-          {playlistAdminReducer.isLoading && <span>Cargando...</span>}
-          {playlistAdminReducer.playlist.tracks.length == 0 && (
-            <span>No hay videos en esta lista</span>
+
+          {playingCourseReducer.course.blocks.length == 0 && (
+            <span>No hay bloques en este curso</span>
           )}
         </div>
         <div className="col-md-6 col-lg-4">
@@ -84,30 +109,57 @@ const CourseAcademy = (props) => {
           </div>
           <PlaylistScroll>
             <div className="p-3">
-              {playlistAdminReducer.playlist &&
-                playlistAdminReducer.playlist.tracks.map((track, index) => (
-                  <Link
-                    to={{
-                      pathname: `/academy/${programReducer.program.code}/playlist/${playlistAdminReducer.playlist.id}/${index}`,
-                      query: { track: track.id },
-                    }}
-                    params={{ track: track.id }}
-                    key={track.id}
-                  >
-                    <PlaylistVideo
+              {playingCourseReducer.course &&
+                playingCourseReducer.course.blocks.map((track, index) => (
+                  <>
+                    <BlockSeccion
                       className={
-                        index == trackId
-                          ? "active d-flex justify-content-between align-items-center cursor-pointer"
-                          : "d-flex justify-content-between align-items-center cursor-pointer"
+                        "d-flex justify-content-between align-items-center cursor-pointer"
                       }
-                      // ref={index == trackId ? playlistVideoRef : null}
+                      // ref={index == trackId ? courseVideoRef : null}
                     >
-                      <span className="mr-4">{index + 1}</span>
-                      <CourseList video={track.video} />
-                    </PlaylistVideo>
-                  </Link>
+                      <span className="mr-4">
+                        {index + 1}: {track.block.name}
+                      </span>
+                      {/* <CourseList video={track.video} /> */}
+                    </BlockSeccion>
+                    <ItemList>
+                      {track.block.items.map((item, index) => (
+                        <>
+                          <ul>
+                            <li>
+                              {console.log("item", item)}
+                              <Link
+                                to={{
+                                  pathname: `/academy/${
+                                    programReducer.program.code
+                                  }/course/${
+                                    playingCourseReducer.course.code
+                                  }/${getTrackId(item.item.id)}`,
+                                  query: { item: item.id },
+                                }}
+                                params={{ item: item.id }}
+                                key={item.id}
+                              >
+                                <PlaylistItem
+                                  className={
+                                    item.id == trackId
+                                      ? "active d-flex justify-content-between align-items-center cursor-pointer"
+                                      : "d-flex justify-content-between align-items-center cursor-pointer"
+                                  }
+                                  // ref={index == trackId ? courseVideoRef : null}
+                                >
+                                  <small>{item.item.name}</small>
+                                </PlaylistItem>
+                              </Link>
+                            </li>
+                          </ul>
+                        </>
+                      ))}
+                    </ItemList>
+                  </>
                 ))}
-              {playlistAdminReducer.isLoading && <span>Cargando...</span>}
+              {playingCourseReducer.isLoading && <span>Cargando...</span>}
             </div>
           </PlaylistScroll>
         </div>
@@ -128,7 +180,13 @@ const PlaylistScroll = styled.div`
   overflow: auto;
   box-shadow: inset 0 0 20px 0px #ccc;
 `;
-const PlaylistVideo = styled.div`
+
+const ItemList = styled.div``;
+const BlockSeccion = styled.div`
+  padding: 1rem 0;
+`;
+
+const PlaylistItem = styled.div`
   padding: 1rem;
   &:hover {
     background: #ececec;

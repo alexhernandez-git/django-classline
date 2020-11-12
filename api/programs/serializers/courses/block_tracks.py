@@ -41,7 +41,6 @@ class CourseBlockTrackModelSerializer(serializers.ModelSerializer):
         return CourseBlockModelSerializer(obj.block).data
 
 
-
 class CourseBlockTrackCreateModelSerializer(serializers.Serializer):
     def create(self,data): 
         course = self.context['course']
@@ -56,3 +55,27 @@ class CourseBlockTrackCreateModelSerializer(serializers.Serializer):
                 course=course, block=CourseBlock.objects.create(), position=0
             )
         return new_block_track
+
+
+
+
+
+class CourseBlockTrackPlayingModelSerializer(serializers.ModelSerializer):
+    block = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        """Meta class."""
+
+        model = CourseBlockTrack
+        fields = (
+            'id',
+            'block',
+            'position',
+        )
+        # extra_kwargs = {'end': {'required': False}}
+        read_only_fields = (
+            'id',
+        )
+    
+    def get_block(self,obj):
+        from api.programs.serializers import CourseBlockPlayingModelSerializer
+        return CourseBlockPlayingModelSerializer(obj.block).data

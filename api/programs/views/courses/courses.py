@@ -23,7 +23,8 @@ from api.programs.serializers import (
     AddStudentCourseSerializer,
     PublishCourseSerializer,
     CancelPublishCourseSerializer,
-    CourseBlockTrackModelSerializer
+    CourseBlockTrackModelSerializer,
+    CoursePlayingModelSerializer
 )
 from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
@@ -62,23 +63,25 @@ class CourseViewSet(mixins.CreateModelMixin,
     def get_queryset(self):
         """Restrict list to public-only."""
         queryset = Course.objects.filter(program=self.program)
-        if self.action in ['list']:
-            queryset = Course.objects.filter(
-                program=self.program)
+         
         if self.action in ['list_program_courses']:
             queryset = Course.objects.filter(
                program=self.program, published_in_program=True)
-        if self.action in ['list_published_courses']:
+        elif self.action in ['list_published_courses']:
             queryset = Course.objects.filter(
                 program=self.program, published=True)
-
+        else:
+            queryset = Course.objects.filter(
+                program=self.program)
         return queryset
 
     def get_serializer_class(self):
         """Return serializer based on action."""
-        if self.action == 'create':
+        if self.action == 'retrieve_playing':
+            return CoursePlayingModelSerializer
+        elif self.action == 'create':
             return CourseCreateSerializer
-        if self.action in ['update', 'partial_update', 'get_accounts', 'cancel_accounts','update_blocks']:
+        elif self.action in ['update', 'partial_update', 'get_accounts', 'cancel_accounts','update_blocks']:
             return CourseModifyModelSerializer
         elif self.action == 'publish':
             return PublishCourseSerializer
@@ -133,6 +136,12 @@ class CourseViewSet(mixins.CreateModelMixin,
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def retrieve_playing(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
     @action(detail=True, methods=['put', 'patch'])
