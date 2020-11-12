@@ -79,18 +79,20 @@ const CourseAcademy = (props) => {
               <>
                 {itemPlaying && (
                   <>
-                    {playingCourseReducer.course.items[itemPlaying].item.name}
-                    {/* {playingCourseReducer.course.items[itemPlaying].item
-                      .type_choices == "VI" && (
-                      <VideoPlayer
-                        video={
-                          playingCourseReducer.course.items.item[itemPlaying]
-                        }
-                        goNext={goNext}
-                        goPrevious={goPrevious}
-                        isPlaylist={true}
-                      />
-                    )} */}
+                    {playingCourseReducer.course.items[itemPlaying].item
+                      .type_choices == "LE" &&
+                      playingCourseReducer.course.items[itemPlaying].item
+                        ?.content?.type_choices == "VI" && (
+                        <VideoPlayer
+                          video={
+                            playingCourseReducer.course.items[itemPlaying].item
+                              .content
+                          }
+                          goNext={goNext}
+                          goPrevious={goPrevious}
+                          isPlaylist={true}
+                        />
+                      )}
                   </>
                 )}
                 <CourseSwitch />

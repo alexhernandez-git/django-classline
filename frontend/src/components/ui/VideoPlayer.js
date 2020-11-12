@@ -30,7 +30,6 @@ const VideoPlayer = (props) => {
   const playerContainerRef = useRef();
   const playerRef = useRef();
   const controlsRef = useRef();
-
   const [state, setState] = useState({
     playing: true,
     muted: false,
