@@ -5,11 +5,15 @@ import { Main } from "src/components/ui/Main";
 import styled from "@emotion/styled";
 import VideoPlayer from "src/components/ui/VideoPlayer";
 import { useDispatch, useSelector } from "react-redux";
+import DocsItem from "src/components/ui/DocsItem";
 
 import { useParams, Link, useHistory, useLocation } from "react-router-dom";
 import CourseList from "../components/ui/CourseList";
 import CourseSwitch from "../components/ui/CourseSwitch";
 import { fetchPlayingCourse } from "../redux/actions/courses/playingCourse";
+import MaterialCourse from "../components/ui/MaterialCourse";
+import { IconContext } from "react-icons";
+import { GrCirclePlay, GrDocumentText } from "react-icons/gr";
 const CourseAcademy = (props) => {
   const playingCourseReducer = useSelector(
     (state) => state.playingCourseReducer
@@ -114,6 +118,16 @@ const CourseAcademy = (props) => {
                           isPlaylist={true}
                         />
                       )}
+                    {itemPlaying.item?.type_choices == "LE" &&
+                      itemPlaying.item?.content?.type_choices == "MA" && (
+                        <div className="my-5">
+                          <MaterialCourse
+                            item={itemPlaying.item}
+                            key={itemPlaying.item.id}
+                          />
+                        </div>
+                      )}
+                    <hr />
                     <CourseSwitch itemPlaying={itemPlaying} />
                   </>
                 )}
@@ -174,6 +188,45 @@ const CourseAcademy = (props) => {
                                   // ref={index == trackCode ? courseVideoRef : null}
                                 >
                                   <small>
+                                    {item.item.type_choices == "LE" &&
+                                      item.item?.content?.type_choices ==
+                                        "VI" && (
+                                        <IconContext.Provider
+                                          value={{
+                                            size: 14,
+                                            className:
+                                              "global-class-name mx-2 cursor-pointer",
+                                          }}
+                                        >
+                                          <GrCirclePlay />
+                                        </IconContext.Provider>
+                                      )}
+                                    {item.item.type_choices == "LE" &&
+                                      item.item?.content?.type_choices ==
+                                        "TE" && (
+                                        <IconContext.Provider
+                                          value={{
+                                            size: 14,
+                                            className:
+                                              "global-class-name mx-2 cursor-pointer",
+                                          }}
+                                        >
+                                          <GrDocumentText />
+                                        </IconContext.Provider>
+                                      )}
+                                    {item.item.type_choices == "LE" &&
+                                      item.item?.content?.type_choices ==
+                                        "MA" && (
+                                        <IconContext.Provider
+                                          value={{
+                                            size: 14,
+                                            className:
+                                              "global-class-name mx-2 cursor-pointer",
+                                          }}
+                                        >
+                                          <GrDocumentText />
+                                        </IconContext.Provider>
+                                      )}
                                     {items.indexOf(item) + 1}: {item.item.name}
                                   </small>
                                 </PlaylistItem>
