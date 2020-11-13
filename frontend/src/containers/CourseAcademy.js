@@ -14,6 +14,8 @@ import { fetchPlayingCourse } from "../redux/actions/courses/playingCourse";
 import MaterialCourse from "../components/ui/MaterialCourse";
 import { IconContext } from "react-icons";
 import { GrCirclePlay, GrDocumentText } from "react-icons/gr";
+import { ButtonCustom } from "../components/ui/ButtonCustom";
+import BlockItemsList from "../components/ui/BlockItemsList";
 const CourseAcademy = (props) => {
   const playingCourseReducer = useSelector(
     (state) => state.playingCourseReducer
@@ -58,7 +60,7 @@ const CourseAcademy = (props) => {
   };
   const goPrevious = () => {
     const result = items.indexOf(
-      items.find((item) => (item.item.code = trackCode))
+      items.find((item) => item.item.code == trackCode)
     );
 
     const previous_item = items[result - 1];
@@ -111,23 +113,36 @@ const CourseAcademy = (props) => {
                   <>
                     {itemPlaying.item?.type_choices == "LE" &&
                       itemPlaying.item?.content?.type_choices == "VI" && (
-                        <VideoPlayer
-                          video={itemPlaying.item.content}
-                          goNext={goNext}
-                          goPrevious={goPrevious}
-                          isPlaylist={true}
-                        />
+                        <VideoPlayer video={itemPlaying.item.content} />
                       )}
                     {itemPlaying.item?.type_choices == "LE" &&
                       itemPlaying.item?.content?.type_choices == "MA" && (
-                        <div className="my-5">
-                          <MaterialCourse
-                            item={itemPlaying.item}
-                            key={itemPlaying.item.id}
-                          />
-                        </div>
+                        <>
+                          <div className="my-5">
+                            <MaterialCourse
+                              item={itemPlaying.item}
+                              key={itemPlaying.item.id}
+                            />
+                          </div>
+                        </>
                       )}
+
+                    {itemPlaying.item?.content?.description && (
+                      <>
+                        {/* <hr /> */}
+                        <div className="mt-3">
+                          <span className="text-grey new-line text-break">
+                            {itemPlaying.item?.content?.description}
+                          </span>
+                        </div>
+                      </>
+                    )}
                     <hr />
+                    <div className="d-sm-flex justify-content-between px-2 mt-3">
+                      <ButtonCustom onClick={goPrevious}>Anterior</ButtonCustom>
+                      <div className="d-block m-2 d-sm-none"></div>
+                      <ButtonCustom onClick={goNext}>Siguente</ButtonCustom>
+                    </div>
                     <CourseSwitch itemPlaying={itemPlaying} />
                   </>
                 )}
@@ -147,96 +162,19 @@ const CourseAcademy = (props) => {
           </div>
           <div className="playlist-scroll">
             <div
-              className="p-3"
+              className=""
               style={{
                 height: "80.5vh",
               }}
             >
               {playingCourseReducer.course &&
                 playingCourseReducer.course.blocks.map((track, index_block) => (
-                  <>
-                    <BlockSeccion
-                      className={
-                        "d-flex justify-content-between align-items-center cursor-pointer"
-                      }
-                      // ref={index_block == trackCode ? courseVideoRef : null}
-                    >
-                      <span className="mr-4">
-                        {index_block + 1}: {track.block.name}
-                      </span>
-                      {/* <CourseList video={track.video} /> */}
-                    </BlockSeccion>
-                    <div>
-                      {track.block.items.map((item, index) => (
-                        <>
-                          <ul>
-                            <li>
-                              <Link
-                                to={{
-                                  pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${item.item.code}/`,
-                                  query: { item: item.id },
-                                }}
-                                params={{ item: item.id }}
-                                key={item.id}
-                              >
-                                <PlaylistItem
-                                  className={
-                                    item.id == itemPlaying?.id
-                                      ? "active d-flex justify-content-between align-items-center cursor-pointer"
-                                      : "d-flex justify-content-between align-items-center cursor-pointer"
-                                  }
-                                  // ref={index == trackCode ? courseVideoRef : null}
-                                >
-                                  <small>
-                                    {item.item.type_choices == "LE" &&
-                                      item.item?.content?.type_choices ==
-                                        "VI" && (
-                                        <IconContext.Provider
-                                          value={{
-                                            size: 14,
-                                            className:
-                                              "global-class-name mx-2 cursor-pointer",
-                                          }}
-                                        >
-                                          <GrCirclePlay />
-                                        </IconContext.Provider>
-                                      )}
-                                    {item.item.type_choices == "LE" &&
-                                      item.item?.content?.type_choices ==
-                                        "TE" && (
-                                        <IconContext.Provider
-                                          value={{
-                                            size: 14,
-                                            className:
-                                              "global-class-name mx-2 cursor-pointer",
-                                          }}
-                                        >
-                                          <GrDocumentText />
-                                        </IconContext.Provider>
-                                      )}
-                                    {item.item.type_choices == "LE" &&
-                                      item.item?.content?.type_choices ==
-                                        "MA" && (
-                                        <IconContext.Provider
-                                          value={{
-                                            size: 14,
-                                            className:
-                                              "global-class-name mx-2 cursor-pointer",
-                                          }}
-                                        >
-                                          <GrDocumentText />
-                                        </IconContext.Provider>
-                                      )}
-                                    {items.indexOf(item) + 1}: {item.item.name}
-                                  </small>
-                                </PlaylistItem>
-                              </Link>
-                            </li>
-                          </ul>
-                        </>
-                      ))}
-                    </div>
-                  </>
+                  <BlockItemsList
+                    track={track}
+                    index_block={index_block}
+                    itemPlaying={itemPlaying}
+                    items={items}
+                  />
                 ))}
               {playingCourseReducer.isLoading && <span>Cargando...</span>}
             </div>
@@ -291,17 +229,4 @@ const CourseContent = styled.div`
   }
 `;
 
-const BlockSeccion = styled.div`
-  padding: 1rem 0;
-`;
-
-const PlaylistItem = styled.div`
-  padding: 1rem;
-  &:hover {
-    background: #ececec;
-  }
-  &.active {
-    background: #ececec;
-  }
-`;
 export default CourseAcademy;

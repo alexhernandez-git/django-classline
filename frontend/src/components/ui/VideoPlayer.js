@@ -109,6 +109,18 @@ const VideoPlayer = (props) => {
     : "00:00";
   const elapsedTime = format(currentTime);
   const totalDuration = format(duration);
+  const [url, setUrl] = useState(null);
+  useEffect(() => {
+    const handleCreateBlob = async () => {
+      if (video) {
+        let blob = await fetch(video).then((r) => r.blob());
+        const url = URL.createObjectURL(blob);
+
+        setUrl(url);
+      }
+    };
+    handleCreateBlob();
+  }, [video]);
   return (
     <>
       <PlayerWrapper
@@ -118,7 +130,7 @@ const VideoPlayer = (props) => {
       >
         <ReactPlayer
           ref={playerRef}
-          url={video}
+          url={url}
           width="100%"
           height="100%"
           style={{ display: "flex", alignItems: "center" }}
