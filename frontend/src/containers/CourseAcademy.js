@@ -113,7 +113,11 @@ const CourseAcademy = (props) => {
                   <>
                     {itemPlaying.item?.type_choices == "LE" &&
                       itemPlaying.item?.content?.type_choices == "VI" && (
-                        <VideoPlayer video={itemPlaying.item.content} />
+                        <VideoPlayer
+                          video={itemPlaying.item.content}
+                          isCourse
+                          goNext={goNext}
+                        />
                       )}
                     {itemPlaying.item?.type_choices == "LE" &&
                       itemPlaying.item?.content?.type_choices == "MA" && (
@@ -126,14 +130,17 @@ const CourseAcademy = (props) => {
                           </div>
                         </>
                       )}
-
                     {itemPlaying.item?.content?.description && (
                       <>
                         {/* <hr /> */}
                         <div className="mt-3">
-                          <span className="text-grey new-line text-break">
-                            {itemPlaying.item?.content?.description}
-                          </span>
+                          <span
+                            className="new-line text-break"
+                            style={{ color: "initial" }}
+                            dangerouslySetInnerHTML={{
+                              __html: itemPlaying.item?.content?.description,
+                            }}
+                          />
                         </div>
                       </>
                     )}
@@ -157,7 +164,7 @@ const CourseAcademy = (props) => {
         <div className="course-content-list">
           <div className="d-block d-md-none m-5"></div>
 
-          <div className="d-flex justify-content-center p-4 h2 mb-0 shadow rounded">
+          <div className="d-flex justify-content-center p-4 h2 mb-0 rounded border">
             <span className="font-weight-bold">Contenido del curso</span>
           </div>
           <div className="playlist-scroll">

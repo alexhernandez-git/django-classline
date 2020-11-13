@@ -9,9 +9,13 @@ import { AdminForm } from "src/components/ui/AdminForm";
 import { Field } from "formik";
 import SelectLang from "./SelectLang";
 import { useSelector } from "react-redux";
+import MyCKEditor from "../ui/MyCKEditor";
 
-const MainPackInfo = (props) => {
+const MainPackInfo = ({ values, setFieldValue }) => {
   const packReducer = useSelector((state) => state.packReducer);
+  const handleEdit = (value) => {
+    setFieldValue("description", value);
+  };
   return (
     <div className="bg-white border p-3 rounded my-2 mb-4">
       <span className="d-none d-md-block">Información principal del pack</span>
@@ -47,16 +51,9 @@ const MainPackInfo = (props) => {
             <span className="m-0 font-weight-normal">Descripción</span>
           </Col>
 
-          <Col lg={{ offset: 1, span: 6 }}>
-            <Field
-              component="textarea"
-              name="description"
-              cols="30"
-              rows="10"
-              // value={values.description}
-              // onChange={handleChange}
-              placeholder="Descripción"
-            />
+          <Col lg={{ offset: 1, span: 6 }} style={{ color: "initial" }}>
+            <MyCKEditor value={values.description} handleEdit={handleEdit} />
+
             {packReducer.save_error &&
               packReducer.save_error.data.description &&
               packReducer.save_error.data.description.map((error) => (

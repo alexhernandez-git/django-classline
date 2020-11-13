@@ -26,7 +26,7 @@ let count = 0;
 
 const VideoPlayer = (props) => {
   const { title, description, video, created } = props.video;
-  const { goNext, goPrevious, isPlaylist } = props;
+  const { goNext, goPrevious, isPlaylist, isCourse } = props;
   const playerContainerRef = useRef();
   const playerRef = useRef();
   const controlsRef = useRef();
@@ -121,6 +121,20 @@ const VideoPlayer = (props) => {
     };
     handleCreateBlob();
   }, [video]);
+  useEffect(() => {
+    console.log("Elapsed time", elapsedTime);
+    console.log("totalDuration", totalDuration);
+    console.log("isCourse", isCourse);
+    console.log(totalDuration > 0 && (isCourse || isPlaylist));
+    if (totalDuration > 0 && (isCourse || isPlaylist)) {
+      console.log("entra");
+      if (elapsedTime == totalDuration) {
+        console.log("entra2");
+
+        goNext();
+      }
+    }
+  }, [elapsedTime]);
   return (
     <>
       <PlayerWrapper

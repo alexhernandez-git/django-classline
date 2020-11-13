@@ -12,9 +12,13 @@ const ProgramDescription = () => {
       <hr />
       <div className="row pr-3 pl-3 mt-3">
         <div className="p-2 position-relative">
-          <span className="new-line">
-            {!programReducer.isLoading && programReducer.program.description}
-          </span>
+          <span
+            className="new-line"
+            dangerouslySetInnerHTML={{
+              __html:
+                !programReducer.isLoading && programReducer.program.description,
+            }}
+          />
         </div>
       </div>
     </>

@@ -413,6 +413,10 @@ button:disabled {
 .fc-event-container {
   margin: 0 !important;
 }
+ul,
+ol {
+  margin-left: 2rem !important;
+}
 @import "~@fullcalendar/core/main.css";
 @import "~@fullcalendar/daygrid/main.css";
 @import "~@fullcalendar/timegrid/main.css";

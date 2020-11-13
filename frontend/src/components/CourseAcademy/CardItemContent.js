@@ -329,7 +329,7 @@ const CardItemContent = ({
           <hr />
           <div>
             {item?.content?.description ? (
-              <div className="mb-3">
+              <div className="">
                 {editDescription ? (
                   <EditContentDescription
                     newDescription={newDescription}
@@ -341,7 +341,12 @@ const CardItemContent = ({
                   />
                 ) : (
                   <>
-                    <span css={textEllipsis}>{item?.content?.description}</span>
+                    <span
+                      css={textEllipsis}
+                      dangerouslySetInnerHTML={{
+                        __html: item?.content?.description,
+                      }}
+                    />
                     <div
                       className="d-flex align-items-center cursor-pointer"
                       onClick={handleOpenEditDescription}

@@ -1,6 +1,7 @@
 import React from "react";
 import { AdminForm } from "./AdminForm";
 import { ButtonCustom } from "./ButtonCustom";
+import MyCKEditor from "./MyCKEditor";
 
 const EditContentDescription = ({
   newDescription,
@@ -14,10 +15,8 @@ const EditContentDescription = ({
   return (
     <>
       <AdminForm>
-        <div className="my-3">
-          <textarea onChange={(e) => setNewDescription(e.target.value)}>
-            {newDescription}
-          </textarea>
+        <div className="my-3" style={{ color: "initial" }}>
+          <MyCKEditor value={newDescription} handleEdit={setNewDescription} />
         </div>
         <div className="d-sm-flex mt-2 justify-content-end">
           <ButtonCustom

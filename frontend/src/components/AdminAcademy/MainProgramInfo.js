@@ -9,8 +9,12 @@ import { AdminForm } from "src/components/ui/AdminForm";
 import { Field } from "formik";
 import SelectLang from "./SelectLang";
 import { useSelector } from "react-redux";
-const MainCourseInfo = (props) => {
+import MyCKEditor from "../ui/MyCKEditor";
+const MainCourseInfo = ({ values, setFieldValue }) => {
   const programReducer = useSelector((state) => state.programReducer);
+  const handleEdit = (value) => {
+    setFieldValue("description", value);
+  };
   return (
     <div className="bg-white border p-3 rounded my-2 mb-4">
       <span className="d-none d-md-block">Página de inicio de la academia</span>
@@ -69,16 +73,9 @@ const MainCourseInfo = (props) => {
             <span className="m-0 font-weight-normal">Descripción</span>
           </Col>
 
-          <Col lg={{ offset: 1, span: 6 }}>
-            <Field
-              component="textarea"
-              name="description"
-              cols="30"
-              rows="10"
-              // value={values.description}
-              // onChange={handleChange}
-              placeholder="Descripción"
-            />
+          <Col lg={{ offset: 1, span: 6 }} style={{ color: "initial" }}>
+            <MyCKEditor value={values.description} handleEdit={handleEdit} />
+
             {programReducer.save_error &&
               programReducer.save_error.data.description &&
               programReducer.save_error.data.description.map((error) => (

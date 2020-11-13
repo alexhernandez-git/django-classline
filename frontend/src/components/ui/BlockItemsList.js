@@ -57,10 +57,10 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
         {/* <CourseList video={track.video} /> */}
       </div>
       <div>
-        {isItemsOpen &&
-          track.block.items.map((item, index) => (
-            <>
-              <ul>
+        <ul className="m-0">
+          {isItemsOpen &&
+            track.block.items.map((item, index) => (
+              <>
                 <li>
                   <Link
                     to={{
@@ -122,9 +122,9 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
                     </PlaylistItem>
                   </Link>
                 </li>
-              </ul>
-            </>
-          ))}
+              </>
+            ))}
+        </ul>
       </div>
     </>
   );

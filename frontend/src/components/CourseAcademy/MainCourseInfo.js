@@ -9,9 +9,12 @@ import { AdminForm } from "src/components/ui/AdminForm";
 import { Field } from "formik";
 import SelectLang from "./SelectLang";
 import { useSelector } from "react-redux";
-
-const MainCourseInfo = (props) => {
-  const packReducer = useSelector((state) => state.packReducer);
+import MyCKEditor from "../ui/MyCKEditor";
+const MainCourseInfo = ({ values, setFieldValue }) => {
+  const courseReducer = useSelector((state) => state.courseReducer);
+  const handleEdit = (value) => {
+    setFieldValue("description", value);
+  };
   return (
     <div className="bg-white border p-3 rounded my-2 mb-4">
       <span className="d-none d-md-block">Información principal del curso</span>
@@ -32,9 +35,9 @@ const MainCourseInfo = (props) => {
               // value={values.title}
               // onChange={handleChange}
             />
-            {packReducer.save_error &&
-              packReducer.save_error.data.title &&
-              packReducer.save_error.data.title.map((error) => (
+            {courseReducer.save_error &&
+              courseReducer.save_error.data.title &&
+              courseReducer.save_error.data.title.map((error) => (
                 <small className="d-block text-red">{error}</small>
               ))}
           </Col>
@@ -55,9 +58,9 @@ const MainCourseInfo = (props) => {
               // value={values.subtitle}
               // onChange={handleChange}
             />
-            {packReducer.save_error &&
-              packReducer.save_error.data.subtitle &&
-              packReducer.save_error.data.subtitle.map((error) => (
+            {courseReducer.save_error &&
+              courseReducer.save_error.data.subtitle &&
+              courseReducer.save_error.data.subtitle.map((error) => (
                 <small className="d-block text-red">{error}</small>
               ))}
           </Col>
@@ -70,8 +73,8 @@ const MainCourseInfo = (props) => {
             <span className="m-0 font-weight-normal">Descripción</span>
           </Col>
 
-          <Col lg={{ offset: 1, span: 6 }}>
-            <Field
+          <Col lg={{ offset: 1, span: 6 }} style={{ color: "initial" }}>
+            {/* <Field
               component="textarea"
               name="description"
               cols="30"
@@ -79,10 +82,11 @@ const MainCourseInfo = (props) => {
               // value={values.description}
               // onChange={handleChange}
               placeholder="Descripción"
-            />
-            {packReducer.save_error &&
-              packReducer.save_error.data.description &&
-              packReducer.save_error.data.description.map((error) => (
+            /> */}
+            <MyCKEditor value={values.description} handleEdit={handleEdit} />
+            {courseReducer.save_error &&
+              courseReducer.save_error.data.description &&
+              courseReducer.save_error.data.description.map((error) => (
                 <small className="d-block text-red">{error}</small>
               ))}
           </Col>
