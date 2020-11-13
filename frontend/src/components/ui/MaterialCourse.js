@@ -110,7 +110,7 @@ const MaterialCourse = (props) => {
             className="d-flex justify-content-center align-items-center flex-column"
           >
             {setFileIcon()}
-            {item.name}
+            {item.content.name}
           </a>
         </IconContext.Provider>
       </div>

@@ -26,8 +26,9 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
     <>
       <div
         className={
-          "d-flex justify-content-between align-items-center cursor-pointer shadow p-3"
+          "d-flex justify-content-between align-items-center cursor-pointer px-3 py-4 border-top"
         }
+        style={{ background: "#f7f8fa" }}
         onClick={handleToggleItems}
         // ref={index_block == trackCode ? courseVideoRef : null}
       >
