@@ -47,9 +47,7 @@ const CourseAcademy = (props) => {
       items.find((item) => item.item.code == trackCode)
     );
     const next_item = items[result + 1];
-    console.log(
-      `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${next_item.item.code}`
-    );
+
     history.push({
       pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${next_item.item.code}`,
     });
@@ -75,9 +73,8 @@ const CourseAcademy = (props) => {
   const [itemPlaying, setItemPlaying] = useState(false);
   useEffect(() => {
     // setItemPlaying(trackCode);
-    if ((!playingCourseReducer.isLoading, items)) {
+    if (!playingCourseReducer.isLoading && items) {
       if (trackCode) {
-        console.log("items", items);
         const result = items.find((item) => item.item.code == trackCode);
         setItemPlaying(result);
       } else {
@@ -97,43 +94,50 @@ const CourseAcademy = (props) => {
   return playingCourseReducer.isLoading ? (
     <span>Cargando...</span>
   ) : (
-    <Main style={{ padding: "1rem" }}>
-      <CourseHeader>
-        {playingCourseReducer.course && playingCourseReducer.course.title}
-      </CourseHeader>
-      <div className="row">
-        <div className="col-md-6 col-lg-8">
-          {items && items.length > 0 && (
-            <>
-              {itemPlaying && (
-                <>
-                  {itemPlaying.item?.type_choices == "LE" &&
-                    itemPlaying.item?.content?.type_choices == "VI" && (
-                      <VideoPlayer
-                        video={itemPlaying.item.content}
-                        goNext={goNext}
-                        goPrevious={goPrevious}
-                        isPlaylist={true}
-                      />
-                    )}
-                </>
-              )}
-              <CourseSwitch />
-            </>
-          )}
-
-          {playingCourseReducer.course.blocks.length == 0 && (
-            <span>No hay bloques en este curso</span>
-          )}
+    <Main style={{ overflow: "hidden" }}>
+      <CourseContent>
+        <div className="course-header">
+          {playingCourseReducer.course && playingCourseReducer.course.title}
         </div>
-        <div className="col-md-6 col-lg-4">
+        <div className="course-content">
+          <div>
+            {items && items.length > 0 && (
+              <>
+                {itemPlaying && (
+                  <>
+                    {itemPlaying.item?.type_choices == "LE" &&
+                      itemPlaying.item?.content?.type_choices == "VI" && (
+                        <VideoPlayer
+                          video={itemPlaying.item.content}
+                          goNext={goNext}
+                          goPrevious={goPrevious}
+                          isPlaylist={true}
+                        />
+                      )}
+                    <CourseSwitch itemPlaying={itemPlaying} />
+                  </>
+                )}
+              </>
+            )}
+
+            {playingCourseReducer.course.blocks.length == 0 && (
+              <span>No hay bloques en este curso</span>
+            )}
+          </div>
+        </div>
+        <div className="course-content-list">
           <div className="d-block d-md-none m-5"></div>
 
           <div className="d-flex justify-content-center p-4 h2 mb-0 shadow rounded">
             <span className="font-weight-bold">Contenido del curso</span>
           </div>
-          <PlaylistScroll>
-            <div className="p-3">
+          <div className="playlist-scroll">
+            <div
+              className="p-3"
+              style={{
+                height: "80.5vh",
+              }}
+            >
               {playingCourseReducer.course &&
                 playingCourseReducer.course.blocks.map((track, index_block) => (
                   <>
@@ -148,8 +152,7 @@ const CourseAcademy = (props) => {
                       </span>
                       {/* <CourseList video={track.video} /> */}
                     </BlockSeccion>
-                    <ItemList>
-                      {console.log("track block items", track.block.items)}
+                    <div>
                       {track.block.items.map((item, index) => (
                         <>
                           <ul>
@@ -171,8 +174,7 @@ const CourseAcademy = (props) => {
                                   // ref={index == trackCode ? courseVideoRef : null}
                                 >
                                   <small>
-                                    {items.indexOf(item) + 1}: {item.item.name}{" "}
-                                    : {item.item.code}
+                                    {items.indexOf(item) + 1}: {item.item.name}
                                   </small>
                                 </PlaylistItem>
                               </Link>
@@ -180,32 +182,62 @@ const CourseAcademy = (props) => {
                           </ul>
                         </>
                       ))}
-                    </ItemList>
+                    </div>
                   </>
                 ))}
               {playingCourseReducer.isLoading && <span>Cargando...</span>}
             </div>
-          </PlaylistScroll>
+          </div>
         </div>
-      </div>
+      </CourseContent>
     </Main>
   );
 };
-const CourseHeader = styled.div`
-  padding: 1.5rem;
-  font-size: 2.4rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-  border-radius: 0.25rem !important;
-`;
-const PlaylistScroll = styled.div`
-  background: #fff;
-  max-height: calc(100vh - 21rem);
-  overflow: auto;
-  box-shadow: inset 0 0 20px 0px #ccc;
+const CourseContent = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-column-gap: 1rem;
+  grid-template-rows: auto;
+  grid-template-columns: 25% 1fr;
+  grid-template-areas:
+    "course-header course-header"
+    "course-content-list course-content";
+
+  @media screen and (max-width: 992px) {
+    display: block;
+    .course-content-list {
+      grid-area: course-content-list;
+      display: none;
+    }
+  }
+  .course-header {
+    grid-area: course-header;
+    text-align: center;
+
+    padding: 1.5rem;
+    font-size: 2.4rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    border-radius: 0.25rem !important;
+  }
+  .course-content {
+    grid-area: course-content;
+    height: calc(100vh - 13.5rem);
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .course-content-list {
+    grid-area: course-content-list;
+    .playlist-scroll {
+      background: #fff;
+      overflow: auto;
+      box-shadow: inset 0 0 20px 0px #ccc;
+    }
+  }
 `;
 
-const ItemList = styled.div``;
 const BlockSeccion = styled.div`
   padding: 1rem 0;
 `;

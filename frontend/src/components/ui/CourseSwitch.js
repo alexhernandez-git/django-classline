@@ -1,64 +1,153 @@
+import styled from "@emotion/styled";
 import React, { useState } from "react";
-import { Tab, Nav, Col, Row } from "react-bootstrap";
+import { Tab, Nav } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { textEllipsis } from "src/components/ui/TextEllipsis";
 
-const CourseSwitch = () => {
+const CourseSwitch = ({ itemPlaying }) => {
   const [key, setKey] = useState(0);
-
+  const playingCourseReducer = useSelector(
+    (state) => state.playingCourseReducer
+  );
+  const course = playingCourseReducer.course;
   return (
-    <div>
+    <ContainerTabs className="mt-3">
       <Tab.Container
         id="left-tabs-example"
         activeKey={key}
         onSelect={(k) => setKey(k)}
         defaultActiveKey="first"
-        className="p-3"
+        className=""
       >
-        <Row className="mb-3">
-          <Col sm={12}>
-            <Nav
-              style={{
-                whiteSpace: "nowrap",
-                position: "relative",
-                overflowX: "auto",
-                overflowY: "hidden",
-                width: "100%",
-                flexWrap: "nowrap",
-              }}
-            >
-              <Nav.Item>
-                <Nav.Link eventKey={0} className="text-grey">
-                  <span>INFORMACIÓN PRINCIPAL</span>
-                </Nav.Link>
-              </Nav.Item>
+        <div className="mb-3">
+          <Nav
+            style={{
+              whiteSpace: "nowrap",
+              position: "relative",
+              overflowX: "auto",
+              overflowY: "hidden",
+              width: "100%",
+              flexWrap: "nowrap",
+            }}
+          >
+            <Nav.Item>
+              <Nav.Link eventKey={0} className="text-grey">
+                <span>PREGUNTAS Y RESPUESTAS</span>
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey={1} className="text-grey">
+                <span>ACERCA DEL CURSO</span>
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+        </div>
 
-              <Nav.Item>
-                <Nav.Link eventKey={1} className="text-grey">
-                  <span>CONFIGURACIÓN</span>
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey={2} className="text-grey">
-                  <span>CONTENIDO</span>
-                </Nav.Link>
-              </Nav.Item>
-            </Nav>
-          </Col>
-        </Row>
+        <div>
+          <Tab.Content>
+            <Tab.Pane eventKey={0} className="text-grey">
+              <QuestionsAndAnswersContainer>
+                <div className="search-questions">
+                  <input type="text" />
+                  <button>Buscar</button>
+                </div>
+                <div className="questions-list">
+                  <div>
+                    <span>323232 preguntas en esta lección</span>
+                    <span>Hacer otra pregunta</span>
+                  </div>
+                  <hr />
+                  <div className="question">
+                    <div className="question-img-container">picture</div>
+                    <div>
+                      <div className="question-title">
+                        <span>Saving document efwwaea</span>
+                      </div>
+                      <div className="question-text">
+                        <small>awfefaewewafewafwe</small>
+                      </div>
+                      <div className="question-info">
+                        <small>Alex Hernandez</small> .{" "}
+                        <small>Hace 2 horas</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </QuestionsAndAnswersContainer>
+            </Tab.Pane>
 
-        <Row>
-          <Col className="pl-3 pr-3 pb-5">
-            <Tab.Content>
-              <Tab.Pane eventKey={0} className="text-grey"></Tab.Pane>
-
-              <Tab.Pane eventKey={1} className="text-grey"></Tab.Pane>
-
-              <Tab.Pane eventKey={2} className="text-grey"></Tab.Pane>
-            </Tab.Content>
-          </Col>
-        </Row>
+            <Tab.Pane eventKey={1} className="text-grey">
+              <AboutContainer>
+                <div className="img-container">
+                  <img src={course.picture} alt="" />
+                </div>
+                <div className="info-container">
+                  <div>{course.title}</div>
+                  <hr />
+                  <div>
+                    <small>{course.subtitle}</small>
+                  </div>
+                  <br />
+                  {course.description && (
+                    <div>
+                      <small>{course.description}</small>
+                    </div>
+                  )}
+                </div>
+              </AboutContainer>
+            </Tab.Pane>
+          </Tab.Content>
+        </div>
       </Tab.Container>
-    </div>
+    </ContainerTabs>
   );
 };
+const ContainerTabs = styled.div`
+  .nav-link.active {
+    border-bottom: 1px solid #212529;
+    color: #212529 !important;
+  }
+  .nav-link:hover {
+    color: #212529 !important;
+  }
+  .nav-link {
+    color: #212529 !important;
+    padding: 0rem;
+    margin-left: 15px;
+  }
+
+  .nav > .nav-item:first-of-type > .nav-link {
+    margin-left: 0;
+  }
+  @media only screen and (min-width: 768px) {
+    .nav-link {
+      padding: 0.2rem;
+      margin-left: 20px;
+    }
+  }
+`;
+const AboutContainer = styled.div`
+  word-break: break-all;
+  overflow: hidden;
+  .img-container {
+    max-width: 20rem;
+    img {
+      border-radius: 1rem;
+      width: 100%;
+    }
+  }
+  .info-container {
+    white-space: pre-line;
+    width: 100%;
+  }
+  @media only screen and (min-width: 480px) {
+    display: grid;
+    grid-template-columns: 20rem 1fr;
+    .info-container {
+      margin-left: 1rem;
+    }
+  }
+`;
+const QuestionsAndAnswersContainer = styled.div``;
 
 export default CourseSwitch;
