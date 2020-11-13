@@ -21,8 +21,6 @@ const CourseAcademy = (props) => {
   const programReducer = useSelector((state) => state.programReducer);
   const courseId = router.id;
   const trackCode = router.track ? router.track : null;
-  const itemId = location.query?.item ? location.query?.item : 0;
-  console.log(location.query);
   useEffect(() => {
     if (courseId && !programReducer.isLoading) {
       const dispatchFetchPlayingCourse = (id) =>
@@ -30,23 +28,42 @@ const CourseAcademy = (props) => {
       dispatchFetchPlayingCourse(courseId);
     }
   }, [courseId, programReducer.isLoading]);
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    if (!playingCourseReducer.isLoading) {
+      let result = [];
+      playingCourseReducer.course.blocks.forEach((block_track) => {
+        block_track.block.items.forEach((item_track) =>
+          result.push(item_track)
+        );
+      });
+      setItems(result);
+    }
+  }, [playingCourseReducer]);
 
   const goNext = () => {
-    const newTrackId = Number(trackCode) + 1;
-    const maxPlaylistTrack = playingCourseReducer.course.tracks.length;
-    if (newTrackId < maxPlaylistTrack) {
-      history.push({
-        pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.id}/${newTrackId}`,
-      });
-    }
+    const result = items.indexOf(
+      items.find((item) => item.item.code == trackCode)
+    );
+    const next_item = items[result + 1];
+    console.log(
+      `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${next_item.item.code}`
+    );
+    history.push({
+      pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${next_item.item.code}`,
+    });
   };
   const goPrevious = () => {
-    const newTrackId = Number(trackCode) - 1;
-    if (newTrackId >= 0) {
-      history.push({
-        pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.id}/${newTrackId}`,
-      });
-    }
+    const result = items.indexOf(
+      items.find((item) => (item.item.code = trackCode))
+    );
+
+    const previous_item = items[result - 1];
+
+    history.push({
+      pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${previous_item.item.code}`,
+    });
   };
   // const courseVideoRef = useRef(null)
   // useEffect(() => {
@@ -57,19 +74,17 @@ const CourseAcademy = (props) => {
   // }, [trackCode])
   const [itemPlaying, setItemPlaying] = useState(false);
   useEffect(() => {
-    console.log("entra");
     // setItemPlaying(trackCode);
-    if (!playingCourseReducer.isLoading) {
+    if ((!playingCourseReducer.isLoading, items)) {
       if (trackCode) {
-        const result = playingCourseReducer.course.items.find(
-          (track) => track.item.code == trackCode
-        );
+        console.log("items", items);
+        const result = items.find((item) => item.item.code == trackCode);
         setItemPlaying(result);
       } else {
         setItemPlaying(playingCourseReducer.course.blocks[0].block.items[0]);
       }
     }
-  }, [trackCode, playingCourseReducer]);
+  }, [trackCode, playingCourseReducer, items]);
 
   // const getTrackId = (id) => {
   //   console.log(id);
@@ -88,27 +103,24 @@ const CourseAcademy = (props) => {
       </CourseHeader>
       <div className="row">
         <div className="col-md-6 col-lg-8">
-          {playingCourseReducer.course &&
-            playingCourseReducer.course.items.length > 0 && (
-              <>
-                {console.log("itemPlaying", itemPlaying)}
-                {itemPlaying && (
-                  <>
-                    {console.log(itemPlaying)}
-                    {itemPlaying.item.type_choices == "LE" &&
-                      itemPlaying.item?.content?.type_choices == "VI" && (
-                        <VideoPlayer
-                          video={itemPlaying.item.content}
-                          goNext={goNext}
-                          goPrevious={goPrevious}
-                          isPlaylist={true}
-                        />
-                      )}
-                  </>
-                )}
-                <CourseSwitch />
-              </>
-            )}
+          {items && items.length > 0 && (
+            <>
+              {itemPlaying && (
+                <>
+                  {itemPlaying.item?.type_choices == "LE" &&
+                    itemPlaying.item?.content?.type_choices == "VI" && (
+                      <VideoPlayer
+                        video={itemPlaying.item.content}
+                        goNext={goNext}
+                        goPrevious={goPrevious}
+                        isPlaylist={true}
+                      />
+                    )}
+                </>
+              )}
+              <CourseSwitch />
+            </>
+          )}
 
           {playingCourseReducer.course.blocks.length == 0 && (
             <span>No hay bloques en este curso</span>
@@ -137,9 +149,9 @@ const CourseAcademy = (props) => {
                       {/* <CourseList video={track.video} /> */}
                     </BlockSeccion>
                     <ItemList>
+                      {console.log("track block items", track.block.items)}
                       {track.block.items.map((item, index) => (
                         <>
-                          {console.log("index_block", index_block)}
                           <ul>
                             <li>
                               <Link
@@ -152,14 +164,16 @@ const CourseAcademy = (props) => {
                               >
                                 <PlaylistItem
                                   className={
-                                    item.id == itemId ||
-                                    (!itemId && index_block == 0 && index == 0)
+                                    item.id == itemPlaying?.id
                                       ? "active d-flex justify-content-between align-items-center cursor-pointer"
                                       : "d-flex justify-content-between align-items-center cursor-pointer"
                                   }
                                   // ref={index == trackCode ? courseVideoRef : null}
                                 >
-                                  <small>{item.item.name}</small>
+                                  <small>
+                                    {items.indexOf(item) + 1}: {item.item.name}{" "}
+                                    : {item.item.code}
+                                  </small>
                                 </PlaylistItem>
                               </Link>
                             </li>

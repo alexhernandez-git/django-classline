@@ -304,7 +304,6 @@ class CoursePlayingModelSerializer(serializers.ModelSerializer):
     instructor = serializers.SerializerMethodField(read_only=True)
     blocks = serializers.SerializerMethodField(read_only=True)
     blocks_count = serializers.SerializerMethodField(read_only=True)
-    items = serializers.SerializerMethodField(read_only=True)
     items_count = serializers.SerializerMethodField(read_only=True)
     total_duration = serializers.SerializerMethodField(read_only=True)
 
@@ -328,7 +327,6 @@ class CoursePlayingModelSerializer(serializers.ModelSerializer):
             'published',
             'blocks',
             'blocks_count',
-            'items',
             'items_count',
             'total_duration',
         )
@@ -357,11 +355,6 @@ class CoursePlayingModelSerializer(serializers.ModelSerializer):
         from api.programs.serializers import CourseBlockTrackPlayingModelSerializer
         blocks = CourseBlockTrack.objects.filter(course=obj.id)
         return CourseBlockTrackPlayingModelSerializer(blocks, many=True).data
-
-    def get_items(self, obj):
-        from api.programs.serializers import CourseItemTrackModelSerializer
-        items = CourseItemTrack.objects.filter(course=obj.id)
-        return CourseItemTrackModelSerializer(items, many=True).data
 
     def get_items_count(self, obj):
         items = CourseItemTrack.objects.filter(course=obj.id).count()
