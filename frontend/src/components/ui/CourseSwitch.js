@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Tab, Nav } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { textEllipsis } from "src/components/ui/TextEllipsis";
+import QuestionsAndAnswersLecture from "./QuestionsAndAnswersLecture";
 
 const CourseSwitch = ({ itemPlaying }) => {
   const [key, setKey] = useState(0);
@@ -46,36 +47,8 @@ const CourseSwitch = ({ itemPlaying }) => {
         <div>
           <Tab.Content>
             <Tab.Pane eventKey={0} className="text-grey">
-              <QuestionsAndAnswersContainer>
-                <div className="search-questions">
-                  <input type="text" />
-                  <button>Buscar</button>
-                </div>
-                <div className="questions-list">
-                  <div>
-                    <span>323232 preguntas en esta lección</span>
-                    <span>Hacer otra pregunta</span>
-                  </div>
-                  <hr />
-                  <div className="question">
-                    <div className="question-img-container">picture</div>
-                    <div>
-                      <div className="question-title">
-                        <span>Saving document efwwaea</span>
-                      </div>
-                      <div className="question-text">
-                        <small>awfefaewewafewafwe</small>
-                      </div>
-                      <div className="question-info">
-                        <small>Alex Hernandez</small> .{" "}
-                        <small>Hace 2 horas</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </QuestionsAndAnswersContainer>
+              <QuestionsAndAnswersLecture />
             </Tab.Pane>
-
             <Tab.Pane eventKey={1} className="text-grey">
               <AboutContainer>
                 <div className="img-container">
@@ -129,6 +102,9 @@ const ContainerTabs = styled.div`
 const AboutContainer = styled.div`
   word-break: break-all;
   overflow: hidden;
+  max-width: 60rem;
+  margin: 3rem auto;
+
   .img-container {
     max-width: 20rem;
     img {
@@ -148,6 +124,5 @@ const AboutContainer = styled.div`
     }
   }
 `;
-const QuestionsAndAnswersContainer = styled.div``;
 
 export default CourseSwitch;

@@ -155,12 +155,12 @@ const CourseAcademy = (props) => {
                         </div>
                       </>
                     )}
-                    <hr />
                     <div className="d-sm-flex justify-content-between px-2 mt-3">
                       <ButtonCustom onClick={goPrevious}>Anterior</ButtonCustom>
                       <div className="d-block m-2 d-sm-none"></div>
                       <ButtonCustom onClick={goNext}>Siguente</ButtonCustom>
                     </div>
+                    <hr />
                     <CourseSwitch itemPlaying={itemPlaying} />
                   </>
                 )}

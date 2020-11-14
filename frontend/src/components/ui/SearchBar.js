@@ -13,6 +13,7 @@ const SearchBar = (props) => {
           return props.onSubmit(e);
         }
       }}
+      className={props.maxWidth && "w-100"}
     >
       <input
         autoFocus
