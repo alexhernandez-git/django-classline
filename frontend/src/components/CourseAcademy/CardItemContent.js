@@ -4,6 +4,8 @@ import { useDrag, useDrop } from "react-dnd";
 import { IconContext } from "react-icons";
 import { ItemTypes } from "../ItemTypes/ItemTypes";
 import {
+  FaAlignJustify,
+  FaAlignLeft,
   FaEdit,
   FaFileAlt,
   FaFileVideo,
@@ -33,6 +35,7 @@ import {
   uploadItemFile,
 } from "../../redux/actions/courses/items";
 import EditContentDescription from "../ui/EditContentDescription";
+import MyCKEditor from "../ui/MyCKEditor";
 
 // import VideoList from "./VideoList";
 const CardItemContent = ({
@@ -104,7 +107,7 @@ const CardItemContent = ({
       // setFieldValue("file", files[0]);
       const content = {
         file: files[0],
-        type_choices: "MA",
+        type_choices: "FI",
       };
       if (edit) {
         const dispatchUpdateMaterial = (content) =>
@@ -171,108 +174,273 @@ const CardItemContent = ({
       setNewDescription(item?.content?.description);
     }
   }, [item]);
+  const [addText, setAddText] = useState(false);
+  const [textContent, setTextContent] = useState(
+    item?.content?.type_choices == "TX" ? item.content.text : ""
+  );
+  const handleChangeText = (value) => {
+    setTextContent(value);
+  };
+  const handleOpenAddText = () => {
+    setAddText(true);
+  };
+  const handleCloseAddText = () => {
+    setAddText(false);
+  };
+  const handleCreateText = (e) => {
+    e.preventDefault();
+    const content = {
+      text: textContent,
+      type_choices: "TX",
+    };
+    const dispatchUploadText = (content) =>
+      dispatch(uploadItemFile(content, item.code));
+    dispatchUploadText(content);
+  };
+
+  const [editText, setEditText] = useState(false);
+  const handleOpenEditText = () => {
+    setEditText(true);
+  };
+  const handleCloseEditText = () => {
+    setEditText(false);
+  };
+  const handleUpdateText = (e) => {
+    e.preventDefault();
+    const content = {
+      text: textContent,
+      type_choices: "TX",
+    };
+    const dispatchUpdateText = (content) =>
+      dispatch(updateItemFile(content, item.code, item.content.id));
+    dispatchUpdateText(content);
+  };
+  useEffect(() => {
+    if (item?.content?.type_choices == "TX") {
+      handleCloseAddText();
+      setAddContent(false);
+      handleCloseEditText();
+    }
+  }, [item]);
   return (
     <>
       <hr />
       {addContent ? (
         <>
-          <div className="d-flex justify-content-around mt-4">
-            <label htmlFor="video_content_upload">
-              <div className="d-flex flex-column align-items-center justify-content-center cursor-pointer">
+          {addText ? (
+            <>
+              <AdminForm>
+                <div className="my-3">
+                  <MyCKEditor
+                    value={textContent}
+                    handleEdit={handleChangeText}
+                  />
+                </div>
+                <div className="d-sm-flex mt-2 justify-content-end">
+                  <ButtonCustom
+                    onClick={(e) => handleCreateText(e)}
+                    className="mr-2"
+                  >
+                    Crear
+                  </ButtonCustom>
+                  <ButtonCustom type="button" onClick={handleCloseAddText}>
+                    Cancelar
+                  </ButtonCustom>
+                </div>
+              </AdminForm>
+            </>
+          ) : (
+            <div className="d-flex justify-content-around mt-4">
+              <label htmlFor="video_content_upload">
+                <div className="d-flex flex-column align-items-center justify-content-center cursor-pointer">
+                  <IconContext.Provider
+                    value={{
+                      size: 50,
+                      className: "global-class-name",
+                    }}
+                  >
+                    <FaFileVideo />
+                  </IconContext.Provider>
+                  <span>Añadir video</span>
+                </div>
+              </label>
+
+              <input
+                type="file"
+                id="video_content_upload"
+                className="d-none"
+                onChange={(e) => handleAddVideo(e, false)}
+              />
+              <div
+                className="d-flex flex-column align-items-center justify-content-center cursor-pointer"
+                onClick={handleOpenAddText}
+              >
                 <IconContext.Provider
                   value={{
                     size: 50,
                     className: "global-class-name",
                   }}
                 >
-                  <FaFileVideo />
+                  <FaAlignLeft />
                 </IconContext.Provider>
-                <span>Añadir video</span>
+                <span>Añadir articulo</span>
               </div>
-            </label>
+              <label htmlFor="file_content_upload">
+                <div className="d-flex flex-column align-items-center justify-content-center cursor-pointer">
+                  <IconContext.Provider
+                    value={{
+                      size: 50,
+                      className: "global-class-name",
+                    }}
+                  >
+                    <FaFileAlt />
+                  </IconContext.Provider>
+                  <span>Añadir material</span>
+                </div>
+              </label>
 
-            <input
-              type="file"
-              id="video_content_upload"
-              className="d-none"
-              onChange={(e) => handleAddVideo(e, false)}
-            />
-            <label htmlFor="file_content_upload">
-              <div className="d-flex flex-column align-items-center justify-content-center cursor-pointer">
-                <IconContext.Provider
-                  value={{
-                    size: 50,
-                    className: "global-class-name",
-                  }}
-                >
-                  <FaFileAlt />
-                </IconContext.Provider>
-                <span>Añadir material</span>
-              </div>
-            </label>
-
-            <input
-              type="file"
-              id="file_content_upload"
-              className="d-none"
-              onChange={(e) => handleUploadFile(e, false)}
-            />
-          </div>
+              <input
+                type="file"
+                id="file_content_upload"
+                className="d-none"
+                onChange={(e) => handleUploadFile(e, false)}
+              />
+            </div>
+          )}
         </>
       ) : (
         <>
-          <div className="item-content">
-            {(item?.content?.type_choices == "VI" ||
-              item?.content?.type_choices == "TE" ||
-              item?.content?.type_choices == "MA") && (
-              <>
-                <div className="d-flex justify-content-center align-items-center">
-                  {item.type_choices == "LE" &&
-                    item?.content?.type_choices == "VI" && (
-                      <IconContext.Provider
-                        value={{
-                          size: 50,
-                          className: "global-class-name",
-                        }}
-                      >
-                        <FaFileVideo />
-                      </IconContext.Provider>
-                    )}
-                  {item.type_choices == "LE" &&
-                    item?.content?.type_choices == "TE" && (
-                      <IconContext.Provider
-                        value={{
-                          size: 50,
-                          className: "global-class-name",
-                        }}
-                      >
-                        <FaFileAlt />
-                      </IconContext.Provider>
-                    )}
-                  {item.type_choices == "LE" &&
-                    item?.content?.type_choices == "MA" && (
-                      <IconContext.Provider
-                        value={{
-                          size: 50,
-                          className: "global-class-name",
-                        }}
-                      >
-                        <FaFileAlt />
-                      </IconContext.Provider>
-                    )}
+          {editText ? (
+            <>
+              <AdminForm>
+                <div className="my-3">
+                  <MyCKEditor
+                    value={textContent}
+                    handleEdit={handleChangeText}
+                  />
                 </div>
-                <div>
-                  {item.type_choices == "LE" &&
-                    item?.content?.type_choices == "VI" && (
-                      <>
-                        <div>{item?.content?.name}</div>
+                <div className="d-sm-flex mt-2 justify-content-end">
+                  <ButtonCustom
+                    onClick={(e) => handleUpdateText(e)}
+                    className="mr-2"
+                  >
+                    Editar
+                  </ButtonCustom>
+                  <ButtonCustom type="button" onClick={handleCloseEditText}>
+                    Cancelar
+                  </ButtonCustom>
+                </div>
+              </AdminForm>
+            </>
+          ) : (
+            <div className="item-content">
+              {(item?.content?.type_choices == "VI" ||
+                item?.content?.type_choices == "TX" ||
+                item?.content?.type_choices == "FI") && (
+                <>
+                  <div className="d-flex justify-content-center align-items-center">
+                    {item.type_choices == "LE" &&
+                      item?.content?.type_choices == "VI" && (
+                        <IconContext.Provider
+                          value={{
+                            size: 50,
+                            className: "global-class-name",
+                          }}
+                        >
+                          <FaFileVideo />
+                        </IconContext.Provider>
+                      )}
+                    {item.type_choices == "LE" &&
+                      item?.content?.type_choices == "TX" && (
+                        <IconContext.Provider
+                          value={{
+                            size: 50,
+                            className: "global-class-name",
+                          }}
+                        >
+                          <FaAlignLeft />
+                        </IconContext.Provider>
+                      )}
+                    {item.type_choices == "LE" &&
+                      item?.content?.type_choices == "FI" && (
+                        <IconContext.Provider
+                          value={{
+                            size: 50,
+                            className: "global-class-name",
+                          }}
+                        >
+                          <FaFileAlt />
+                        </IconContext.Provider>
+                      )}
+                  </div>
+                  <div>
+                    {item.type_choices == "LE" &&
+                      item?.content?.type_choices == "VI" && (
+                        <>
+                          <div>{item?.content?.name}</div>
 
-                        <div>
-                          {item?.content?.duration &&
-                            msToHMS(item?.content?.duration)}
-                        </div>
-                        <label htmlFor="update_video_item">
-                          <div className="d-flex align-items-center cursor-pointer">
+                          <div>
+                            {item?.content?.duration &&
+                              msToHMS(item?.content?.duration)}
+                          </div>
+                          <label htmlFor="update_video_item">
+                            <div className="d-flex align-items-center cursor-pointer">
+                              <IconContext.Provider
+                                value={{
+                                  size: 14,
+                                  className:
+                                    "global-class-name mr-2 cursor-pointer",
+                                }}
+                              >
+                                {" "}
+                                <FaEdit />
+                              </IconContext.Provider>
+                              Cambiar video
+                            </div>
+                          </label>
+                          <input
+                            type="file"
+                            id="update_video_item"
+                            className="d-none"
+                            onChange={(e) => handleAddVideo(e, true)}
+                          />
+                        </>
+                      )}
+                    {item.type_choices == "LE" &&
+                      item?.content?.type_choices == "FI" && (
+                        <>
+                          <div>{item?.content?.name}</div>
+
+                          <label htmlFor="update_material_item">
+                            <div className="d-flex align-items-center cursor-pointer">
+                              <IconContext.Provider
+                                value={{
+                                  size: 14,
+                                  className:
+                                    "global-class-name mr-2 cursor-pointer",
+                                }}
+                              >
+                                {" "}
+                                <FaEdit />
+                              </IconContext.Provider>
+                              Cambiar material
+                            </div>
+                          </label>
+                          <input
+                            type="file"
+                            id="update_material_item"
+                            className="d-none"
+                            onChange={(e) => handleUploadFile(e, true)}
+                          />
+                        </>
+                      )}
+                    {item.type_choices == "LE" &&
+                      item?.content?.type_choices == "TX" && (
+                        <>
+                          <div
+                            className="d-flex align-items-center cursor-pointer"
+                            onClick={handleOpenEditText}
+                          >
                             <IconContext.Provider
                               value={{
                                 size: 14,
@@ -283,49 +451,15 @@ const CardItemContent = ({
                               {" "}
                               <FaEdit />
                             </IconContext.Provider>
-                            Cambiar video
+                            Editar Articulo
                           </div>
-                        </label>
-                        <input
-                          type="file"
-                          id="update_video_item"
-                          className="d-none"
-                          onChange={(e) => handleAddVideo(e, true)}
-                        />
-                      </>
-                    )}
-                  {item.type_choices == "LE" &&
-                    item?.content?.type_choices == "MA" && (
-                      <>
-                        <div>{item?.content?.name}</div>
-
-                        <label htmlFor="update_material_item">
-                          <div className="d-flex align-items-center cursor-pointer">
-                            <IconContext.Provider
-                              value={{
-                                size: 14,
-                                className:
-                                  "global-class-name mr-2 cursor-pointer",
-                              }}
-                            >
-                              {" "}
-                              <FaEdit />
-                            </IconContext.Provider>
-                            Cambiar material
-                          </div>
-                        </label>
-                        <input
-                          type="file"
-                          id="update_material_item"
-                          className="d-none"
-                          onChange={(e) => handleUploadFile(e, true)}
-                        />
-                      </>
-                    )}
-                </div>
-              </>
-            )}
-          </div>
+                        </>
+                      )}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
           <hr />
           <div>
             {item?.content?.description ? (

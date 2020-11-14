@@ -119,13 +119,15 @@ export const uploadItemFile = (content, item) => (dispatch, getState) => {
       Math.random().toString(36) + content.video.name
     );
     fd.append("name", content.video.name);
-  } else if (content.type_choices == "MA") {
+  } else if (content.type_choices == "FI") {
     fd.append(
       "file",
       content.file,
       Math.random().toString(36) + content.file.name
     );
     fd.append("name", content.file.name);
+  } else if (content.type_choices == "TX") {
+    fd.append("text", content.text);
   }
   axios
     .post(
@@ -166,13 +168,15 @@ export const updateItemFile = (content, item, content_id) => (
       Math.random().toString(36) + content.video.name
     );
     fd.append("name", content.video.name);
-  } else if (content.type_choices == "MA") {
+  } else if (content.type_choices == "FI") {
     fd.append(
       "file",
       content.file,
       Math.random().toString(36) + content.file.name
     );
     fd.append("name", content.file.name);
+  } else if (content.type_choices == "TX") {
+    fd.append("text", content.text);
   }
   axios
     .patch(

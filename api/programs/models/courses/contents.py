@@ -19,11 +19,11 @@ class LectureContent(CLineModel):
 
     VIDEO = 'VI'
     TEXT = 'TX'
-    MATERIAL = 'MA'
+    FILE = 'FI'
     TYPE_CHOICES = [
         (VIDEO, 'Video'),
         (TEXT, 'Text'),
-        (MATERIAL, 'Material'),
+        (FILE, 'File'),
     ]
     type_choices = models.CharField(
         max_length=2,

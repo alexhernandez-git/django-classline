@@ -2,8 +2,6 @@ import {
   POSTS_FETCH,
   POSTS_SUCCESS,
   POSTS_FAIL,
-  SET_POST_EDIT,
-  DELETE_POST_EDIT,
   EDIT_POST,
   EDIT_POST_FAIL,
   EDIT_POST_SUCCESS,
@@ -50,16 +48,7 @@ export default function (state = initialState, action) {
         isLoading: false,
         error: action.payload,
       };
-    case SET_POST_EDIT:
-      return {
-        ...state,
-        post_edit: action.payload,
-      };
-    case DELETE_POST_EDIT:
-      return {
-        ...state,
-        post_edit: null,
-      };
+
     case EDIT_POST:
       return {
         ...state,
@@ -119,7 +108,7 @@ export default function (state = initialState, action) {
         posts: {
           ...state.posts,
           results: state.posts.results.filter(
-            (post) => post.id !== state.post_delete
+            (post) => post.code !== state.post_delete
           ),
         },
         post_delete: null,

@@ -44,7 +44,12 @@ const Comment = (props) => {
             </div>
           </div>
           <p className="text-dark">
-            <small className="new-line">{comment.message}</small>
+            <small
+              className="new-line"
+              dangerouslySetInnerHTML={{
+                __html: comment.message,
+              }}
+            />
           </p>
         </div>
       </div>

@@ -415,7 +415,11 @@ button:disabled {
 }
 ul,
 ol {
-  margin-left: 2rem !important;
+  margin-left: 2rem;
+  color: #4d5154;
+}
+.ck.ck-reset.ck-list {
+  margin: 0px !important;
 }
 @import "~@fullcalendar/core/main.css";
 @import "~@fullcalendar/daygrid/main.css";

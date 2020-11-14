@@ -48,8 +48,6 @@ class PostModelSerializer(serializers.ModelSerializer):
         return UserSharedModelSerializer(obj.user, read_only=True).data
 
     def validate(self, attrs):
-        if len(attrs['title']) == 0:
-            raise serializers.ValidationError('El titulo no puede estar vacio')
         if len(attrs['message']) == 0:
             raise serializers.ValidationError(
                 'El mensaje no puede estar vacio')

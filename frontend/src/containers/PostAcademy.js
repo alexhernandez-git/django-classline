@@ -33,6 +33,7 @@ import Post from "../components/ui/Post";
 import Comment from "../components/ui/Comment";
 import { fetchPost } from "../redux/actions/post";
 import { fetchPosts } from "../redux/actions/posts";
+import MyCKEditor from "../components/ui/MyCKEditor";
 
 const CommentSchema = Yup.object().shape({
   message: Yup.string()
@@ -125,26 +126,28 @@ const PostAcademy = () => {
                   resetForm({});
                 }}
               >
-                {({ errors, touched }) => {
+                {({ errors, touched, values, setFieldValue }) => {
                   return (
                     <>
                       <FormFormik>
                         <AdminForm className="mb-2">
-                          <div className="d-md-flex">
-                            <Field
-                              component="textarea"
-                              name="message"
-                              type="text"
-                              placeholder="Respuesta"
-                              style={{ height: "36px" }}
+                          <div className="">
+                            <MyCKEditor
+                              className="w-100"
+                              value={values.message}
+                              handleEdit={(value) => {
+                                setFieldValue("message", value);
+                              }}
                             />
                             <div className="m-1 d-none d-md-block"></div>
-                            <ButtonCustom
-                              type="submit"
-                              style={{ height: "fit-content" }}
-                            >
-                              Responder
-                            </ButtonCustom>
+                            <div className="d-flex justify-content-end">
+                              <ButtonCustom
+                                type="submit"
+                                style={{ height: "fit-content" }}
+                              >
+                                Responder
+                              </ButtonCustom>
+                            </div>
                           </div>
                           {errors.message && touched.message ? (
                             <small className="d-block text-red">

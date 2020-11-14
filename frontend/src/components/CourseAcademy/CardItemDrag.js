@@ -4,6 +4,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { IconContext } from "react-icons";
 import { ItemTypes } from "../ItemTypes/ItemTypes";
 import {
+  FaAlignLeft,
   FaEdit,
   FaFileAlt,
   FaFileVideo,
@@ -21,7 +22,12 @@ import {
   MdModeEdit,
 } from "react-icons/md";
 import { SiAddthis } from "react-icons/si";
-import { GrCirclePlay, GrDocumentText, GrFormAdd } from "react-icons/gr";
+import {
+  GrCirclePlay,
+  GrDocumentText,
+  GrFormAdd,
+  GrTextAlignFull,
+} from "react-icons/gr";
 import { ButtonCustom } from "../ui/ButtonCustom";
 import { AdminForm } from "../ui/AdminForm";
 import CardItemContent from "./CardItemContent";
@@ -146,7 +152,7 @@ const CardItemDrag = ({
               </div>
               {/* <div
                 className="cursor-pointer d-flex align-items-center"
-                onClick={() => setNewItem({ ...newItem, type_choices: "TE" })}
+                onClick={() => setNewItem({ ...newItem, type_choices: "TX" })}
               >
                 <IconContext.Provider
                   value={{
@@ -235,18 +241,18 @@ const CardItemDrag = ({
                       </IconContext.Provider>
                     )}
                   {item.type_choices == "LE" &&
-                    item?.content?.type_choices == "TE" && (
+                    item?.content?.type_choices == "TX" && (
                       <IconContext.Provider
                         value={{
                           size: 14,
                           className: "global-class-name mx-2 cursor-pointer",
                         }}
                       >
-                        <GrDocumentText />
+                        <GrTextAlignFull />
                       </IconContext.Provider>
                     )}
                   {item.type_choices == "LE" &&
-                    item?.content?.type_choices == "MA" && (
+                    item?.content?.type_choices == "FI" && (
                       <IconContext.Provider
                         value={{
                           size: 14,
@@ -282,8 +288,8 @@ const CardItemDrag = ({
                 </div>
                 <div className="d-flex align-items-center">
                   {item?.content?.type_choices != "VI" &&
-                  item?.content?.type_choices != "TE" &&
-                  item?.content?.type_choices != "MA" ? (
+                  item?.content?.type_choices != "TX" &&
+                  item?.content?.type_choices != "FI" ? (
                     <div className="mr-3">
                       {addContent ? (
                         <>

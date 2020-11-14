@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { IconContext } from "react-icons";
-import { GrCirclePlay, GrDocumentText } from "react-icons/gr";
+import { GrCirclePlay, GrDocumentText, GrTextAlignFull } from "react-icons/gr";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -95,7 +95,7 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
                             </IconContext.Provider>
                           )}
                         {item.item.type_choices == "LE" &&
-                          item.item?.content?.type_choices == "TE" && (
+                          item.item?.content?.type_choices == "TX" && (
                             <IconContext.Provider
                               value={{
                                 size: 14,
@@ -103,11 +103,11 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
                                   "global-class-name mx-2 cursor-pointer",
                               }}
                             >
-                              <GrDocumentText />
+                              <GrTextAlignFull />
                             </IconContext.Provider>
                           )}
                         {item.item.type_choices == "LE" &&
-                          item.item?.content?.type_choices == "MA" && (
+                          item.item?.content?.type_choices == "FI" && (
                             <IconContext.Provider
                               value={{
                                 size: 14,

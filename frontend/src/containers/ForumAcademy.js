@@ -48,16 +48,9 @@ const ForumAcademy = () => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
-    const dispatchDeletePostEdit = () => dispatch(deletePostEdit());
-    dispatchDeletePostEdit();
     setShow(false);
   };
   const handleShow = (post = null) => {
-    if (post) {
-      const dispatchSetPostEdit = (post) => dispatch(setPostEdit(post));
-      dispatchSetPostEdit(post);
-    }
-
     setShow(true);
   };
   const dispatch = useDispatch();
@@ -70,23 +63,6 @@ const ForumAcademy = () => {
       dispatchFetchPosts();
     }
   }, [programReducer.program]);
-
-  const handlePostDelete = (id) => {
-    MySwal.fire({
-      title: "Estas seguro?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Eliminar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.value) {
-        const dispatchDeletePost = (id) => dispatch(deletePost(id));
-        dispatchDeletePost(id);
-      }
-    });
-  };
 
   const [search, setSearch] = useState();
 

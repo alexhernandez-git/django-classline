@@ -120,7 +120,7 @@ const CourseAcademy = (props) => {
                         />
                       )}
                     {itemPlaying.item?.type_choices == "LE" &&
-                      itemPlaying.item?.content?.type_choices == "MA" && (
+                      itemPlaying.item?.content?.type_choices == "FI" && (
                         <>
                           <div className="my-5">
                             <MaterialCourse
@@ -128,6 +128,17 @@ const CourseAcademy = (props) => {
                               key={itemPlaying.item.id}
                             />
                           </div>
+                        </>
+                      )}
+                    {itemPlaying.item?.type_choices == "LE" &&
+                      itemPlaying.item?.content?.type_choices == "TX" && (
+                        <>
+                          <div
+                            className="m-4 p-4 bg-white"
+                            dangerouslySetInnerHTML={{
+                              __html: itemPlaying.item.content.text,
+                            }}
+                          />
                         </>
                       )}
                     {itemPlaying.item?.content?.description && (

@@ -8,6 +8,7 @@ import {
 import { useSelector } from "react-redux";
 import Cropper from "react-cropper";
 import { Field } from "formik";
+import MyCKEditor from "../ui/MyCKEditor";
 const PostForm = (props) => {
   const { setFieldValue, values, isEdit, errors, touched } = props;
 
@@ -40,14 +41,11 @@ const PostForm = (props) => {
           </Col>
 
           <Col lg={{ offset: 1, span: 6 }}>
-            <Field
-              component="textarea"
-              type="texarea"
-              name="message"
-              id=""
-              cols="30"
-              rows="10"
-              placeholder="Descripción"
+            <MyCKEditor
+              value={values.message}
+              handleEdit={(value) => {
+                setFieldValue("message", value);
+              }}
             />
             {errors.message && touched.message ? (
               <small className="d-block text-red">{errors.message}</small>

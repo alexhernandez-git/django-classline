@@ -91,22 +91,6 @@ export const fetchPostsIncrease = (limit, search = "") => (
       });
     });
 };
-export const setPostEdit = (post) => (dispatch) => {
-  // User Loading
-
-  dispatch({
-    type: SET_POST_EDIT,
-    payload: post,
-  });
-};
-
-export const deletePostEdit = () => (dispatch) => {
-  // User Loading
-
-  dispatch({
-    type: DELETE_POST_EDIT,
-  });
-};
 
 export const editPost = (post) => (dispatch, getState) => {
   dispatch({
@@ -119,7 +103,7 @@ export const editPost = (post) => (dispatch, getState) => {
       `/api/programs/${getState().programReducer.program.code}/posts/${
         post.id
       }/`,
-      fd,
+      post,
       tokenConfig(getState)
     )
     .then((res) => {
@@ -164,7 +148,7 @@ export const createPost = (post) => (dispatch, getState) => {
     });
 };
 
-export const deletePost = (id) => (dispatch, getState) => {
+export const deletePost = (id, push) => (dispatch, getState) => {
   dispatch({
     type: DELETE_POST,
     payload: id,
@@ -179,6 +163,7 @@ export const deletePost = (id) => (dispatch, getState) => {
       dispatch({
         type: DELETE_POST_SUCCESS,
       });
+      push(`/academy/${getState().programReducer.program.code}/forum/`);
       Swal.fire({
         title: "Eliminado!",
         icon: "success",

@@ -121,20 +121,12 @@ const VideoPlayer = (props) => {
     };
     handleCreateBlob();
   }, [video]);
-  useEffect(() => {
-    console.log("Elapsed time", elapsedTime);
-    console.log("totalDuration", totalDuration);
-    console.log("isCourse", isCourse);
-    console.log(totalDuration > 0 && (isCourse || isPlaylist));
-    if (totalDuration > 0 && (isCourse || isPlaylist)) {
-      console.log("entra");
-      if (elapsedTime == totalDuration) {
-        console.log("entra2");
-
-        goNext();
-      }
+  const handleGoNext = () => {
+    if (isCourse || isPlaylist) {
+      goNext();
     }
-  }, [elapsedTime]);
+  };
+
   return (
     <>
       <PlayerWrapper
@@ -161,6 +153,7 @@ const VideoPlayer = (props) => {
           volume={volume}
           playbackRate={playbackRate}
           onProgress={handleProgress}
+          onEnded={handleGoNext}
           // controls
         />
         <PlayerControls
