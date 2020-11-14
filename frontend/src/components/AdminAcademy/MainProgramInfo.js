@@ -74,7 +74,11 @@ const MainCourseInfo = ({ values, setFieldValue }) => {
           </Col>
 
           <Col lg={{ offset: 1, span: 6 }} style={{ color: "initial" }}>
-            <MyCKEditor value={values.description} handleEdit={handleEdit} />
+            <MyCKEditor
+              value={values.description}
+              handleEdit={handleEdit}
+              placeholder={"Descripción de la academia"}
+            />
 
             {programReducer.save_error &&
               programReducer.save_error.data.description &&

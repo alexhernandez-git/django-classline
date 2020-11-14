@@ -2,12 +2,13 @@ import React from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-const MyCKEditor = ({ value, handleEdit }) => {
+const MyCKEditor = ({ value, handleEdit, placeholder = "" }) => {
   return (
     <div style={{ color: "initial" }}>
       <CKEditor
         editor={ClassicEditor}
         config={{
+          placeholder: placeholder,
           toolbar: {
             items: [
               "heading",
