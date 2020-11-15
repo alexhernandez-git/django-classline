@@ -14,7 +14,7 @@ import { fetchPlayingCourse } from "../redux/actions/courses/playingCourse";
 import MaterialCourse from "../components/ui/MaterialCourse";
 import { IconContext } from "react-icons";
 import { GrCirclePlay, GrDocumentText } from "react-icons/gr";
-import { ButtonCustom } from "../components/ui/ButtonCustom";
+import { ButtonCustomInitial } from "../components/ui/ButtonCustom";
 import BlockItemsList from "../components/ui/BlockItemsList";
 const CourseAcademy = (props) => {
   const playingCourseReducer = useSelector(
@@ -111,54 +111,63 @@ const CourseAcademy = (props) => {
               <>
                 {itemPlaying && (
                   <>
-                    {itemPlaying.item?.type_choices == "LE" &&
-                      itemPlaying.item?.content?.type_choices == "VI" && (
-                        <VideoPlayer
-                          video={itemPlaying.item.content}
-                          isCourse
-                          goNext={goNext}
-                        />
-                      )}
-                    {itemPlaying.item?.type_choices == "LE" &&
-                      itemPlaying.item?.content?.type_choices == "FI" && (
-                        <>
-                          <div className="my-5">
-                            <MaterialCourse
-                              item={itemPlaying.item}
-                              key={itemPlaying.item.id}
+                    <div className="background-item-container">
+                      <div className="item-container">
+                        {itemPlaying.item?.type_choices == "LE" &&
+                          itemPlaying.item?.content?.type_choices == "VI" && (
+                            <VideoPlayer
+                              video={itemPlaying.item.content}
+                              isCourse
+                              goNext={goNext}
                             />
-                          </div>
-                        </>
-                      )}
-                    {itemPlaying.item?.type_choices == "LE" &&
-                      itemPlaying.item?.content?.type_choices == "TX" && (
-                        <>
-                          <div
-                            className="m-4 p-4 bg-white"
-                            dangerouslySetInnerHTML={{
-                              __html: itemPlaying.item.content.text,
-                            }}
-                          />
-                        </>
-                      )}
-                    {itemPlaying.item?.content?.description && (
-                      <>
-                        {/* <hr /> */}
-                        <div className="mt-3">
-                          <span
-                            className="new-line text-break"
-                            style={{ color: "initial" }}
-                            dangerouslySetInnerHTML={{
-                              __html: itemPlaying.item?.content?.description,
-                            }}
-                          />
-                        </div>
-                      </>
-                    )}
-                    <div className="d-sm-flex justify-content-between px-2 mt-3">
-                      <ButtonCustom onClick={goPrevious}>Anterior</ButtonCustom>
-                      <div className="d-block m-2 d-sm-none"></div>
-                      <ButtonCustom onClick={goNext}>Siguente</ButtonCustom>
+                          )}
+                        {itemPlaying.item?.type_choices == "LE" &&
+                          itemPlaying.item?.content?.type_choices == "FI" && (
+                            <>
+                              <div className="py-5 bg-white">
+                                <MaterialCourse
+                                  item={itemPlaying.item}
+                                  key={itemPlaying.item.id}
+                                />
+                              </div>
+                            </>
+                          )}
+                        {itemPlaying.item?.type_choices == "LE" &&
+                          itemPlaying.item?.content?.type_choices == "TX" && (
+                            <>
+                              <div
+                                className="p-4 bg-white"
+                                dangerouslySetInnerHTML={{
+                                  __html: itemPlaying.item.content.text,
+                                }}
+                              />
+                            </>
+                          )}
+                        {itemPlaying.item?.content?.description && (
+                          <>
+                            {/* <hr /> */}
+                            <div className="mt-3">
+                              <span
+                                className="new-line text-break"
+                                style={{ color: "initial" }}
+                                dangerouslySetInnerHTML={{
+                                  __html:
+                                    itemPlaying.item?.content?.description,
+                                }}
+                              />
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div className="d-flex justify-content-between px-2 mt-3">
+                      <ButtonCustomInitial onClick={goPrevious}>
+                        Anterior
+                      </ButtonCustomInitial>
+                      <div className="d-block m-2"></div>
+                      <ButtonCustomInitial onClick={goNext}>
+                        Siguente
+                      </ButtonCustomInitial>
                     </div>
                     <hr />
                     <CourseSwitch itemPlaying={itemPlaying} />
@@ -175,7 +184,10 @@ const CourseAcademy = (props) => {
         <div className="course-content-list">
           <div className="d-block d-md-none m-5"></div>
 
-          <div className="d-flex justify-content-center p-4 h2 mb-0 rounded border">
+          <div
+            className="d-flex justify-content-center p-4 h2 mb-0 rounded"
+            style={{ background: "#14171c", color: "#fff" }}
+          >
             <span className="font-weight-bold">Contenido del curso</span>
           </div>
           <div className="playlist-scroll">
@@ -223,7 +235,8 @@ const CourseContent = styled.div`
   .course-header {
     grid-area: course-header;
     text-align: center;
-
+    background: #14171c;
+    color: #fff;
     padding: 1.5rem;
     font-size: 2.4rem;
     margin-bottom: 1rem;
@@ -236,6 +249,13 @@ const CourseContent = styled.div`
     position: relative;
     overflow-y: auto;
     overflow-x: hidden;
+    .background-item-container {
+      background: #14171c;
+    }
+    .item-container {
+      max-width: 100rem;
+      margin: auto;
+    }
   }
   .course-content-list {
     grid-area: course-content-list;

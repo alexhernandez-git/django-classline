@@ -60,6 +60,24 @@ const Layout = (props) => {
             font-size: 62.5%;
             box-sizing: border-box;
           }
+          h1 {
+            font-size: 4rem;
+          }
+          h2 {
+            font-size: 3.2rem;
+          }
+          h3 {
+            font-size: 2.8rem;
+          }
+          h4 {
+            font-size: 2.4rem;
+          }
+          h5 {
+            font-size: 2rem;
+          }
+          h6 {
+            font-size: 1.6rem;
+          }
           *,
           *:before,
           *:after {

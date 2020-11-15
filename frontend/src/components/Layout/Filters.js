@@ -58,7 +58,7 @@ const Filters = (props) => {
     </FilterContainer>
   );
 };
-const Title = styled.h3`
+const Title = styled.h5`
   margin: 0;
 `;
 const FilterContainer = styled.div`

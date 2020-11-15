@@ -47,7 +47,7 @@ const CourseSwitch = ({ itemPlaying }) => {
         <div>
           <Tab.Content>
             <Tab.Pane eventKey={0} className="text-grey">
-              <QuestionsAndAnswersLecture />
+              <QuestionsAndAnswersLecture itemPlaying={itemPlaying} />
             </Tab.Pane>
             <Tab.Pane eventKey={1} className="text-grey">
               <AboutContainer>

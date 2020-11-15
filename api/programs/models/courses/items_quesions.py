@@ -17,7 +17,7 @@ class ItemQuestion(CLineModel):
     """
     code = models.CharField(max_length=10, blank=True, null=True)
     title = models.CharField(max_length=100)
-    question = models.TextField(max_length=1000)
+    details = models.TextField(max_length=1000)
     item = models.ForeignKey(
         'programs.CourseItem', on_delete=models.CASCADE, related_name='item_question')
     course = models.ForeignKey(
@@ -28,7 +28,7 @@ class ItemQuestion(CLineModel):
 
     def __str__(self):
         """Return description."""
-        return '{}'.format(self.question)
+        return '{}'.format(self.title)
 
     def save(self, **kwargs):
 

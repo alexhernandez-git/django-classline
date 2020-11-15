@@ -56,8 +56,7 @@ const index = () => {
   });
 
   return (
-<>
-
+    <>
       <Global
         styles={css`
           :root {
@@ -128,271 +127,280 @@ const index = () => {
           </span>
         </ContainerLogo>
       </Header> */}
-    <div className="mb-5 pb-5"
-    style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}>
-      <Section className="py-5">
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-6 d-flex align-items-center justify-content-center">
-              {/* <span className="text-white">
+      <div
+        className="mb-5 pb-5"
+        style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
+      >
+        <Section className="py-5">
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-6 d-flex align-items-center justify-content-center">
+                {/* <span className="text-white">
                 {!programReducer.isLoading && programReducer.program.title}{" "}
                 trabaja con Classline Academy para ofrecerte esta plataforma
               </span> */}
-              {!programReducer.isLoading && programReducer.program.picture && (
-                <ContainerImage className="shadow">
-                  <img src={programReducer.program.picture} alt="" />
-                  <div className="program-main-info">
-                    <span className="program-title">
-                      {programReducer.program?.title}
-                    </span>
-                    <div className="punctuation">
-                      <StarRating rating={programReducer.program.rating} />
-                      <small className="font-weight-light ml-1 mt-1 d-block">
-                        ({programReducer.program.ratings})
-                      </small>
+                {!programReducer.isLoading && programReducer.program.picture && (
+                  <ContainerImage className="shadow">
+                    <img src={programReducer.program.picture} alt="" />
+                    <div className="program-main-info">
+                      <span className="program-title">
+                        {programReducer.program?.title}
+                      </span>
+                      <div className="punctuation">
+                        <StarRating rating={programReducer.program.rating} />
+                        <small className="font-weight-light ml-1 mt-1 d-block">
+                          ({programReducer.program.ratings})
+                        </small>
+                      </div>
                     </div>
-                  </div>
-                </ContainerImage>
-              )}
-            </div>
-            <div className="d-block d-sm-none m-3"></div>
-            <div className="col-sm-6">
-              <Formik
-                enableReinitialize={true}
-                initialValues={{
-                  email: "",
-                  password: "",
-                }}
-                onSubmit={(values) => {
-                  const dispatchLogin = (values) => dispatch(login(values));
-                  dispatchLogin(values);
-                }}
-              >
-                {(props) => {
-                  return (
-                    <>
-                      <FormFormik>
-                        <Form>
-                          <FlipCard className="shadow" accessOpen={accessOpen}>
-                            <div className="flip-card-inner">
-                              <div className="flip-card-front">
-                                <div>
-                                  {authReducer.error &&
-                                    authReducer.error.data.detail && (
-                                      <small className="d-block text-red text-center mb-2">
-                                        {authReducer.error.data.detail != "Token inválido." && authReducer.error.data.detail}
-                                      </small>
-                                    )}
-
-                                  {authReducer.error &&
-                                    authReducer.error.data.non_field_errors &&
-                                    authReducer.error.data.non_field_errors.map(
-                                      (error) => (
+                  </ContainerImage>
+                )}
+              </div>
+              <div className="d-block d-sm-none m-3"></div>
+              <div className="col-sm-6">
+                <Formik
+                  enableReinitialize={true}
+                  initialValues={{
+                    email: "",
+                    password: "",
+                  }}
+                  onSubmit={(values) => {
+                    const dispatchLogin = (values) => dispatch(login(values));
+                    dispatchLogin(values);
+                  }}
+                >
+                  {(props) => {
+                    return (
+                      <>
+                        <FormFormik>
+                          <Form>
+                            <FlipCard
+                              className="shadow"
+                              accessOpen={accessOpen}
+                            >
+                              <div className="flip-card-inner">
+                                <div className="flip-card-front">
+                                  <div>
+                                    {authReducer.error &&
+                                      authReducer.error.data.detail && (
                                         <small className="d-block text-red text-center mb-2">
-                                          {error}
+                                          {authReducer.error.data.detail !=
+                                            "Token inválido." &&
+                                            authReducer.error.data.detail}
                                         </small>
-                                      )
-                                    )}
+                                      )}
 
-                                  <Field
-                                    name="email"
-                                    type="text"
-                                    placeholder="Email or Username"
-                                  />
-                                  {authReducer.error &&
-                                    authReducer.error.data.email &&
-                                    authReducer.error.data.email.map(
-                                      (error) => (
-                                        <small className="d-block text-red">
-                                          {error}
+                                    {authReducer.error &&
+                                      authReducer.error.data.non_field_errors &&
+                                      authReducer.error.data.non_field_errors.map(
+                                        (error) => (
+                                          <small className="d-block text-red text-center mb-2">
+                                            {error}
+                                          </small>
+                                        )
+                                      )}
+
+                                    <Field
+                                      name="email"
+                                      type="text"
+                                      placeholder="Email or Username"
+                                    />
+                                    {authReducer.error &&
+                                      authReducer.error.data.email &&
+                                      authReducer.error.data.email.map(
+                                        (error) => (
+                                          <small className="d-block text-red">
+                                            {error}
+                                          </small>
+                                        )
+                                      )}
+                                    <Field
+                                      name="password"
+                                      type="password"
+                                      placeholder="Contraseña"
+                                    />
+                                    {authReducer.error &&
+                                      authReducer.error.data.password &&
+                                      authReducer.error.data.password.map(
+                                        (error) => (
+                                          <small className="d-block text-red">
+                                            {error}
+                                          </small>
+                                        )
+                                      )}
+                                  </div>
+                                  {!programReducer.isLoading && (
+                                    <button
+                                      className="shadow"
+                                      className="my-button"
+                                      type="submit"
+                                    >
+                                      Acceder
+                                    </button>
+                                  )}
+                                  {!programReducer.isLoading &&
+                                    programReducer.program.published && (
+                                      <div className="mt-2">
+                                        <small
+                                          className="d-block cursor-pointer"
+                                          onClick={() => setAccessOpen(true)}
+                                        >
+                                          ¿No tienes acceso?
                                         </small>
-                                      )
-                                    )}
-                                  <Field
-                                    name="password"
-                                    type="password"
-                                    placeholder="Contraseña"
-                                  />
-                                  {authReducer.error &&
-                                    authReducer.error.data.password &&
-                                    authReducer.error.data.password.map(
-                                      (error) => (
-                                        <small className="d-block text-red">
-                                          {error}
-                                        </small>
-                                      )
+                                      </div>
                                     )}
                                 </div>
-                                {!programReducer.isLoading && (
-                                  <button
-                                    className="shadow"
-                                    className="my-button"
-                                    type="submit"
-                                  >
-                                    Acceder
-                                  </button>
-                                )}
                                 {!programReducer.isLoading &&
-                                  programReducer.program.published && (
-                                    <div className="mt-2">
-                                      <small
-                                        className="d-block cursor-pointer"
-                                        onClick={() => setAccessOpen(true)}
-                                      >
-                                        ¿No tienes acceso?
+                                  programReducer.program.published &&
+                                  programReducer.program.program_price && (
+                                    <div className="flip-card-back d-flex flex-column justify-content-between">
+                                      <div className="d-flex justify-content-end">
+                                        <div className="d-flex justify-content-between w-100">
+                                          <a href="/" target="_blank">
+                                            <img
+                                              alt=""
+                                              src={
+                                                "../../../static/assets/img/logo7.PNG"
+                                              }
+                                              height="30"
+                                              width="109.33"
+                                              className="d-inline-block align-top"
+                                            />
+                                          </a>
+                                          <IconContext.Provider
+                                            value={{
+                                              size: 16,
+                                              className: "cursor-pointer",
+                                            }}
+                                          >
+                                            <MdClose
+                                              onClick={() =>
+                                                setAccessOpen(false)
+                                              }
+                                            />
+                                          </IconContext.Provider>
+                                        </div>
+                                      </div>
+                                      <small>
+                                        Consigue accesso por{" "}
+                                        {programReducer.program.program_price
+                                          .label &&
+                                          programReducer.program.program_price
+                                            .label}
                                       </small>
+                                      <a
+                                        href={`/program/${program}`}
+                                        className="my-button shadow"
+                                        target="_blank"
+                                      >
+                                        Obtener
+                                      </a>
                                     </div>
                                   )}
                               </div>
-                              {!programReducer.isLoading &&
-                                programReducer.program.published &&
-                                programReducer.program.program_price && (
-                                  <div className="flip-card-back d-flex flex-column justify-content-between">
-                                    <div className="d-flex justify-content-end">
-                                      <div className="d-flex justify-content-between w-100">
-                                        <a href="/" target="_blank">
-                                          <img
-                                            alt=""
-                                            src={
-                                              "../../../static/assets/img/logo7.PNG"
-                                            }
-                                            height="30"
-                                            width="109.33"
-                                            className="d-inline-block align-top"
-                                          />
-                                        </a>
-                                        <IconContext.Provider
-                                          value={{
-                                            size: 16,
-                                            className: "cursor-pointer",
-                                          }}
-                                        >
-                                          <MdClose
-                                            onClick={() => setAccessOpen(false)}
-                                          />
-                                        </IconContext.Provider>
-                                      </div>
-                                    </div>
-                                    <small>
-                                      Consigue accesso por{" "}
-                                      {programReducer.program.program_price
-                                        .label &&
-                                        programReducer.program.program_price
-                                          .label}
-                                    </small>
-                                    <a
-                                      href={`/program/${program}`}
-                                      className="my-button shadow"
-                                      target="_blank"
-                                    >
-                                      Obtener
-                                    </a>
-                                  </div>
-                                )}
-                            </div>
-                          </FlipCard>
-                        </Form>
-                      </FormFormik>
-                    </>
-                  );
-                }}
-              </Formik>
+                            </FlipCard>
+                          </Form>
+                        </FormFormik>
+                      </>
+                    );
+                  }}
+                </Formik>
+              </div>
             </div>
           </div>
-        </div>
-      </Section>
-      <Separation className="p-3 shadow"></Separation>
+        </Section>
+        <Separation className="p-3 shadow"></Separation>
 
-      <div className="container my-5 mx-auto w-auto">
-        {!programReducer.isLoading &&
-          programReducer.program.event_booking_calendar && (
-            <div className="row mx-2">
-              <BookMeetups isAcademy />
-            </div>
-          )}
-        <div className="row mx-2">
-          <ProgramInfo className="text-grey">
-            <div className="d-sm-flex justify-content-between text-dark">
-              <Title>
-                Acerca de{" "}
-                {!programReducer.isLoading && programReducer.program.title}
-              </Title>
-              <div className="d-block d-sm-none m-3"></div>
-              {!programReducer.isLoading &&
-                programReducer.program.video_presentation && (
-                  <div
-                    className="d-flex align-items-center cursor-pointer"
-                    onClick={handleOpenVideo}
-                  >
-                    <IconContext.Provider
-                      value={{
-                        className: "",
-                        size: "16px",
-                      }}
+        <div className="container my-5 mx-auto w-auto">
+          {!programReducer.isLoading &&
+            programReducer.program.event_booking_calendar && (
+              <div className="row mx-2">
+                <BookMeetups isAcademy />
+              </div>
+            )}
+          <div className="row mx-2">
+            <ProgramInfo className="text-grey">
+              <div className="d-sm-flex justify-content-between text-dark">
+                <Title>
+                  Acerca de{" "}
+                  {!programReducer.isLoading && programReducer.program.title}
+                </Title>
+                <div className="d-block d-sm-none m-3"></div>
+                {!programReducer.isLoading &&
+                  programReducer.program.video_presentation && (
+                    <div
+                      className="d-flex align-items-center cursor-pointer"
+                      onClick={handleOpenVideo}
                     >
-                      <FaPlay />
-                    </IconContext.Provider>
-                    <span className="ml-2">Ver video</span>
-                  </div>
+                      <IconContext.Provider
+                        value={{
+                          className: "",
+                          size: "16px",
+                        }}
+                      >
+                        <FaPlay />
+                      </IconContext.Provider>
+                      <span className="ml-2">Ver video</span>
+                    </div>
+                  )}
+              </div>
+              {!programReducer.isLoading &&
+                programReducer.program.description && <ProgramDescription />}
+              {!programReducer.isLoading &&
+                programReducer.program.benefits.length > 0 &&
+                programReducer.program.benefits[0].name != "" && (
+                  <ProgramBenefits />
                 )}
-            </div>
-            {!programReducer.isLoading &&
-              programReducer.program.description && <ProgramDescription />}
-            {!programReducer.isLoading &&
-              programReducer.program.benefits.length > 0 &&
-              programReducer.program.benefits[0].name != "" && (
-                <ProgramBenefits />
-              )}
 
-            <Estadistics />
-          </ProgramInfo>
+              <Estadistics />
+            </ProgramInfo>
 
-          <ProgramVideo className="" openVideo={openVideo}>
-            <div className="video-div" openVideo={openVideo}>
-              <div className="course-card position-relative">
-                <IconContext.Provider
-                  value={{
-                    className: "icon-close cursor-pointer",
-                    color: "#fff",
-                    size: "30px",
-                  }}
-                >
-                  <MdClose onClick={handleCloseVideo} />
-                </IconContext.Provider>
-                <div
-                  className="shadow w-100 p-1 rounded bg-white"
-                  ref={programVideoRef}
-                >
-                  <div className="w-100">
-                    <CardContainer>
-                      <VideoCard
-                        ref={video}
-                        poster={
-                          programReducer.program &&
-                          programReducer.program.picture
-                        }
-                        src={
-                          programReducer.program &&
-                          programReducer.program.video_presentation
-                        }
-                        controls
-                      />
-                    </CardContainer>
+            <ProgramVideo className="" openVideo={openVideo}>
+              <div className="video-div" openVideo={openVideo}>
+                <div className="course-card position-relative">
+                  <IconContext.Provider
+                    value={{
+                      className: "icon-close cursor-pointer",
+                      color: "#fff",
+                      size: "30px",
+                    }}
+                  >
+                    <MdClose onClick={handleCloseVideo} />
+                  </IconContext.Provider>
+                  <div
+                    className="shadow w-100 p-1 rounded bg-white"
+                    ref={programVideoRef}
+                  >
+                    <div className="w-100">
+                      <CardContainer>
+                        <VideoCard
+                          ref={video}
+                          poster={
+                            programReducer.program &&
+                            programReducer.program.picture
+                          }
+                          src={
+                            programReducer.program &&
+                            programReducer.program.video_presentation
+                          }
+                          controls
+                        />
+                      </CardContainer>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </ProgramVideo>
+            </ProgramVideo>
+          </div>
+          {openVideo && <TransparentBackground />}
         </div>
-        {openVideo && <TransparentBackground />}
       </div>
-    </div>
-    <div className="d-flex justify-content-end mr-5">
-          <a href="https://classlineacademy.com/" target="_blank">
-            <img height="25" src="../../../static/assets/img/logo7.PNG"/>
-          </a>
-        </div>
-          </>
+      <div className="d-flex justify-content-end mr-5">
+        <a href="https://classlineacademy.com/" target="_blank">
+          <img height="25" src="../../../static/assets/img/logo7.PNG" />
+        </a>
+      </div>
+    </>
   );
 };
 const Header = styled.header``;

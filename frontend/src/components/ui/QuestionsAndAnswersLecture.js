@@ -1,12 +1,23 @@
 import styled from "@emotion/styled";
 import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchQuestions } from "../../redux/actions/courses/questions";
 import { AdminForm } from "./AdminForm";
 import { ButtonCustom } from "./ButtonCustom";
 import MyCKEditor from "./MyCKEditor";
 import SearchBar from "./SearchBar";
 
-const QuestionsAndAnswersLecture = () => {
+const QuestionsAndAnswersLecture = ({ itemPlaying }) => {
+  const dispatch = useDispatch();
+  const questionsReducer = useSelector((state) => state.questionsReducer);
+  console.log("itemplaying", itemPlaying);
+  useEffect(() => {
+    if (itemPlaying.item) {
+      dispatch(fetchQuestions(itemPlaying.item.code));
+    }
+  }, [itemPlaying]);
   const [search, setSearch] = useState(null);
   const [createQuestion, setCreateCuestion] = useState(false);
   const handleOpenCreateQuestion = () => {
@@ -19,6 +30,10 @@ const QuestionsAndAnswersLecture = () => {
     title: "",
     details: "",
   });
+  const handleSubmitSearch = (e) => {
+    e.preventDefault();
+    dispatch(fetchQuestions(itemPlaying.item.code, search));
+  };
   return (
     <QuestionsAndAnswersContainer>
       {createQuestion ? (
@@ -59,6 +74,7 @@ const QuestionsAndAnswersLecture = () => {
         <>
           <div className="search-questions">
             <SearchBar
+              onSubmit={handleSubmitSearch}
               search={{ search: search, setSearch: setSearch }}
               maxWidth
               placeholder={"Buscar preguntas de esta lección"}
@@ -67,7 +83,11 @@ const QuestionsAndAnswersLecture = () => {
 
           <div className="questions-list">
             <div className="header-list">
-              <span>32 preguntas en esta lección</span>
+              <span>
+                {questionsReducer.questions &&
+                  questionsReducer.questions.results.length}{" "}
+                preguntas en esta lección
+              </span>
               <span
                 className="cursor-pointer"
                 onClick={handleOpenCreateQuestion}
@@ -76,23 +96,35 @@ const QuestionsAndAnswersLecture = () => {
               </span>
             </div>
             <hr />
-            <div className="question">
-              <div className="question-img-container">
-                <img src="/static/assets/img/avatar.png" alt="" />
-              </div>
-              <div className="d-none d-sm-block m-2"></div>
-              <div>
-                <div className="question-title">
-                  <span>Saving document efwwaea</span>
-                </div>
-                <div className="question-text">
-                  <small>awfefaewewafewafwe</small>
-                </div>
-                <div className="question-info">
-                  <small>Alex Hernandez</small> . <small>Hace 2 horas</small>
-                </div>
-              </div>
-            </div>
+            {questionsReducer.isLoading && !questionsReducer.questions ? (
+              "Cargando..."
+            ) : (
+              <>
+                {questionsReducer.questions.results.map((question) => (
+                  <div className="question">
+                    <div className="question-img-container">
+                      <img src="/static/assets/img/avatar.png" alt="" />
+                    </div>
+                    <div className="d-none d-sm-block m-2"></div>
+                    <div>
+                      <div className="question-title">
+                        <span>Saving document efwwaea</span>
+                      </div>
+                      <div className="question-text">
+                        <small>awfefaewewafewafwe</small>
+                      </div>
+                      <div className="question-info">
+                        <small>Alex Hernandez</small> .{" "}
+                        <small>Hace 2 horas</small>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {questionsReducer.questions.results.length == 0 && (
+                  <small>No hay preguntas en esta lección</small>
+                )}
+              </>
+            )}
           </div>
         </>
       )}

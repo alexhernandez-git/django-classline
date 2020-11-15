@@ -53,6 +53,7 @@ import blocksReducer from "./courses/blocksReducer";
 import blockReducer from "./courses/blockReducer";
 import itemsReducer from "./courses/itemsReducer";
 import playingCourseReducer from "./courses/playingCourseReducer";
+import questionsReducer from "./courses/questionsReducer";
 
 export default combineReducers({
   authReducer,
@@ -105,6 +106,7 @@ export default combineReducers({
   blockReducer,
   itemsReducer,
   playingCourseReducer,
+  questionsReducer,
 
   // Commercials reducers
   authCommercialsReducer,
