@@ -83,7 +83,11 @@ const MainCourseInfo = ({ values, setFieldValue }) => {
               // onChange={handleChange}
               placeholder="Descripción"
             /> */}
-            <MyCKEditor value={values.description} handleEdit={handleEdit} />
+            <MyCKEditor
+              value={values.description}
+              handleEdit={handleEdit}
+              placeholder="Descripción del curso"
+            />
             {courseReducer.save_error &&
               courseReducer.save_error.data.description &&
               courseReducer.save_error.data.description.map((error) => (

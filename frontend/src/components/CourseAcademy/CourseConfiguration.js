@@ -261,7 +261,9 @@ const CourseConfiguration = (props) => {
             sm={{ span: 4 }}
             className="text-center d-sm-flex justify-content-end align-items-center"
           >
-            <span className="m-0 font-weight-normal">Publicar para vender</span>
+            <span className="m-0 font-weight-normal">
+              Publicar en el marketplace
+            </span>
           </Col>
 
           <Col sm={{ offset: 1, span: 6 }}>

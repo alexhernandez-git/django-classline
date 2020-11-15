@@ -39,7 +39,7 @@ class ItemQuestionViewSet(mixins.CreateModelMixin,
     serializer_class = ItemQuestionModelSerializer
     lookup_field = 'code'
     filter_backends = [filters.SearchFilter]
-    search_fields = ['title', 'message']
+    search_fields = ['title', 'details']
 
     def get_queryset(self):
         item = self.item

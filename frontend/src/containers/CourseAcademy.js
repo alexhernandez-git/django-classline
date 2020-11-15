@@ -143,23 +143,9 @@ const CourseAcademy = (props) => {
                               />
                             </>
                           )}
-                        {itemPlaying.item?.content?.description && (
-                          <>
-                            {/* <hr /> */}
-                            <div className="mt-3">
-                              <span
-                                className="new-line text-break"
-                                style={{ color: "initial" }}
-                                dangerouslySetInnerHTML={{
-                                  __html:
-                                    itemPlaying.item?.content?.description,
-                                }}
-                              />
-                            </div>
-                          </>
-                        )}
                       </div>
                     </div>
+
                     <div className="d-flex justify-content-between px-2 mt-3">
                       <ButtonCustomInitial onClick={goPrevious}>
                         Anterior
@@ -169,6 +155,20 @@ const CourseAcademy = (props) => {
                         Siguente
                       </ButtonCustomInitial>
                     </div>
+                    {itemPlaying.item?.content?.description && (
+                      <>
+                        <hr />
+                        <div className="mt-3">
+                          <span
+                            className="new-line text-break"
+                            style={{ color: "initial" }}
+                            dangerouslySetInnerHTML={{
+                              __html: itemPlaying.item?.content?.description,
+                            }}
+                          />
+                        </div>
+                      </>
+                    )}
                     <hr />
                     <CourseSwitch itemPlaying={itemPlaying} />
                   </>

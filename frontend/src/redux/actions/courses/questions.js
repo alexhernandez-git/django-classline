@@ -30,7 +30,7 @@ export const fetchQuestions = (item_id, search = "") => (
     .get(
       `/api/programs/${getState().programReducer.program.code}/courses/${
         getState().playingCourseReducer.course.code
-      }/items/${item_id}/questions/`,
+      }/items/${item_id}/questions/?search=${search}`,
       tokenConfig(getState)
     )
     .then((res) => {
