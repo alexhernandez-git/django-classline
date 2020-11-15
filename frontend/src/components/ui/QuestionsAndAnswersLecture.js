@@ -3,11 +3,30 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchQuestions } from "../../redux/actions/courses/questions";
+import {
+  createQuestion,
+  fetchQuestions,
+} from "../../redux/actions/courses/questions";
 import { AdminForm } from "./AdminForm";
 import { ButtonCustom } from "./ButtonCustom";
 import MyCKEditor from "./MyCKEditor";
 import SearchBar from "./SearchBar";
+
+import * as Yup from "yup";
+import { Formik, Form, Field } from "formik";
+
+import moment from "moment";
+import { textEllipsis } from "./TextEllipsis";
+
+const QuestionSchema = Yup.object().shape({
+  title: Yup.string()
+    .min(2, "El titulo es muy corto")
+    .max(100, "El titulo es muy largo")
+    .required("Este campo es obligatorio"),
+  details: Yup.string()
+    .max(1000, "Los detalles son demasiado largos")
+    .required("Este campo es obligatorio"),
+});
 
 const QuestionsAndAnswersLecture = ({ itemPlaying }) => {
   const dispatch = useDispatch();
@@ -19,24 +38,23 @@ const QuestionsAndAnswersLecture = ({ itemPlaying }) => {
     }
   }, [itemPlaying]);
   const [search, setSearch] = useState(null);
-  const [createQuestion, setCreateCuestion] = useState(false);
+  const [handleCreateQuestion, setHandleCreateCuestion] = useState(false);
   const handleOpenCreateQuestion = () => {
-    setCreateCuestion(true);
+    setHandleCreateCuestion(true);
   };
   const handleCloseCreateQuestion = () => {
-    setCreateCuestion(false);
+    setHandleCreateCuestion(false);
   };
-  const [newQuestion, setNewQuestion] = useState({
-    title: "",
-    details: "",
-  });
+
   const handleSubmitSearch = (e) => {
     e.preventDefault();
     dispatch(fetchQuestions(itemPlaying.item.code, search));
   };
+  moment.locale("es");
+
   return (
     <QuestionsAndAnswersContainer>
-      {createQuestion ? (
+      {handleCreateQuestion ? (
         <>
           <div className="mb-4">
             <span
@@ -46,29 +64,59 @@ const QuestionsAndAnswersLecture = ({ itemPlaying }) => {
               Volver a las preguntas
             </span>
           </div>
-          <AdminForm>
-            <div className="my-3" style={{ color: "initial" }}>
-              <label htmlFor="question-title">Título o resumen</label>
-              <input
-                id="question-title"
-                type="text"
-                placeholder="Titulo de la pregunta"
-              />
-              <label htmlFor="">Detalles</label>
-              <MyCKEditor
-                value={newQuestion.details}
-                handleEdit={(value) =>
-                  setNewQuestion({ ...newQuestion, details: value })
-                }
-                placeholder={"Detalles de la pregunta"}
-              />
-            </div>
-            <div className="d-sm-flex mt-2 justify-content-end">
-              <ButtonCustom onClick={(e) => {}} className="mr-2">
-                Añadir
-              </ButtonCustom>
-            </div>
-          </AdminForm>
+          <Formik
+            // enableReinitialize={true}
+            initialValues={{
+              title: "",
+              details: "",
+            }}
+            validationSchema={QuestionSchema}
+            onSubmit={(values) => {
+              dispatch(createQuestion(itemPlaying.item.code, values));
+              handleCloseCreateQuestion();
+            }}
+          >
+            {(props) => {
+              return (
+                <Form>
+                  <AdminForm>
+                    <div className="my-3" style={{ color: "initial" }}>
+                      <label htmlFor="question-title">Título o resumen</label>
+                      <Field
+                        name="title"
+                        id="question-title"
+                        type="text"
+                        placeholder="Titulo de la pregunta"
+                      />
+                      {props.errors.title && props.touched.title ? (
+                        <small className="d-block text-red">
+                          {props.errors.title}
+                        </small>
+                      ) : null}
+                      <label htmlFor="">Detalles</label>
+                      <MyCKEditor
+                        value={props.values.details}
+                        handleEdit={(value) =>
+                          props.setFieldValue("details", value)
+                        }
+                        placeholder={"Detalles de la pregunta"}
+                      />
+                      {props.errors.details && props.touched.details ? (
+                        <small className="d-block text-red">
+                          {props.errors.details}
+                        </small>
+                      ) : null}
+                    </div>
+                    <div className="d-sm-flex mt-2 justify-content-end">
+                      <ButtonCustom type="submit" className="mr-2">
+                        Añadir
+                      </ButtonCustom>
+                    </div>
+                  </AdminForm>
+                </Form>
+              );
+            }}
+          </Formik>
         </>
       ) : (
         <>
@@ -103,19 +151,31 @@ const QuestionsAndAnswersLecture = ({ itemPlaying }) => {
                 {questionsReducer.questions.results.map((question) => (
                   <div className="question">
                     <div className="question-img-container">
-                      <img src="/static/assets/img/avatar.png" alt="" />
+                      <img src={question.user.profile.picture} alt="" />
                     </div>
                     <div className="d-none d-sm-block m-2"></div>
                     <div>
                       <div className="question-title">
-                        <span>Saving document efwwaea</span>
+                        <span>{question.title}</span>
                       </div>
                       <div className="question-text">
-                        <small>awfefaewewafewafwe</small>
+                        <small
+                          css={textEllipsis}
+                          dangerouslySetInnerHTML={{
+                            __html: question.details,
+                          }}
+                        />
                       </div>
                       <div className="question-info">
-                        <small>Alex Hernandez</small> .{" "}
-                        <small>Hace 2 horas</small>
+                        <small>
+                          {question.user.first_name} {question.user.last_name}
+                        </small>{" "}
+                        .{" "}
+                        <small>
+                          {moment(question.created)
+                            .subtract(5, "seconds")
+                            .fromNow()}
+                        </small>
                       </div>
                     </div>
                   </div>

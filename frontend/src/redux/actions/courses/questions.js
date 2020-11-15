@@ -121,13 +121,13 @@ export const editQuestion = (question) => (dispatch, getState) => {
     });
 };
 
-export const createQuestion = (question) => (dispatch, getState) => {
+export const createQuestion = (item_id, question) => (dispatch, getState) => {
   dispatch({
     type: CREATE_QUESTION,
   });
 
   axios
-    .question(
+    .post(
       `/api/programs/${getState().programReducer.program.code}/courses/${
         getState().playingCourseReducer.course.code
       }/items/${item_id}/questions/`,
