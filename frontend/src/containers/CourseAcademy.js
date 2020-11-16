@@ -50,7 +50,9 @@ const CourseAcademy = (props) => {
 
   const goNext = () => {
     const result = items.indexOf(
-      items.find((item) => item.item.code == trackCode)
+      items.find(
+        (item) => item.item.code == (trackCode ? trackCode : items[0].item.code)
+      )
     );
     const next_item = items[result + 1];
 

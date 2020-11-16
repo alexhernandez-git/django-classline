@@ -26,7 +26,7 @@ import { SiAddthis } from "react-icons/si";
 import { GrCirclePlay, GrDocumentText, GrFormAdd } from "react-icons/gr";
 import { ButtonCustom } from "../ui/ButtonCustom";
 import { AdminForm } from "../ui/AdminForm";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { textEllipsis } from "src/components/ui/TextEllipsis";
 
 import {
@@ -36,6 +36,7 @@ import {
 } from "../../redux/actions/courses/items";
 import EditContentDescription from "../ui/EditContentDescription";
 import MyCKEditor from "../ui/MyCKEditor";
+import itemsReducer from "../../redux/reducers/courses/itemsReducer";
 
 // import VideoList from "./VideoList";
 const CardItemContent = ({
@@ -48,6 +49,7 @@ const CardItemContent = ({
   itemCards,
 }) => {
   const dispatch = useDispatch();
+  const itemsReducer = useSelector((state) => state.itemsReducer);
   const handleAddVideo = (e, edit) => {
     e.preventDefault();
 
@@ -334,6 +336,8 @@ const CardItemContent = ({
             </>
           ) : (
             <div className="item-content">
+              {itemsReducer.item_file_uploading &&
+                "Subiendo... porfavor espere"}
               {(item?.content?.type_choices == "VI" ||
                 item?.content?.type_choices == "TX" ||
                 item?.content?.type_choices == "FI") && (

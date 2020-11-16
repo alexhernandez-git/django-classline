@@ -112,12 +112,12 @@ const VideoPlayer = (props) => {
   const [url, setUrl] = useState(null);
   useEffect(() => {
     const handleCreateBlob = async () => {
-      if (video) {
-        let blob = await fetch(video).then((r) => r.blob());
-        const url = URL.createObjectURL(blob);
-
-        setUrl(url);
-      }
+      setUrl(video);
+      // if (video) {
+      //   let blob = await fetch(video).then((r) => r.blob());
+      //   const url = URL.createObjectURL(blob);
+      //   setUrl(url);
+      // }
     };
     handleCreateBlob();
   }, [video]);
