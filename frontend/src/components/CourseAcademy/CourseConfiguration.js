@@ -25,8 +25,13 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import Prices from "static/data/prices/eur_prices_course";
 import SelectPrice from "./SelectPrice";
 import { Field } from "formik";
+import useOutsideClick from "../../hooks/useOutsideClick";
+import styled from "@emotion/styled";
 
 const CourseConfiguration = (props) => {
+  const { color } = props.values;
+  const { setFieldValue } = props;
+
   const MySwal = withReactContent(Swal);
   const { program } = useParams();
   const dispatch = useDispatch();
@@ -93,7 +98,23 @@ const CourseConfiguration = (props) => {
       }
     });
   };
+  const handleChangeComplete = (color) => {
+    setFieldValue("color", color.hex);
+  };
+  const [showColor, setShowColor] = useState(false);
+  const handleCloseColor = () => {
+    setShowColor(false);
+  };
+  const handleShowColor = () => {
+    setShowColor(true);
+  };
+  const colorRef = useRef();
 
+  useOutsideClick(colorRef, () => {
+    if (showColor) {
+      handleCloseColor(false);
+    }
+  });
   return (
     <>
       {/* <div className="bg-white border p-3 rounded my-2 mb-4 pb-5">
@@ -131,6 +152,39 @@ const CourseConfiguration = (props) => {
         </Row>
 
       </div> */}
+      <div className="bg-white border p-3 rounded my-2 mb-4">
+        <span className="d-none d-md-block">Ponle un color a tu curso</span>
+
+        <Row className="">
+          <Col
+            lg={{ span: 4 }}
+            className="text-center d-lg-flex justify-content-end align-items-center"
+          >
+            <span className="m-0 font-weight-normal">Color</span>
+          </Col>
+
+          <Col lg={{ offset: 1, span: 6 }}>
+            <ColorPickerDiv>
+              <DemoColor onClick={handleShowColor}>
+                <div
+                  className="color-div"
+                  style={{ background: color ? color : "#14171c" }}
+                ></div>
+              </DemoColor>
+              <div ref={colorRef}>
+                {showColor && (
+                  <div className="color-picker-div">
+                    <SketchPicker
+                      color={{ hex: color ? color : "#14171c" }}
+                      onChange={handleChangeComplete}
+                    />
+                  </div>
+                )}
+              </div>
+            </ColorPickerDiv>
+          </Col>
+        </Row>
+      </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Ponle un precio a tu curso</span>
 
@@ -321,5 +375,15 @@ const CourseConfiguration = (props) => {
     </>
   );
 };
-
+const ColorPickerDiv = styled.div`
+  position: relative;
+  z-index: 50;
+  .color-picker-div {
+    position: absolute;
+    @media screen and (max-width: 991px) {
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+  }
+`;
 export default CourseConfiguration;

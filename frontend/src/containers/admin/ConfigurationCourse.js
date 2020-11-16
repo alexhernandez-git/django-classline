@@ -57,7 +57,7 @@ const ConfigurationCourse = (props) => {
     instructor: {},
     published: false,
 
-    brand_color: null,
+    color: null,
   });
   useEffect(() => {
     if (!courseReducer.isLoading && courseReducer.course) {
@@ -77,7 +77,7 @@ const ConfigurationCourse = (props) => {
         course_language: courseReducer.course.course_language,
         instructor: courseReducer.course.instructor,
         published: courseReducer.course.published,
-        brand_color: courseReducer.course.brand_color,
+        color: courseReducer.course.color,
       });
     }
   }, [!courseReducer.isLoading, courseReducer.course]);

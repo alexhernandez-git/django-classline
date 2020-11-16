@@ -34,8 +34,8 @@ import styled from "@emotion/styled";
 import useOutsideClick from "../../hooks/useOutsideClick";
 
 const ProgramConfiguration = (props) => {
-  const {brand_color} = props.values
-  const {setFieldValue} = props
+  const { brand_color } = props.values;
+  const { setFieldValue } = props;
   const MySwal = withReactContent(Swal);
   const { program } = useParams();
   const dispatch = useDispatch();
@@ -121,20 +121,20 @@ const ProgramConfiguration = (props) => {
   };
 
   const handleChangeComplete = (color) => {
-    setFieldValue('brand_color', color.hex)
+    setFieldValue("brand_color", color.hex);
   };
-  const [showColor, setShowColor] = useState(false)
-  const handleCloseColor = () =>{
-    setShowColor(false)
-  }
-  const handleShowColor = ()=>{
-    setShowColor(true)
-  }
-  const colorRef = useRef()
+  const [showColor, setShowColor] = useState(false);
+  const handleCloseColor = () => {
+    setShowColor(false);
+  };
+  const handleShowColor = () => {
+    setShowColor(true);
+  };
+  const colorRef = useRef();
 
   useOutsideClick(colorRef, () => {
     if (showColor) {
-      handleCloseColor(false)
+      handleCloseColor(false);
     }
   });
   return (
@@ -248,39 +248,40 @@ const ProgramConfiguration = (props) => {
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Ponle un color a tu programa</span>
 
-          <Row className="">
-            <Col
-              lg={{ span: 4 }}
-              className="text-center d-lg-flex justify-content-end align-items-center"
-            >
-              <span className="m-0 font-weight-normal">Color</span>
-            </Col>
+        <Row className="">
+          <Col
+            lg={{ span: 4 }}
+            className="text-center d-lg-flex justify-content-end align-items-center"
+          >
+            <span className="m-0 font-weight-normal">Color</span>
+          </Col>
 
-            <Col lg={{ offset: 1, span: 6 }}>
-                <ColorPickerDiv>
-                  <DemoColor onClick={handleShowColor}>
-                    <div className="color-div" style={{background:brand_color ? brand_color : "#323840"}}>
-                    </div>
-                  </DemoColor>
-                  <div ref={colorRef}>
-                    {showColor &&
-                      <div className="color-picker-div">
-
-                        <SketchPicker
-                          color={{hex:brand_color ? brand_color : "#323840"}}
-                          onChange={handleChangeComplete}
-                          />
-                      </div>
-                      }
-                    </div>
-                </ColorPickerDiv>
-            </Col>
-          </Row>
-        </div>
+          <Col lg={{ offset: 1, span: 6 }}>
+            <ColorPickerDiv>
+              <DemoColor onClick={handleShowColor}>
+                <div
+                  className="color-div"
+                  style={{ background: brand_color ? brand_color : "#323840" }}
+                ></div>
+              </DemoColor>
+              <div ref={colorRef}>
+                {showColor && (
+                  <div className="color-picker-div">
+                    <SketchPicker
+                      color={{ hex: brand_color ? brand_color : "#323840" }}
+                      onChange={handleChangeComplete}
+                    />
+                  </div>
+                )}
+              </div>
+            </ColorPickerDiv>
+          </Col>
+        </Row>
+      </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
-      <span className="d-none d-md-block">Ponle un precio a tu programa</span>
+        <span className="d-none d-md-block">Ponle un precio a tu programa</span>
 
-      <Row className="">
+        <Row className="">
           <Col
             lg={{ span: 4 }}
             className="text-center d-lg-flex justify-content-end align-items-center"
@@ -290,11 +291,11 @@ const ProgramConfiguration = (props) => {
 
           <Col lg={{ offset: 1, span: 6 }}>
             <Form.Group controlId="formGroupName">
-            <Field name="lang" options={Prices} component={SelectPrice} />
+              <Field name="lang" options={Prices} component={SelectPrice} />
             </Form.Group>
           </Col>
         </Row>
-        </div>
+      </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Conectar con stripe</span>
 
@@ -430,22 +431,21 @@ const ProgramConfiguration = (props) => {
       </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Venta de Packs</span>
-      
-          <Row className="mb-4">
-            <Col
-              sm={{ span: 4 }}
-              className="text-center d-sm-flex justify-content-end align-items-center"
-            >
-              <span className="m-0 font-weight-normal">Enlace</span>
-            </Col>
 
-            <Col sm={{ offset: 1, span: 6 }} className="text-break">
-              <a target="_blank" href={`/academy/${program}/packs/`}>
-                https://classlineacademy.com/academy/{program}/packs/
-              </a>
-            </Col>
-          </Row>
-          
+        <Row className="mb-4">
+          <Col
+            sm={{ span: 4 }}
+            className="text-center d-sm-flex justify-content-end align-items-center"
+          >
+            <span className="m-0 font-weight-normal">Enlace</span>
+          </Col>
+
+          <Col sm={{ offset: 1, span: 6 }} className="text-break">
+            <a target="_blank" href={`/academy/${program}/packs/`}>
+              https://classlineacademy.com/academy/{program}/packs/
+            </a>
+          </Col>
+        </Row>
       </div>
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Acciones</span>
@@ -557,26 +557,24 @@ const DemoColor = styled.div`
   padding: 1rem;
   max-width: 5rem;
   border-radius: 1rem;
-  cursor:pointer;
-  .color-div{
+  cursor: pointer;
+  .color-div {
     padding: 1rem;
   }
   @media screen and (max-width: 991px) {
-  margin: auto;
+    margin: auto;
   }
-
-`
+`;
 const ColorPickerDiv = styled.div`
   position: relative;
   z-index: 50;
-  .color-picker-div{
-    position:absolute;
+  .color-picker-div {
+    position: absolute;
     @media screen and (max-width: 991px) {
       left: 50%;
       transform: translate(-50%, 0);
     }
   }
-`
-
+`;
 
 export default ProgramConfiguration;

@@ -54,6 +54,8 @@ class Course(CLineModel):
     published = models.BooleanField(default=False)
     published_in_program = models.BooleanField(default=False)
 
+    color = models.CharField(max_length=50, blank=True, null=True)
+
     is_private = models.BooleanField(default=False)
 
     def __str__(self):
