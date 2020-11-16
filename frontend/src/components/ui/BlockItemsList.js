@@ -132,6 +132,7 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
 
 const PlaylistItem = styled.div`
   padding: 1rem;
+  background: #fff;
   &:hover {
     background: #ececec;
   }

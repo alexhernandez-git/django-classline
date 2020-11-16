@@ -22,6 +22,9 @@ class Comment(CLineModel):
     post = models.ForeignKey(
         'programs.Post', on_delete=models.CASCADE, related_name='post_comments')
 
+    class Meta:
+        ordering = ['created']
+
     def __str__(self):
         """Return description."""
         return '{}'.format(self.message)

@@ -65,7 +65,7 @@ export const fetchQuestionsPagination = (url) => (dispatch, getState) => {
       });
     });
 };
-export const fetchQuestionsIncrease = (item, limit, search = "") => (
+export const fetchQuestionsIncrease = (item_id, limit, search = "") => (
   dispatch,
   getState
 ) => {

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Tab, Nav } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { textEllipsis } from "src/components/ui/TextEllipsis";
-import QuestionsAndAnswersLecture from "./QuestionsAndAnswersLecture";
+import QuestionsLecture from "./QuestionsLecture";
 
 const CourseSwitch = ({ itemPlaying }) => {
   const [key, setKey] = useState(0);
@@ -32,12 +32,12 @@ const CourseSwitch = ({ itemPlaying }) => {
             }}
           >
             <Nav.Item>
-              <Nav.Link eventKey={0} className="text-grey">
+              <Nav.Link eventKey={0}>
                 <span>PREGUNTAS Y RESPUESTAS</span>
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey={1} className="text-grey">
+              <Nav.Link eventKey={1}>
                 <span>ACERCA DEL CURSO</span>
               </Nav.Link>
             </Nav.Item>
@@ -46,10 +46,10 @@ const CourseSwitch = ({ itemPlaying }) => {
 
         <div>
           <Tab.Content>
-            <Tab.Pane eventKey={0} className="text-grey">
-              <QuestionsAndAnswersLecture itemPlaying={itemPlaying} />
+            <Tab.Pane eventKey={0}>
+              <QuestionsLecture itemPlaying={itemPlaying} />
             </Tab.Pane>
-            <Tab.Pane eventKey={1} className="text-grey">
+            <Tab.Pane eventKey={1}>
               <AboutContainer>
                 <div className="img-container">
                   <img src={course.picture} alt="" />

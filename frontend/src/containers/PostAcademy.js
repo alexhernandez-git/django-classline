@@ -111,7 +111,11 @@ const PostAcademy = () => {
           {!postReducer.isLoading && <Post post={postReducer.post} />}
           {!postReducer.isLoading && postReducer.error}
           <div className="mx-4">
-            <div className="mb-3">
+            {commentsReducer.comments &&
+              commentsReducer.comments.results.map((comment) => (
+                <Comment comment={comment} key={comment.code} />
+              ))}
+            <div className="mt-3">
               <Formik
                 enableReinitialize={true}
                 initialValues={{
@@ -161,10 +165,6 @@ const PostAcademy = () => {
                 }}
               </Formik>
             </div>
-            {commentsReducer.comments &&
-              commentsReducer.comments.results.map((comment) => (
-                <Comment comment={comment} key={comment.code} />
-              ))}
           </div>
           {commentsReducer.isLoading && <span>Cargando...</span>}
           {commentsReducer.comments &&

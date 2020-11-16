@@ -87,6 +87,7 @@ const Layout = (props) => {
             font-size: 1.6rem;
             font-family: "Open Sans", sans-serif;
             overflow: hidden;
+            color: #3c3b37;
           }
           a {
             text-decoration: none;

@@ -96,7 +96,7 @@ export default function (state = initialState, action) {
         comment_creating: false,
         comments: {
           ...state.comments,
-          results: [action.payload, ...state.comments.results],
+          results: [...state.comments.results, action.payload],
         },
       };
 

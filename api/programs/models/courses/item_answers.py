@@ -21,7 +21,8 @@ class ItemAnswer(CLineModel):
         'users.User', on_delete=models.CASCADE, related_name='user_answer')
     question = models.ForeignKey(
         'programs.ItemQuestion', on_delete=models.CASCADE, related_name='question_answer')
-
+    class Meta:
+        ordering = ['created']
     def __str__(self):
         """Return description."""
         return '{}'.format(self.message)

@@ -726,8 +726,10 @@ export const QUESTION_SUCCESS = "QUESTION_LOADED";
 export const QUESTION_FAIL = "QUESTION_FAIL";
 export const INCREASE_ANSWER = "INCREASE_ANSWER";
 
-// Comments
+// answers
 
+export const SET_QUESTION = "SET_QUESTION";
+export const REMOVE_QUESTION = "REMOVE_QUESTION";
 export const ANSWERS_FETCH = "ANSWERS_FETCH";
 export const ANSWERS_SUCCESS = "ANSWERS_SUCCESS";
 export const ANSWERS_FAIL = "ANSWERS_FAIL";

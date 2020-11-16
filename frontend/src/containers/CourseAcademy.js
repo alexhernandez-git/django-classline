@@ -244,6 +244,9 @@ const CourseContent = styled.div`
     border-radius: 0.25rem !important;
   }
   .course-content {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 1rem;
     grid-area: course-content;
     height: calc(100vh - 13.5rem);
     position: relative;
