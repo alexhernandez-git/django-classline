@@ -20,7 +20,6 @@ import CourseBenefitsForm from "../../components/CourseAcademy/CourseBenefitsFor
 import CoursePresentation from "../../components/CourseAcademy/CoursePresentation";
 import CourseConfiguration from "../../components/CourseAcademy/CourseConfiguration";
 import BlocksCourse from "../../components/CourseAcademy/BlocksCourse";
-import BlocksCourseRoutes from "../../components/CourseAcademy/BlocksCourseRoutes";
 
 const ConfigurationCourse = (props) => {
   const [key, setKey] = useState(0);

@@ -63,7 +63,11 @@ const CourseSwitch = ({ itemPlaying }) => {
                   <br />
                   {course.description && (
                     <div>
-                      <small>{course.description}</small>
+                      <small
+                        dangerouslySetInnerHTML={{
+                          __html: course.description,
+                        }}
+                      />
                     </div>
                   )}
                 </div>
