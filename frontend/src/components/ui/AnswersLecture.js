@@ -71,7 +71,6 @@ const AnswersLecture = ({ itemPlaying }) => {
               alt=""
             />
           </div>
-          <div className="d-none d-sm-block m-2"></div>
           <div>
             <div className="question-title">
               <span>{question.title}</span>
@@ -121,7 +120,6 @@ const AnswersLecture = ({ itemPlaying }) => {
                       alt=""
                     />
                   </div>
-                  <div className="d-none d-sm-block m-2"></div>
                   <div>
                     <div className="answer-text">
                       <small
@@ -226,7 +224,9 @@ const AnswersContainer = styled.div`
   .question {
     cursor: pointer;
     padding: 1rem;
-    display: flex;
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    grid-column-gap: 1rem;
     margin-bottom: 2rem;
     /* justify-content: space-between; */
     .question-img-container {
@@ -241,7 +241,9 @@ const AnswersContainer = styled.div`
   .answer {
     cursor: pointer;
     padding: 1rem;
-    display: flex;
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    grid-column-gap: 1rem;
 
     border-bottom: 1px solid #eaeaea;
 

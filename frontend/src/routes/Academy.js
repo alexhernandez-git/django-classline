@@ -63,6 +63,7 @@ import TopicSearch from "../containers/TopicSearch";
 import ConfigurationTopic from "../containers/admin/ConfigurationTopic";
 import ConfigurationCourse from "../containers/admin/ConfigurationCourse";
 import CoursesAdmin from "src/containers/admin/CoursesAdmin";
+import BlocksItems from "../components/CourseAcademy/BlockItems";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -340,11 +341,17 @@ const Academy = () => {
                     />
                     <Route
                       exact
+                      path="/academy/:program/admin/course/:course/block/:block"
+                      component={BlocksItems}
+                    />
+                    <Route
+                      exact
                       path="/academy/:program/admin/courses"
                       component={CoursesAdmin}
                     />
                     <Route
-                      path="/academy/:program/admin/course/:course"
+                      exact
+                      path="/academy/:program/admin/course/:course/:tab_id?"
                       component={ConfigurationCourse}
                     />
                     <Route

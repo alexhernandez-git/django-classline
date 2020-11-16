@@ -21,24 +21,8 @@ const BlocksCourseRoutes = () => {
         path="/academy/:program/admin/course/:course"
         component={BlocksCourse}
       />
-      <Route
-        exact
-        path="/academy/:program/admin/course/:course/block/:block"
-        component={BlocksItems}
-      />
     </DndProvider>
   );
 };
-export const GridBlocks = styled.div`
-  display: grid;
-  grid-gap: 4rem 2rem;
 
-  grid-template-columns: repeat(3, 1fr);
-  @media screen and (max-width: 992px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media screen and (max-width: 768px) {
-    grid-template-columns: repeat(1, 1fr);
-  }
-`;
 export default BlocksCourseRoutes;

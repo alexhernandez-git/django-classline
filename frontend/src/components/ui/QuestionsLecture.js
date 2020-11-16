@@ -8,7 +8,10 @@ import {
   fetchQuestions,
   fetchQuestionsIncrease,
 } from "../../redux/actions/courses/questions";
-import { setQuestion } from "../../redux/actions/courses/answers";
+import {
+  removeQuestion,
+  setQuestion,
+} from "../../redux/actions/courses/answers";
 import { AdminForm } from "./AdminForm";
 import { ButtonCustom } from "./ButtonCustom";
 import MyCKEditor from "./MyCKEditor";
@@ -37,12 +40,6 @@ const QuestionsLecture = ({ itemPlaying }) => {
   const answersReducer = useSelector((state) => state.answersReducer);
   console.log("itemplaying", itemPlaying);
   const [handleCreateQuestion, setHandleCreateCuestion] = useState(false);
-  useEffect(() => {
-    if (itemPlaying.item) {
-      dispatch(fetchQuestions(itemPlaying.item.code));
-    }
-    setHandleCreateCuestion(false);
-  }, [itemPlaying]);
   const [search, setSearch] = useState(null);
   const handleOpenCreateQuestion = () => {
     setHandleCreateCuestion(true);
@@ -66,6 +63,13 @@ const QuestionsLecture = ({ itemPlaying }) => {
   const handleSetQuestion = (question) => {
     dispatch(setQuestion(question));
   };
+  useEffect(() => {
+    if (itemPlaying.item) {
+      dispatch(fetchQuestions(itemPlaying.item.code));
+    }
+    setHandleCreateCuestion(false);
+    dispatch(removeQuestion());
+  }, [itemPlaying]);
   return (
     <>
       {answersReducer.question ? (
@@ -186,7 +190,6 @@ const QuestionsLecture = ({ itemPlaying }) => {
                             alt=""
                           />
                         </div>
-                        <div className="d-none d-sm-block m-2"></div>
                         <div>
                           <div className="question-title">
                             <span>{question.title}</span>
@@ -258,7 +261,9 @@ const QuestionsAndAnswersContainer = styled.div`
   .question {
     cursor: pointer;
     padding: 1rem;
-    display: flex;
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    grid-column-gap: 1rem;
     border-bottom: 1px solid #eaeaea;
     &:hover {
       background: #f3f3f3;

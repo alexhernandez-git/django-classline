@@ -34,6 +34,11 @@ import {
   removeItem,
   saveItem,
 } from "../../redux/actions/courses/items";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
+import { Main } from "src/components/ui/Main";
+import { Padding } from "src/components/ui/Padding";
+
 const BlocksItems = (props) => {
   const dispatch = useDispatch();
   const MySwal = withReactContent(Swal);
@@ -45,13 +50,16 @@ const BlocksItems = (props) => {
   const courseReducer = useSelector((state) => state.courseReducer);
   const blockReducer = useSelector((state) => state.blockReducer);
   const itemsReducer = useSelector((state) => state.itemsReducer);
-  const { block } = useParams();
+  const { program, course, block } = useParams();
   useEffect(() => {
-    if (!courseReducer.isLoading && courseReducer.course && block) {
+    console.log(courseReducer.course);
+    if (!courseReducer.course) {
+      history.push(`/academy/${program}/admin/course/${course}`);
+    } else {
       const dispatchFetchBlock = (block) => dispatch(fetchBlock(block));
       dispatchFetchBlock(block);
     }
-  }, [courseReducer.isLoading, block]);
+  }, []);
   useEffect(() => {
     if (!blockReducer.isLoading && blockReducer.block) {
       const dispatchFetchItems = () => dispatch(fetchItems());
@@ -197,64 +205,73 @@ const BlocksItems = (props) => {
   return blockReducer.isLoading ? (
     "Cargando..."
   ) : (
-    <div className="mt-5">
-      <Formik
-        enableReinitialize={true}
-        initialValues={{
-          name: blockReducer.block.name,
-          description: blockReducer.block.description,
-        }}
-        onSubmit={(values) => {
-          console.log(values);
-          const dispatchSaveBlock = (block, itemCards) =>
-            dispatch(saveBlock(block, itemCards));
-          dispatchSaveBlock(values, itemCards);
-        }}
-      >
-        {(props) => {
-          return (
-            <FormFormik>
-              <Filters
-                title={blockReducer.block.name}
-                back="Volver"
-                saveButton="Guardar Bloque"
-              />
-              <div className="row">
-                <div className="col-md-6">
-                  <AdminForm>
-                    <Row className="my-4">
-                      <Col
-                        lg={{ span: 4 }}
-                        className="text-center d-lg-flex justify-content-end align-items-center"
-                      >
-                        <span className="m-0 font-weight-normal">Nombre</span>
-                      </Col>
+    <Main>
+      <Padding>
+        <DndProvider backend={HTML5Backend}>
+          <div className="mt-5">
+            <Formik
+              enableReinitialize={true}
+              initialValues={{
+                name: blockReducer.block.name,
+                description: blockReducer.block.description,
+              }}
+              onSubmit={(values) => {
+                console.log(values);
+                const dispatchSaveBlock = (block, itemCards) =>
+                  dispatch(saveBlock(block, itemCards));
+                dispatchSaveBlock(values, itemCards);
+              }}
+            >
+              {(props) => {
+                return (
+                  <FormFormik>
+                    <Filters
+                      title={blockReducer.block.name}
+                      back="Volver"
+                      saveButton="Guardar Bloque"
+                    />
+                    <div className="row">
+                      <div className="col-md-6">
+                        <AdminForm>
+                          <Row className="my-4">
+                            <Col
+                              lg={{ span: 4 }}
+                              className="text-center d-lg-flex justify-content-end align-items-center"
+                            >
+                              <span className="m-0 font-weight-normal">
+                                Nombre
+                              </span>
+                            </Col>
 
-                      <Col lg={{ offset: 1, span: 6 }}>
-                        <Field type="text" name="name" placeholder="Nombre" />
-                      </Col>
-                    </Row>
-                    <Row className="my-4">
-                      <Col
-                        lg={{ span: 4 }}
-                        className="text-center d-lg-flex justify-content-end align-items-center"
-                      >
-                        <span className="m-0 font-weight-normal">
-                          Descripción
-                        </span>
-                      </Col>
+                            <Col lg={{ offset: 1, span: 6 }}>
+                              <Field
+                                type="text"
+                                name="name"
+                                placeholder="Nombre"
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="my-4">
+                            <Col
+                              lg={{ span: 4 }}
+                              className="text-center d-lg-flex justify-content-end align-items-center"
+                            >
+                              <span className="m-0 font-weight-normal">
+                                Descripción
+                              </span>
+                            </Col>
 
-                      <Col lg={{ offset: 1, span: 6 }}>
-                        <Field
-                          name="description"
-                          component="textarea"
-                          placeholder="Descripción"
-                          style={{ height: "217px" }}
-                        />
-                      </Col>
-                    </Row>
+                            <Col lg={{ offset: 1, span: 6 }}>
+                              <Field
+                                name="description"
+                                component="textarea"
+                                placeholder="Descripción"
+                                style={{ height: "217px" }}
+                              />
+                            </Col>
+                          </Row>
 
-                    {/* <Row className="mb-4">
+                          {/* <Row className="mb-4">
                                 <Col lg={{ span: 4 }} className="text-center d-lg-flex justify-content-end align-items-center">
                                     <span className="m-0 font-weight-normal">Descripción</span>
 
@@ -265,39 +282,44 @@ const BlocksItems = (props) => {
                                     <textarea name="" id="" cols="30" rows="10" placeholder="Descripción"></textarea>
                                 </Col>
                             </Row> */}
-                  </AdminForm>
-                </div>
-                <div className="col-md-6">
-                  <BlockPresentation />
-                  <Row className="my-4">
-                    <Col
-                      lg={{ span: 4 }}
-                      className="text-center d-lg-flex justify-content-end align-items-center"
-                    >
-                      <span className="m-0 font-weight-normal">Eliminar</span>
-                    </Col>
+                        </AdminForm>
+                      </div>
+                      <div className="col-md-6">
+                        <BlockPresentation />
+                        <Row className="my-4">
+                          <Col
+                            lg={{ span: 4 }}
+                            className="text-center d-lg-flex justify-content-end align-items-center"
+                          >
+                            <span className="m-0 font-weight-normal">
+                              Eliminar
+                            </span>
+                          </Col>
 
-                    <Col lg={{ offset: 1, span: 6 }}>
-                      <ButtonCustomError onClick={hanldeRemoveBlock}>
-                        Eliminar bloque
-                      </ButtonCustomError>
-                    </Col>
-                  </Row>
-                </div>
+                          <Col lg={{ offset: 1, span: 6 }}>
+                            <ButtonCustomError onClick={hanldeRemoveBlock}>
+                              Eliminar bloque
+                            </ButtonCustomError>
+                          </Col>
+                        </Row>
+                      </div>
+                    </div>
+                  </FormFormik>
+                );
+              }}
+            </Formik>
+            <div className="w-100">
+              <div className="d-flex justify-content-between border-bottom pb-2 mb-3">
+                <span>Contenido</span>
               </div>
-            </FormFormik>
-          );
-        }}
-      </Formik>
-      <div className="w-100">
-        <div className="d-flex justify-content-between border-bottom pb-2 mb-3">
-          <span>Contenido</span>
-        </div>
 
-        {itemCards.map((card, i) => renderItemCard(card, i))}
-        <AddItem onClick={handleAddItem}>Añadir elemento</AddItem>
-      </div>
-    </div>
+              {itemCards.map((card, i) => renderItemCard(card, i))}
+              <AddItem onClick={handleAddItem}>Añadir elemento</AddItem>
+            </div>
+          </div>
+        </DndProvider>
+      </Padding>
+    </Main>
   );
 };
 const VideosForm = styled.form`

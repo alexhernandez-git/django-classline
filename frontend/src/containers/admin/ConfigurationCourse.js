@@ -7,7 +7,7 @@ import styled from "@emotion/styled";
 import { ButtonCustom } from "src/components/ui/ButtonCustom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   fetchCourse,
   saveCourse,
@@ -82,6 +82,7 @@ const ConfigurationCourse = (props) => {
       });
     }
   }, [!courseReducer.isLoading, courseReducer.course]);
+
   return (
     <Main padding>
       <Filters
@@ -165,7 +166,7 @@ const ConfigurationCourse = (props) => {
                         </Tab.Pane>
 
                         <Tab.Pane eventKey={2} className="text-grey">
-                          <BlocksCourseRoutes
+                          <BlocksCourse
                             values={props.values}
                             setFieldValue={props.setFieldValue}
                           />

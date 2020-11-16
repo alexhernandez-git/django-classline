@@ -12,6 +12,7 @@ import { ButtonCustom } from "../ui/ButtonCustom";
 import BlockCard from "./BlockCard";
 import { textEllipsis } from "src/components/ui/TextEllipsis";
 import BlocksCourseCard from "./BlocksCourseCard";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const BlocksCourse = () => {
   const blocksReducer = useSelector((state) => state.blocksReducer);
@@ -76,32 +77,34 @@ const BlocksCourse = () => {
   const [sortEdit, setSortEdit] = useState(false);
   return (
     <>
-      <div className="d-flex justify-content-end my-3">
+      <DndProvider backend={HTML5Backend}>
+        <div className="d-flex justify-content-end my-3">
+          {sortEdit ? (
+            <ButtonCustom
+              className="cursor-pointer"
+              onClick={(e) => handleUpdateBlocksOrder(e)}
+            >
+              Guardar Orden
+            </ButtonCustom>
+          ) : (
+            <div className="cursor-pointer" onClick={() => setSortEdit(true)}>
+              Ordenar Bloques
+            </div>
+          )}
+        </div>
         {sortEdit ? (
-          <ButtonCustom
-            className="cursor-pointer"
-            onClick={(e) => handleUpdateBlocksOrder(e)}
-          >
-            Guardar Orden
-          </ButtonCustom>
+          blockCards.map((card, i) => renderBlockCard(card, i))
         ) : (
-          <div className="cursor-pointer" onClick={() => setSortEdit(true)}>
-            Ordenar Bloques
-          </div>
+          <>
+            <GridBlocks>
+              {blockCards.map((card, i) => (
+                <BlocksCourseCard block={card.block} index={i} type="ADMIN" />
+              ))}
+              <AddBlock onClick={handleAddBlock}>Añadir Bloque</AddBlock>
+            </GridBlocks>
+          </>
         )}
-      </div>
-      {sortEdit ? (
-        blockCards.map((card, i) => renderBlockCard(card, i))
-      ) : (
-        <>
-          <GridBlocks>
-            {blockCards.map((card, i) => (
-              <BlocksCourseCard block={card.block} index={i} type="ADMIN" />
-            ))}
-            <AddBlock onClick={handleAddBlock}>Añadir Bloque</AddBlock>
-          </GridBlocks>
-        </>
-      )}
+      </DndProvider>
     </>
   );
 };
