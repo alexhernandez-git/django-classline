@@ -75,7 +75,14 @@ class CourseBlockTrackPlayingModelSerializer(serializers.ModelSerializer):
         read_only_fields = (
             'id',
         )
-    
+    def __init__(self, *args, **kwargs):
+        if 'user' in kwargs:
+            self.user = kwargs.pop('user')
+        else: 
+            self.user = None
+        super().__init__(*args, **kwargs)
+
     def get_block(self,obj):
         from api.programs.serializers import CourseBlockPlayingModelSerializer
-        return CourseBlockPlayingModelSerializer(obj.block).data
+   
+        return CourseBlockPlayingModelSerializer(obj.block, user=self.user).data

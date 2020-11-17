@@ -25,6 +25,12 @@ import {
   UPDATE_ITEM_CONTENT_FAIL,
   DECREASE_ITEM,
   INCREASE_ITEM,
+  CREATE_ITEM_VIEWED,
+  CREATE_ITEM_VIEWED_FAIL,
+  CREATE_ITEM_VIEWED_SUCCESS,
+  UPDATE_ITEM_VIEWED,
+  UPDATE_ITEM_VIEWED_FAIL,
+  UPDATE_ITEM_VIEWED_SUCCESS,
 } from "../../types";
 
 import { tokenConfig } from "../auth";
@@ -322,6 +328,66 @@ export const createItem = (item) => (dispatch, getState) => {
       console.log("error", err.response);
       dispatch({
         type: CREATE_ITEM_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const createItemViewed = (item_id) => (dispatch, getState) => {
+  dispatch({
+    type: CREATE_ITEM_VIEWED,
+  });
+  console.log("item viewed".item);
+  axios
+    .post(
+      `/api/programs/${getState().programReducer.program.code}/courses/${
+        getState().courseReducer.course.code
+      }/items/${item_id}/items-viewed/`,
+      {},
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log("res", res);
+
+      dispatch({
+        type: CREATE_ITEM_VIEWED_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log("error", err.response);
+      dispatch({
+        type: CREATE_ITEM_VIEWED_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const updateItemViewed = (data, item) => (dispatch, getState) => {
+  dispatch({
+    type: UPDATE_ITEM_VIEWED,
+  });
+  console.log("item viewed".item);
+  axios
+    .patch(
+      `/api/programs/${getState().programReducer.program.code}/courses/${
+        getState().courseReducer.course.code
+      }/items/${item.code}/items-viewed/${item.item_viewed.id}`,
+      data,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log("res", res);
+
+      dispatch({
+        type: UPDATE_ITEM_VIEWED_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log("error", err.response);
+      dispatch({
+        type: UPDATE_ITEM_VIEWED_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

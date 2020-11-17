@@ -9,7 +9,7 @@ from django.core.files import File
 from rest_framework import serializers
 
 # Models
-from api.programs.models import CourseItem,LectureContent
+from api.programs.models import CourseItem,LectureContent,ItemViewed
 
 # Serializers
 
@@ -23,6 +23,7 @@ import string
 class CourseItemModelSerializer(serializers.ModelSerializer):
     """Profile model serializer."""
     content = serializers.SerializerMethodField(read_only=True)
+    item_viewed = serializers.SerializerMethodField(read_only=True)
     class Meta:
         """Meta class."""
 
@@ -33,18 +34,33 @@ class CourseItemModelSerializer(serializers.ModelSerializer):
             'name',
             'type_choices',
             'is_private',
-            'content'
+            'content',
+            'item_viewed'
         )
         # extra_kwargs = {'end': {'required': False}}
         read_only_fields = (
             'id',
         )
+    def __init__(self, *args, **kwargs):
+        if 'user' in kwargs:
+            self.user = kwargs.pop('user')
+        else: 
+            self.user = None
+        super().__init__(*args, **kwargs)
 
     def get_content(self, obj):
         from api.programs.serializers import LectureContentModelSerializer
         content = LectureContent.objects.filter(item=obj.id)
         if len(content) > 0:
             return LectureContentModelSerializer(content[0], many=False).data
+        else: 
+            return None
+
+    def get_item_viewed(self, obj):
+        from api.programs.serializers import ItemViewedModelSerializer
+        item_viewed = ItemViewed.objects.filter(item=obj.id, user=self.user)
+        if len(item_viewed) > 0:
+            return ItemViewedModelSerializer(item_viewed[0], many=False).data
         else: 
             return None
 
@@ -58,5 +74,22 @@ class CourseItemModelSerializer(serializers.ModelSerializer):
     #             track_object.position = track['position']
     #             track_object.save()
     #     return super(CourseItemModelSerializer, self).update(instance, validated_data)
+
+
+class CourseItemViewedModelSerializer(serializers.ModelSerializer):
+    """Profile model serializer."""
+    class Meta:
+        """Meta class."""
+
+        model = CourseItem
+        fields = (
+            'id',
+            'code',
+            'name',
+        )
+        # extra_kwargs = {'end': {'required': False}}
+        read_only_fields = (
+            'id',
+        )
 
 

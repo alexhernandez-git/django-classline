@@ -2,7 +2,13 @@ import styled from "@emotion/styled";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { IconContext } from "react-icons";
-import { GrCirclePlay, GrDocumentText, GrTextAlignFull } from "react-icons/gr";
+import {
+  GrCheckbox,
+  GrCheckboxSelected,
+  GrCirclePlay,
+  GrDocumentText,
+  GrTextAlignFull,
+} from "react-icons/gr";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -33,7 +39,7 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
         // ref={index_block == trackCode ? courseVideoRef : null}
       >
         <span className="mr-4">
-          {index_block + 1}: {track.block.name}
+          Bloque {index_block + 1}: {track.block.name}
         </span>
         {isItemsOpen ? (
           <IconContext.Provider
@@ -79,9 +85,32 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
                       // ref={index == trackCode ? courseVideoRef : null}
                     >
                       <small>
-                        {items.indexOf(item) + 1}: {item.item.name}
+                        Lectura {items.indexOf(item) + 1}: {item.item.name}
                       </small>
+                      {console.log(item.item)}
                       <div>
+                        {item.item.item_viewed &&
+                        item.item.item_viewed.is_viewed ? (
+                          <IconContext.Provider
+                            value={{
+                              size: 14,
+                              className:
+                                "global-class-name mx-2 cursor-pointer",
+                            }}
+                          >
+                            <GrCheckboxSelected />
+                          </IconContext.Provider>
+                        ) : (
+                          <IconContext.Provider
+                            value={{
+                              size: 14,
+                              className:
+                                "global-class-name mx-2 cursor-pointer",
+                            }}
+                          >
+                            <GrCheckbox />
+                          </IconContext.Provider>
+                        )}
                         {item.item.type_choices == "LE" &&
                           item.item?.content?.type_choices == "VI" && (
                             <IconContext.Provider

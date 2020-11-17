@@ -35,10 +35,15 @@ class CourseItemTrackModelSerializer(serializers.ModelSerializer):
         read_only_fields = (
             'id',
         )
-    
+    def __init__(self, *args, **kwargs):
+        if 'user' in kwargs:
+            self.user = kwargs.pop('user')
+        else: 
+            self.user = None
+        super().__init__(*args, **kwargs)
     def get_item(self,obj):
         from api.programs.serializers import CourseItemModelSerializer
-        return CourseItemModelSerializer(obj.item).data
+        return CourseItemModelSerializer(obj.item,user=self.user).data
 
 
 

@@ -39,6 +39,8 @@ from api.programs.views.courses.items import CourseItemViewSet
 from api.programs.views.courses.contents import LectureContentViewSet
 from api.programs.views.courses.item_questions import ItemQuestionViewSet
 from api.programs.views.courses.item_answers import ItemAnswerViewSet
+from api.programs.views.courses.items_viewed import ItemViewedViewSet
+
 router = DefaultRouter()
 
 router.register(r'programs', ProgramViewSet, basename='program')
@@ -217,6 +219,11 @@ router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/questions/(?P<question_id>[-a-zA-Z0-9_]+)/answers',
     ItemAnswerViewSet,
     basename='answers'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/courses/(?P<course_id>[-a-zA-Z0-9_]+)/items/(?P<item_id>[-a-zA-Z0-9_]+)/items-viewed',
+    ItemViewedViewSet,
+    basename='items-viewed'
 )
 urlpatterns = [
     path('', include(router.urls))

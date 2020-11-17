@@ -14,7 +14,6 @@ import {
   REMOVE_ITEM,
   REMOVE_ITEM_SUCCESS,
   REMOVE_ITEM_FAIL,
-  RESET_ITEMS_ERRORS,
   UPLOAD_ITEM_FILE,
   UPLOAD_ITEM_FILE_SUCCESS,
   UPLOAD_ITEM_FILE_FAIL,
@@ -27,6 +26,12 @@ import {
   UPLOAD_ITEM_MATERIAL,
   UPLOAD_ITEM_MATERIAL_SUCCESS,
   UPLOAD_ITEM_MATERIAL_FAIL,
+  CREATE_ITEM_VIEWED,
+  CREATE_ITEM_VIEWED_FAIL,
+  CREATE_ITEM_VIEWED_SUCCESS,
+  UPDATE_ITEM_VIEWED,
+  UPDATE_ITEM_VIEWED_FAIL,
+  UPDATE_ITEM_VIEWED_SUCCESS,
 } from "../../types";
 
 const initialState = {
@@ -55,6 +60,10 @@ const initialState = {
   item_content_update_error: null,
   item_material_uploading: false,
   item_material_upload_error: null,
+  item_viewed_creating: false,
+  item_viewed_created_error: null,
+  item_viewed_updating: false,
+  item_viewed_updated_error: null,
 };
 
 export default function (state = initialState, action) {
@@ -299,7 +308,66 @@ export default function (state = initialState, action) {
         item_material_uploading: false,
         item_material_upload_error: action.payload,
       };
-
+    case CREATE_ITEM_VIEWED:
+      return {
+        ...state,
+        item_viewed_creating: true,
+      };
+    case CREATE_ITEM_VIEWED_SUCCESS:
+      return {
+        ...state,
+        item_viewed_creating: false,
+        item_viewed_created_error: null,
+        items: state.items.map((item) => {
+          if (item.item.id == action.payload.item) {
+            return {
+              ...item,
+              item: {
+                ...item.item,
+                item_viewed: action.payload,
+              },
+            };
+          } else {
+            return item;
+          }
+        }),
+      };
+    case CREATE_ITEM_VIEWED_SUCCESS:
+      return {
+        ...state,
+        item_viewed_creating: false,
+        item_viewed_created_error: action.payload,
+      };
+    case UPDATE_ITEM_VIEWED:
+      return {
+        ...state,
+        item_viewed_updating: true,
+      };
+    case UPDATE_ITEM_VIEWED_SUCCESS:
+      return {
+        ...state,
+        item_viewed_updating: false,
+        item_viewed_updated_error: null,
+        items: state.items.map((item) => {
+          if (item.item.id == action.payload.item) {
+            return {
+              ...item,
+              item: {
+                ...item.item,
+                item_viewed: action.payload,
+              },
+            };
+          } else {
+            return item;
+          }
+        }),
+      };
+    case UPDATE_ITEM_VIEWED_SUCCESS:
+      return {
+        ...state,
+        item_viewed_updating: false,
+        item_viewed_updated_error: action.payload,
+      };
     default:
       return state;
   }

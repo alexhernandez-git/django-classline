@@ -104,7 +104,14 @@ const CourseAcademy = (props) => {
   ) : (
     <Main style={{ overflow: "hidden" }}>
       <CourseContent>
-        <div className="course-header">
+        <div
+          className="course-header"
+          style={{
+            background: playingCourseReducer.course.color
+              ? playingCourseReducer.course.color
+              : "#14171c",
+          }}
+        >
           {playingCourseReducer.course && playingCourseReducer.course.title}
         </div>
         <div className="course-content">
@@ -149,11 +156,25 @@ const CourseAcademy = (props) => {
                     </div>
 
                     <div className="d-flex justify-content-between px-2 mt-3">
-                      <ButtonCustomInitial onClick={goPrevious}>
+                      <ButtonCustomInitial
+                        onClick={goPrevious}
+                        style={{
+                          background: playingCourseReducer.course.color
+                            ? playingCourseReducer.course.color
+                            : "#14171c",
+                        }}
+                      >
                         Anterior
                       </ButtonCustomInitial>
                       <div className="d-block m-2"></div>
-                      <ButtonCustomInitial onClick={goNext}>
+                      <ButtonCustomInitial
+                        onClick={goNext}
+                        style={{
+                          background: playingCourseReducer.course.color
+                            ? playingCourseReducer.course.color
+                            : "#14171c",
+                        }}
+                      >
                         Siguente
                       </ButtonCustomInitial>
                     </div>
@@ -188,7 +209,12 @@ const CourseAcademy = (props) => {
 
           <div
             className="d-flex justify-content-center p-4 h2 mb-0 rounded"
-            style={{ background: "#14171c", color: "#fff" }}
+            style={{
+              background: playingCourseReducer.course.color
+                ? playingCourseReducer.course.color
+                : "#14171c",
+              color: "#fff",
+            }}
           >
             <span className="font-weight-bold">Contenido del curso</span>
           </div>
@@ -237,7 +263,7 @@ const CourseContent = styled.div`
   .course-header {
     grid-area: course-header;
     text-align: center;
-    background: #14171c;
+
     color: #fff;
     padding: 1.5rem;
     font-size: 2.4rem;

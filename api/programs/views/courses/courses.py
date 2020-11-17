@@ -93,6 +93,8 @@ class CourseViewSet(mixins.CreateModelMixin,
             return CancelPublishCourseSerializer
         return CourseModelSerializer
 
+
+
     def get_permissions(self):
         """Assign permissions based on action."""
         permissions = []

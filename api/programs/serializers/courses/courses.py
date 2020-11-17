@@ -67,7 +67,8 @@ class CourseModelSerializer(serializers.ModelSerializer):
             'published',
             'blocks',
             'items',
-            'total_duration'
+            'total_duration',
+            'color'
         )
 
         read_only_fields = (
@@ -169,6 +170,8 @@ class CourseModifyModelSerializer(serializers.ModelSerializer):
             'published_in_program',
             'video_presentation',
 
+            'color',
+
         )
 
         read_only_fields = (
@@ -204,12 +207,12 @@ class CourseModifyModelSerializer(serializers.ModelSerializer):
         # Actualizar el precio de la clase
         if 'price' in self.context and self.context['price'] != None:
             CoursePrice.objects.filter(course=instance).delete()
-            price = CoursePrice.objects.create(
+            CoursePrice.objects.create(
                 **self.context['price'], course=instance)
 
         if 'language' in self.context and self.context['language'] != None:
             CourseLanguage.objects.filter(course=instance).delete()
-            language = CourseLanguage.objects.create(
+            CourseLanguage.objects.create(
                 **self.context['language'], course=instance)
         if 'benefits' in self.context and  self.context['benefits'] != None:
             CourseBenefit.objects.filter(course=instance.pk).delete()
@@ -329,6 +332,7 @@ class CoursePlayingModelSerializer(serializers.ModelSerializer):
             'blocks_count',
             'items_count',
             'total_duration',
+            'color'
         )
 
         read_only_fields = (
@@ -353,8 +357,13 @@ class CoursePlayingModelSerializer(serializers.ModelSerializer):
 
     def get_blocks(self, obj):
         from api.programs.serializers import CourseBlockTrackPlayingModelSerializer
+
         blocks = CourseBlockTrack.objects.filter(course=obj.id)
-        return CourseBlockTrackPlayingModelSerializer(blocks, many=True).data
+        request = self.context.get('request', None)
+        if request: 
+            return CourseBlockTrackPlayingModelSerializer(blocks,user=request.user, many=True).data
+        else:
+            return CourseBlockTrackPlayingModelSerializer(blocks,user=None, many=True).data
 
     def get_items_count(self, obj):
         items = CourseItemTrack.objects.filter(course=obj.id).count()

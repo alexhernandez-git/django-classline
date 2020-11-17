@@ -19,7 +19,13 @@ class ItemViewed(CLineModel):
 
     item = models.ForeignKey('programs.CourseItem',
                              on_delete=models.CASCADE)
+
+
+    course = models.ForeignKey('programs.Course',
+                             on_delete=models.CASCADE)
+
     duration = models.FloatField(blank=True, null=True)
+    is_viewed = models.BooleanField(default=True)
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
 
     def __str__(self):

@@ -27,6 +27,7 @@ import SelectPrice from "./SelectPrice";
 import { Field } from "formik";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import styled from "@emotion/styled";
+import { SketchPicker } from "react-color";
 
 const CourseConfiguration = (props) => {
   const { color } = props.values;
@@ -375,6 +376,20 @@ const CourseConfiguration = (props) => {
     </>
   );
 };
+
+const DemoColor = styled.div`
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  padding: 1rem;
+  max-width: 5rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  .color-div {
+    padding: 1rem;
+  }
+  @media screen and (max-width: 991px) {
+    margin: auto;
+  }
+`;
 const ColorPickerDiv = styled.div`
   position: relative;
   z-index: 50;
