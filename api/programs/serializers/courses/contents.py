@@ -22,6 +22,7 @@ class LectureContentModelSerializer(serializers.ModelSerializer):
             'text',
             'duration',
             'mega_bytes',
+            'name',
             'description',
             'item',
 

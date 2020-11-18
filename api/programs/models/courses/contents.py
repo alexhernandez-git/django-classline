@@ -34,6 +34,7 @@ class LectureContent(CLineModel):
         null=True,
         max_length=500
     )
+    name =  models.CharField(max_length=500, blank=True, null=True)
 
     text = models.TextField(max_length=5000, blank=True)
 

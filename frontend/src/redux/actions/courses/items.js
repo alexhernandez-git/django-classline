@@ -280,19 +280,24 @@ export const uploadItemMaterial = (file, item) => (dispatch, getState) => {
 export const removeItemMaterial = (item, material) => (dispatch, getState) => {
   dispatch({
     type: DELETE_ITEM_MATERIAL,
+    payload: { item_id: item, material_id: material },
   });
   axios
     .delete(
       `/api/programs/${getState().programReducer.program.code}/courses/${
         getState().courseReducer.course.code
-      }/items/${item}/materials/${material}`,
-      fd,
+      }/items/${item}/materials/${material}/`,
       tokenConfig(getState)
     )
     .then((res) => {
       dispatch({
         type: DELETE_ITEM_MATERIAL_SUCCESS,
         payload: res.data,
+      });
+      Swal.fire({
+        title: "Eliminado!",
+        icon: "success",
+        confirmButtonText: "Ok",
       });
     })
     .catch((err) => {

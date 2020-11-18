@@ -63,6 +63,9 @@ const initialState = {
   item_content_update_error: null,
   item_material_uploading: false,
   item_material_upload_error: null,
+  item_material_deleting: false,
+  item_material_delete: null,
+  item_material_delete_error: null,
   item_viewed_creating: false,
   item_viewed_created_error: null,
   item_viewed_updating: false,
@@ -310,6 +313,44 @@ export default function (state = initialState, action) {
         ...state,
         item_material_uploading: false,
         item_material_upload_error: action.payload,
+      };
+    case DELETE_ITEM_MATERIAL:
+      return {
+        ...state,
+        item_material_deleting: true,
+        item_material_delete: action.payload,
+      };
+    case DELETE_ITEM_MATERIAL_SUCCESS:
+      return {
+        ...state,
+        item_material_deleting: false,
+        item_material_delete_error: null,
+        item_material_delete: null,
+
+        items: state.items.map((item) => {
+          if (item.item.code == state.item_material_delete.item_id) {
+            return {
+              ...item,
+              item: {
+                ...item.item,
+                materials: item.item.materials.filter(
+                  (material) =>
+                    material.id != state.item_material_delete.material_id
+                ),
+              },
+            };
+          } else {
+            return item;
+          }
+        }),
+      };
+    case DELETE_ITEM_MATERIAL_FAIL:
+      return {
+        ...state,
+        item_material_uploading: false,
+        item_material_delete: null,
+
+        item_material_delete_error: action.payload,
       };
     case CREATE_ITEM_VIEWED:
       return {

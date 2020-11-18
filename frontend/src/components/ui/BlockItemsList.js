@@ -2,16 +2,18 @@ import styled from "@emotion/styled";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { IconContext } from "react-icons";
+import { FaFile, FaFolderOpen } from "react-icons/fa";
 import {
   GrCheckbox,
   GrCheckboxSelected,
   GrCirclePlay,
   GrDocumentText,
-  GrTextAlignFull,
 } from "react-icons/gr";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import ItemResources from "./ItemResources";
+import { textEllipsis } from "./TextEllipsis";
 
 function BlockItemsList({ track, index_block, itemPlaying, items }) {
   const programReducer = useSelector((state) => state.programReducer);
@@ -28,6 +30,20 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
       setIsItemsOpen(true);
     }
   }, [itemPlaying]);
+  function msToHMS(seconds) {
+    if (isNaN(seconds)) {
+      return "00:00";
+    }
+    const date = new Date(seconds * 1000);
+    const hh = date.getUTCHours();
+    const mm = date.getUTCMinutes();
+    const ss = date.getUTCSeconds().toString().padStart(2, "0");
+    if (hh) {
+      return `${hh}:${mm.toString().padStart(2, "0")}:${ss}`;
+    }
+    return `${mm}:${ss}`;
+  }
+
   return (
     <>
       <div
@@ -66,24 +82,24 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
         <ul className="m-0">
           {isItemsOpen &&
             track.block.items.map((item, index) => (
-              <>
-                <li>
-                  <Link
-                    to={{
-                      pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${item.item.code}/`,
-                      query: { item: item.id },
-                    }}
-                    params={{ item: item.id }}
-                    key={item.id}
+              <li>
+                <Link
+                  to={{
+                    pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${item.item.code}/`,
+                    query: { item: item.id },
+                  }}
+                  params={{ item: item.id }}
+                  key={item.id}
+                >
+                  <PlaylistItem
+                    className={
+                      item.id == itemPlaying?.id
+                        ? "active cursor-pointer"
+                        : "cursor-pointer"
+                    }
+                    // ref={index == trackCode ? courseVideoRef : null}
                   >
-                    <PlaylistItem
-                      className={
-                        item.id == itemPlaying?.id
-                          ? "active d-flex justify-content-between align-items-center cursor-pointer"
-                          : "d-flex justify-content-between align-items-center cursor-pointer"
-                      }
-                      // ref={index == trackCode ? courseVideoRef : null}
-                    >
+                    <div className="d-flex justify-content-between align-items-center">
                       <small>
                         Lectura {items.indexOf(item) + 1}: {item.item.name}
                       </small>
@@ -111,47 +127,41 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
                             <GrCheckbox />
                           </IconContext.Provider>
                         )}
-                        {item.item.type_choices == "LE" &&
-                          item.item?.content?.type_choices == "VI" && (
+                      </div>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center mt-2">
+                      {item.item.type_choices == "LE" &&
+                        item.item?.content?.type_choices == "VI" && (
+                          <div>
                             <IconContext.Provider
                               value={{
                                 size: 14,
                                 className:
-                                  "global-class-name mx-2 cursor-pointer",
+                                  "global-class-name mr-2 cursor-pointer",
                               }}
                             >
                               <GrCirclePlay />
                             </IconContext.Provider>
-                          )}
-                        {item.item.type_choices == "LE" &&
-                          item.item?.content?.type_choices == "TX" && (
-                            <IconContext.Provider
-                              value={{
-                                size: 14,
-                                className:
-                                  "global-class-name mx-2 cursor-pointer",
-                              }}
-                            >
-                              <GrTextAlignFull />
-                            </IconContext.Provider>
-                          )}
-                        {item.item.type_choices == "LE" &&
-                          item.item?.content?.type_choices == "FI" && (
-                            <IconContext.Provider
-                              value={{
-                                size: 14,
-                                className:
-                                  "global-class-name mx-2 cursor-pointer",
-                              }}
-                            >
-                              <GrDocumentText />
-                            </IconContext.Provider>
-                          )}
-                      </div>
-                    </PlaylistItem>
-                  </Link>
-                </li>
-              </>
+                            <small>{msToHMS(item.item.content.duration)}</small>
+                          </div>
+                        )}
+                      {item.item.type_choices == "LE" &&
+                        item.item?.content?.type_choices == "TX" && (
+                          <IconContext.Provider
+                            value={{
+                              size: 14,
+                              className:
+                                "global-class-name mr-2 cursor-pointer",
+                            }}
+                          >
+                            <GrDocumentText />
+                          </IconContext.Provider>
+                        )}
+                      <ItemResources item={item} />
+                    </div>
+                  </PlaylistItem>
+                </Link>
+              </li>
             ))}
         </ul>
       </div>

@@ -13,6 +13,7 @@ import {
   FaPlus,
   FaTimes,
   FaTrash,
+  FaTrashAlt,
   FaVideo,
 } from "react-icons/fa";
 import {
@@ -30,6 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { textEllipsis } from "src/components/ui/TextEllipsis";
 
 import {
+  removeItemMaterial,
   updateContentDescription,
   updateItemFile,
   uploadItemFile,
@@ -38,7 +40,8 @@ import {
 import EditContentDescription from "../ui/EditContentDescription";
 import MyCKEditor from "../ui/MyCKEditor";
 import itemsReducer from "../../redux/reducers/courses/itemsReducer";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 // import VideoList from "./VideoList";
 const CardItemContent = ({
   moveCard,
@@ -49,6 +52,8 @@ const CardItemContent = ({
   setAddContent,
   itemCards,
 }) => {
+  const MySwal = withReactContent(Swal);
+
   const dispatch = useDispatch();
   const itemsReducer = useSelector((state) => state.itemsReducer);
   const handleAddVideo = (e, edit) => {
@@ -213,6 +218,21 @@ const CardItemContent = ({
       dispatch(uploadItemMaterial(files[0], item.code, item.content.id));
     }
     setAddContent(false);
+  };
+  const handleDeleteMaterial = (material_id) => {
+    MySwal.fire({
+      title: "Estas seguro?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(removeItemMaterial(item.code, material_id));
+      }
+    });
   };
   return (
     <>
@@ -443,8 +463,18 @@ const CardItemContent = ({
               </div>
               <div>
                 {item.materials.map((material) => (
-                  <div>
+                  <div className="d-flex justify-content-between align-items-center">
                     <small>{material.name}</small>
+                    <IconContext.Provider
+                      value={{
+                        size: 10,
+                        className: "global-class-name cursor-pointer",
+                      }}
+                    >
+                      <FaTrash
+                        onClick={() => handleDeleteMaterial(material.id)}
+                      />
+                    </IconContext.Provider>
                   </div>
                 ))}
               </div>
@@ -486,6 +516,7 @@ const CardItemContent = ({
                       </IconContext.Provider>
                       Editar descripción
                     </div>
+                    <hr />
                   </>
                 )}
               </div>
@@ -517,6 +548,7 @@ const CardItemContent = ({
                     </ButtonCustom>
                   )}
                 </div>
+                <hr />
               </>
             )}
             <div>
