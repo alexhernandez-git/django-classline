@@ -49,27 +49,32 @@ const CourseAcademy = (props) => {
   }, [playingCourseReducer]);
 
   const goNext = () => {
-    const result = items.indexOf(
-      items.find(
-        (item) => item.item.code == (trackCode ? trackCode : items[0].item.code)
-      )
-    );
-    const next_item = items[result + 1];
+    try {
+      const result = items.indexOf(
+        items.find(
+          (item) =>
+            item.item.code == (trackCode ? trackCode : items[0].item.code)
+        )
+      );
+      const next_item = items[result + 1];
 
-    history.push({
-      pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${next_item.item.code}`,
-    });
+      history.push({
+        pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${next_item.item.code}`,
+      });
+    } catch (error) {}
   };
   const goPrevious = () => {
-    const result = items.indexOf(
-      items.find((item) => item.item.code == trackCode)
-    );
+    try {
+      const result = items.indexOf(
+        items.find((item) => item.item.code == trackCode)
+      );
 
-    const previous_item = items[result - 1];
+      const previous_item = items[result - 1];
 
-    history.push({
-      pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${previous_item.item.code}`,
-    });
+      history.push({
+        pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${previous_item.item.code}`,
+      });
+    } catch (error) {}
   };
   // const courseVideoRef = useRef(null)
   // useEffect(() => {

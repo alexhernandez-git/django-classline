@@ -3,7 +3,8 @@ import React, { useRef } from "react";
 import { useState } from "react";
 import { IconContext } from "react-icons";
 import { FaFile, FaFolderOpen } from "react-icons/fa";
-import { MdKeyboardArrowDown } from "react-icons/md";
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { useSelector } from "react-redux";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { textEllipsis } from "./TextEllipsis";
 
@@ -24,8 +25,11 @@ const ItemResources = ({ item }) => {
     e.preventDefault();
     window.open(file);
   };
+  const playingCourseReducer = useSelector(
+    (state) => state.playingCourseReducer
+  );
   return (
-    <ItemResourcesDiv>
+    <ItemResourcesDiv color={playingCourseReducer.course.color}>
       <div className="item-resources" onClick={handleToggleMaterial}>
         <IconContext.Provider
           value={{
@@ -42,7 +46,7 @@ const ItemResources = ({ item }) => {
             className: "global-class-name mx-2 cursor-pointer",
           }}
         >
-          <MdKeyboardArrowDown />
+          {isOpen ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
         </IconContext.Provider>
       </div>
       <div ref={resourcesRef}>
@@ -81,7 +85,8 @@ const ItemResourcesDiv = styled.div`
   .materials-div {
     padding: 0.5rem;
     position: absolute;
-    background: #ccc;
+    background: #fff;
+    border: 1px solid ${(props) => (props.color ? props.color : "#ccc")};
     top: 2rem;
     left: -11rem;
     width: 214%;
