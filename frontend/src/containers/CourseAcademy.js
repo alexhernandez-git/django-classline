@@ -130,6 +130,7 @@ const CourseAcademy = (props) => {
                               video={itemPlaying.item.content}
                               isCourse
                               goNext={goNext}
+                              color={playingCourseReducer.course.color}
                             />
                           )}
                         {/* {itemPlaying.item?.type_choices == "LE" &&

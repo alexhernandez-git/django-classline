@@ -43,7 +43,10 @@ const video = () => {
         <div className="col-md-6 col-lg-8">
           {videoReducer.video && !videoReducer.isLoading && (
             <>
-              <VideoPlayer video={videoReducer.video} />
+              <VideoPlayer
+                video={videoReducer.video}
+                color={programReducer.program.brand_color}
+              />
               {videoReducer.video.title && (
                 <div className="d-flex justify-content-between mt-4">
                   <div>

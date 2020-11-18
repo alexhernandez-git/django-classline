@@ -26,7 +26,7 @@ let count = 0;
 
 const VideoPlayer = (props) => {
   const { title, description, video, created } = props.video;
-  const { goNext, goPrevious, isPlaylist, isCourse } = props;
+  const { goNext, goPrevious, isPlaylist, isCourse, color } = props;
   const playerContainerRef = useRef();
   const playerRef = useRef();
   const controlsRef = useRef();
@@ -158,6 +158,7 @@ const VideoPlayer = (props) => {
         />
         <PlayerControls
           ref={controlsRef}
+          color={color}
           onPlayPause={handlePlayPause}
           {...props}
           {...state}

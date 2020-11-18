@@ -21,7 +21,7 @@ import "static/assets/styles/components/Layout/rc-slider.scss";
 import { IoMdSkipForward } from "react-icons/io";
 import { useSelector } from "react-redux";
 const PlayerControls = forwardRef((props, ref) => {
-  const programReducer = useSelector(state => state.programReducer)
+  const programReducer = useSelector((state) => state.programReducer);
   const {
     id,
     title,
@@ -50,16 +50,18 @@ const PlayerControls = forwardRef((props, ref) => {
     totalDuration,
     goNext,
     goPrevious,
-    isPlaylist
+    isPlaylist,
+    color,
   } = props;
   return (
-    <ControlsWrapper ref={ref} 
-    color={programReducer.program.brand_color}
-    >
-      <div className="click-zone" onClick={onPlayPause} onDoubleClick={onToggleFullScreen}></div>
+    <ControlsWrapper ref={ref} color={color}>
+      <div
+        className="click-zone"
+        onClick={onPlayPause}
+        onDoubleClick={onToggleFullScreen}
+      ></div>
       <div className="video-title">{title}</div>
       <div className="middle-controls">
-
         <IconContext.Provider
           value={{
             size: 20,
@@ -100,7 +102,6 @@ const PlayerControls = forwardRef((props, ref) => {
         >
           <FaForward onClick={onFastForward} />
         </IconContext.Provider>
-        
       </div>
       <div>
         <Slider
@@ -165,28 +166,28 @@ const PlayerControls = forwardRef((props, ref) => {
             <span className="text-white d-none d-sm-block">
               {elapsedTime}/{totalDuration}
             </span>
-          {isPlaylist && 
-          <>
-            <IconContext.Provider
-            value={{
-              size: 15,
-              color: "#a1a1a1",
-              className: "cursor-pointer press-icon ml-4",
-            }}
-            >
-              <FaStepBackward onClick={goPrevious} />
-            </IconContext.Provider>
-              <IconContext.Provider
-              value={{
-                size: 15,
-                color: "#a1a1a1",
-                className: "cursor-pointer press-icon ml-3",
-              }}
-              >
-                <FaStepForward onClick={goNext} />
-              </IconContext.Provider>
+            {isPlaylist && (
+              <>
+                <IconContext.Provider
+                  value={{
+                    size: 15,
+                    color: "#a1a1a1",
+                    className: "cursor-pointer press-icon ml-4",
+                  }}
+                >
+                  <FaStepBackward onClick={goPrevious} />
+                </IconContext.Provider>
+                <IconContext.Provider
+                  value={{
+                    size: 15,
+                    color: "#a1a1a1",
+                    className: "cursor-pointer press-icon ml-3",
+                  }}
+                >
+                  <FaStepForward onClick={goNext} />
+                </IconContext.Provider>
               </>
-          }
+            )}
           </div>
           <IconContext.Provider
             value={{
@@ -255,8 +256,8 @@ const ControlsWrapper = styled.div`
     color: #fff !important;
     z-index: 3;
   }
-  .rc-slider-track{
-    background-color: ${props=>props.color?props.color: "#323840"};
+  .rc-slider-track {
+    background-color: ${(props) => (props.color ? props.color : "#fff")};
   }
 `;
 
