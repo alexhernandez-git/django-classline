@@ -157,7 +157,9 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
                             <GrDocumentText />
                           </IconContext.Provider>
                         )}
-                      <ItemResources item={item} />
+                      {item.item.materials.length > 0 && (
+                        <ItemResources item={item} />
+                      )}
                     </div>
                   </PlaylistItem>
                 </Link>
