@@ -86,7 +86,9 @@ const CourseAcademy = (props) => {
         const result = items.find((item) => item.item.code == trackCode);
         setItemPlaying(result);
       } else {
-        setItemPlaying(playingCourseReducer.course.blocks[0].block.items[0]);
+        if (playingCourseReducer.course.blocks.length > 0) {
+          setItemPlaying(playingCourseReducer.course.blocks[0].block.items[0]);
+        }
       }
     }
   }, [trackCode, playingCourseReducer, items]);
@@ -130,7 +132,7 @@ const CourseAcademy = (props) => {
                               goNext={goNext}
                             />
                           )}
-                        {itemPlaying.item?.type_choices == "LE" &&
+                        {/* {itemPlaying.item?.type_choices == "LE" &&
                           itemPlaying.item?.content?.type_choices == "FI" && (
                             <>
                               <div className="py-5 bg-white">
@@ -140,7 +142,7 @@ const CourseAcademy = (props) => {
                                 />
                               </div>
                             </>
-                          )}
+                          )} */}
                         {itemPlaying.item?.type_choices == "LE" &&
                           itemPlaying.item?.content?.type_choices == "TX" && (
                             <>

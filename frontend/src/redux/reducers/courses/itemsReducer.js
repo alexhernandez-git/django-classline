@@ -26,6 +26,9 @@ import {
   UPLOAD_ITEM_MATERIAL,
   UPLOAD_ITEM_MATERIAL_SUCCESS,
   UPLOAD_ITEM_MATERIAL_FAIL,
+  DELETE_ITEM_MATERIAL,
+  DELETE_ITEM_MATERIAL_SUCCESS,
+  DELETE_ITEM_MATERIAL_FAIL,
   CREATE_ITEM_VIEWED,
   CREATE_ITEM_VIEWED_FAIL,
   CREATE_ITEM_VIEWED_SUCCESS,
@@ -289,12 +292,12 @@ export default function (state = initialState, action) {
         item_material_upload_error: null,
 
         items: state.items.map((item) => {
-          if (item.item.code == action.payload.code) {
+          if (item.item.id == action.payload.item) {
             return {
               ...item,
               item: {
                 ...item.item,
-                picture: action.payload.picture,
+                materials: [...item.item.materials, action.payload],
               },
             };
           } else {

@@ -18,6 +18,23 @@ export const ButtonCustom = styled.button`
     width: 100%;
   }
 `;
+export const ButtonCustomDiv = styled.div`
+  cursor: pointer;
+  border: 0;
+  padding: 0.5rem 1rem;
+  background: #000;
+  color: #fff;
+  border-radius: 0.7rem;
+  text-align: center;
+
+  &:active {
+    position: relative;
+    top: 1px;
+  }
+  @media screen and (max-width: 576px) {
+    width: 100%;
+  }
+`;
 
 export const ButtonCustomInitial = styled.button`
   cursor: pointer;

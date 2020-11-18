@@ -19,13 +19,11 @@ class LectureContentModelSerializer(serializers.ModelSerializer):
             'id',
             'type_choices',
             'video',
-            'file',
             'text',
             'duration',
             'mega_bytes',
             'description',
             'item',
-            'name'
 
         )
         read_only_fields = (
@@ -46,12 +44,12 @@ class LectureContentModelSerializer(serializers.ModelSerializer):
             validated_data['mega_bytes'] = mega_bytes
             validated_data['bytes'] = bytes
 
-        if 'file' in validated_data:
+        # if 'file' in validated_data:
 
-            mega_bytes = round(validated_data['file'].size / 1024 / 1024, 2)
-            bytes = round(validated_data['file'].size,2)
-            validated_data['mega_bytes'] = mega_bytes
-            validated_data['bytes'] = bytes
+        #     mega_bytes = round(validated_data['file'].size / 1024 / 1024, 2)
+        #     bytes = round(validated_data['file'].size,2)
+        #     validated_data['mega_bytes'] = mega_bytes
+        #     validated_data['bytes'] = bytes
 
         validated_data['course'] = course
         validated_data['item'] = item
@@ -68,11 +66,11 @@ class LectureContentModelSerializer(serializers.ModelSerializer):
             validated_data['bytes'] = bytes
             validated_data['duration'] = clip.duration
 
-        if 'file' in validated_data:
+        # if 'file' in validated_data:
 
-            mega_bytes = round(validated_data['file'].size / 1024 / 1024, 2)
-            bytes = round(validated_data['file'].size, 2)
-            validated_data['mega_bytes'] = mega_bytes
-            validated_data['bytes'] = bytes
+        #     mega_bytes = round(validated_data['file'].size / 1024 / 1024, 2)
+        #     bytes = round(validated_data['file'].size, 2)
+        #     validated_data['mega_bytes'] = mega_bytes
+        #     validated_data['bytes'] = bytes
 
         return super(LectureContentModelSerializer, self).update(instance, validated_data)

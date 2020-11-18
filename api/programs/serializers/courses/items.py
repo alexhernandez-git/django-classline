@@ -9,7 +9,7 @@ from django.core.files import File
 from rest_framework import serializers
 
 # Models
-from api.programs.models import CourseItem,LectureContent,ItemViewed
+from api.programs.models import CourseItem,LectureContent,ItemViewed,LectureMaterial
 
 # Serializers
 
@@ -24,6 +24,8 @@ class CourseItemModelSerializer(serializers.ModelSerializer):
     """Profile model serializer."""
     content = serializers.SerializerMethodField(read_only=True)
     item_viewed = serializers.SerializerMethodField(read_only=True)
+    materials = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         """Meta class."""
 
@@ -35,7 +37,9 @@ class CourseItemModelSerializer(serializers.ModelSerializer):
             'type_choices',
             'is_private',
             'content',
-            'item_viewed'
+            'item_viewed',
+            'materials'
+
         )
         # extra_kwargs = {'end': {'required': False}}
         read_only_fields = (
@@ -63,6 +67,11 @@ class CourseItemModelSerializer(serializers.ModelSerializer):
             return ItemViewedModelSerializer(item_viewed[0], many=False).data
         else: 
             return None
+
+    def get_materials(self, obj):
+        from api.programs.serializers import LectureMaterialModelSerializer
+        materials = LectureMaterial.objects.filter(item=obj.id)
+        return LectureMaterialModelSerializer(materials, many=True).data
 
     # def update(self, instance, validated_data):
            

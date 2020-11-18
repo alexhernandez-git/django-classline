@@ -127,7 +127,6 @@ const CardItemDrag = ({
   const handleThisEditItem = (e, id, name) => {
     e.preventDefault();
     handleEditItem(id, name);
-    handleCancelEditItem();
   };
 
   return (
@@ -169,27 +168,24 @@ const CardItemDrag = ({
             <AdminForm>
               {newItem.type_choices == "LE" ? (
                 <>
-                  <div className="new-element-div">
-                    <label htmlFor="">Nueva lección</label>
-                    <input
-                      type="text"
-                      name=""
-                      id=""
-                      autoFocus
-                      value={newItem.name}
-                      onChange={(e) =>
-                        setNewItem({ ...newItem, name: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="d-flex justify-content-end mt-3">
-                    <ButtonCustom
-                      type="button"
-                      onClick={(e) => handleCreateItem(e)}
-                    >
-                      Crear
-                    </ButtonCustom>
-                  </div>
+                  <form onSubmit={(e) => handleCreateItem(e)}>
+                    <div className="new-element-div">
+                      <label htmlFor="">Nueva lección</label>
+                      <input
+                        type="text"
+                        name=""
+                        id=""
+                        autoFocus
+                        value={newItem.name}
+                        onChange={(e) =>
+                          setNewItem({ ...newItem, name: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="d-flex justify-content-end mt-3">
+                      <ButtonCustom type="submit">Crear</ButtonCustom>
+                    </div>
+                  </form>
                 </>
               ) : (
                 <></>
@@ -251,7 +247,7 @@ const CardItemDrag = ({
                         <GrTextAlignFull />
                       </IconContext.Provider>
                     )}
-                  {item.type_choices == "LE" &&
+                  {/* {item.type_choices == "LE" &&
                     item?.content?.type_choices == "FI" && (
                       <IconContext.Provider
                         value={{
@@ -261,7 +257,7 @@ const CardItemDrag = ({
                       >
                         <GrDocumentText />
                       </IconContext.Provider>
-                    )}
+                    )} */}
                   {item.name}
                   <div className="item-actions">
                     <IconContext.Provider
@@ -288,8 +284,7 @@ const CardItemDrag = ({
                 </div>
                 <div className="d-flex align-items-center">
                   {item?.content?.type_choices != "VI" &&
-                  item?.content?.type_choices != "TX" &&
-                  item?.content?.type_choices != "FI" ? (
+                  item?.content?.type_choices != "TX" ? (
                     <div className="mr-3">
                       {addContent ? (
                         <>

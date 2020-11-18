@@ -24,7 +24,7 @@ import {
 } from "react-icons/md";
 import { SiAddthis } from "react-icons/si";
 import { GrCirclePlay, GrDocumentText, GrFormAdd } from "react-icons/gr";
-import { ButtonCustom } from "../ui/ButtonCustom";
+import { ButtonCustom, ButtonCustomDiv } from "../ui/ButtonCustom";
 import { AdminForm } from "../ui/AdminForm";
 import { useDispatch, useSelector } from "react-redux";
 import { textEllipsis } from "src/components/ui/TextEllipsis";
@@ -33,6 +33,7 @@ import {
   updateContentDescription,
   updateItemFile,
   uploadItemFile,
+  uploadItemMaterial,
 } from "../../redux/actions/courses/items";
 import EditContentDescription from "../ui/EditContentDescription";
 import MyCKEditor from "../ui/MyCKEditor";
@@ -87,41 +88,6 @@ const CardItemContent = ({
 
       setAddContent(false);
     }
-  };
-  const handleUploadFile = (e, edit) => {
-    e.preventDefault();
-
-    let files;
-    if (e.dataTransfer) {
-      files = e.dataTransfer.files;
-    } else if (e.target) {
-      files = e.target.files;
-    }
-    const reader = new FileReader();
-
-    if (files[0].size > 2000000) {
-      alert("El tamaño del archivo es muy grande");
-    } else {
-      // reader.onload = () => {
-      //   setSrcFile(reader.result);
-      // };
-      reader.readAsDataURL(files[0]);
-      // setFieldValue("file", files[0]);
-      const content = {
-        file: files[0],
-        type_choices: "FI",
-      };
-      if (edit) {
-        const dispatchUpdateMaterial = (content) =>
-          dispatch(updateItemFile(content, item.code, item.content.id));
-        dispatchUpdateMaterial(content);
-      } else {
-        const dispatchUploadMaterial = (content) =>
-          dispatch(uploadItemFile(content, item.code));
-        dispatchUploadMaterial(content);
-      }
-    }
-    setAddContent(false);
   };
 
   function msToHMS(seconds) {
@@ -224,6 +190,30 @@ const CardItemContent = ({
       handleCloseEditText();
     }
   }, [item]);
+  const handleUploadMaterial = (e) => {
+    e.preventDefault();
+
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+
+    if (files[0].size > 2000000) {
+      alert("El tamaño del archivo es muy grande");
+    } else {
+      // reader.onload = () => {
+      //   setSrcFile(reader.result);
+      // };
+      reader.readAsDataURL(files[0]);
+      // setFieldValue("file", files[0]);
+
+      dispatch(uploadItemMaterial(files[0], item.code, item.content.id));
+    }
+    setAddContent(false);
+  };
   return (
     <>
       <hr />
@@ -287,26 +277,6 @@ const CardItemContent = ({
                 </IconContext.Provider>
                 <span>Añadir articulo</span>
               </div>
-              <label htmlFor="file_content_upload">
-                <div className="d-flex flex-column align-items-center justify-content-center cursor-pointer">
-                  <IconContext.Provider
-                    value={{
-                      size: 50,
-                      className: "global-class-name",
-                    }}
-                  >
-                    <FaFileAlt />
-                  </IconContext.Provider>
-                  <span>Añadir material</span>
-                </div>
-              </label>
-
-              <input
-                type="file"
-                id="file_content_upload"
-                className="d-none"
-                onChange={(e) => handleUploadFile(e, false)}
-              />
             </div>
           )}
         </>
@@ -339,8 +309,7 @@ const CardItemContent = ({
               {itemsReducer.item_file_uploading &&
                 "Subiendo... porfavor espere"}
               {(item?.content?.type_choices == "VI" ||
-                item?.content?.type_choices == "TX" ||
-                item?.content?.type_choices == "FI") && (
+                item?.content?.type_choices == "TX") && (
                 <>
                   <div className="d-flex justify-content-center align-items-center">
                     {item.type_choices == "LE" &&
@@ -365,7 +334,7 @@ const CardItemContent = ({
                           <FaAlignLeft />
                         </IconContext.Provider>
                       )}
-                    {item.type_choices == "LE" &&
+                    {/* {item.type_choices == "LE" &&
                       item?.content?.type_choices == "FI" && (
                         <IconContext.Provider
                           value={{
@@ -375,7 +344,7 @@ const CardItemContent = ({
                         >
                           <FaFileAlt />
                         </IconContext.Provider>
-                      )}
+                      )} */}
                   </div>
                   <div>
                     {item.type_choices == "LE" &&
@@ -410,7 +379,7 @@ const CardItemContent = ({
                           />
                         </>
                       )}
-                    {item.type_choices == "LE" &&
+                    {/* {item.type_choices == "LE" &&
                       item?.content?.type_choices == "FI" && (
                         <>
                           <div>{item?.content?.name}</div>
@@ -437,7 +406,7 @@ const CardItemContent = ({
                             onChange={(e) => handleUploadFile(e, true)}
                           />
                         </>
-                      )}
+                      )} */}
                     {item.type_choices == "LE" &&
                       item?.content?.type_choices == "TX" && (
                         <>
@@ -463,6 +432,23 @@ const CardItemContent = ({
                 </>
               )}
             </div>
+          )}
+          {item.materials.length > 0 && (
+            <>
+              <hr />
+              <div>
+                <small>
+                  <b>Material descargable</b>
+                </small>
+              </div>
+              <div>
+                {item.materials.map((material) => (
+                  <div>
+                    <small>{material.name}</small>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
           <hr />
           <div>
@@ -533,21 +519,29 @@ const CardItemContent = ({
                 </div>
               </>
             )}
-            {/* <div>
-              <ButtonCustom>
-                <IconContext.Provider
-                  value={{
-                    size: 22,
-                    className: "global-class-name mr-2 cursor-pointer",
-                    color: "#fff",
-                  }}
-                >
-                  {" "}
-                  <MdAdd style={{ color: "#fff" }} />
-                </IconContext.Provider>
-                Recursos
-              </ButtonCustom>
-            </div> */}
+            <div>
+              <input
+                type="file"
+                id="upload_item_material"
+                className="d-none"
+                onChange={(e) => handleUploadMaterial(e)}
+              />
+              <label htmlFor="upload_item_material">
+                <ButtonCustomDiv>
+                  <IconContext.Provider
+                    value={{
+                      size: 22,
+                      className: "global-class-name mr-2 cursor-pointer",
+                      color: "#fff",
+                    }}
+                  >
+                    {" "}
+                    <MdAdd style={{ color: "#fff" }} />
+                  </IconContext.Provider>
+                  Recursos
+                </ButtonCustomDiv>
+              </label>
+            </div>
           </div>
         </>
       )}

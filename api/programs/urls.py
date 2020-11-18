@@ -37,6 +37,7 @@ from api.programs.views.courses.blocks import CourseBlockViewSet
 from api.programs.views.courses.item_tracks import CourseItemTrackViewSet
 from api.programs.views.courses.items import CourseItemViewSet
 from api.programs.views.courses.contents import LectureContentViewSet
+from api.programs.views.courses.materials import LectureMaterialViewSet
 from api.programs.views.courses.item_questions import ItemQuestionViewSet
 from api.programs.views.courses.item_answers import ItemAnswerViewSet
 from api.programs.views.courses.items_viewed import ItemViewedViewSet
@@ -209,6 +210,11 @@ router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/courses/(?P<course_id>[-a-zA-Z0-9_]+)/items/(?P<item_id>[-a-zA-Z0-9_]+)/contents',
     LectureContentViewSet,
     basename='contents'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/courses/(?P<course_id>[-a-zA-Z0-9_]+)/items/(?P<item_id>[-a-zA-Z0-9_]+)/materials',
+    LectureMaterialViewSet,
+    basename='materials'
 )
 router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/courses/(?P<course_id>[-a-zA-Z0-9_]+)/items/(?P<item_id>[-a-zA-Z0-9_]+)/questions',

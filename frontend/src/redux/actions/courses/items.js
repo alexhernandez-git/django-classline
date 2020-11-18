@@ -31,6 +31,12 @@ import {
   UPDATE_ITEM_VIEWED,
   UPDATE_ITEM_VIEWED_FAIL,
   UPDATE_ITEM_VIEWED_SUCCESS,
+  UPLOAD_ITEM_MATERIAL,
+  UPLOAD_ITEM_MATERIAL_SUCCESS,
+  UPLOAD_ITEM_MATERIAL_FAIL,
+  DELETE_ITEM_MATERIAL,
+  DELETE_ITEM_MATERIAL_SUCCESS,
+  DELETE_ITEM_MATERIAL_FAIL,
 } from "../../types";
 
 import { tokenConfig } from "../auth";
@@ -233,6 +239,65 @@ export const updateContentDescription = (descripiton, item, content_id) => (
     .catch((err) => {
       dispatch({
         type: UPDATE_ITEM_CONTENT_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const uploadItemMaterial = (file, item) => (dispatch, getState) => {
+  dispatch({
+    type: UPLOAD_ITEM_MATERIAL,
+  });
+  const fd = new FormData();
+
+  fd.append("file", file, Math.random().toString(36) + file.name);
+  fd.append("name", file.name);
+
+  axios
+    .post(
+      `/api/programs/${getState().programReducer.program.code}/courses/${
+        getState().courseReducer.course.code
+      }/items/${item}/materials/`,
+      fd,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      console.log(res.data);
+      dispatch({
+        type: UPLOAD_ITEM_MATERIAL_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log("error", err.response);
+      dispatch({
+        type: UPLOAD_ITEM_MATERIAL_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+
+export const removeItemMaterial = (item, material) => (dispatch, getState) => {
+  dispatch({
+    type: DELETE_ITEM_MATERIAL,
+  });
+  axios
+    .delete(
+      `/api/programs/${getState().programReducer.program.code}/courses/${
+        getState().courseReducer.course.code
+      }/items/${item}/materials/${material}`,
+      fd,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      dispatch({
+        type: DELETE_ITEM_MATERIAL_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: DELETE_ITEM_MATERIAL_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

@@ -20,7 +20,6 @@ class LectureMaterialModelSerializer(serializers.ModelSerializer):
             'item',
             'file',
             'course',
-            'duration',
             'file',
             'name',
             'mega_bytes',
@@ -28,13 +27,13 @@ class LectureMaterialModelSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             'id',
-            'item'
+            'item',
+            'course'
         )
 
     def create(self, validated_data):
         course = self.context['course']
         item = self.context['item']
-
         if 'file' in validated_data:
 
             mega_bytes = validated_data['file'].size / 1024 / 1024

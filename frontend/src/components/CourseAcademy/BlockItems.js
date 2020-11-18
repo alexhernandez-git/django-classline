@@ -124,7 +124,6 @@ const BlocksItems = (props) => {
     });
   };
   const handleAddItem = () => {
-    console.log(itemCards);
     let result = 0;
     if (itemCards.length > 0) {
       result = Math.max.apply(
@@ -135,7 +134,6 @@ const BlocksItems = (props) => {
       );
       result + 1;
     }
-    console.log(result);
     setItemCards((itemCards) => [
       ...itemCards,
       {
