@@ -116,7 +116,7 @@ const VideoPlayer = (props) => {
     : "00:00";
   const elapsedTime = format(currentTime);
   useEffect(() => {
-    if (currentTime) {
+    if (setCurrentTime && currentTime) {
       setCurrentTime(currentTime);
     }
   }, [currentTime]);
