@@ -83,6 +83,7 @@ const MainCourseInfo = ({ values, setFieldValue }) => {
               // onChange={handleChange}
               placeholder="Descripción"
             /> */}
+            {console.log("description", values.description)}
             <MyCKEditor
               value={values.description}
               handleEdit={handleEdit}

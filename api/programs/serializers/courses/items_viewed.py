@@ -23,7 +23,7 @@ class ItemViewedModelSerializer(serializers.ModelSerializer):
             'item',
             'user',
             'duration',
-            'is_viewed',
+            'is_completed',
         )
         # extra_kwargs = {'end': {'required': False}}
         read_only_fields = (

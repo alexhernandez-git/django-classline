@@ -35,6 +35,7 @@ const MyCKEditor = ({ value, handleEdit, placeholder = "" }) => {
         onReady={(editor) => {
           // You can store the "editor" and use when it is needed.
           console.log("Editor is ready to use!", editor);
+          editor.data.set(value);
         }}
         onChange={(event, editor) => {
           const data = editor.getData();

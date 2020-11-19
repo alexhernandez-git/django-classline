@@ -25,7 +25,6 @@ class ItemViewed(CLineModel):
                              on_delete=models.CASCADE)
 
     duration = models.FloatField(blank=True, null=True)
-    is_viewed = models.BooleanField(default=True)
     is_completed = models.BooleanField(default=False)
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
 

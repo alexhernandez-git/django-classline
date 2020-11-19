@@ -10,7 +10,7 @@ import { Field } from "formik";
 import SelectLang from "./SelectLang";
 import { useSelector } from "react-redux";
 import MyCKEditor from "../ui/MyCKEditor";
-const MainCourseInfo = ({ values, setFieldValue }) => {
+const MainProgramInfo = ({ values, setFieldValue }) => {
   const programReducer = useSelector((state) => state.programReducer);
   const handleEdit = (value) => {
     setFieldValue("description", value);
@@ -106,4 +106,4 @@ const MainCourseInfo = ({ values, setFieldValue }) => {
   );
 };
 
-export default MainCourseInfo;
+export default MainProgramInfo;

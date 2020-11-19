@@ -60,6 +60,7 @@
     "@fullcalendar/timegrid": "^4.4.0",
     "@stripe/react-stripe-js": "^1.1.2",
     "@stripe/stripe-js": "^1.8.0",
+    "@tinymce/tinymce-react": "^3.8.1",
     "axios": "^0.19.2",
     "babel-plugin-emotion": "^10.0.33",
     "bootstrap": "^4.4.1",

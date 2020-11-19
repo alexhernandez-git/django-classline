@@ -106,7 +106,7 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
                       {console.log(item.item)}
                       <div>
                         {item.item.item_viewed &&
-                        item.item.item_viewed.is_viewed ? (
+                        item.item.item_viewed.is_completed ? (
                           <IconContext.Provider
                             value={{
                               size: 14,

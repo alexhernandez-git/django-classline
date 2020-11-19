@@ -238,6 +238,7 @@ class ProgramBasicModelSerializer(serializers.ModelSerializer):
             'id',
             'code',
             'title',
+            'description',
             'program_price',
             'program_language',
             'actived',
