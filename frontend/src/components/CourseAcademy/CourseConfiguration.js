@@ -186,7 +186,7 @@ const CourseConfiguration = (props) => {
           </Col>
         </Row>
       </div>
-      <div className="bg-white border p-3 rounded my-2 mb-4">
+      {/* <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Ponle un precio a tu curso</span>
 
         <Row className="">
@@ -237,10 +237,6 @@ const CourseConfiguration = (props) => {
                   target="_blank"
                   className="connect-button"
                 >
-                  {/* prod */}
-                  {/* ca_HmRkLTjyLDqt32B5GRlzOhlqeH4ry79e */}
-                  {/* dev */}
-                  {/* ca_HmRky5LBHShFfC92Xzjsz0Mj82piwIiy */}
                   <ButtonCustom type="button">
                     Ve a la configuración de instructor
                   </ButtonCustom>
@@ -261,7 +257,7 @@ const CourseConfiguration = (props) => {
             )}
           </Col>
         </Row>
-      </div>
+      </div> */}
 
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Acciones</span>
@@ -311,7 +307,7 @@ const CourseConfiguration = (props) => {
           </Col>
         </Row>
 
-        <Row className="mb-4">
+        {/* <Row className="mb-4">
           <Col
             sm={{ span: 4 }}
             className="text-center d-sm-flex justify-content-end align-items-center"
@@ -350,7 +346,7 @@ const CourseConfiguration = (props) => {
                 (error) => <small className="d-block text-red">{error}</small>
               )}
           </Col>
-        </Row>
+        </Row> */}
         <Row className="mb-4">
           <Col
             sm={{ span: 4 }}
