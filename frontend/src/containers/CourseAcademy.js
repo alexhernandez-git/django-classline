@@ -16,6 +16,10 @@ import { IconContext } from "react-icons";
 import { GrCirclePlay, GrDocumentText } from "react-icons/gr";
 import { ButtonCustomInitial } from "../components/ui/ButtonCustom";
 import BlockItemsList from "../components/ui/BlockItemsList";
+import {
+  createItemViewed,
+  updateItemViewed,
+} from "../redux/actions/courses/itemsViewed";
 const CourseAcademy = (props) => {
   const playingCourseReducer = useSelector(
     (state) => state.playingCourseReducer
@@ -105,7 +109,28 @@ const CourseAcademy = (props) => {
   //   );
   //   return playingCourseReducer.course.items.indexOf(result);
   // };
+  const [currentTime, setCurrentTime] = useState(null);
+  useEffect(() => {
+    console.log(itemPlaying);
+    if (itemPlaying && !itemPlaying.item.item_viewed) {
+      dispatch(createItemViewed(itemPlaying.item.code));
+    }
+  }, [itemPlaying]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if (itemPlaying && itemPlaying.item.item_viewed) {
+  //       if (currentTime) {
+  //         dispatch(
+  //           updateItemViewed(itemPlaying.item, { duration: currentTime })
+  //         );
+  //       }
+  //     } else {
+  //       dispatch(createItemViewed(itemPlaying.item.code));
+  //     }
+  //   }, 5000);
 
+  //   return () => clearInterval(interval);
+  // }, []);
   return playingCourseReducer.isLoading ? (
     <span>Cargando...</span>
   ) : (
@@ -136,6 +161,7 @@ const CourseAcademy = (props) => {
                               isCourse
                               goNext={goNext}
                               color={playingCourseReducer.course.color}
+                              setCurrentTime={setCurrentTime}
                             />
                           )}
                         {/* {itemPlaying.item?.type_choices == "LE" &&

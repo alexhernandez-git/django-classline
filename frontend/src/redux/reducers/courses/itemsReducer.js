@@ -66,10 +66,6 @@ const initialState = {
   item_material_deleting: false,
   item_material_delete: null,
   item_material_delete_error: null,
-  item_viewed_creating: false,
-  item_viewed_created_error: null,
-  item_viewed_updating: false,
-  item_viewed_updated_error: null,
 };
 
 export default function (state = initialState, action) {
@@ -352,66 +348,7 @@ export default function (state = initialState, action) {
 
         item_material_delete_error: action.payload,
       };
-    case CREATE_ITEM_VIEWED:
-      return {
-        ...state,
-        item_viewed_creating: true,
-      };
-    case CREATE_ITEM_VIEWED_SUCCESS:
-      return {
-        ...state,
-        item_viewed_creating: false,
-        item_viewed_created_error: null,
-        items: state.items.map((item) => {
-          if (item.item.id == action.payload.item) {
-            return {
-              ...item,
-              item: {
-                ...item.item,
-                item_viewed: action.payload,
-              },
-            };
-          } else {
-            return item;
-          }
-        }),
-      };
-    case CREATE_ITEM_VIEWED_SUCCESS:
-      return {
-        ...state,
-        item_viewed_creating: false,
-        item_viewed_created_error: action.payload,
-      };
-    case UPDATE_ITEM_VIEWED:
-      return {
-        ...state,
-        item_viewed_updating: true,
-      };
-    case UPDATE_ITEM_VIEWED_SUCCESS:
-      return {
-        ...state,
-        item_viewed_updating: false,
-        item_viewed_updated_error: null,
-        items: state.items.map((item) => {
-          if (item.item.id == action.payload.item) {
-            return {
-              ...item,
-              item: {
-                ...item.item,
-                item_viewed: action.payload,
-              },
-            };
-          } else {
-            return item;
-          }
-        }),
-      };
-    case UPDATE_ITEM_VIEWED_SUCCESS:
-      return {
-        ...state,
-        item_viewed_updating: false,
-        item_viewed_updated_error: action.payload,
-      };
+
     default:
       return state;
   }

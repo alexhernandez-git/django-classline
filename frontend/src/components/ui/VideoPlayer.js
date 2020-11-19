@@ -26,7 +26,14 @@ let count = 0;
 
 const VideoPlayer = (props) => {
   const { title, description, video, created } = props.video;
-  const { goNext, goPrevious, isPlaylist, isCourse, color } = props;
+  const {
+    goNext,
+    goPrevious,
+    isPlaylist,
+    isCourse,
+    color,
+    setCurrentTime,
+  } = props;
   const playerContainerRef = useRef();
   const playerRef = useRef();
   const controlsRef = useRef();
@@ -108,6 +115,11 @@ const VideoPlayer = (props) => {
     ? playerRef.current.getDuration()
     : "00:00";
   const elapsedTime = format(currentTime);
+  useEffect(() => {
+    if (currentTime) {
+      setCurrentTime(currentTime);
+    }
+  }, [currentTime]);
   const totalDuration = format(duration);
   const [url, setUrl] = useState(null);
   useEffect(() => {
