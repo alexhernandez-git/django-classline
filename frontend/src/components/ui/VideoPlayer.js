@@ -8,7 +8,8 @@ import "static/assets/styles/components/Layout/rc-slider.scss";
 import PlayerControls from "./PlayerControls";
 import { useState, useRef, useEffect } from "react";
 import screenfull from "screenfull";
-
+import { useDispatch } from "react-redux";
+import { updateItemViewed } from "src/redux/actions/courses/itemsViewed";
 const format = (seconds) => {
   if (isNaN(seconds)) {
     return "00:00";
@@ -32,7 +33,7 @@ const VideoPlayer = (props) => {
     isPlaylist,
     isCourse,
     color,
-    setCurrentTime,
+    itemPlaying,
   } = props;
   const playerContainerRef = useRef();
   const playerRef = useRef();
@@ -47,6 +48,7 @@ const VideoPlayer = (props) => {
   });
 
   const { playing, muted, volume, playbackRate, played, seeking } = state;
+  const dispatch = useDispatch();
 
   const handlePlayPause = () => {
     setState({ ...state, playing: !state.playing });
@@ -115,11 +117,50 @@ const VideoPlayer = (props) => {
     ? playerRef.current.getDuration()
     : "00:00";
   const elapsedTime = format(currentTime);
-  useEffect(() => {
-    if (setCurrentTime && currentTime) {
-      setCurrentTime(currentTime);
+  const handleStartVideo = () => {
+    if (itemPlaying) {
+      setState({ ...state, playing: true });
+
+      const videoCurrentDuration = itemPlaying.item.item_viewed?.duration;
+      if (videoCurrentDuration) {
+        playerRef.current.seekTo(videoCurrentDuration);
+      }
     }
-  }, [currentTime]);
+  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log(playerRef.current);
+      if (itemPlaying && playerRef.current.player.isPlaying) {
+        if (itemPlaying.item.item_viewed) {
+          const newCurrentTime = playerRef.current.getCurrentTime();
+          const newDuration = playerRef.current.getDuration();
+          const durationPercentatge = newDuration - (newDuration * 10) / 100;
+          if (newCurrentTime) {
+            console.log("current time ", newCurrentTime);
+            console.log("duration", durationPercentatge);
+
+            if (newCurrentTime > durationPercentatge) {
+              dispatch(
+                updateItemViewed(itemPlaying.item, {
+                  duration: newCurrentTime,
+                  is_completed: true,
+                })
+              );
+            } else {
+              dispatch(
+                updateItemViewed(itemPlaying.item, { duration: newCurrentTime })
+              );
+            }
+          }
+        } else {
+          dispatch(createItemViewed(itemPlaying.item.code));
+        }
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [itemPlaying]);
+
   const totalDuration = format(duration);
   const [url, setUrl] = useState(null);
   useEffect(() => {
@@ -148,6 +189,7 @@ const VideoPlayer = (props) => {
       >
         <ReactPlayer
           ref={playerRef}
+          onStart={handleStartVideo}
           url={url}
           width="100%"
           height="100%"

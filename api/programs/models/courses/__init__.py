@@ -9,3 +9,4 @@ from .contents import LectureContent, LectureMaterial
 from .course_languages import CourseLanguage
 from .course_prices import CoursePrice
 from .course_students import CourseStudent
+from .course_users_data import CourseUserData

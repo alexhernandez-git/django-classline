@@ -38,7 +38,6 @@ const QuestionsLecture = ({ itemPlaying }) => {
   const dispatch = useDispatch();
   const questionsReducer = useSelector((state) => state.questionsReducer);
   const answersReducer = useSelector((state) => state.answersReducer);
-  console.log("itemplaying", itemPlaying);
   const [handleCreateQuestion, setHandleCreateCuestion] = useState(false);
   const [search, setSearch] = useState(null);
   const handleOpenCreateQuestion = () => {

@@ -67,14 +67,17 @@ class ItemViewedViewSet(mixins.CreateModelMixin,
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def update(self, request, *args, **kwargs):
-        question = self.get_object()
+        item_viewed = self.get_object()
         partial = request.method == 'PATCH'
 
         serializer = ItemViewedModelSerializer(
-            question,
+            item_viewed,
             data=request.data,
             context={
-                'request': request
+                'request': request,
+                'item': self.item,
+                'course': self.course,
+                'user': request.user
             },
             partial=partial
         )

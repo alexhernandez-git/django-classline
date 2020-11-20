@@ -68,13 +68,13 @@ const Header = (props) => {
     }
   };
   const isInstructor = () => {
-    return  authReducer.user.teacher.instructor_in.some(
-        (allowed_program) =>allowed_program.program.code == program
-        );
+    return authReducer.user.teacher.instructor_in.some(
+      (allowed_program) => allowed_program.program.code == program
+    );
   };
-  const isAdmin = () =>{
-   return authReducer.user.teacher.programs.some(pro => pro.code == program)
-  }
+  const isAdmin = () => {
+    return authReducer.user.teacher.programs.some((pro) => pro.code == program);
+  };
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -138,29 +138,28 @@ const Header = (props) => {
         )}
 
         <ButtonsHeader>
-          {!/\/demo\//.test(pathname) &&
-            !isAdmin() && !isInstructor() && (
-              <>
-                {!authReducer.rating ? (
-                  <button onClick={handleShow}>
-                    <small className="d-none d-sm-block mr-2">Puntuar</small>
-                    <IconContext.Provider
-                      value={{ className: "global-class-name" }}
-                    >
-                      <FaRegStar />
-                    </IconContext.Provider>
-                  </button>
-                ) : (
-                  <button onClick={handleShow}>
-                    <IconContext.Provider
-                      value={{ className: "global-class-name" }}
-                    >
-                      <FaStar />
-                    </IconContext.Provider>
-                  </button>
-                )}
-              </>
-            )}
+          {!/\/demo\//.test(pathname) && !isAdmin() && !isInstructor() && (
+            <>
+              {!authReducer.rating ? (
+                <button onClick={handleShow}>
+                  <small className="d-none d-sm-block mr-2">Puntuar</small>
+                  <IconContext.Provider
+                    value={{ className: "global-class-name" }}
+                  >
+                    <FaRegStar />
+                  </IconContext.Provider>
+                </button>
+              ) : (
+                <button onClick={handleShow}>
+                  <IconContext.Provider
+                    value={{ className: "global-class-name" }}
+                  >
+                    <FaStar />
+                  </IconContext.Provider>
+                </button>
+              )}
+            </>
+          )}
 
           <div className="position-relative" ref={profileDiv}>
             <Avatar className="cursor-pointer">
@@ -235,47 +234,67 @@ const Header = (props) => {
                   )}
                 </>
               )}
-
-              {!/\/demo\//.test(pathname) &&
-                authReducer.user &&
-                isAdmin() && (
-                  <>
-                    <Link to={`/academy/${program}/admin`}>
-                      <button className="w-100 d-flex align-items-center justify-content-center">
-                        <IconContext.Provider
-                          value={{
-                            size: 16,
-                            className: "global-class-name",
-                          }}
-                        >
-                          <FaCog />
-                        </IconContext.Provider>
-                        <small className="ml-2">Admin Panel</small>
-                      </button>
-                    </Link>
-                    <hr className="m-2" />
-                  </>
-                )}
-                   {!/\/demo\//.test(pathname) &&
-                authReducer.user &&
-                isInstructor()  && (
-                  <>
-                    <Link to={`/academy/${program}/admin/users`}>
-                      <button className="w-100 d-flex align-items-center justify-content-center">
-                        <IconContext.Provider
-                          value={{
-                            size: 16,
-                            className: "global-class-name",
-                          }}
-                        >
-                          <FaCog />
-                        </IconContext.Provider>
-                        <small className="ml-2">Instructor Panel</small>
-                      </button>
-                    </Link>
-                    <hr className="m-2" />
-                  </>
-                )}
+              {/\/admin\/?/.test(pathname) ? (
+                <>
+                  <Link to={`/academy/${program}/home`}>
+                    <button className="w-100 d-flex align-items-center justify-content-center">
+                      <IconContext.Provider
+                        value={{
+                          size: 16,
+                          className: "global-class-name",
+                        }}
+                      >
+                        <FaCog />
+                      </IconContext.Provider>
+                      <small className="ml-2">Vista alumno</small>
+                    </button>
+                  </Link>
+                  <hr className="m-2" />
+                </>
+              ) : (
+                <>
+                  {!/\/demo\//.test(pathname) && authReducer.user && isAdmin() && (
+                    <>
+                      <Link to={`/academy/${program}/admin`}>
+                        <button className="w-100 d-flex align-items-center justify-content-center">
+                          <IconContext.Provider
+                            value={{
+                              size: 16,
+                              className: "global-class-name",
+                            }}
+                          >
+                            <FaCog />
+                          </IconContext.Provider>
+                          <small className="ml-2">
+                            Panel de Administración
+                          </small>
+                        </button>
+                      </Link>
+                      <hr className="m-2" />
+                    </>
+                  )}
+                  {!/\/demo\//.test(pathname) &&
+                    authReducer.user &&
+                    isInstructor() && (
+                      <>
+                        <Link to={`/academy/${program}/admin/users`}>
+                          <button className="w-100 d-flex align-items-center justify-content-center">
+                            <IconContext.Provider
+                              value={{
+                                size: 16,
+                                className: "global-class-name",
+                              }}
+                            >
+                              <FaCog />
+                            </IconContext.Provider>
+                            <small className="ml-2">Panel de Instructor</small>
+                          </button>
+                        </Link>
+                        <hr className="m-2" />
+                      </>
+                    )}
+                </>
+              )}
               <div>
                 <button
                   className="w-100 d-flex align-items-center justify-content-center"
@@ -441,7 +460,7 @@ const Avatar = styled.span`
 const ProfileCard = styled.div`
   right: 0;
   top: 50px;
-  width: 200px;
+  width: 250px;
   z-index: 1500;
 `;
 const Title = styled.span`

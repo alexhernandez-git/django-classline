@@ -96,7 +96,24 @@ const CourseAcademy = (props) => {
         setItemPlaying(result);
       } else {
         if (playingCourseReducer.course.blocks.length > 0) {
-          setItemPlaying(playingCourseReducer.course.blocks[0].block.items[0]);
+          if (playingCourseReducer.course.current_item_watching) {
+            console.log(
+              "current_item_watching",
+              playingCourseReducer.course.current_item_watching
+            );
+
+            const result = items.find(
+              (item) =>
+                item.item.id ==
+                playingCourseReducer.course.current_item_watching
+            );
+            console.log(result);
+            setItemPlaying(result);
+          } else {
+            setItemPlaying(
+              playingCourseReducer.course.blocks[0].block.items[0]
+            );
+          }
         }
       }
     }
@@ -109,28 +126,16 @@ const CourseAcademy = (props) => {
   //   );
   //   return playingCourseReducer.course.items.indexOf(result);
   // };
-  const [currentTime, setCurrentTime] = useState(null);
   useEffect(() => {
-    console.log(itemPlaying);
-    if (itemPlaying && !itemPlaying.item.item_viewed) {
-      dispatch(createItemViewed(itemPlaying.item.code));
+    if (itemPlaying) {
+      if (!itemPlaying.item.item_viewed) {
+        dispatch(createItemViewed(itemPlaying.item.code));
+      } else {
+        dispatch(updateItemViewed(itemPlaying.item, {}));
+      }
     }
   }, [itemPlaying]);
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (itemPlaying && itemPlaying.item.item_viewed) {
-  //       if (currentTime) {
-  //         dispatch(
-  //           updateItemViewed(itemPlaying.item, { duration: currentTime })
-  //         );
-  //       }
-  //     } else {
-  //       dispatch(createItemViewed(itemPlaying.item.code));
-  //     }
-  //   }, 5000);
 
-  //   return () => clearInterval(interval);
-  // }, []);
   return playingCourseReducer.isLoading ? (
     <span>Cargando...</span>
   ) : (
@@ -158,10 +163,10 @@ const CourseAcademy = (props) => {
                           itemPlaying.item?.content?.type_choices == "VI" && (
                             <VideoPlayer
                               video={itemPlaying.item.content}
+                              itemPlaying={itemPlaying}
                               isCourse
                               goNext={goNext}
                               color={playingCourseReducer.course.color}
-                              setCurrentTime={setCurrentTime}
                             />
                           )}
                         {/* {itemPlaying.item?.type_choices == "LE" &&

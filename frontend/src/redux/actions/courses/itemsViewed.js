@@ -15,6 +15,8 @@ export const updateItemViewed = (item, item_viewed) => (dispatch, getState) => {
   dispatch({
     type: UPDATE_ITEM_VIEWED,
   });
+  // console.log(item);
+  console.log("item_viewed", item_viewed);
   axios
     .patch(
       `/api/programs/${getState().programReducer.program.code}/courses/${

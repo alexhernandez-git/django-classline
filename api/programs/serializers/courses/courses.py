@@ -20,7 +20,8 @@ from api.programs.models import (
     CourseBlockTrack,
     CourseBlock,
     CourseItemTrack,
-    LectureContent
+    LectureContent,
+    CourseUserData
 )
 
 # Serializes
@@ -309,6 +310,7 @@ class CoursePlayingModelSerializer(serializers.ModelSerializer):
     blocks_count = serializers.SerializerMethodField(read_only=True)
     items_count = serializers.SerializerMethodField(read_only=True)
     total_duration = serializers.SerializerMethodField(read_only=True)
+    current_item_watching = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         """Meta class."""
@@ -332,7 +334,8 @@ class CoursePlayingModelSerializer(serializers.ModelSerializer):
             'blocks_count',
             'items_count',
             'total_duration',
-            'color'
+            'color',
+            'current_item_watching'
         )
 
         read_only_fields = (
@@ -374,3 +377,11 @@ class CoursePlayingModelSerializer(serializers.ModelSerializer):
 
     def get_total_duration(self, obj):
         return LectureContent.objects.filter(course=obj.id, type_choices="VI").aggregate(Sum('duration'))['duration__sum']
+
+    def get_current_item_watching(self, obj):
+        from api.programs.serializers import CourseUserDataModelSerializer
+        course_user_data = CourseUserData.objects.filter(course=obj.id, user=self.context['request'].user)
+        if len(course_user_data) > 0:
+            return CourseUserDataModelSerializer(course_user_data[0], many=False).data['current_item_watching']
+        else: 
+            return None

@@ -103,7 +103,6 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
                       <small>
                         Lectura {items.indexOf(item) + 1}: {item.item.name}
                       </small>
-                      {console.log(item.item)}
                       <div>
                         {item.item.item_viewed &&
                         item.item.item_viewed.is_completed ? (
