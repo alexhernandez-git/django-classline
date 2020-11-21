@@ -1,13 +1,60 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useState } from "react";
 import { Global, css } from "@emotion/core";
 import { IconContext } from "react-icons/lib";
 import { FaGlobeAmericas } from "react-icons/fa";
-import { MdOndemandVideo } from "react-icons/md";
+import { MdCheck, MdOndemandVideo } from "react-icons/md";
 import { IoMdInfinite } from "react-icons/io";
 import { HiOutlineFolderDownload } from "react-icons/hi";
 
 const CourseBuyContainer = () => {
+  const [benefits, setBenefits] = useState([
+    {
+      id: Math.random().toString(36).substring(7),
+      benefit: "Convertir y crear sus propios diseños en páginas web",
+    },
+    {
+      id: Math.random().toString(36).substring(7),
+      benefit: "Escribir código JavaScript y jQuery",
+    },
+    {
+      id: Math.random().toString(36).substring(7),
+      benefit: "Entender como funciona JavaScript y PHP",
+    },
+    {
+      id: Math.random().toString(36).substring(7),
+      benefit:
+        "Aprende AJAX, para crear páginas web dínamicas que cargaran información sin recargar la página",
+    },
+    {
+      id: Math.random().toString(36).substring(7),
+      benefit: "Crear aplicaciones CRUD con PHP y MySQL",
+    },
+    {
+      id: Math.random().toString(36).substring(7),
+      benefit: "Crear un área de administración con AdminLTE, PHP y MySQL",
+    },
+    {
+      id: Math.random().toString(36).substring(7),
+      benefit: "Crear páginas web con HTML y CSS",
+    },
+    {
+      id: Math.random().toString(36).substring(7),
+      benefit: "Crear sitios web dínamicos con PHP y MYSQL",
+    },
+    {
+      id: Math.random().toString(36).substring(7),
+      benefit: "Aplicar a un empleo de Desarrollador Web Junior",
+    },
+    {
+      id: Math.random().toString(36).substring(7),
+      benefit: "Agregar pagos de PayPal a tus sitios web",
+    },
+    {
+      id: Math.random().toString(36).substring(7),
+      benefit: "Crear aplicaciones seguras con PHP, Ajax y MySQL",
+    },
+  ]);
   return (
     <>
       <Global
@@ -186,6 +233,28 @@ const CourseBuyContainer = () => {
           </div>
         </div>
         <div className="course-color"></div>
+        <div className="course-info-container">
+          <div className="course-info-div">
+            <div className="course-benefits">
+              <span className="course-benefits-title">Lo que aprenderás</span>
+              <div className="course-benefits-list">
+                {benefits.map((benefit) => (
+                  <div className="benefit" key={benefit.id}>
+                    <IconContext.Provider
+                      value={{
+                        color: "",
+                        className: "mt-1",
+                      }}
+                    >
+                      <MdCheck />
+                    </IconContext.Provider>
+                    <span>{benefit.benefit}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </CourseContainer>
     </>
   );
@@ -294,6 +363,42 @@ const CourseContainer = styled.div`
     background: #67c7a4;
     padding: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  .course-info-container {
+    max-width: 118.4rem;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 35rem;
+    grid-column-gap: 3rem;
+    .course-info-div {
+      .course-benefits {
+        margin: 3rem 0;
+        padding: 2.5rem;
+        background-color: #fbfbf8;
+        border-radius: 0.4rem;
+        border: 1px solid #dcdacb;
+        .course-benefits-title {
+          color: #3c3b37;
+          font-size: 2.4rem;
+          font-weight: 800;
+        }
+        .course-benefits-list {
+          margin-top: 2rem;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-gap: 1rem;
+          .benefit {
+            display: grid;
+            grid-template-columns: 16px 1fr;
+            /* align-items: center; */
+            span {
+              font-size: 1.4rem;
+              margin-left: 1rem;
+            }
+          }
+        }
+      }
+    }
   }
 `;
 
