@@ -64,6 +64,7 @@ import ConfigurationTopic from "../containers/admin/ConfigurationTopic";
 import ConfigurationCourse from "../containers/admin/ConfigurationCourse";
 import CoursesAdmin from "src/containers/admin/CoursesAdmin";
 import BlocksItems from "../components/CourseAcademy/BlockItems";
+import CourseBuyContainer from "../containers/CourseBuyContainer";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -176,7 +177,11 @@ const Academy = () => {
           path="/academy/:program/pack/detail"
           component={CheckoutPack}
         />
-
+        <Route
+          exact
+          path="/academy/:program/course-info/:id"
+          component={CourseBuyContainer}
+        />
         {authReducer.isLoading ? (
           "Cargando..."
         ) : !authReducer.isAuthenticated ? (

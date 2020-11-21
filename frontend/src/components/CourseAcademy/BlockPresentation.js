@@ -152,7 +152,7 @@ const BlockPresentation = (props) => {
           </Col>
         </Row>
       </AdminForm>
-      <Modal show={show} onHide={handleClose} size="lg">
+      <Modal show={show} size="lg">
         <Modal.Header closeButton></Modal.Header>
 
         <Cropper

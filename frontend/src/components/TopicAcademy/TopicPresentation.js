@@ -30,10 +30,14 @@ const TopicPresentation = (props) => {
   useEffect(() => {
     if (!topicReducer.isLoading && topicReducer.topic) {
       console.log(topicReducer.topic.picture);
-      setCropResult(topicReducer.topic.picture ? topicReducer.topic.picture :"/static/assets/img/no-foto-square.png");
+      setCropResult(
+        topicReducer.topic.picture
+          ? topicReducer.topic.picture
+          : "/static/assets/img/no-foto-square.png"
+      );
     }
   }, [topicReducer.topic?.picture]);
-  
+
   const handleUploadImage = (e) => {
     e.preventDefault();
     handleShow();
@@ -89,7 +93,7 @@ const TopicPresentation = (props) => {
 
     return new File([u8arr], filename, { type: mime });
   }
- 
+
   return (
     <div className="bg-white border p-3 rounded my-2">
       <span className="d-none d-md-block">Presentación</span>
@@ -127,11 +131,9 @@ const TopicPresentation = (props) => {
           />
         </Col>
       </Row>
-      
 
-      <Modal show={show} onHide={handleClose} size="lg">
-        <Modal.Header closeButton>
-        </Modal.Header>
+      <Modal show={show} size="lg">
+        <Modal.Header closeButton></Modal.Header>
 
         <Cropper
           ref={cropper}

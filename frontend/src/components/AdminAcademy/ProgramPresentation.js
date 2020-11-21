@@ -217,9 +217,8 @@ const ProgramPresentation = (props) => {
         </Col>
       </Row>
 
-      <Modal show={show} onHide={handleClose} size="lg">
-        <Modal.Header closeButton>
-        </Modal.Header>
+      <Modal show={show} size="lg">
+        <Modal.Header closeButton></Modal.Header>
 
         <Cropper
           ref={cropper}

@@ -39,7 +39,7 @@ const StripeConnect = () => {
                   undefined ? (
                   <>
                     <a
-                      href="https://connect.stripe.com/express/oauth/authorize?response_type=code&amp;client_id=ca_HmRkLTjyLDqt32B5GRlzOhlqeH4ry79e&amp;scope=read_write"
+                      href="https://connect.stripe.com/express/oauth/authorize?response_type=code&amp;client_id=ca_HmRky5LBHShFfC92Xzjsz0Mj82piwIiy&amp;scope=read_write"
                       className="connect-button"
                     >
                       {/* prod */}
