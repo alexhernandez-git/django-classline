@@ -107,7 +107,6 @@ const CourseBuyContainer = () => {
           body {
             font-size: 1.6rem;
             font-family: "Open Sans", sans-serif;
-            overflow: hidden;
             color: #3c3b37;
           }
           a {
@@ -270,6 +269,9 @@ const CourseContainer = styled.div`
       display: grid;
       grid-template-columns: 1fr 35rem;
       grid-column-gap: 3rem;
+      @media screen and (max-width: 768px) {
+        display: block;
+      }
       .header-course-info {
         .course-title {
           font-weight: 600;
@@ -307,8 +309,18 @@ const CourseContainer = styled.div`
           width: 35rem;
           box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
           border-radius: 0.4rem;
+
           @media screen and (max-width: 1200px) {
-            right: 1rem;
+            position: absolute;
+          }
+          @media screen and (max-width: 1024px) {
+            position: relative;
+          }
+          @media screen and (max-width: 768px) {
+            width: 100%;
+            background: initial;
+            color: #fff;
+            margin-top: 3rem;
           }
           .cta-image {
             img {
@@ -370,6 +382,9 @@ const CourseContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr 35rem;
     grid-column-gap: 3rem;
+    @media screen and (max-width: 1024px) {
+      display: block;
+    }
     .course-info-div {
       .course-benefits {
         margin: 3rem 0;
