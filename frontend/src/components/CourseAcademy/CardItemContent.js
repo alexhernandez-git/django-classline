@@ -327,7 +327,7 @@ const CardItemContent = ({
           ) : (
             <div className="item-content">
               {itemsReducer.item_file_uploading &&
-                "Subiendo... porfavor espere"}
+                "Subiendo... por favor espere"}
               {(item?.content?.type_choices == "VI" ||
                 item?.content?.type_choices == "TX") && (
                 <>

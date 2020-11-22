@@ -24,7 +24,8 @@ from api.programs.serializers import (
     PublishCourseSerializer,
     CancelPublishCourseSerializer,
     CourseBlockTrackModelSerializer,
-    CoursePlayingModelSerializer
+    CoursePlayingModelSerializer,
+    CourseContentModelSerializer
 )
 from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
@@ -79,6 +80,8 @@ class CourseViewSet(mixins.CreateModelMixin,
         """Return serializer based on action."""
         if self.action == 'retrieve_playing':
             return CoursePlayingModelSerializer
+        elif self.action == 'retrieve_content':
+            return CourseContentModelSerializer
         elif self.action == 'create':
             return CourseCreateSerializer
         elif self.action in ['update', 'partial_update', 'get_accounts', 'cancel_accounts','update_blocks']:
@@ -142,6 +145,12 @@ class CourseViewSet(mixins.CreateModelMixin,
 
     @action(detail=True, methods=['get'])
     def retrieve_playing(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def retrieve_content(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)

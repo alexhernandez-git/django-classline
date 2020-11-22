@@ -97,3 +97,28 @@ class CourseBlockPlayingModelSerializer(serializers.ModelSerializer):
         return CourseItemTrackModelSerializer(items,user=self.user, many=True).data
 
 
+class CourseBlockContentModelSerializer(serializers.ModelSerializer):
+    """Profile model serializer."""
+    items = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        """Meta class."""
+
+        model = CourseBlock
+        fields = (
+            'id',
+            'code',
+            'name',
+            'picture',
+            'description',
+            'items',
+        )
+        # extra_kwargs = {'end': {'required': False}}
+        read_only_fields = (
+            'id',
+        )
+
+    def get_items(self, obj):
+        from api.programs.serializers import CourseItemTrackModelSerializer
+        items = CourseItemTrack.objects.filter(block=obj.id)
+        return CourseItemTrackModelSerializer(items, many=True).data
