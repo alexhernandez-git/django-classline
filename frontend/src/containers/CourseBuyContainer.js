@@ -217,7 +217,8 @@ const CourseBuyContainer = () => {
           name: "efwefwaaefaw",
           picture:
             "/media/programs/courses/pictures/0.wqqfqr75c30.60a9xlogr360_11.jpg",
-          description: "efwaaefwaewfa",
+          description:
+            'Samsung Crystal UHD 2020 55TU8505 - Smart TV de 55" con Resolución 4K, Crystal Display, Dual LED, HDR 10+, Procesador 4K, Sonido Inteligente, One Remote Control y Asistentes de Voz Integrados (Alexa) [Clase de efi',
           items: [
             {
               id: "3630be66-3c4c-432d-a88f-f470c287031f",
@@ -584,7 +585,14 @@ const CourseBuyContainer = () => {
             <div className="header-course-cta">
               <div className="cta-content">
                 <div className="cta-image">
-                  <img src="/static/assets/img/no-foto.png" alt="" />
+                  <img
+                    src={
+                      course.picture
+                        ? course.picture
+                        : "/static/assets/img/no-foto.png"
+                    }
+                    alt=""
+                  />
                 </div>
                 <div className="cta-info">
                   <div className="course-price">

@@ -27,7 +27,15 @@ function BlockItemsListContent({ track, index_block, showBlockInformation }) {
   useEffect(() => {
     setIsItemsOpen(showBlockInformation);
   }, [showBlockInformation]);
-
+  const [showInfoBlock, setshowInfoBlock] = useState(false);
+  useEffect(() => {
+    if (!isItemsOpen) {
+      setshowInfoBlock(false);
+    }
+  }, [isItemsOpen]);
+  const handleToggleInfoBlock = () => {
+    setshowInfoBlock(!showInfoBlock);
+  };
   function msToHMS(seconds) {
     if (isNaN(seconds)) {
       return "00:00";
@@ -99,7 +107,7 @@ function BlockItemsListContent({ track, index_block, showBlockInformation }) {
             {/* <CourseList video={track.video} /> */}
           </div>
         </div>
-        {isItemsOpen && (
+        {showInfoBlock && (
           <>
             <hr className="mt-0 mx-4" />
             <div className="more-block-info px-4 pb-4">
@@ -120,6 +128,20 @@ function BlockItemsListContent({ track, index_block, showBlockInformation }) {
         )}
       </BlockCard>
       <PlaylistUlItems isItemsOpen={isItemsOpen}>
+        {isItemsOpen && (
+          <div className="d-flex justify-content-start py-2 px-3 ">
+            <small
+              className="cursor-pointer text-grey"
+              onClick={handleToggleInfoBlock}
+            >
+              {showInfoBlock ? (
+                <u>ver menos</u>
+              ) : (
+                <u>ver mas sobre la sección</u>
+              )}
+            </small>
+          </div>
+        )}{" "}
         <ul className="m-0">
           {isItemsOpen && (
             <>
