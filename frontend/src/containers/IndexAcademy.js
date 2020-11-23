@@ -568,21 +568,21 @@ const ProgramVideo = styled.div`
 export const Title = styled.div`
   font-size: 2.8rem;
 `;
-export const CardContainer = styled.div`
+const CardContainer = styled.div`
   position: relative;
   width: 100%;
   padding-top: 56.25%;
   overflow: hidden;
   height: 0;
 `;
-export const VideoCard = styled.video`
+const VideoCard = styled.video`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
 `;
-export const TransparentBackground = styled.div`
+const TransparentBackground = styled.div`
   -webkit-transition: all 0.25s linear;
   -o-transition: all 0.25s linear;
 

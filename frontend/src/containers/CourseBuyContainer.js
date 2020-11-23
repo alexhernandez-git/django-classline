@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Global, css } from "@emotion/core";
 import { IconContext } from "react-icons/lib";
-import { FaGlobeAmericas } from "react-icons/fa";
-import { MdCheck, MdOndemandVideo } from "react-icons/md";
+import { FaCircle, FaGlobeAmericas, FaRegPlayCircle } from "react-icons/fa";
+import { MdCheck, MdClose, MdOndemandVideo } from "react-icons/md";
 import { IoMdInfinite } from "react-icons/io";
 import { HiOutlineFolderDownload } from "react-icons/hi";
 import BlockItemsListContent from "src/components/ui/BlockItemsListContent";
@@ -83,7 +83,7 @@ const CourseBuyContainer = () => {
       "<p>fewafweaaefwoahfewoipwafepioawef</p><p>awefoieowaefophweaoipfew</p><p><strong>fewaafweoewfj0òawefjfeojwaeopfawe</strong></p><ul><li><strong>feawfaewpkwepòff</strong></li><li><strong>afwepoijaefwàfwej</strong></li><li><strong>feawpojaewfaefwijawef</strong></li></ul>",
     course_language: null,
     picture:
-      "http://192.168.1.10:8000/media/programs/courses/pictures/0.1akcsasauk20.jlbvge05f9pchunkbase_-7339840784560636648.png",
+      "http://192.168.1.10:8000/media/programs/courses/pictures/0.ewkhmvaettv0.k23qw9k89iNRC-9562_1080_rabanito.jpg",
     students_count: 0,
     students: [],
     instructor: {
@@ -118,7 +118,8 @@ const CourseBuyContainer = () => {
       password_changed: false,
     },
     published_in_program: true,
-    video_presentation: null,
+    video_presentation:
+      "http://192.168.1.10:8000/media/programs/courses/videos/0.cg71wpexhbqvideoplayback_2.mp4",
     published: false,
     blocks: [
       {
@@ -462,6 +463,35 @@ const CourseBuyContainer = () => {
     color: "#67c7a4",
   });
 
+  const programVideoRef = useRef();
+  const video = useRef();
+  const [accessOpen, setAccessOpen] = useState(false);
+  const [openVideo, setOpenVideo] = useState(false);
+  const handleOpenVideo = () => {
+    video.current.play();
+    setOpenVideo(true);
+  };
+  const handleCloseVideo = () => {
+    video.current.pause();
+    setOpenVideo(false);
+  };
+
+  const handleWindowClick = (e) => {
+    if (!programVideoRef.current.contains(e.target)) {
+      handleCloseVideo(false);
+    }
+  };
+  useEffect(() => {
+    const handleClick = (e) => {
+      handleWindowClick(e);
+    };
+    window.addEventListener("mousedown", handleClick);
+
+    return () => {
+      window.removeEventListener("mousedown", handleClick);
+    };
+  });
+
   return (
     <>
       <Global
@@ -584,16 +614,68 @@ const CourseBuyContainer = () => {
             </div>
             <div className="header-course-cta">
               <div className="cta-content">
-                <div className="cta-image">
-                  <img
-                    src={
-                      course.picture
-                        ? course.picture
-                        : "/static/assets/img/no-foto.png"
-                    }
-                    alt=""
-                  />
-                </div>
+                {course.video_presentation ? (
+                  <div className="cta-image" onClick={handleOpenVideo}>
+                    <img
+                      src={
+                        course.picture
+                          ? course.picture
+                          : "/static/assets/img/no-foto.png"
+                      }
+                      alt=""
+                    />
+                    <IconContext.Provider
+                      value={{
+                        className: "position-absolute h1",
+                        color: "#fff",
+                        style: {
+                          left: "0",
+                          right: "0",
+                          top: "0",
+                          bottom: "0",
+                          margin: "auto",
+                          fontSize: "5rem",
+                          zIndex: "100",
+                        },
+                      }}
+                    >
+                      <div>
+                        <FaRegPlayCircle />
+                      </div>
+                    </IconContext.Provider>
+                    <IconContext.Provider
+                      value={{
+                        className: "position-absolute h1 text-dark",
+                        // color: "#fff",
+
+                        style: {
+                          left: "0",
+                          right: "0",
+                          top: "0",
+                          bottom: "0",
+                          margin: "auto",
+                          fontSize: "4.8rem",
+                          opacity: "0.8",
+                        },
+                      }}
+                    >
+                      <div>
+                        <FaCircle />
+                      </div>
+                    </IconContext.Provider>
+                  </div>
+                ) : (
+                  <div className="cta-image-no-pointer">
+                    <img
+                      src={
+                        course.picture
+                          ? course.picture
+                          : "/static/assets/img/no-foto.png"
+                      }
+                      alt=""
+                    />
+                  </div>
+                )}
                 <div className="cta-info">
                   <div className="course-price">
                     <span>13,99 €</span>
@@ -715,6 +797,37 @@ const CourseBuyContainer = () => {
           </div>
         </div>
       </CourseContainer>
+      <ProgramVideo className="" openVideo={openVideo}>
+        <div className="video-div" openVideo={openVideo}>
+          <div className="course-card position-relative">
+            <IconContext.Provider
+              value={{
+                className: "icon-close cursor-pointer",
+                color: "#fff",
+                size: "30px",
+              }}
+            >
+              <MdClose onClick={handleCloseVideo} />
+            </IconContext.Provider>
+            <div
+              className="shadow w-100 p-1 rounded bg-white"
+              ref={programVideoRef}
+            >
+              <div className="w-100">
+                <CardContainer>
+                  <VideoCard
+                    ref={video}
+                    poster={course.picture}
+                    src={course.video_presentation}
+                    controls
+                  />
+                </CardContainer>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ProgramVideo>
+      {openVideo && <TransparentBackground />}
     </>
   );
 };
@@ -782,7 +895,17 @@ const CourseContainer = styled.div`
             color: #fff;
             margin-top: 3rem;
           }
+          .cta-image-no-pointer {
+            position: relative;
+
+            img {
+              width: 100%;
+              border-radius: 0.4rem;
+            }
+          }
           .cta-image {
+            position: relative;
+            cursor: pointer;
             img {
               width: 100%;
               border-radius: 0.4rem;
@@ -913,4 +1036,66 @@ const CourseContainer = styled.div`
   }
 `;
 
+const ProgramVideo = styled.div`
+  z-index: 999;
+  -webkit-transition: all 0.25s linear;
+  -o-transition: all 0.25s linear;
+
+  transition: all 0.25s linear;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  /* background: rgba(0,0,0,.7); */
+  ${(props) => (props.openVideo ? "opacity: 1;" : "  opacity: 0;")}
+  ${(props) =>
+    props.openVideo ? "transform: scale(1);" : "  transform: scale(0);"}
+
+      .video-div {
+    -webkit-transition: all 0.25s linear;
+    -o-transition: all 0.25s linear;
+    transition: all 0.25s linear;
+    opacity: 1;
+    width: 100%;
+    position: fixed;
+    max-width: 80rem;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 5%;
+  }
+  .icon-close {
+    z-index: 999;
+    position: absolute;
+    top: -30px;
+    right: 0;
+  }
+`;
+const CardContainer = styled.div`
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  overflow: hidden;
+  height: 0;
+`;
+const VideoCard = styled.video`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
+const TransparentBackground = styled.div`
+  -webkit-transition: all 0.25s linear;
+  -o-transition: all 0.25s linear;
+
+  transition: all 0.25s linear;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+`;
 export default CourseBuyContainer;

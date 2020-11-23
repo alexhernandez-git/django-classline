@@ -141,7 +141,7 @@ function BlockItemsListContent({ track, index_block, showBlockInformation }) {
               )}
             </small>
           </div>
-        )}{" "}
+        )}
         <ul className="m-0">
           {isItemsOpen && (
             <>
