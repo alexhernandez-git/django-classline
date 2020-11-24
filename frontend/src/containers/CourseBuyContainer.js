@@ -7,7 +7,14 @@ import { MdCheck, MdClose, MdOndemandVideo } from "react-icons/md";
 import { IoMdInfinite } from "react-icons/io";
 import { HiOutlineFolderDownload } from "react-icons/hi";
 import BlockItemsListContent from "src/components/ui/BlockItemsListContent";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import {
+  CardElement,
+  useStripe,
+  useElements,
+  CardExpiryElement,
+  CardCvcElement,
+  CardNumberElement,
+} from "@stripe/react-stripe-js";
 
 const CourseBuyContainer = () => {
   const [benefits, setBenefits] = useState([
@@ -553,7 +560,7 @@ const CourseBuyContainer = () => {
       // dispatch(buyPack(buyPacksReducer.selected_pack, paymentMethod.id));
     }
   };
-  const [isAuthenticated, setisAuthenticated] = useState(false);
+  const [isAuthenticated, setisAuthenticated] = useState(true);
   return (
     <>
       <Global
@@ -645,7 +652,7 @@ const CourseBuyContainer = () => {
         `}
       />
 
-      <CourseContainer color={course.color}>
+      <CourseContainer color={"#47d4a0"}>
         <div className="header-course">
           <div className="header-course-container">
             <div className="header-course-info">
@@ -826,11 +833,74 @@ const CourseBuyContainer = () => {
                 {isAuthenticated ? (
                   <>
                     <div className="course-checkout-card">
-                      <span className="course-checkout-card-title">Pagar</span>
+                      <span className="ccc-title">Pagar</span>
 
-                      <div className="course-checkout-card-content"></div>
+                      <div className="ccc-content">
+                        <CardNumberElement
+                          options={{
+                            placeholder: "Número de tarjeta",
+                            style: {
+                              base: {
+                                fontSize: "16px",
+                                backgroundColor: "#fff",
+                                padding: "1rem",
+
+                                margin: "1rem",
+                                color: "#424770",
+                                "::placeholder": {
+                                  color: "#aab7c4",
+                                },
+                              },
+                              invalid: {
+                                color: "#9e2146",
+                              },
+                            },
+                          }}
+                        />
+                        <div className="ccc-elements-between">
+                          <CardExpiryElement
+                            options={{
+                              style: {
+                                base: {
+                                  fontSize: "16px",
+                                  backgroundColor: "#fff",
+                                  padding: "1rem",
+
+                                  margin: "1rem",
+                                  color: "#424770",
+                                  "::placeholder": {
+                                    color: "#aab7c4",
+                                  },
+                                },
+                                invalid: {
+                                  color: "#9e2146",
+                                },
+                              },
+                            }}
+                          />
+                          <CardCvcElement
+                            options={{
+                              style: {
+                                base: {
+                                  fontSize: "16px",
+                                  backgroundColor: "#fff",
+                                  padding: "1rem",
+
+                                  margin: "1rem",
+                                  color: "#424770",
+                                  "::placeholder": {
+                                    color: "#aab7c4",
+                                  },
+                                },
+                                invalid: {
+                                  color: "#9e2146",
+                                },
+                              },
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <CardElement />
                   </>
                 ) : (
                   <>
@@ -1353,13 +1423,34 @@ const CourseContainer = styled.div`
     }
     .course-checkout-card {
       margin-top: 3rem;
-      .course-checkout-card-title {
+      .ccc-title {
         color: #3c3b37;
         font-size: 2.4rem;
         font-weight: 800;
       }
-      .course-checkout-card-content {
+      .ccc-content {
         margin-top: 1.6rem;
+        padding: 2rem 2.5rem 2.5rem;
+        background-color: #fbfbf8;
+        border-radius: 0.4rem;
+        border: 1px solid #dcdacb;
+        .ccc-elements-between {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-gap: 1rem;
+          @media screen and (max-width: 768px) {
+            display: block;
+            .StripeElement {
+              margin: inherit;
+            }
+          }
+          .StripeElement {
+            margin: 1rem 0;
+          }
+        }
+        .StripeElement {
+          background: #fff;
+        }
       }
     }
   }
