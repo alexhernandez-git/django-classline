@@ -45,7 +45,8 @@ class ItemViewedModelSerializer(serializers.ModelSerializer):
         validated_data['course'] = course
 
         # Course user data
-        course_user_data = CourseUserData.objects.get_or_create(user=user, course=course)
+        course_user_data = CourseUserData.objects.get_or_create(user=user, course=course)[0]
+
         course_user_data.current_item_watching = item
         course_user_data.save()
 

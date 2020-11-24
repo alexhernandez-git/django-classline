@@ -7,6 +7,8 @@ import { MdCheck, MdClose, MdOndemandVideo } from "react-icons/md";
 import { IoMdInfinite } from "react-icons/io";
 import { HiOutlineFolderDownload } from "react-icons/hi";
 import BlockItemsListContent from "src/components/ui/BlockItemsListContent";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+
 const CourseBuyContainer = () => {
   const [benefits, setBenefits] = useState([
     {
@@ -70,6 +72,19 @@ const CourseBuyContainer = () => {
     }
     return `${mm} minutos de duración total`;
   }
+  function msToHMSCard(seconds) {
+    if (isNaN(seconds)) {
+      return "00:00";
+    }
+    const date = new Date(seconds * 1000);
+    const hh = date.getUTCHours();
+    const mm = date.getUTCMinutes();
+    const ss = date.getUTCSeconds().toString().padStart(2, "0");
+    if (hh) {
+      return `${hh} horas de video bajo demanda`;
+    }
+    return `${mm} minutos de video bajo demanda`;
+  }
   const [showBlockInformation, setShowBlockInformation] = useState(false);
   const toggleShowBlockInformation = () => {
     setShowBlockInformation(!showBlockInformation);
@@ -77,13 +92,13 @@ const CourseBuyContainer = () => {
   const [course, setCourse] = useState({
     id: "f9914302-38df-4276-8c08-9f4e38c3ef61",
     code: "XSvYM8Q9ES",
-    title: "fweafwaewfe",
+    title: "Wordpress training",
     subtitle: "",
     description:
       "<p>fewafweaaefwoahfewoipwafepioawef</p><p>awefoieowaefophweaoipfew</p><p><strong>fewaafweoewfj0òawefjfeojwaeopfawe</strong></p><ul><li><strong>feawfaewpkwepòff</strong></li><li><strong>afwepoijaefwàfwej</strong></li><li><strong>feawpojaewfaefwijawef</strong></li></ul>",
     course_language: null,
     picture:
-      "http://192.168.1.10:8000/media/programs/courses/pictures/0.ewkhmvaettv0.k23qw9k89iNRC-9562_1080_rabanito.jpg",
+      "http://192.168.1.10:8000/media/programs/courses/pictures/0.0v2pmb5gi230.8p0fznz5ct2wordpress-training.jpg",
     students_count: 0,
     students: [],
     instructor: {
@@ -460,12 +475,12 @@ const CourseBuyContainer = () => {
     blocks_count: 3,
     items_count: 11,
     total_duration: 3561.1600000000003,
-    color: "#67c7a4",
+    color: "#F57D00",
+    materials_count: 2,
   });
 
   const programVideoRef = useRef();
   const video = useRef();
-  const [accessOpen, setAccessOpen] = useState(false);
   const [openVideo, setOpenVideo] = useState(false);
   const handleOpenVideo = () => {
     video.current.play();
@@ -491,7 +506,45 @@ const CourseBuyContainer = () => {
       window.removeEventListener("mousedown", handleClick);
     };
   });
+  const [buyNow, setBuyNow] = useState(false);
+  const handleOpenBuyNow = () => {
+    setBuyNow(true);
+  };
+  const handleCloseBuyNow = () => {
+    setBuyNow(false);
+  };
+  const stripe = useStripe();
+  const elements = useElements();
 
+  const handleSubmit = async (e) => {
+    // Block native form submission.
+    e.preventDefault();
+
+    if (!stripe || !elements) {
+      // Stripe.js has not loaded yet. Make sure to disable
+      // form submission until Stripe.js has loaded.
+      return;
+    }
+
+    // Get a reference to a mounted CardElement. Elements knows how
+    // to find your CardElement because there can only ever be one of
+    // each type of element.
+    const cardElement = elements.getElement(CardElement);
+
+    // Use your card Element with other Stripe.js APIs
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: cardElement,
+    });
+
+    if (error) {
+      console.log("[error]", error);
+    } else {
+      console.log("[PaymentMethod]", paymentMethod);
+      // dispatch(buyPack(buyPacksReducer.selected_pack, paymentMethod.id));
+    }
+  };
+  const [isAuthenticated, setisAuthenticated] = useState(false);
   return (
     <>
       <Global
@@ -583,34 +636,38 @@ const CourseBuyContainer = () => {
         `}
       />
 
-      <CourseContainer>
+      <CourseContainer color={course.color}>
         <div className="header-course">
           <div className="header-course-container">
             <div className="header-course-info">
-              <h2 className="course-title">
-                Desarrollo Web Completo con HTML5, CSS3, JS AJAX PHP y MySQL
-              </h2>
-              <h4 className="course-subtitle">
-                Aprende Desarrollo Web con este curso 100% práctico, paso a paso
-                y sin conocimientos previos, INCLUYE PROYECTO FINAL
-              </h4>
-              <div>
-                <span>Creado por Juan Pablo De la torre Valdez</span>
-              </div>
-              <div className="course-more-info">
-                <small>Fecha de la ultima actualización: 8/2020</small>
-                <small>
-                  <IconContext.Provider
-                    value={{
-                      color: "white",
-                      className: "course-more-info-icon",
-                    }}
-                  >
-                    <FaGlobeAmericas />
-                  </IconContext.Provider>
-                  Español
-                </small>
-              </div>
+              {!buyNow && (
+                <>
+                  <h2 className="course-title">
+                    Desarrollo Web Completo con HTML5, CSS3, JS AJAX PHP y MySQL
+                  </h2>
+                  <h4 className="course-subtitle">
+                    Aprende Desarrollo Web con este curso 100% práctico, paso a
+                    paso y sin conocimientos previos, INCLUYE PROYECTO FINAL
+                  </h4>
+                  <div>
+                    <span>Creado por Juan Pablo De la torre Valdez</span>
+                  </div>
+                  <div className="course-more-info">
+                    <small>Fecha de la ultima actualización: 8/2020</small>
+                    <small>
+                      <IconContext.Provider
+                        value={{
+                          color: "white",
+                          className: "course-more-info-icon",
+                        }}
+                      >
+                        <FaGlobeAmericas />
+                      </IconContext.Provider>
+                      Español
+                    </small>
+                  </div>
+                </>
+              )}
             </div>
             <div className="header-course-cta">
               <div className="cta-content">
@@ -682,7 +739,25 @@ const CourseBuyContainer = () => {
                     {/* <small></small> */}
                   </div>
                   <div className="course-buttons">
-                    <button className="buy-now-btn">Comprar ahora</button>
+                    {buyNow ? (
+                      <button
+                        className={
+                          isAuthenticated
+                            ? "buy-now-btn"
+                            : "buy-now-btn btn-disabled"
+                        }
+                        onClick={handleOpenBuyNow}
+                      >
+                        Realizar pago
+                      </button>
+                    ) : (
+                      <button
+                        className="buy-now-btn"
+                        onClick={handleOpenBuyNow}
+                      >
+                        Comprar ahora
+                      </button>
+                    )}
                   </div>
                   <div className="course-content">
                     <span className="course-content-bold">
@@ -697,19 +772,21 @@ const CourseBuyContainer = () => {
                       >
                         <MdOndemandVideo />
                       </IconContext.Provider>
-                      54 horas de vídeo bajo demanda
+                      {msToHMSCard(course.total_duration)}
                     </small>
-                    <small>
-                      <IconContext.Provider
-                        value={{
-                          color: "",
-                          className: "course-content-icon",
-                        }}
-                      >
-                        <HiOutlineFolderDownload />
-                      </IconContext.Provider>
-                      39 recursos descargables
-                    </small>
+                    {course.materials_count > 0 && (
+                      <small>
+                        <IconContext.Provider
+                          value={{
+                            color: "",
+                            className: "course-content-icon",
+                          }}
+                        >
+                          <HiOutlineFolderDownload />
+                        </IconContext.Provider>
+                        {course.materials_count} recursos descargables
+                      </small>
+                    )}
                     <small>
                       <IconContext.Provider
                         value={{
@@ -730,69 +807,116 @@ const CourseBuyContainer = () => {
         <div className="course-color"></div>
         <div className="course-info-container">
           <div className="course-info-div">
-            <div className="course-benefits">
-              <span className="course-benefits-title">Lo que aprenderás</span>
-              <div className="course-benefits-list">
-                {benefits.map((benefit) => (
-                  <div className="benefit" key={benefit.id}>
-                    <IconContext.Provider
-                      value={{
-                        color: "",
-                        className: "mt-1",
-                      }}
-                    >
-                      <MdCheck />
-                    </IconContext.Provider>
-                    <span>{benefit.benefit}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="course-content-list">
-              <span className="course-content-list-title">
-                Contenido del curso
-              </span>
-              <div className="resum-course-content">
-                <small>
-                  {course.blocks_count} secciones <b>·</b> {course.items_count}{" "}
-                  clases <b>·</b> {msToHMSRead(course.total_duration)}
-                </small>
-                <div
-                  className="show-block-information"
-                  onClick={toggleShowBlockInformation}
-                >
-                  {showBlockInformation ? (
-                    <small>Esconder curso</small>
-                  ) : (
-                    <small>Desplegar curso</small>
-                  )}
-                </div>
-              </div>
-              <div className="course-content-list-content">
-                {course &&
-                  course.blocks.map((track, index_block) => (
-                    <BlockItemsListContent
-                      key={index_block}
-                      track={track}
-                      index_block={index_block}
-                      showBlockInformation={showBlockInformation}
-                    />
-                  ))}
-                {/* {playingCourseReducer.isLoading && <span>Cargando...</span>} */}
-              </div>
-            </div>
-            {course.description && (
-              <div className="course-description">
-                <span className="course-description-title">Descripción</span>
+            {buyNow ? (
+              <>
+                <span className="course-link" onClick={handleCloseBuyNow}>
+                  Volver a la información del curso
+                </span>
+                {isAuthenticated ? (
+                  <>
+                    <div className="course-checkout-card">
+                      <span className="course-checkout-card-title">Pagar</span>
 
-                <div className="course-description-content">
-                  <small
-                    dangerouslySetInnerHTML={{
-                      __html: course.description,
-                    }}
-                  />
+                      <div className="course-checkout-card-content"></div>
+                    </div>
+                    <CardElement />
+                  </>
+                ) : (
+                  <>
+                    <div className="login-register-course">
+                      <div className="lrc-header">
+                        <div className="lrc-header-links">
+                          <span>Registrate</span> <small>o</small>{" "}
+                          <span>Inicia sesión</span>
+                        </div>
+                        <span>para adquirir el curso</span>
+                      </div>
+                      <div className="lrc-form">
+                        <span>Reistrate</span>
+                        <input type="text" placeholder="Nombre" />
+                        <input type="text" placeholder="Apellidos" />
+                        <input type="text" placeholder="Email o Username" />
+                        <input type="text" placeholder="Contraseña" />
+                        <input type="text" placeholder="Confirmar contraseña" />
+                        <button>Registrarse</button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <div className="course-benefits">
+                  <span className="course-benefits-title">
+                    Lo que aprenderás
+                  </span>
+                  <div className="course-benefits-list">
+                    {benefits.map((benefit) => (
+                      <div className="benefit" key={benefit.id}>
+                        <IconContext.Provider
+                          value={{
+                            color: "",
+                            className: "mt-1",
+                          }}
+                        >
+                          <MdCheck />
+                        </IconContext.Provider>
+                        <span>{benefit.benefit}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+                <div className="course-content-list">
+                  <span className="course-content-list-title">
+                    Contenido del curso
+                  </span>
+                  <div className="resum-course-content">
+                    <small>
+                      {course.blocks_count} secciones <b>·</b>{" "}
+                      {course.items_count} clases <b>·</b>{" "}
+                      {msToHMSRead(course.total_duration)}
+                    </small>
+                    <div
+                      className="show-block-information"
+                      onClick={toggleShowBlockInformation}
+                    >
+                      {showBlockInformation ? (
+                        <small>Esconder curso</small>
+                      ) : (
+                        <small>Desplegar curso</small>
+                      )}
+                    </div>
+                  </div>
+                  <div className="course-content-list-content">
+                    {course &&
+                      course.blocks.map((track, index_block) => (
+                        <BlockItemsListContent
+                          key={index_block}
+                          track={track}
+                          index_block={index_block}
+                          showBlockInformation={showBlockInformation}
+                        />
+                      ))}
+                    {/* {playingCourseReducer.isLoading && <span>Cargando...</span>} */}
+                  </div>
+                </div>
+
+                {course.description && (
+                  <div className="course-description">
+                    <span className="course-description-title">
+                      Descripción
+                    </span>
+
+                    <div className="course-description-content">
+                      <small
+                        dangerouslySetInnerHTML={{
+                          __html: course.description,
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -832,6 +956,12 @@ const CourseBuyContainer = () => {
   );
 };
 const CourseContainer = styled.div`
+  .course-link {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
   .header-course {
     background: #1e1e1c;
     color: #fff;
@@ -866,7 +996,7 @@ const CourseContainer = styled.div`
               margin-right: 0.5rem;
             }
           }
-          small:first-child {
+          small:first-of-type {
             margin-right: 1rem;
           }
         }
@@ -921,16 +1051,19 @@ const CourseContainer = styled.div`
             }
             .course-buttons {
               margin-top: 2rem;
+              .buy-now-btn.btn-disabled {
+                opacity: 0.4;
+              }
               .buy-now-btn {
                 width: 100%;
                 border-radius: 0.4rem;
 
                 padding: 1rem;
-                /* border: 1px solid #67c7a4;
-                color: #67c7a4 !important;
+                /* border: 1px solid ${(props) => props.color};
+                color: ${(props) => props.color} !important;
                 background: #fff; */
                 color: #fff;
-                background: #67c7a4;
+                background: ${(props) => props.color};
                 border: none;
                 font-weight: bold;
               }
@@ -955,7 +1088,7 @@ const CourseContainer = styled.div`
     }
   }
   .course-color {
-    background: #67c7a4;
+    background: ${(props) => props.color};
     padding: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   }
@@ -1030,6 +1163,17 @@ const CourseContainer = styled.div`
         font-weight: 800;
       }
       .course-description-content {
+        margin-top: 1.6rem;
+      }
+    }
+    .course-checkout-card {
+      margin-top: 3rem;
+      .course-checkout-card-title {
+        color: #3c3b37;
+        font-size: 2.4rem;
+        font-weight: 800;
+      }
+      .course-checkout-card-content {
         margin-top: 1.6rem;
       }
     }

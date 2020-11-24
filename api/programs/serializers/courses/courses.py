@@ -21,7 +21,8 @@ from api.programs.models import (
     CourseBlock,
     CourseItemTrack,
     LectureContent,
-    CourseUserData
+    CourseUserData,
+    LectureMaterial
 )
 
 # Serializes
@@ -394,6 +395,7 @@ class CourseContentModelSerializer(serializers.ModelSerializer):
     blocks = serializers.SerializerMethodField(read_only=True)
     blocks_count = serializers.SerializerMethodField(read_only=True)
     items_count = serializers.SerializerMethodField(read_only=True)
+    materials_count = serializers.SerializerMethodField(read_only=True)
     total_duration = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -419,6 +421,7 @@ class CourseContentModelSerializer(serializers.ModelSerializer):
             'items_count',
             'total_duration',
             'color',
+            'materials_count'
         )
 
         read_only_fields = (
@@ -453,6 +456,11 @@ class CourseContentModelSerializer(serializers.ModelSerializer):
 
     def get_blocks_count(self, obj):
         return obj.blocks.count()
+
+    def get_materials_count(self, obj):
+        items = LectureMaterial.objects.filter(course=obj.id).count()
+        return items
+
 
     def get_total_duration(self, obj):
         return LectureContent.objects.filter(course=obj.id, type_choices="VI").aggregate(Sum('duration'))['duration__sum']
