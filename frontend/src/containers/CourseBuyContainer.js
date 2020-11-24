@@ -553,7 +553,7 @@ const CourseBuyContainer = () => {
       // dispatch(buyPack(buyPacksReducer.selected_pack, paymentMethod.id));
     }
   };
-  const [isAuthenticated, setisAuthenticated] = useState(true);
+  const [isAuthenticated, setisAuthenticated] = useState(false);
   return (
     <>
       <Global
@@ -896,6 +896,27 @@ const CourseBuyContainer = () => {
                     </div>
                   </>
                 )}
+                <div className="order-details">
+                  <span className="order-details-title">
+                    Detalles del pedido
+                  </span>
+
+                  <div className="order-details-content">
+                    <div className="current-course-info">
+                      <div className="cci-img">
+                        <img src={course.picture} alt="" />
+                      </div>
+                      <div className="cci-title">
+                        <small>
+                          Curso Maestro de Python 3: Aprende Desde Cero
+                        </small>
+                      </div>
+                      <div className="cci-price">
+                        <small>9,99 €</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </>
             ) : (
               <>
@@ -1218,9 +1239,10 @@ const CourseContainer = styled.div`
           margin-top: 1.6rem;
         }
       }
+
       .login-register-course {
-        margin: 3rem 0;
-        padding: 2.5rem;
+        margin: 3rem 0 0;
+        padding: 2.5rem 2.5rem 0;
         .lrc-header {
           display: flex;
           align-items: center;
@@ -1288,6 +1310,42 @@ const CourseContainer = styled.div`
                   text-decoration: underline;
                 }
               }
+            }
+          }
+        }
+      }
+      .order-details {
+        margin: 3rem 0;
+        .order-details-title {
+          color: #3c3b37;
+          font-size: 2.4rem;
+          font-weight: 800;
+        }
+        .order-details-content {
+          margin: 1.6rem 0;
+          .current-course-info {
+            height: 7rem;
+            display: flex;
+            justify-content: space-between;
+            @media screen and (max-width: 768px) {
+              display: block;
+            }
+            .cci-img {
+              height: 7rem;
+              overflow: hidden;
+              img {
+                height: 100%;
+                -ms-flex-negative: 0;
+                width: 6rem;
+                object-fit: cover;
+              }
+            }
+            .cci-title {
+              small {
+                font-weight: bold;
+              }
+            }
+            .cci-price {
             }
           }
         }
