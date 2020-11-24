@@ -513,6 +513,15 @@ const CourseBuyContainer = () => {
   const handleCloseBuyNow = () => {
     setBuyNow(false);
   };
+
+  const [isLogin, setIsLogin] = useState(false);
+  const handleOpenIsLogin = () => {
+    setIsLogin(true);
+  };
+  const handleCloseIsLogin = () => {
+    setIsLogin(false);
+  };
+
   const stripe = useStripe();
   const elements = useElements();
 
@@ -544,7 +553,7 @@ const CourseBuyContainer = () => {
       // dispatch(buyPack(buyPacksReducer.selected_pack, paymentMethod.id));
     }
   };
-  const [isAuthenticated, setisAuthenticated] = useState(false);
+  const [isAuthenticated, setisAuthenticated] = useState(true);
   return (
     <>
       <Global
@@ -809,9 +818,11 @@ const CourseBuyContainer = () => {
           <div className="course-info-div">
             {buyNow ? (
               <>
-                <span className="course-link" onClick={handleCloseBuyNow}>
-                  Volver a la información del curso
-                </span>
+                <div className="mt-5 text-grey">
+                  <span className="course-link" onClick={handleCloseBuyNow}>
+                    Volver a la información del curso
+                  </span>
+                </div>
                 {isAuthenticated ? (
                   <>
                     <div className="course-checkout-card">
@@ -826,19 +837,61 @@ const CourseBuyContainer = () => {
                     <div className="login-register-course">
                       <div className="lrc-header">
                         <div className="lrc-header-links">
-                          <span>Registrate</span> <small>o</small>{" "}
-                          <span>Inicia sesión</span>
+                          <span onClick={handleCloseIsLogin}>Registrate</span>{" "}
+                          <small>o</small>{" "}
+                          <span onClick={handleOpenIsLogin}>Inicia sesión</span>
                         </div>
                         <span>para adquirir el curso</span>
                       </div>
                       <div className="lrc-form">
-                        <span>Reistrate</span>
-                        <input type="text" placeholder="Nombre" />
-                        <input type="text" placeholder="Apellidos" />
-                        <input type="text" placeholder="Email o Username" />
-                        <input type="text" placeholder="Contraseña" />
-                        <input type="text" placeholder="Confirmar contraseña" />
-                        <button>Registrarse</button>
+                        {isLogin ? (
+                          <>
+                            <span>Inicia Sesión</span>
+                            <input type="text" placeholder="Email o Username" />
+                            <input type="text" placeholder="Contraseña" />
+
+                            <button>Iniciar Sesión</button>
+                            <div className="lrc-form-footer">
+                              <div>
+                                <small>
+                                  ¿No tienes una cuenta de Classline Academy?
+                                </small>{" "}
+                                <small
+                                  className="lrc-form-footer-link"
+                                  onClick={handleCloseIsLogin}
+                                >
+                                  Registrate
+                                </small>
+                              </div>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <span>Registrate</span>
+                            <input type="text" placeholder="Nombre" />
+                            <input type="text" placeholder="Apellidos" />
+                            <input type="text" placeholder="Email o Username" />
+                            <input type="text" placeholder="Contraseña" />
+                            <input
+                              type="text"
+                              placeholder="Confirmar contraseña"
+                            />
+                            <button>Registrarse</button>
+                            <div className="lrc-form-footer">
+                              <div>
+                                <small>
+                                  ¿Tienes una cuenta de Classline Academy?
+                                </small>{" "}
+                                <small
+                                  className="lrc-form-footer-link"
+                                  onClick={handleOpenIsLogin}
+                                >
+                                  Clica aqui
+                                </small>
+                              </div>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   </>
@@ -958,9 +1011,9 @@ const CourseBuyContainer = () => {
 const CourseContainer = styled.div`
   .course-link {
     cursor: pointer;
-    &:hover {
-      text-decoration: underline;
-    }
+    /* &:hover { */
+    text-decoration: underline;
+    /* } */
   }
   .header-course {
     background: #1e1e1c;
@@ -1155,15 +1208,89 @@ const CourseContainer = styled.div`
         .course-content-list-content {
         }
       }
-    }
-    .course-description {
-      .course-description-title {
-        color: #3c3b37;
-        font-size: 2.4rem;
-        font-weight: 800;
+      .course-description {
+        .course-description-title {
+          color: #3c3b37;
+          font-size: 2.4rem;
+          font-weight: 800;
+        }
+        .course-description-content {
+          margin-top: 1.6rem;
+        }
       }
-      .course-description-content {
-        margin-top: 1.6rem;
+      .login-register-course {
+        margin: 3rem 0;
+        padding: 2.5rem;
+        .lrc-header {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          color: #757575 !important;
+          .lrc-header-links {
+            span {
+              font-size: 2rem;
+
+              cursor: pointer;
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+        .lrc-form {
+          padding: 3rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin: 3rem 0;
+          padding: 2rem 2.5rem 2.5rem;
+          background-color: #fbfbf8;
+          border-radius: 0.4rem;
+          border: 1px solid #dcdacb;
+          span {
+            text-align: center;
+            display: block;
+            margin-bottom: 2rem;
+            font-size: 2.4rem;
+            font-weight: bold;
+          }
+          input {
+            display: block;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 0.4rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+          }
+          button {
+            width: 100%;
+            border-radius: 0.4rem;
+
+            padding: 1rem;
+            /* border: 1px solid ${(props) => props.color};
+                color: ${(props) => props.color} !important;
+                background: #fff; */
+            color: #fff;
+            background: ${(props) => props.color};
+            border: none;
+            font-weight: bold;
+          }
+          .lrc-form-footer {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+            small {
+              color: #757575 !important;
+              &.lrc-form-footer-link {
+                cursor: pointer;
+                &:hover {
+                  text-decoration: underline;
+                }
+              }
+            }
+          }
+        }
       }
     }
     .course-checkout-card {
