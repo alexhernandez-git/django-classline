@@ -560,7 +560,20 @@ const CourseBuyContainer = () => {
       // dispatch(buyPack(buyPacksReducer.selected_pack, paymentMethod.id));
     }
   };
-  const [isAuthenticated, setisAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isStudent, setIsStudent] = useState(false);
+  const [isIdentifying, setIsIdentifying] = useState(false);
+  const hanldeOpenIsIdentifying = () => {
+    setIsIdentifying(true);
+  };
+  const hanldeCloseIsIdentifying = () => {
+    setIsIdentifying(false);
+  };
+  useEffect(() => {
+    if (isAuthenticated && isStudent) {
+      setBuyNow(false);
+    }
+  }, [isAuthenticated]);
   return (
     <>
       <Global
@@ -755,24 +768,73 @@ const CourseBuyContainer = () => {
                     {/* <small></small> */}
                   </div>
                   <div className="course-buttons">
+                    {isAuthenticated && (
+                      <div className="mb-2">
+                        <small className="text-grey">Hola Alex</small>
+                      </div>
+                    )}
                     {buyNow ? (
-                      <button
-                        className={
-                          isAuthenticated
-                            ? "buy-now-btn"
-                            : "buy-now-btn btn-disabled"
-                        }
-                        onClick={handleOpenBuyNow}
-                      >
-                        Realizar pago
-                      </button>
+                      <>
+                        {(!isAuthenticated || !isStudent) && (
+                          <button
+                            className={
+                              isAuthenticated
+                                ? "buy-now-btn"
+                                : "buy-now-btn btn-disabled"
+                            }
+                            onClick={handleOpenBuyNow}
+                          >
+                            Realizar pago
+                          </button>
+                        )}
+                      </>
                     ) : (
-                      <button
-                        className="buy-now-btn"
-                        onClick={handleOpenBuyNow}
-                      >
-                        Comprar ahora
-                      </button>
+                      <>
+                        {(!isAuthenticated || !isStudent) && (
+                          <button
+                            className="buy-now-btn"
+                            onClick={handleOpenBuyNow}
+                          >
+                            Comprar ahora
+                          </button>
+                        )}
+                      </>
+                    )}
+                    {isAuthenticated && isStudent && (
+                      <button className="buy-now-btn">Acceder al curso</button>
+                    )}
+                    {!isAuthenticated && !isIdentifying && (
+                      <div className="mt-2">
+                        <small>¿Ya eres alumno?</small>{" "}
+                        <small
+                          className="link-identify"
+                          onClick={hanldeOpenIsIdentifying}
+                        >
+                          Identificate
+                        </small>
+                      </div>
+                    )}
+                    {isIdentifying && !isAuthenticated && (
+                      <div className="identify-user">
+                        <div className="iu-form">
+                          <span>Inicia Sesión</span>
+
+                          <input type="text" placeholder="Email o Username" />
+                          <input type="text" placeholder="Contraseña" />
+
+                          <button onClick={() => setIsAuthenticated(true)}>
+                            Iniciar Sesión
+                          </button>
+                        </div>
+                        <div className="d-flex justify-content-center">
+                          <small
+                            className="cancel-iu"
+                            onClick={hanldeCloseIsIdentifying}
+                          >
+                            Cancelar
+                          </small>
+                        </div>
+                      </div>
                     )}
                   </div>
                   <div className="course-content">
@@ -920,7 +982,9 @@ const CourseBuyContainer = () => {
                             <input type="text" placeholder="Email o Username" />
                             <input type="text" placeholder="Contraseña" />
 
-                            <button>Iniciar Sesión</button>
+                            <button onClick={() => setIsAuthenticated(true)}>
+                              Iniciar Sesión
+                            </button>
                             <div className="lrc-form-footer">
                               <div>
                                 <small>
@@ -1211,6 +1275,53 @@ const CourseContainer = styled.div`
                 border: none;
                 font-weight: bold;
               }
+              .link-identify {
+                cursor: pointer;
+                &:hover {
+                  text-decoration: underline;
+                }
+              }
+              .identify-user {
+                .iu-form {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  padding: 2rem 2.5rem 2.5rem;
+                  span {
+                    text-align: center;
+                    display: block;
+                    margin-bottom: 1rem;
+                    font-size: 2rem;
+                    font-weight: bold;
+                  }
+                  input {
+                    display: block;
+                    width: 100%;
+                    border: 1px solid #ccc;
+                    border-radius: 0.4rem;
+                    padding: 1rem;
+                    margin-bottom: 1rem;
+                  }
+                  button {
+                    width: 100%;
+                    border-radius: 0.4rem;
+
+                    padding: 1rem;
+                    /* border: 1px solid ${(props) => props.color};
+                color: ${(props) => props.color} !important;
+                background: #fff; */
+                    color: #fff;
+                    background: ${(props) => props.color};
+                    border: none;
+                    font-weight: bold;
+                  }
+                }
+                .cancel-iu {
+                  cursor: pointer;
+                  text-decoration: underline;
+                  color: #757575;
+                }
+              }
             }
             .course-content {
               margin-top: 2rem;
@@ -1330,7 +1441,6 @@ const CourseContainer = styled.div`
           }
         }
         .lrc-form {
-          padding: 3rem;
           display: flex;
           flex-direction: column;
           align-items: center;
