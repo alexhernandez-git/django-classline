@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import ItemResources from "./ItemResources";
 import { textEllipsis } from "./TextEllipsis";
 
-function BlockItemsList({ track, index_block, itemPlaying, items }) {
+function BlockItemsList({ track, index_block, itemPlaying, items, isAcademy }) {
   const programReducer = useSelector((state) => state.programReducer);
   const playingCourseReducer = useSelector(
     (state) => state.playingCourseReducer
@@ -85,7 +85,9 @@ function BlockItemsList({ track, index_block, itemPlaying, items }) {
               <li>
                 <Link
                   to={{
-                    pathname: `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${item.item.code}/`,
+                    pathname: isAcademy
+                      ? `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${item.item.code}/`
+                      : `/academy/${programReducer.program.code}/course-playing/${playingCourseReducer.course.code}/${item.item.code}/`,
                     query: { item: item.id },
                   }}
                   params={{ item: item.id }}

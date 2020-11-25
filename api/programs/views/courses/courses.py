@@ -145,6 +145,13 @@ class CourseViewSet(mixins.CreateModelMixin,
 
     @action(detail=True, methods=['get'])
     def retrieve_playing(self, request, *args, **kwargs):
+        user = None
+        if request:
+            user = request.user
+        
+        if user.id == None:
+            return Response({'message': 'No estas logueado'}, status=status.HTTP_400_BAD_REQUEST)
+
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)

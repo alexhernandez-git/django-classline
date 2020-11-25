@@ -15,6 +15,7 @@ import {
   CardCvcElement,
   CardNumberElement,
 } from "@stripe/react-stripe-js";
+import { Link } from "react-router-dom";
 
 const CourseBuyContainer = () => {
   const [benefits, setBenefits] = useState([
@@ -561,7 +562,7 @@ const CourseBuyContainer = () => {
     }
   };
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isStudent, setIsStudent] = useState(false);
+  const [isStudent, setIsStudent] = useState(true);
   const [isIdentifying, setIsIdentifying] = useState(false);
   const hanldeOpenIsIdentifying = () => {
     setIsIdentifying(true);
@@ -665,7 +666,7 @@ const CourseBuyContainer = () => {
         `}
       />
 
-      <CourseContainer color={"#47d4a0"}>
+      <CourseContainer color={"#b872dc"}>
         <div className="header-course">
           <div className="header-course-container">
             <div className="header-course-info">
@@ -801,7 +802,11 @@ const CourseBuyContainer = () => {
                       </>
                     )}
                     {isAuthenticated && isStudent && (
-                      <button className="buy-now-btn">Acceder al curso</button>
+                      <Link to="/academy/EyeelknHcN/course-playing/XSvYM8Q9ES/">
+                        <button className="buy-now-btn">
+                          Acceder al curso
+                        </button>
+                      </Link>
                     )}
                     {!isAuthenticated && !isIdentifying && (
                       <div className="mt-2">
