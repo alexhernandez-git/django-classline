@@ -155,7 +155,7 @@ const CourseLayout = (props) => {
     />
   ) : (
     <>
-      <CourseContent>
+      <CourseContent isAcademy={isAcademy}>
         <div
           className="course-header"
           style={{
@@ -276,7 +276,7 @@ const CourseLayout = (props) => {
             <div
               className=""
               style={{
-                height: "80.5vh",
+                height: isAcademy ? "80.5vh" : "81.4vh",
               }}
             >
               {playingCourseReducer.course &&
@@ -324,13 +324,13 @@ const CourseContent = styled.div`
     font-size: 2.4rem;
     margin-bottom: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-    border-radius: 0.25rem !important;
   }
   .course-content {
     background: #fff;
     padding: 1rem;
     grid-area: course-content;
-    height: calc(100vh - 13.5rem);
+    height: ${(props) =>
+      props.isAcademy ? "calc(100vh - 13.5rem)" : "calc(100vh - 12.6rem)"};
     position: relative;
     overflow-y: auto;
     overflow-x: hidden;
