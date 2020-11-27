@@ -27,6 +27,17 @@ const CourseContainer = () => {
       return () => clearTimeout(timer);
     }
   }, [showTooltip]);
+  const textAreaRef = useRef(null);
+
+  function copyToClipboard(e) {
+    textAreaRef.current.select();
+    document.execCommand("copy");
+    // This is just personal preference.
+    // I prefer to not show the whole text area selected.
+    e.target.focus();
+    setShowTooltip(true);
+  }
+
   return (
     <>
       <Global
@@ -80,6 +91,7 @@ const CourseContainer = () => {
             font-size: 1.6rem;
             font-family: "Open Sans", sans-serif;
             color: #3c3b37;
+            overflow: hidden;
           }
           a {
             text-decoration: none;
@@ -190,17 +202,15 @@ const CourseContainer = () => {
         </Modal.Header>
         <Modal.Body className="p-4">
           <div className="share-course-div">
-            <div
-              className="sc-copy-link"
-              ref={target}
-              onClick={() => setShowTooltip(!showTooltip)}
-            >
+            <div className="sc-copy-link" ref={target}>
               <input
                 type="text"
                 value={`http://192.168.1.10:8000/academy/EyeelknHcN/course-info/XSvYM8Q9ES`}
+                onChange={(e) => e.preventDefault()}
+                ref={textAreaRef}
               />
 
-              <button>Copiar</button>
+              <button onClick={copyToClipboard}>Copiar</button>
             </div>
             <Overlay
               target={target.current}
@@ -213,16 +223,20 @@ const CourseContainer = () => {
                 </Tooltip>
               )}
             </Overlay>
-            <button className="sc-mail">
-              <IconContext.Provider
-                value={{
-                  size: 20,
-                  className: "",
-                }}
-              >
-                <MdEmail />
-              </IconContext.Provider>
-            </button>
+            <a
+              href={`mailto:?subject=titulo del curso&body=Creemos que te puede interesar este curso`}
+            >
+              <button className="sc-mail">
+                <IconContext.Provider
+                  value={{
+                    size: 20,
+                    className: "",
+                  }}
+                >
+                  <MdEmail />
+                </IconContext.Provider>
+              </button>
+            </a>
           </div>
         </Modal.Body>
       </Modal>

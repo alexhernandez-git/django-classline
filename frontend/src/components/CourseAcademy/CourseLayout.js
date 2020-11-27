@@ -276,7 +276,9 @@ const CourseLayout = (props) => {
             <div
               className=""
               style={{
-                height: isAcademy ? "80.5vh" : "81.4vh",
+                height: isAcademy
+                  ? "calc(100vh - 19rem)"
+                  : "calc(100vh - 18rem)",
               }}
             >
               {playingCourseReducer.course &&

@@ -51,12 +51,11 @@ import InstructorAccountsAdmin from "../containers/admin/InstructorAccountsAdmin
 import CheckoutOnlineClass from "../containers/CheckoutOnlineClass";
 import BookClassContainer from "../containers/BookClassContainer";
 import { fetchEventsBooked } from "../redux/actions/bookEvents";
-import LoginEventContainer from "../containers/LoginEventContainer";
 import PacksAdmin from "../containers/admin/PacksAdmin";
 import TopicsAdmin from "../containers/admin/TopicsAdmin";
 import ConfigurationPack from "../containers/admin/ConfigurationPack";
 import BuyPacksContainer from "../containers/BuyPacksContainer";
-import LoginPacksContainer from "../containers/LoginPacksContainer";
+import LoginContainer from "../containers/LoginContainer";
 import CheckoutPack from "../containers/CheckoutPack";
 import GeneralSearch from "../containers/GeneralSearch";
 import TopicSearch from "../containers/TopicSearch";
@@ -66,6 +65,7 @@ import CoursesAdmin from "src/containers/admin/CoursesAdmin";
 import BlocksItems from "../components/CourseAcademy/BlockItems";
 import CourseBuyContainer from "../containers/CourseBuyContainer";
 import CourseContainer from "../containers/CourseContainer";
+import CoursesListContainer from "../containers/CoursesListContainer";
 const Academy = () => {
   const dispatch = useDispatch();
   const router = useParams();
@@ -156,12 +156,12 @@ const Academy = () => {
         <Route
           exact
           path="/academy/:program/login"
-          component={LoginEventContainer}
+          component={LoginContainer}
         />
         <Route
           exact
           path="/academy/:program/login-academy"
-          component={LoginEventContainer}
+          component={LoginContainer}
         />
         <Route
           exact
@@ -171,12 +171,22 @@ const Academy = () => {
         <Route
           exact
           path="/academy/:program/packs-login"
-          component={LoginPacksContainer}
+          component={LoginContainer}
+        />
+        <Route
+          exact
+          path="/academy/:program/courses-login"
+          component={LoginContainer}
         />
         <Route
           exact
           path="/academy/:program/pack/detail"
           component={CheckoutPack}
+        />
+        <Route
+          exact
+          path="/academy/:program/courses-list"
+          component={CoursesListContainer}
         />
         <Route
           exact
@@ -342,7 +352,7 @@ const Academy = () => {
                     />
                     <Route
                       exact
-                      path="/academy/:program/admin/packs"
+                      path="/academy/:program/admcks"
                       component={PacksAdmin}
                     />
                     <Route

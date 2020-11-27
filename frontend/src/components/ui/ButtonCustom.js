@@ -156,3 +156,22 @@ export const ButtonStyleError = css`
     width: 100%;
   }
 `;
+
+export const ButtonCustomColor = styled.button`
+  cursor: pointer;
+  border: 0;
+  padding: 0.5rem 1rem;
+  background: ${(props) =>
+    props.color ? props.color : "linear-gradient(45deg, #2e6a89, #56b389)"};
+  color: #fff;
+  border-radius: 0.7rem;
+  text-align: center;
+
+  &:active {
+    position: relative;
+    top: 1px;
+  }
+  @media screen and (max-width: 576px) {
+    width: 100%;
+  }
+`;

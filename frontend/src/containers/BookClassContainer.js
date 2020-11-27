@@ -36,6 +36,24 @@ const BookClassContainer = () => {
             font-size: 1.6rem;
             font-family: "Open Sans", sans-serif;
           }
+          h1 {
+            font-size: 4rem;
+          }
+          h2 {
+            font-size: 3.2rem;
+          }
+          h3 {
+            font-size: 2.8rem;
+          }
+          h4 {
+            font-size: 2.4rem;
+          }
+          h5 {
+            font-size: 2rem;
+          }
+          h6 {
+            font-size: 1.6rem;
+          }
           a {
             text-decoration: none;
             color: #000;
@@ -79,7 +97,7 @@ const BookClassContainer = () => {
         <BookMeetups />
         <div className="d-flex justify-content-end mr-5">
           <a href="https://classlineacademy.com/" target="_blank">
-            <img height="25" src="../../../static/assets/img/logo7.PNG"/>
+            <img height="25" src="../../../static/assets/img/logo7.PNG" />
           </a>
         </div>
       </div>
