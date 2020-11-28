@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContainerWrapper from "src/components/ui/Container";
 import {
   ButtonCustomColor,
@@ -9,261 +9,24 @@ import Filters from "src/components/Layout/Filters";
 import { IconContext } from "react-icons/lib";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import { Global, css } from "@emotion/core";
+import { fetchPublishedCourses } from "../redux/actions/courses/buyPacks";
 
 const CoursesListContainer = () => {
   const { push } = useHistory();
+  const dispatch = useDispatch();
 
-  const [courses, setCourses] = useState({
-    count: 2,
-    next: null,
-    previous: null,
-    results: [
-      {
-        id: "f9914302-38df-4276-8c08-9f4e38c3ef61",
-        code: "XSvYM8Q9ES",
-        title: "Wordpress training",
-        subtitle: "",
-        description:
-          "<p>fewafweaaefwoahfewoipwafepioawef</p><p>awefoieowaefophweaoipfew</p><p>&nbsp;</p><p><strong>fewaefwafewaefwewf</strong></p><p><strong>fewaafweoewfj0òawefjfeojwaeopfawe</strong></p><ul><li><strong>feawfaewpkwepòff</strong></li><li><strong>afwepoijaefwàfwej</strong></li><li><strong>feawpojaewfaefwijawef</strong></li></ul>",
-        course_price: null,
-        course_language: null,
-        picture:
-          "http://192.168.1.10:8000/media/programs/courses/pictures/0.0v2pmb5gi230.8p0fznz5ct2wordpress-training.jpg",
-        students_count: 0,
-        students: [],
-        instructor: {
-          id: "f0f3a11e-e54c-4ecd-8238-c6acf5b743d6",
-          code: "acUgt2YDd9",
-          username: "vlexhndz@gmail.com",
-          first_name: "Alex",
-          last_name: "Hernandez",
-          email: "vlexhndz@gmail.com",
-          phone_number: "",
-          is_staff: false,
-          profile: {
-            picture:
-              "/media/users/pictures/f0f3a11e-e54c-4ecd-8238-c6acf5b743d6AlexNRC-9290_1080.jpg",
-            is_enterprise: false,
-            company_name: null,
-            language: null,
-            biography: "",
-            country: null,
-            stripe_account_id: "acct_1HDPmILG81widXZi",
-            stripe_customer_id: null,
-            subscriptions: [],
-          },
-          created_account: false,
-          first_password: null,
-          teacher: {
-            programs: 1,
-            rating: 0.0,
-            ratings: 0,
-            students: 0,
-            academies: 1,
-          },
-          password_changed: false,
-        },
-        published_in_program: true,
-        benefits: [
-          {
-            id: "9219b356-b063-4b1a-a927-08d8bf4df523",
-            name: "",
-          },
-        ],
-        video_presentation:
-          "http://192.168.1.10:8000/media/programs/courses/videos/0.cg71wpexhbqvideoplayback_2.mp4",
-        published: false,
-        blocks: 3,
-        items: 11,
-        total_duration: 3561.1600000000003,
-        color: "#b872dc",
-      },
-      {
-        id: "f9914302-38df-4276-8c08-9f4e38c3ef61",
-        code: "XSvYM8Q9ES",
-        title: "Wordpress training",
-        subtitle: "",
-        description:
-          "<p>fewafweaaefwoahfewoipwafepioawef</p><p>awefoieowaefophweaoipfew</p><p>&nbsp;</p><p><strong>fewaefwafewaefwewf</strong></p><p><strong>fewaafweoewfj0òawefjfeojwaeopfawe</strong></p><ul><li><strong>feawfaewpkwepòff</strong></li><li><strong>afwepoijaefwàfwej</strong></li><li><strong>feawpojaewfaefwijawef</strong></li></ul>",
-        course_price: null,
-        course_language: null,
-        picture:
-          "http://192.168.1.10:8000/media/programs/courses/pictures/0.0v2pmb5gi230.8p0fznz5ct2wordpress-training.jpg",
-        students_count: 0,
-        students: [],
-        instructor: {
-          id: "f0f3a11e-e54c-4ecd-8238-c6acf5b743d6",
-          code: "acUgt2YDd9",
-          username: "vlexhndz@gmail.com",
-          first_name: "Alex",
-          last_name: "Hernandez",
-          email: "vlexhndz@gmail.com",
-          phone_number: "",
-          is_staff: false,
-          profile: {
-            picture:
-              "/media/users/pictures/f0f3a11e-e54c-4ecd-8238-c6acf5b743d6AlexNRC-9290_1080.jpg",
-            is_enterprise: false,
-            company_name: null,
-            language: null,
-            biography: "",
-            country: null,
-            stripe_account_id: "acct_1HDPmILG81widXZi",
-            stripe_customer_id: null,
-            subscriptions: [],
-          },
-          created_account: false,
-          first_password: null,
-          teacher: {
-            programs: 1,
-            rating: 0.0,
-            ratings: 0,
-            students: 0,
-            academies: 1,
-          },
-          password_changed: false,
-        },
-        published_in_program: true,
-        benefits: [
-          {
-            id: "9219b356-b063-4b1a-a927-08d8bf4df523",
-            name: "",
-          },
-        ],
-        video_presentation:
-          "http://192.168.1.10:8000/media/programs/courses/videos/0.cg71wpexhbqvideoplayback_2.mp4",
-        published: false,
-        blocks: 3,
-        items: 11,
-        total_duration: 3561.1600000000003,
-        color: "#b872dc",
-      },
-      {
-        id: "f9914302-38df-4276-8c08-9f4e38c3ef61",
-        code: "XSvYM8Q9ES",
-        title: "Wordpress training",
-        subtitle: "",
-        description:
-          "<p>fewafweaaefwoahfewoipwafepioawef</p><p>awefoieowaefophweaoipfew</p><p>&nbsp;</p><p><strong>fewaefwafewaefwewf</strong></p><p><strong>fewaafweoewfj0òawefjfeojwaeopfawe</strong></p><ul><li><strong>feawfaewpkwepòff</strong></li><li><strong>afwepoijaefwàfwej</strong></li><li><strong>feawpojaewfaefwijawef</strong></li></ul>",
-        course_price: null,
-        course_language: null,
-        picture:
-          "http://192.168.1.10:8000/media/programs/courses/pictures/0.0v2pmb5gi230.8p0fznz5ct2wordpress-training.jpg",
-        students_count: 0,
-        students: [],
-        instructor: {
-          id: "f0f3a11e-e54c-4ecd-8238-c6acf5b743d6",
-          code: "acUgt2YDd9",
-          username: "vlexhndz@gmail.com",
-          first_name: "Alex",
-          last_name: "Hernandez",
-          email: "vlexhndz@gmail.com",
-          phone_number: "",
-          is_staff: false,
-          profile: {
-            picture:
-              "/media/users/pictures/f0f3a11e-e54c-4ecd-8238-c6acf5b743d6AlexNRC-9290_1080.jpg",
-            is_enterprise: false,
-            company_name: null,
-            language: null,
-            biography: "",
-            country: null,
-            stripe_account_id: "acct_1HDPmILG81widXZi",
-            stripe_customer_id: null,
-            subscriptions: [],
-          },
-          created_account: false,
-          first_password: null,
-          teacher: {
-            programs: 1,
-            rating: 0.0,
-            ratings: 0,
-            students: 0,
-            academies: 1,
-          },
-          password_changed: false,
-        },
-        published_in_program: true,
-        benefits: [
-          {
-            id: "9219b356-b063-4b1a-a927-08d8bf4df523",
-            name: "",
-          },
-        ],
-        video_presentation:
-          "http://192.168.1.10:8000/media/programs/courses/videos/0.cg71wpexhbqvideoplayback_2.mp4",
-        published: false,
-        blocks: 3,
-        items: 11,
-        total_duration: 3561.1600000000003,
-        color: "#b872dc",
-      },
-      {
-        id: "f9914302-38df-4276-8c08-9f4e38c3ef61",
-        code: "XSvYM8Q9ES",
-        title: "Wordpress training",
-        subtitle: "",
-        description:
-          "<p>fewafweaaefwoahfewoipwafepioawef</p><p>awefoieowaefophweaoipfew</p><p>&nbsp;</p><p><strong>fewaefwafewaefwewf</strong></p><p><strong>fewaafweoewfj0òawefjfeojwaeopfawe</strong></p><ul><li><strong>feawfaewpkwepòff</strong></li><li><strong>afwepoijaefwàfwej</strong></li><li><strong>feawpojaewfaefwijawef</strong></li></ul>",
-        course_price: null,
-        course_language: null,
-        picture:
-          "http://192.168.1.10:8000/media/programs/courses/pictures/0.0v2pmb5gi230.8p0fznz5ct2wordpress-training.jpg",
-        students_count: 0,
-        students: [],
-        instructor: {
-          id: "f0f3a11e-e54c-4ecd-8238-c6acf5b743d6",
-          code: "acUgt2YDd9",
-          username: "vlexhndz@gmail.com",
-          first_name: "Alex",
-          last_name: "Hernandez",
-          email: "vlexhndz@gmail.com",
-          phone_number: "",
-          is_staff: false,
-          profile: {
-            picture:
-              "/media/users/pictures/f0f3a11e-e54c-4ecd-8238-c6acf5b743d6AlexNRC-9290_1080.jpg",
-            is_enterprise: false,
-            company_name: null,
-            language: null,
-            biography: "",
-            country: null,
-            stripe_account_id: "acct_1HDPmILG81widXZi",
-            stripe_customer_id: null,
-            subscriptions: [],
-          },
-          created_account: false,
-          first_password: null,
-          teacher: {
-            programs: 1,
-            rating: 0.0,
-            ratings: 0,
-            students: 0,
-            academies: 1,
-          },
-          password_changed: false,
-        },
-        published_in_program: true,
-        benefits: [
-          {
-            id: "9219b356-b063-4b1a-a927-08d8bf4df523",
-            name: "",
-          },
-        ],
-        video_presentation:
-          "http://192.168.1.10:8000/media/programs/courses/videos/0.cg71wpexhbqvideoplayback_2.mp4",
-        published: false,
-        blocks: 3,
-        items: 11,
-        total_duration: 3561.1600000000003,
-        color: "#b872dc",
-      },
-    ],
-  });
   const programReducer = useSelector((state) => state.programReducer);
+
+  useEffect(() => {
+    if (!programReducer.isLoading && programReducer.program) {
+      const dispatchFetchCourses = () => dispatch(fetchPublishedCourses());
+      dispatchFetchCourses();
+    }
+  }, [programReducer.isLoading]);
+  const buyCoursesReducer = useSelector((state) => state.buyCoursesReducer);
 
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
@@ -277,6 +40,21 @@ const CoursesListContainer = () => {
   const handleGoToDetails = (course) => {
     push(`/academy/${programReducer.program.code}/course-info/${course.code}`);
   };
+  function msToHMSRead(seconds) {
+    if (isNaN(seconds)) {
+      return "00:00";
+    }
+    const date = new Date(seconds * 1000);
+    const hh = date.getUTCHours();
+    const mm = date.getUTCMinutes();
+    const ss = date.getUTCSeconds().toString().padStart(2, "0");
+    if (hh) {
+      return `${hh} horas y ${mm
+        .toString()
+        .padStart(2, "0")} minutos de duración total`;
+    }
+    return `${mm} minutos de duración total`;
+  }
   return (
     <>
       <Global
@@ -430,86 +208,100 @@ const CoursesListContainer = () => {
             <div className="row mx-0">
               <div className="col-12">
                 <CoursesContainer>
-                  {courses &&
-                    courses.results.map((course, i) => (
+                  {buyCoursesReducer.courses &&
+                    buyCoursesReducer.courses.results.map((course, i) => (
                       <CourseCard
                         key={i}
                         onClick={(course) => handleGoToDetails(course)}
                       >
                         <div className="cc-img">
-                          <img src={course.picture} alt="" />
+                          <img
+                            src={
+                              course.picture
+                                ? course.picture
+                                : "/static/assets/img/no-foto.png"
+                            }
+                            alt=""
+                          />
                         </div>
                         <div className="cc-info">
-                          <div className="cc-info-title">
-                            Diseño Web Profesional El Curso Completo, Práctico y
-                            desde 0
-                          </div>
-                          <p className="cc-info-subtitle">
-                            HTML5, CSS3, Responsive Design, Adobe XD, SASS,
-                            JavaScript, jQuery, Bootstrap 4, WordPress, Git,
-                            GitHub
-                          </p>
+                          <div className="cc-info-title">{course.title}</div>
+                          <p className="cc-info-subtitle">{course.subtitle}</p>
                           <div className="cc-info-instructor">
-                            Carlos Arturo Esparza
+                            {course.instructor.first_name}{" "}
+                            {course.instructor.last_name}
                           </div>
                           <div className="cc-info-more-info">
-                            <span className="ccimi-hours">
-                              42,5 horas en total
+                            <span className="ccimi-hours mr-1">
+                              {msToHMSRead(course.total_duration)}
                             </span>{" "}
-                            · <span className="ccimi-clases">254 clases</span>
+                            ·{" "}
+                            <span className="ccimi-clases ml-1">
+                              {course.items} clases
+                            </span>
                           </div>
                         </div>
-                        <div className="cc-price">12,99 €</div>
+                        <div className="cc-price">
+                          {course.course_price.value} €
+                        </div>
                       </CourseCard>
                     ))}
                 </CoursesContainer>
                 {/* {isLoading && <span>Cargando...</span>} */}
-                {courses && (courses.previous || courses.next) && (
-                  <div className="d-flex justify-content-center my-5">
-                    {courses.previous ? (
-                      <IconContext.Provider
-                        value={{
-                          size: 50,
-                          className: "cursor-pointer",
-                        }}
-                      >
-                        <IoIosArrowDropleft
-                          onClick={() => handleChangePage(courses.previous)}
-                        />
-                      </IconContext.Provider>
-                    ) : (
-                      <IconContext.Provider
-                        value={{
-                          size: 50,
-                          color: "#a1a1a1",
-                        }}
-                      >
-                        <IoIosArrowDropleft />
-                      </IconContext.Provider>
-                    )}
-                    {courses.next ? (
-                      <IconContext.Provider
-                        value={{
-                          size: 50,
-                          className: "cursor-pointer",
-                        }}
-                      >
-                        <IoIosArrowDropright
-                          onClick={() => handleChangePage(courses.next)}
-                        />
-                      </IconContext.Provider>
-                    ) : (
-                      <IconContext.Provider
-                        value={{
-                          size: 50,
-                          color: "#a1a1a1",
-                        }}
-                      >
-                        <IoIosArrowDropright />
-                      </IconContext.Provider>
-                    )}
-                  </div>
-                )}
+                {buyCoursesReducer.courses &&
+                  (buyCoursesReducer.courses.previous ||
+                    buyCoursesReducer.courses.next) && (
+                    <div className="d-flex justify-content-center my-5">
+                      {buyCoursesReducer.courses.previous ? (
+                        <IconContext.Provider
+                          value={{
+                            size: 50,
+                            className: "cursor-pointer",
+                          }}
+                        >
+                          <IoIosArrowDropleft
+                            onClick={() =>
+                              handleChangePage(
+                                buyCoursesReducer.courses.previous
+                              )
+                            }
+                          />
+                        </IconContext.Provider>
+                      ) : (
+                        <IconContext.Provider
+                          value={{
+                            size: 50,
+                            color: "#a1a1a1",
+                          }}
+                        >
+                          <IoIosArrowDropleft />
+                        </IconContext.Provider>
+                      )}
+                      {buyCoursesReducer.courses.next ? (
+                        <IconContext.Provider
+                          value={{
+                            size: 50,
+                            className: "cursor-pointer",
+                          }}
+                        >
+                          <IoIosArrowDropright
+                            onClick={() =>
+                              handleChangePage(buyCoursesReducer.courses.next)
+                            }
+                          />
+                        </IconContext.Provider>
+                      ) : (
+                        <IconContext.Provider
+                          value={{
+                            size: 50,
+                            color: "#a1a1a1",
+                          }}
+                        >
+                          <IoIosArrowDropright />
+                        </IconContext.Provider>
+                      )}
+                    </div>
+                  )}
               </div>
             </div>
           </ContainerWrapper>
@@ -569,6 +361,9 @@ const CourseCard = styled.div`
       color: #73726c;
 
       align-items: center;
+      @media screen and (max-width: 768px) {
+        display: block;
+      }
       span {
         font-size: 1.2rem;
       }

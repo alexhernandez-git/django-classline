@@ -352,7 +352,7 @@ const Academy = () => {
                     />
                     <Route
                       exact
-                      path="/academy/:program/admcks"
+                      path="/academy/:program/admin/packs"
                       component={PacksAdmin}
                     />
                     <Route

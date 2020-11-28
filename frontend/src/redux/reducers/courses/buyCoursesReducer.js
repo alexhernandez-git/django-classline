@@ -1,113 +1,103 @@
 import {
-  BUY_PACK,
-  BUY_PACK_FAIL,
-  BUY_PACK_SUCCESS,
-
-  FETCH_PUBLISHED_PACKS,
-  FETCH_PUBLISHED_PACKS_FAIL,
-  FETCH_PUBLISHED_PACKS_SUCCESS,
-  FETCH_MY_PACKS,
-  FETCH_MY_PACKS_FAIL,
-  FETCH_MY_PACKS_SUCCESS,
-  SET_SELECTED_PACK,
+  BUY_COURSE,
+  BUY_COURSE_FAIL,
+  BUY_COURSE_SUCCESS,
+  FETCH_PUBLISHED_COURSES,
+  FETCH_PUBLISHED_COURSES_FAIL,
+  FETCH_PUBLISHED_COURSES_SUCCESS,
+  FETCH_MY_COURSES,
 } from "../../types";
 
 const initialState = {
-  selected_pack: null,
   isLoading: false,
-  packs: null,
+  courses: null,
   error: null,
-  pack_buying: false,
-  pack_buying_error: null,
-  pack_cancelling: false,
-  pack_cancelling_error: null,
-  pack_to_cancel: null,
+  course_buying: false,
+  course_buying_error: null,
+  course_cancelling: false,
+  course_cancelling_error: null,
+  course_to_cancel: null,
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_SELECTED_PACK:
+    case BUY_COURSE:
       return {
         ...state,
-        selected_pack: action.payload,
+        course_buying: true,
       };
-    case BUY_PACK:
+    case BUY_COURSE_SUCCESS:
       return {
         ...state,
-        pack_buying: true,
-      };
-    case BUY_PACK_SUCCESS:
-      return {
-        ...state,
-        pack_buying: false,
-        packs:{
-          ...state.packs,
-          results:  state.packs.results.map((pack) =>
-          pack.id === action.payload.id ? (pack = action.payload) : pack
-          )
+        course_buying: false,
+        courses: {
+          ...state.courses,
+          results: state.courses.results.map((course) =>
+            course.id === action.payload.id ? (course = action.payload) : course
+          ),
         },
       };
-    case BUY_PACK_FAIL:
+    case BUY_COURSE_FAIL:
       return {
         ...state,
-        pack_buying: false,
-        pack_buying_error: action.payload,
+        course_buying: false,
+        course_buying_error: action.payload,
       };
-    case FETCH_PUBLISHED_PACKS:
+    case FETCH_PUBLISHED_COURSES:
       return {
         ...state,
         isLoading: true,
       };
-    case FETCH_PUBLISHED_PACKS_SUCCESS:
+    case FETCH_PUBLISHED_COURSES_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        packs: action.payload,
+        courses: action.payload,
       };
 
-    case FETCH_PUBLISHED_PACKS_FAIL:
+    case FETCH_PUBLISHED_COURSES_FAIL:
       return {
         ...state,
-        packs: null,
+        courses: null,
         isLoading: false,
         error: action.payload,
       };
-      case FETCH_MY_PACKS:
-        return {
-          ...state,
-          packs:{
-            ...state.packs,
-            results:  state.packs.results.filter((pack) =>
-              pack.students.some(student => student === action.payload)
-            )
-          },
-        };
-      
-    // case CANCEL_PACK:
+    case FETCH_MY_COURSES:
+      return {
+        ...state,
+        courses: {
+          ...state.courses,
+          results: state.courses.results.filter((course) =>
+            course.students.some((student) => student === action.payload)
+          ),
+        },
+      };
+
+    // case CANCEL_COURSE:
     //   return {
     //     ...state,
-    //     pack_to_cancel: action.payload,
-    //     pack_cancelling: true,
+    //     course_to_cancel: action.payload,
+    //     course_cancelling: true,
     //   };
-    // case CANCEL_PACK_SUCCESS:
+    // case CANCEL_COURSE_SUCCESS:
     //   return {
     //     ...state,
-    //     pack_cancelling: false,
-    //     packs: {
-    //       ...state.packs,
-    //       results: state.packs.results.filter(
-    //       (pack) => pack.id !== state.pack_to_cancel
+    //     course_cancelling: false,
+    //     courses: {
+    //       ...state.courses,
+    //       results: state.courses.results.filter(
+    //       (course) => course.id !== state.course_to_cancel
     //     ),
     //       }
     //   };
-    // case CANCEL_PACK_FAIL:
+    // case CANCEL_COURSE_FAIL:
     //   return {
     //     ...state,
-    //     pack_cancelling: false,
+    //     course_cancelling: false,
 
-    //     pack_cancelling_error: action.payload,
+    //     course_cancelling_error: action.payload,
 
-    //     pack_to_cancel: null,
+    //     course_to_cancel: null,
     //   };
 
     default:

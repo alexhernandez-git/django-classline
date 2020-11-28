@@ -55,6 +55,7 @@ import itemsReducer from "./courses/itemsReducer";
 import playingCourseReducer from "./courses/playingCourseReducer";
 import questionsReducer from "./courses/questionsReducer";
 import answersReducer from "./courses/answersReducer";
+import buyCoursesReducer from "./courses/buyCoursesReducer";
 
 export default combineReducers({
   authReducer,
@@ -109,6 +110,7 @@ export default combineReducers({
   playingCourseReducer,
   questionsReducer,
   answersReducer,
+  buyCoursesReducer,
 
   // Commercials reducers
   authCommercialsReducer,
