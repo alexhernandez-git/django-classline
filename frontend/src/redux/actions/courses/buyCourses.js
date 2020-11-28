@@ -11,6 +11,9 @@ import {
   FETCH_MY_COURSES,
   FETCH_MY_COURSES_SUCCESS,
   FETCH_MY_COURSES_FAIL,
+  FETCH_COURSE,
+  FETCH_COURSE_SUCCESS,
+  FETCH_COURSE_FAIL,
 } from "../../types";
 
 import { tokenConfig } from "../auth";
@@ -127,4 +130,30 @@ export const fetchMyCourses = (setShowMyCourses = false) => (
   if (setShowMyCourses) {
     setShowMyCourses(true);
   }
+};
+
+// CHECK TOKEN & LOAD USER
+export const fetchPublishedCourse = (courseId) => (dispatch, getState) => {
+  // User Loading
+  dispatch({ type: FETCH_COURSE });
+
+  axios
+    .get(
+      `/api/programs/${
+        getState().programReducer.program.code
+      }/courses/${courseId}/retrieve_content/`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      dispatch({
+        type: FETCH_COURSE_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: FETCH_COURSE_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
 };

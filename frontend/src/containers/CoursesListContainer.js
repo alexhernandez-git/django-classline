@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import { Global, css } from "@emotion/core";
-import { fetchPublishedCourses } from "../redux/actions/courses/buyPacks";
+import { fetchPublishedCourses } from "../redux/actions/courses/buyCourses";
 
 const CoursesListContainer = () => {
   const { push } = useHistory();
@@ -212,7 +212,7 @@ const CoursesListContainer = () => {
                     buyCoursesReducer.courses.results.map((course, i) => (
                       <CourseCard
                         key={i}
-                        onClick={(course) => handleGoToDetails(course)}
+                        onClick={() => handleGoToDetails(course)}
                       >
                         <div className="cc-img">
                           <img

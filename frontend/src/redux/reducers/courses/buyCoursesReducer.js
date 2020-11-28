@@ -6,12 +6,18 @@ import {
   FETCH_PUBLISHED_COURSES_FAIL,
   FETCH_PUBLISHED_COURSES_SUCCESS,
   FETCH_MY_COURSES,
+  FETCH_COURSE,
+  FETCH_COURSE_SUCCESS,
+  FETCH_COURSE_FAIL,
 } from "../../types";
 
 const initialState = {
   isLoading: false,
   courses: null,
   error: null,
+  isLoadingCourse: true,
+  course: null,
+  error_course: null,
   course_buying: false,
   course_buying_error: null,
   course_cancelling: false,
@@ -72,7 +78,26 @@ export default function (state = initialState, action) {
           ),
         },
       };
+    case FETCH_COURSE:
+      return {
+        ...state,
+        isLoadingCourse: true,
+      };
+    case FETCH_COURSE_SUCCESS:
+      return {
+        ...state,
+        isLoadingCourse: false,
+        course: action.payload,
+        error_course: null,
+      };
 
+    case FETCH_COURSE_FAIL:
+      return {
+        ...state,
+        course: null,
+        isLoadingCourse: false,
+        error_course: action.payload,
+      };
     // case CANCEL_COURSE:
     //   return {
     //     ...state,

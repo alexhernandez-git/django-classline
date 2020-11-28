@@ -397,6 +397,7 @@ class CourseContentModelSerializer(serializers.ModelSerializer):
     items_count = serializers.SerializerMethodField(read_only=True)
     materials_count = serializers.SerializerMethodField(read_only=True)
     total_duration = serializers.SerializerMethodField(read_only=True)
+    benefits = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         """Meta class."""
@@ -421,7 +422,9 @@ class CourseContentModelSerializer(serializers.ModelSerializer):
             'items_count',
             'total_duration',
             'color',
-            'materials_count'
+            'materials_count',
+            'benefits',
+            'modified'
         )
 
         read_only_fields = (
@@ -464,3 +467,7 @@ class CourseContentModelSerializer(serializers.ModelSerializer):
 
     def get_total_duration(self, obj):
         return LectureContent.objects.filter(course=obj.id, type_choices="VI").aggregate(Sum('duration'))['duration__sum']
+
+    def get_benefits(self, obj):
+        benefits = CourseBenefit.objects.filter(course=obj.id)
+        return CourseBenefitModelSerializer(benefits, many=True).data
