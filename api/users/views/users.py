@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 
 
 # Django REST Framework
-from api.users.models import User, Profile, Subscription, Commercial, Payment
+from api.users.models import User, Profile, Subscription, Commercial, Payment,UserLoginActivity
 from api.programs.models import Program, Rating, Student, AllowedProgram
 import stripe
 import json
@@ -68,6 +68,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 import os
+from api.utils.functions import Functions
 
 
 class UserViewSet(mixins.RetrieveModelMixin,

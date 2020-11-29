@@ -390,6 +390,7 @@ class CoursePlayingModelSerializer(serializers.ModelSerializer):
 class CourseContentModelSerializer(serializers.ModelSerializer):
     """Profile model serializer."""
     course_language = serializers.SerializerMethodField(read_only=True)
+    course_price = serializers.SerializerMethodField(read_only=True)
     students_count = serializers.SerializerMethodField(read_only=True)
     instructor = serializers.SerializerMethodField(read_only=True)
     blocks = serializers.SerializerMethodField(read_only=True)
@@ -410,6 +411,7 @@ class CourseContentModelSerializer(serializers.ModelSerializer):
             'subtitle',
             'description',
             'course_language',
+            'course_price',
             'picture',
             'students_count',
             'students',
@@ -442,6 +444,12 @@ class CourseContentModelSerializer(serializers.ModelSerializer):
         language = CourseLanguage.objects.filter(course=obj)
         if language.count() > 0:
             return CourseLanguageModelSerializer(language[0], many=False).data
+
+
+    def get_course_price(self, obj):
+        price = CoursePrice.objects.filter(course=obj)
+        if price.count() > 0:
+            return CoursePriceModelSerializer(price[0], many=False).data
 
     def get_instructor(self, obj):
         from api.users.serializers.users import UserTeacherCountModelSerializer

@@ -19,10 +19,13 @@ import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPublishedCourse } from "../redux/actions/courses/buyCourses";
 import moment from "moment";
+import { login, registerCheckoutClass } from "src/redux/actions/auth";
+import { Field, Form, Formik } from "formik";
 const CourseBuyContainer = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const programReducer = useSelector((state) => state.programReducer);
+  const authReducer = useSelector((state) => state.authReducer);
   const buyCoursesReducer = useSelector((state) => state.buyCoursesReducer);
   const { course } = buyCoursesReducer;
   useEffect(() => {
@@ -140,7 +143,7 @@ const CourseBuyContainer = () => {
     }
   };
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isStudent, setIsStudent] = useState(true);
+  const [isStudent, setIsStudent] = useState(false);
   const [isIdentifying, setIsIdentifying] = useState(false);
   const hanldeOpenIsIdentifying = () => {
     setIsIdentifying(true);
@@ -347,21 +350,23 @@ const CourseBuyContainer = () => {
                 )}
                 <div className="cta-info">
                   <div className="course-price">
-                    <span>13,99 €</span>
+                    <span>{course.course_price.value} €</span>
                     {/* <small></small> */}
                   </div>
                   <div className="course-buttons">
-                    {isAuthenticated && (
+                    {authReducer.isAuthenticated && (
                       <div className="mb-2">
-                        <small className="text-grey">Hola Alex</small>
+                        <small className="text-grey">
+                          Hola {authReducer.user.first_name}
+                        </small>
                       </div>
                     )}
                     {buyNow ? (
                       <>
-                        {(!isAuthenticated || !isStudent) && (
+                        {(!authReducer.isAuthenticated || !isStudent) && (
                           <button
                             className={
-                              isAuthenticated
+                              authReducer.isAuthenticated
                                 ? "buy-now-btn"
                                 : "buy-now-btn btn-disabled"
                             }
@@ -373,7 +378,7 @@ const CourseBuyContainer = () => {
                       </>
                     ) : (
                       <>
-                        {(!isAuthenticated || !isStudent) && (
+                        {(!authReducer.isAuthenticated || !isStudent) && (
                           <button
                             className="buy-now-btn"
                             onClick={handleOpenBuyNow}
@@ -383,14 +388,14 @@ const CourseBuyContainer = () => {
                         )}
                       </>
                     )}
-                    {isAuthenticated && isStudent && (
+                    {authReducer.isAuthenticated && isStudent && (
                       <Link to="/academy/EyeelknHcN/course-playing/XSvYM8Q9ES/">
                         <button className="buy-now-btn">
                           Acceder al curso
                         </button>
                       </Link>
                     )}
-                    {!isAuthenticated && !isIdentifying && (
+                    {!authReducer.isAuthenticated && !isIdentifying && (
                       <div className="mt-2">
                         <small>¿Ya eres alumno?</small>{" "}
                         <small
@@ -401,17 +406,73 @@ const CourseBuyContainer = () => {
                         </small>
                       </div>
                     )}
-                    {isIdentifying && !isAuthenticated && (
+                    {isIdentifying && !authReducer.isAuthenticated && (
                       <div className="identify-user">
                         <div className="iu-form">
                           <span>Inicia Sesión</span>
-
-                          <input type="text" placeholder="Email o Username" />
-                          <input type="text" placeholder="Contraseña" />
-
-                          <button onClick={() => setIsAuthenticated(true)}>
-                            Iniciar Sesión
-                          </button>
+                          <Formik
+                            enableReinitialize={true}
+                            initialValues={{
+                              email: "",
+                              password: "",
+                            }}
+                            onSubmit={(values) => {
+                              const dispatchLogin = (values) =>
+                                dispatch(login(values));
+                              dispatchLogin(values);
+                            }}
+                          >
+                            {(props) => {
+                              return (
+                                <>
+                                  <Form className="w-100">
+                                    {authReducer.error &&
+                                      authReducer.error.data.detail && (
+                                        <small className="d-block text-red text-center mb-2">
+                                          {authReducer.error.data.detail}
+                                        </small>
+                                      )}
+                                    <Field
+                                      name="email"
+                                      type="text"
+                                      placeholder="Email or Username"
+                                    />
+                                    {authReducer.error &&
+                                      authReducer.error.data.email &&
+                                      authReducer.error.data.email.map(
+                                        (error) => (
+                                          <small className="d-block text-red">
+                                            {error}
+                                          </small>
+                                        )
+                                      )}
+                                    <Field
+                                      name="password"
+                                      type="password"
+                                      placeholder="Contraseña"
+                                    />
+                                    {authReducer.error &&
+                                      authReducer.error.data.password &&
+                                      authReducer.error.data.password.map(
+                                        (error) => (
+                                          <small className="d-block text-red">
+                                            {error}
+                                          </small>
+                                        )
+                                      )}
+                                    <div className="m-1"></div>
+                                    <button
+                                      className="shadow"
+                                      className="my-button"
+                                      type="submit"
+                                    >
+                                      Iniciar sesión
+                                    </button>
+                                  </Form>
+                                </>
+                              );
+                            }}
+                          </Formik>
                         </div>
                         <div className="d-flex justify-content-center">
                           <small
@@ -479,7 +540,7 @@ const CourseBuyContainer = () => {
                     Volver a la información del curso
                   </span>
                 </div>
-                {isAuthenticated ? (
+                {authReducer.isAuthenticated ? (
                   <>
                     <div className="course-checkout-card">
                       <span className="ccc-title">Pagar</span>
@@ -566,12 +627,76 @@ const CourseBuyContainer = () => {
                         {isLogin ? (
                           <>
                             <span>Inicia Sesión</span>
-                            <input type="text" placeholder="Email o Username" />
-                            <input type="text" placeholder="Contraseña" />
+                            <Formik
+                              enableReinitialize={true}
+                              initialValues={{
+                                email: "",
+                                password: "",
+                              }}
+                              onSubmit={(values) => {
+                                const dispatchLogin = (values) =>
+                                  dispatch(login(values));
+                                dispatchLogin(values);
+                              }}
+                            >
+                              {(props) => {
+                                return (
+                                  <>
+                                    <Form className="w-100">
+                                      {authReducer.error &&
+                                        authReducer.error.data.detail && (
+                                          <small className="d-block text-red text-center mb-2">
+                                            {authReducer.error.data.detail}
+                                          </small>
+                                        )}
 
-                            <button onClick={() => setIsAuthenticated(true)}>
-                              Iniciar Sesión
-                            </button>
+                                      {authReducer.error &&
+                                        authReducer.error.data
+                                          .non_field_errors &&
+                                        authReducer.error.data.non_field_errors.map(
+                                          (error) => (
+                                            <small className="d-block text-red text-center mb-2">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <Field
+                                        name="email"
+                                        type="text"
+                                        placeholder="Email or Username"
+                                      />
+                                      {authReducer.error &&
+                                        authReducer.error.data.email &&
+                                        authReducer.error.data.email.map(
+                                          (error) => (
+                                            <small className="d-block text-red">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <Field
+                                        name="password"
+                                        type="password"
+                                        placeholder="Contraseña"
+                                      />
+                                      {authReducer.error &&
+                                        authReducer.error.data.password &&
+                                        authReducer.error.data.password.map(
+                                          (error) => (
+                                            <small className="d-block text-red">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+
+                                      <button type="submit">
+                                        Iniciar Sesión
+                                      </button>
+                                    </Form>
+                                  </>
+                                );
+                              }}
+                            </Formik>
                             <div className="lrc-form-footer">
                               <div>
                                 <small>
@@ -588,16 +713,104 @@ const CourseBuyContainer = () => {
                           </>
                         ) : (
                           <>
-                            <span>Registrate</span>
-                            <input type="text" placeholder="Nombre" />
-                            <input type="text" placeholder="Apellidos" />
-                            <input type="text" placeholder="Email o Username" />
-                            <input type="text" placeholder="Contraseña" />
-                            <input
-                              type="text"
-                              placeholder="Confirmar contraseña"
-                            />
-                            <button>Registrarse</button>
+                            <Formik
+                              enableReinitialize={true}
+                              initialValues={{
+                                first_name: "",
+                                last_name: "",
+                                email: "",
+                                password: "",
+                                password_confirmation: "",
+                              }}
+                              onSubmit={(values) => {
+                                const dispatchLogin = (values) =>
+                                  dispatch(registerCheckoutClass(values));
+                                dispatchLogin(values);
+                              }}
+                            >
+                              {(props) => {
+                                return (
+                                  <>
+                                    <Form className="w-100">
+                                      <span>Registrate</span>
+                                      <Field
+                                        name="first_name"
+                                        type="text"
+                                        placeholder="Nombre"
+                                      />
+                                      {authReducer.error &&
+                                        authReducer.error.data.first_name &&
+                                        authReducer.error.data.first_name.map(
+                                          (error) => (
+                                            <small className="d-block text-red">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <Field
+                                        name="last_name"
+                                        type="text"
+                                        placeholder="Apellidos"
+                                      />
+
+                                      {authReducer.error &&
+                                        authReducer.error.data.last_name &&
+                                        authReducer.error.data.last_name.map(
+                                          (error) => (
+                                            <small className="d-block text-red">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <Field
+                                        name="email"
+                                        type="text"
+                                        placeholder="Email or Username"
+                                      />
+                                      {authReducer.error &&
+                                        authReducer.error.data.email &&
+                                        authReducer.error.data.email.map(
+                                          (error) => (
+                                            <small className="d-block text-red">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <Field
+                                        name="password"
+                                        type="password"
+                                        placeholder="Contraseña"
+                                      />
+                                      {authReducer.error &&
+                                        authReducer.error.data.password &&
+                                        authReducer.error.data.password.map(
+                                          (error) => (
+                                            <small className="d-block text-red">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <Field
+                                        name="password_confirmation"
+                                        type="password"
+                                        placeholder="Confirmar contraseña"
+                                      />
+                                      {authReducer.error &&
+                                        authReducer.error.data
+                                          .password_confirmation &&
+                                        authReducer.error.data.password_confirmation.map(
+                                          (error) => (
+                                            <small className="d-block text-red">
+                                              {error}
+                                            </small>
+                                          )
+                                        )}
+                                      <button type="submit">Registrarse</button>
+                                    </Form>
+                                  </>
+                                );
+                              }}
+                            </Formik>
                             <div className="lrc-form-footer">
                               <div>
                                 <small>
@@ -628,12 +841,10 @@ const CourseBuyContainer = () => {
                         <img src={course.picture} alt="" />
                       </div>
                       <div className="cci-title">
-                        <small>
-                          Curso Maestro de Python 3: Aprende Desde Cero
-                        </small>
+                        <small>{course.title}</small>
                       </div>
                       <div className="cci-price">
-                        <small>9,99 €</small>
+                        <small>{course.course_price.value} €</small>
                       </div>
                     </div>
                   </div>
