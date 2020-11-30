@@ -62,7 +62,7 @@ const PlayerControls = forwardRef((props, ref) => {
       ></div>
       <div className="video-title">{title}</div>
       <div className="middle-controls">
-        <IconContext.Provider
+        {/* <IconContext.Provider
           value={{
             size: 20,
             color: "#a1a1a1",
@@ -101,7 +101,7 @@ const PlayerControls = forwardRef((props, ref) => {
           }}
         >
           <FaForward onClick={onFastForward} />
-        </IconContext.Provider>
+        </IconContext.Provider> */}
       </div>
       <div>
         <Slider
