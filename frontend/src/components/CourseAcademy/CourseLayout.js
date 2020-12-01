@@ -340,7 +340,7 @@ const CourseContent = styled.div`
       background: #14171c;
     }
     .item-container {
-      max-width: 100rem;
+      max-width: 80rem;
       margin: auto;
     }
   }
