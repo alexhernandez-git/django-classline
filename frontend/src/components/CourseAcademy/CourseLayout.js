@@ -340,7 +340,14 @@ const CourseContent = styled.div`
       background: #14171c;
     }
     .item-container {
-      max-width: 80rem;
+      @media screen and (max-width: 768px) {
+        width: 100%;
+      }
+      @media screen and (min-width: 992px) {
+        width: 90%;
+      }
+
+      max-width: 100rem;
       margin: auto;
     }
   }
