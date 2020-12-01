@@ -11,12 +11,14 @@ const SearchPlaylists = () => {
   const { pathname } = useLocation();
 
   const { program } = useParams();
-  const coursesReducer = useSelector((state) => state.coursesReducer);
+  const playlistsAdminReducer = useSelector(
+    (state) => state.playlistsAdminReducer
+  );
   let settings = null;
-  if (!coursesReducer.isLoading) {
+  if (!playlistsAdminReducer.isLoading) {
     settings = {
       className: "center",
-      infinite: coursesReducer.playlists.results.length > 3,
+      infinite: playlistsAdminReducer.playlists.results.length > 3,
       slidesToShow: 3,
       slidesToScroll: 3,
 
@@ -28,7 +30,7 @@ const SearchPlaylists = () => {
           settings: {
             slidesToShow: 2,
             slidesToScroll: 2,
-            infinite: coursesReducer.playlists.results.length > 2,
+            infinite: playlistsAdminReducer.playlists.results.length > 2,
           },
         },
         {
@@ -41,7 +43,7 @@ const SearchPlaylists = () => {
       ],
     };
   }
-  return coursesReducer.isLoading ? (
+  return playlistsAdminReducer.isLoading ? (
     "Cargando..."
   ) : (
     <>
@@ -51,15 +53,15 @@ const SearchPlaylists = () => {
         </div>
 
         <Slider {...settings}>
-          {coursesReducer.playlists.results &&
-            coursesReducer.playlists.results.map((playlist) => (
+          {playlistsAdminReducer.playlists.results &&
+            playlistsAdminReducer.playlists.results.map((playlist) => (
               <div className="p-2 cursor-pointer" key={playlist.id}>
                 <Playlist playlist={playlist} />
               </div>
             ))}
         </Slider>
-        {coursesReducer.isLoading && <span>Cargando...</span>}
-        {coursesReducer.playlists.results.length == 0 && (
+        {playlistsAdminReducer.isLoading && <span>Cargando...</span>}
+        {playlistsAdminReducer.playlists.results.length == 0 && (
           <span className="text-grey">No hay playlists</span>
         )}
       </SlickSlider>
