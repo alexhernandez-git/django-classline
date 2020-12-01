@@ -232,6 +232,24 @@ const Sidebar = (props) => {
               Pagina Principal
             </SecctionLink>
           </Link>
+          {programReducer.program.courses > 0 && (
+            <Link
+              to={`${
+                /\/demo\/?/.test(pathname) ? "/demo" : ""
+              }/academy/${program}/courses`}
+            >
+              <SecctionLink active={/\/courses\/?$/.test(pathname)}>
+                <IconContext.Provider
+                  value={{
+                    className: "sidebar-icon",
+                  }}
+                >
+                  <FaGraduationCap />
+                </IconContext.Provider>{" "}
+                Cursos
+              </SecctionLink>
+            </Link>
+          )}
           {programReducer.program.are_videos && (
             <Link
               to={`${
@@ -345,22 +363,7 @@ const Sidebar = (props) => {
               </SecctionLink>
             </Link>
           )}
-          <Link
-            to={`${
-              /\/demo\/?/.test(pathname) ? "/demo" : ""
-            }/academy/${program}/courses`}
-          >
-            <SecctionLink active={/\/courses\/?$/.test(pathname)}>
-              <IconContext.Provider
-                value={{
-                  className: "sidebar-icon",
-                }}
-              >
-                <FaGraduationCap />
-              </IconContext.Provider>{" "}
-              Cursos
-            </SecctionLink>
-          </Link>
+
           <hr />
 
           {programReducer.program.are_videos && (

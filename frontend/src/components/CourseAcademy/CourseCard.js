@@ -72,10 +72,10 @@ const CourseCard = (props) => {
               )}
               <hr />
               <div>
-                <small css={textEllipsis}>Bloques: {blocks && blocks}</small>
+                <small css={textEllipsis}>Clases: {items && items}</small>
               </div>
               <div>
-                <small css={textEllipsis}>Lecciones: {items && items}</small>
+                <small css={textEllipsis}>Bloques: {blocks && blocks}</small>
               </div>
               {/* <div>
                   <small css={textEllipsis}>Playlists: 2</small>
@@ -94,7 +94,7 @@ const CourseCard = (props) => {
 const PackContent = styled.div`
   width: 100%;
   display: block;
-  border-radius: 1rem;
+  border-radius: 0.4rem;
   overflow: hidden;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
   &:hover img {
