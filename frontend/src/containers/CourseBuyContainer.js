@@ -250,7 +250,7 @@ const CourseBuyContainer = () => {
         `}
       />
 
-      <CourseContainer color={"#b872dc"}>
+      <CourseContainer color={course.color}>
         <div className="header-course">
           <div className="header-course-container">
             <div className="header-course-info">
@@ -971,11 +971,14 @@ const CourseContainer = styled.div`
     /* &:hover { */
     text-decoration: underline;
     /* } */
+    padding: 1rem;
   }
   .header-course {
+    border-radius: 1rem 1rem 0 0;
     background: #1e1e1c;
     color: #fff;
     padding: 3.2rem 1rem;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 0.5rem 1rem;
     .header-course-container {
       max-width: 118.4rem;
       margin: 0 auto;
@@ -1148,6 +1151,7 @@ const CourseContainer = styled.div`
     background: ${(props) => props.color};
     padding: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 1rem 1rem;
   }
   .course-info-container {
     max-width: 118.4rem;
