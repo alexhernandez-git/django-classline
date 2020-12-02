@@ -38,7 +38,9 @@ const CoursesListContainer = () => {
   };
   const [showMyPacks, setShowMyPacks] = useState(false);
   const handleGoToDetails = (course) => {
-    push(`/academy/${programReducer.program.code}/course-info/${course.code}`);
+    window.open(
+      `/academy/${programReducer.program.code}/course-info/${course.code}`
+    );
   };
   function msToHMSRead(seconds) {
     if (isNaN(seconds)) {
