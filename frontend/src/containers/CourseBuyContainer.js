@@ -966,12 +966,12 @@ const CourseBuyContainer = () => {
   );
 };
 const CourseContainer = styled.div`
+  padding: 0.5rem;
   .course-link {
     cursor: pointer;
     /* &:hover { */
     text-decoration: underline;
     /* } */
-    padding: 1rem;
   }
   .header-course {
     border-radius: 1rem 1rem 0 0;
@@ -1149,7 +1149,7 @@ const CourseContainer = styled.div`
   }
   .course-color {
     background: ${(props) => props.color};
-    padding: 1rem;
+    padding: 0.5rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     border-radius: 0 0 1rem 1rem;
   }
