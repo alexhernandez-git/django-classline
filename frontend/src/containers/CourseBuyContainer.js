@@ -250,7 +250,7 @@ const CourseBuyContainer = () => {
         `}
       />
 
-      <CourseContainer color={course.color}>
+      <CourseContainer color={course.color ? course.color : "#14171c"}>
         <div className="header-course">
           <div className="header-course-container">
             <div className="header-course-info">
@@ -975,7 +975,7 @@ const CourseContainer = styled.div`
   }
   .header-course {
     border-radius: 1rem 1rem 0 0;
-    background: #1e1e1c;
+    background: #14171c;
     color: #fff;
     padding: 3.2rem 1rem;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 0.5rem 1rem;
