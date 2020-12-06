@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { textEllipsis } from "./TextEllipsis";
 
-const ItemResources = ({ item }) => {
+const ItemResources = ({ item, isDemo }) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleToggleMaterial = (e) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ const ItemResources = ({ item }) => {
   });
   const handleDownloadResource = (e, file) => {
     e.preventDefault();
-    window.open(file);
+    if (!isDemo) window.open(file);
   };
   const playingCourseReducer = useSelector(
     (state) => state.playingCourseReducer

@@ -168,9 +168,18 @@ function BlockItemsList({
                           </IconContext.Provider>
                         )}
                       {item.item.materials.length > 0 && (
-                        <ItemResources item={item} />
+                        <ItemResources item={item} isDemo={isDemo} />
                       )}
                     </div>
+                    {isDemo && (
+                      <div className="is_free_text">
+                        {item.item.is_free ? (
+                          <small className="is_item_free">Gratis</small>
+                        ) : (
+                          <small className="is_item_premium">Premium</small>
+                        )}
+                      </div>
+                    )}
                   </PlaylistItem>
                 </Link>
               </li>
@@ -189,6 +198,23 @@ const PlaylistItem = styled.div`
   }
   &.active {
     background: #ececec;
+  }
+  .is_free_text {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    small {
+      color: #fff;
+
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+    }
+    .is_item_free {
+      background: #000;
+    }
+    .is_item_premium {
+      background: #e5c07b;
+    }
   }
 `;
 export default BlockItemsList;
