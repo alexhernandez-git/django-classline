@@ -19,12 +19,15 @@ import {
   createItemViewed,
   updateItemViewed,
 } from "src/redux/actions/courses/itemsViewed";
+import { FiAlertCircle } from "react-icons/fi";
 import { Global, css } from "@emotion/core";
+import { IconContext } from "react-icons/lib";
 const CourseLayout = (props) => {
   const playingCourseReducer = useSelector(
     (state) => state.playingCourseReducer
   );
   const { isAcademy } = props;
+  const isDemo = props.isDemo ? props.isDemo : false;
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
@@ -68,6 +71,8 @@ const CourseLayout = (props) => {
       history.push({
         pathname: isAcademy
           ? `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${next_item.item.code}`
+          : isDemo
+          ? `/academy/${programReducer.program.code}/course-demo-playing/${playingCourseReducer.course.code}/${next_item.item.code}`
           : `/academy/${programReducer.program.code}/course-playing/${playingCourseReducer.course.code}/${next_item.item.code}`,
       });
     } catch (error) {}
@@ -83,6 +88,8 @@ const CourseLayout = (props) => {
       history.push({
         pathname: isAcademy
           ? `/academy/${programReducer.program.code}/course/${playingCourseReducer.course.code}/${previous_item.item.code}`
+          : isDemo
+          ? `/academy/${programReducer.program.code}/course-demo-playing/${playingCourseReducer.course.code}/${previous_item.item.code}`
           : `/academy/${programReducer.program.code}/course-playing/${playingCourseReducer.course.code}/${previous_item.item.code}`,
       });
     } catch (error) {}
@@ -174,41 +181,59 @@ const CourseLayout = (props) => {
                   <>
                     <div className="background-item-container">
                       <div className="item-container">
-                        {itemPlaying.item?.type_choices == "LE" &&
-                          itemPlaying.item?.content?.type_choices == "VI" && (
-                            <VideoPlayer
-                              video={itemPlaying.item.content}
-                              itemPlaying={itemPlaying}
-                              isCourse
-                              goNext={goNext}
-                              color={playingCourseReducer.course.color}
-                            />
-                          )}
-                        {/* {itemPlaying.item?.type_choices == "LE" &&
+                        {(isDemo && itemPlaying.item.is_free) || !isDemo ? (
+                          <>
+                            {itemPlaying.item?.type_choices == "LE" &&
+                              itemPlaying.item?.content?.type_choices ==
+                                "VI" && (
+                                <VideoPlayer
+                                  video={itemPlaying.item.content}
+                                  itemPlaying={itemPlaying}
+                                  isCourse
+                                  goNext={goNext}
+                                  color={playingCourseReducer.course.color}
+                                />
+                              )}
+                            {/* {itemPlaying.item?.type_choices == "LE" &&
                           itemPlaying.item?.content?.type_choices == "FI" && (
                             <>
-                              <div className="py-5 bg-white">
-                                <MaterialCourse
-                                  item={itemPlaying.item}
+                            <div className="py-5 bg-white">
+                            <MaterialCourse
+                            item={itemPlaying.item}
                                   key={itemPlaying.item.id}
-                                />
-                              </div>
-                            </>
-                          )} */}
-                        {itemPlaying.item?.type_choices == "LE" &&
-                          itemPlaying.item?.content?.type_choices == "TX" && (
-                            <>
-                              <div
-                                className="p-4 bg-white"
-                                dangerouslySetInnerHTML={{
-                                  __html: itemPlaying.item.content.text,
-                                }}
-                              />
-                            </>
-                          )}
+                                  />
+                                  </div>
+                                  </>
+                                )} */}
+                            {itemPlaying.item?.type_choices == "LE" &&
+                              itemPlaying.item?.content?.type_choices ==
+                                "TX" && (
+                                <>
+                                  <div
+                                    className="p-4 bg-white"
+                                    dangerouslySetInnerHTML={{
+                                      __html: itemPlaying.item.content.text,
+                                    }}
+                                  />
+                                </>
+                              )}
+                          </>
+                        ) : (
+                          <PremiumContent>
+                            <IconContext.Provider
+                              value={{
+                                size: 25,
+                                className:
+                                  "global-class-name mr-2 cursor-pointer",
+                              }}
+                            >
+                              <FiAlertCircle />
+                            </IconContext.Provider>
+                            Contenido premium, accede a el adquiriendo el curso
+                          </PremiumContent>
+                        )}
                       </div>
                     </div>
-
                     <div className="d-flex justify-content-between px-2 mt-3">
                       <ButtonCustomInitial
                         onClick={goPrevious}
@@ -247,7 +272,7 @@ const CourseLayout = (props) => {
                       </>
                     )}
                     <hr />
-                    <CourseSwitch itemPlaying={itemPlaying} />
+                    <CourseSwitch itemPlaying={itemPlaying} isDemo={isDemo} />
                   </>
                 )}
               </>
@@ -286,6 +311,7 @@ const CourseLayout = (props) => {
                   <BlockItemsList
                     track={track}
                     isAcademy={isAcademy}
+                    isDemo={isDemo}
                     index_block={index_block}
                     itemPlaying={itemPlaying}
                     items={items}
@@ -360,5 +386,11 @@ const CourseContent = styled.div`
     }
   }
 `;
-
+const PremiumContent = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  padding: 15rem 2rem;
+`;
 export default CourseLayout;

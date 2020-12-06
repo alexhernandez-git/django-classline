@@ -23,6 +23,8 @@ import { Formik, Form, Field } from "formik";
 import moment from "moment";
 import { textEllipsis } from "./TextEllipsis";
 import AnswersLecture from "./AnswersLecture";
+import { IconContext } from "react-icons/lib";
+import { FiAlertCircle } from "react-icons/fi";
 
 const QuestionSchema = Yup.object().shape({
   title: Yup.string()
@@ -34,7 +36,7 @@ const QuestionSchema = Yup.object().shape({
     .required("Este campo es obligatorio"),
 });
 
-const QuestionsLecture = ({ itemPlaying }) => {
+const QuestionsLecture = ({ itemPlaying, isDemo }) => {
   const dispatch = useDispatch();
   const questionsReducer = useSelector((state) => state.questionsReducer);
   const answersReducer = useSelector((state) => state.answersReducer);
@@ -77,162 +79,181 @@ const QuestionsLecture = ({ itemPlaying }) => {
         </>
       ) : (
         <QuestionsAndAnswersContainer>
-          {handleCreateQuestion ? (
+          {!isDemo ? (
             <>
-              <div className="mb-4">
-                <span
-                  className="cursor-pointer"
-                  onClick={handleCloseCreateQuestion}
-                >
-                  Volver a las preguntas
-                </span>
-              </div>
-              <Formik
-                // enableReinitialize={true}
-                initialValues={{
-                  title: "",
-                  details: "",
-                }}
-                validationSchema={QuestionSchema}
-                onSubmit={(values) => {
-                  dispatch(createQuestion(itemPlaying.item.code, values));
-                  handleCloseCreateQuestion();
-                }}
-              >
-                {(props) => {
-                  return (
-                    <Form>
-                      <AdminForm>
-                        <div className="my-3" style={{ color: "initial" }}>
-                          <label htmlFor="question-title">
-                            Título o resumen
-                          </label>
-                          <Field
-                            name="title"
-                            id="question-title"
-                            type="text"
-                            placeholder="Titulo de la pregunta"
-                          />
-                          {props.errors.title && props.touched.title ? (
-                            <small className="d-block text-red">
-                              {props.errors.title}
-                            </small>
-                          ) : null}
-                          <label htmlFor="">Detalles</label>
-                          <MyCKEditor
-                            value={props.values.details}
-                            handleEdit={(value) =>
-                              props.setFieldValue("details", value)
-                            }
-                            placeholder={"Detalles de la pregunta"}
-                          />
-                          {props.errors.details && props.touched.details ? (
-                            <small className="d-block text-red">
-                              {props.errors.details}
-                            </small>
-                          ) : null}
-                        </div>
-                        <div className="d-sm-flex mt-2 justify-content-end">
-                          <ButtonCustom type="submit" className="mr-2">
-                            Añadir
-                          </ButtonCustom>
-                        </div>
-                      </AdminForm>
-                    </Form>
-                  );
-                }}
-              </Formik>
+              {handleCreateQuestion ? (
+                <>
+                  <div className="mb-4">
+                    <span
+                      className="cursor-pointer"
+                      onClick={handleCloseCreateQuestion}
+                    >
+                      Volver a las preguntas
+                    </span>
+                  </div>
+                  <Formik
+                    // enableReinitialize={true}
+                    initialValues={{
+                      title: "",
+                      details: "",
+                    }}
+                    validationSchema={QuestionSchema}
+                    onSubmit={(values) => {
+                      dispatch(createQuestion(itemPlaying.item.code, values));
+                      handleCloseCreateQuestion();
+                    }}
+                  >
+                    {(props) => {
+                      return (
+                        <Form>
+                          <AdminForm>
+                            <div className="my-3" style={{ color: "initial" }}>
+                              <label htmlFor="question-title">
+                                Título o resumen
+                              </label>
+                              <Field
+                                name="title"
+                                id="question-title"
+                                type="text"
+                                placeholder="Titulo de la pregunta"
+                              />
+                              {props.errors.title && props.touched.title ? (
+                                <small className="d-block text-red">
+                                  {props.errors.title}
+                                </small>
+                              ) : null}
+                              <label htmlFor="">Detalles</label>
+                              <MyCKEditor
+                                value={props.values.details}
+                                handleEdit={(value) =>
+                                  props.setFieldValue("details", value)
+                                }
+                                placeholder={"Detalles de la pregunta"}
+                              />
+                              {props.errors.details && props.touched.details ? (
+                                <small className="d-block text-red">
+                                  {props.errors.details}
+                                </small>
+                              ) : null}
+                            </div>
+                            <div className="d-sm-flex mt-2 justify-content-end">
+                              <ButtonCustom type="submit" className="mr-2">
+                                Añadir
+                              </ButtonCustom>
+                            </div>
+                          </AdminForm>
+                        </Form>
+                      );
+                    }}
+                  </Formik>
+                </>
+              ) : (
+                <>
+                  <div className="search-questions">
+                    <SearchBar
+                      onSubmit={handleSubmitSearch}
+                      search={{ search: search, setSearch: setSearch }}
+                      maxWidth
+                      placeholder={"Buscar preguntas de esta lección"}
+                    />
+                  </div>
+
+                  <div className="questions-list">
+                    <div className="header-list">
+                      <span>
+                        {questionsReducer.questions &&
+                          questionsReducer.questions.count}{" "}
+                        preguntas en esta lección
+                      </span>
+                      <span
+                        className="cursor-pointer"
+                        onClick={handleOpenCreateQuestion}
+                      >
+                        Hacer otra pregunta
+                      </span>
+                    </div>
+                    <hr />
+                    {questionsReducer.isLoading &&
+                    !questionsReducer.questions ? (
+                      "Cargando..."
+                    ) : (
+                      <>
+                        {questionsReducer.questions.results.map((question) => (
+                          <div
+                            className="question"
+                            key={question.id}
+                            onClick={() => handleSetQuestion(question)}
+                          >
+                            <div className="question-img-container">
+                              <img
+                                src={
+                                  question.user.profile.picture
+                                    ? question.user.profile.picture
+                                    : "/static/assets/img/avatar.png"
+                                }
+                                alt=""
+                              />
+                            </div>
+                            <div>
+                              <div className="question-title">
+                                <span>{question.title}</span>
+                              </div>
+                              <div className="question-text">
+                                <small
+                                  css={textEllipsis}
+                                  dangerouslySetInnerHTML={{
+                                    __html: question.details,
+                                  }}
+                                />
+                              </div>
+                              <div className="question-info">
+                                <small>
+                                  {question.user.first_name}{" "}
+                                  {question.user.last_name}
+                                </small>{" "}
+                                .{" "}
+                                <small>
+                                  {moment(question.created)
+                                    .subtract(5, "seconds")
+                                    .fromNow()}
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                        {questionsReducer.questions.results.length == 0 && (
+                          <small>No hay preguntas en esta lección</small>
+                        )}
+                        {questionsReducer.questions.next && (
+                          <div className="d-flex justify-content-center">
+                            <ButtonCustom
+                              onClick={fetchMoreQuestions}
+                              className="w-100"
+                              type="button"
+                            >
+                              Cargar más preguntas
+                            </ButtonCustom>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </>
+              )}
             </>
           ) : (
             <>
-              <div className="search-questions">
-                <SearchBar
-                  onSubmit={handleSubmitSearch}
-                  search={{ search: search, setSearch: setSearch }}
-                  maxWidth
-                  placeholder={"Buscar preguntas de esta lección"}
-                />
-              </div>
-
-              <div className="questions-list">
-                <div className="header-list">
-                  <span>
-                    {questionsReducer.questions &&
-                      questionsReducer.questions.count}{" "}
-                    preguntas en esta lección
-                  </span>
-                  <span
-                    className="cursor-pointer"
-                    onClick={handleOpenCreateQuestion}
-                  >
-                    Hacer otra pregunta
-                  </span>
-                </div>
-                <hr />
-                {questionsReducer.isLoading && !questionsReducer.questions ? (
-                  "Cargando..."
-                ) : (
-                  <>
-                    {questionsReducer.questions.results.map((question) => (
-                      <div
-                        className="question"
-                        key={question.id}
-                        onClick={() => handleSetQuestion(question)}
-                      >
-                        <div className="question-img-container">
-                          <img
-                            src={
-                              question.user.profile.picture
-                                ? question.user.profile.picture
-                                : "/static/assets/img/avatar.png"
-                            }
-                            alt=""
-                          />
-                        </div>
-                        <div>
-                          <div className="question-title">
-                            <span>{question.title}</span>
-                          </div>
-                          <div className="question-text">
-                            <small
-                              css={textEllipsis}
-                              dangerouslySetInnerHTML={{
-                                __html: question.details,
-                              }}
-                            />
-                          </div>
-                          <div className="question-info">
-                            <small>
-                              {question.user.first_name}{" "}
-                              {question.user.last_name}
-                            </small>{" "}
-                            .{" "}
-                            <small>
-                              {moment(question.created)
-                                .subtract(5, "seconds")
-                                .fromNow()}
-                            </small>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                    {questionsReducer.questions.results.length == 0 && (
-                      <small>No hay preguntas en esta lección</small>
-                    )}
-                    {questionsReducer.questions.next && (
-                      <div className="d-flex justify-content-center">
-                        <ButtonCustom
-                          onClick={fetchMoreQuestions}
-                          className="w-100"
-                          type="button"
-                        >
-                          Cargar más preguntas
-                        </ButtonCustom>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
+              <PremiumContent>
+                <IconContext.Provider
+                  value={{
+                    size: 25,
+                    className: "global-class-name mr-2 cursor-pointer",
+                  }}
+                >
+                  <FiAlertCircle />
+                </IconContext.Provider>
+                Contenido premium, accede a el adquiriendo el curso
+              </PremiumContent>
             </>
           )}
         </QuestionsAndAnswersContainer>
@@ -278,5 +299,11 @@ const QuestionsAndAnswersContainer = styled.div`
     }
   }
 `;
-
+const PremiumContent = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  padding: 15rem 2rem;
+`;
 export default QuestionsLecture;

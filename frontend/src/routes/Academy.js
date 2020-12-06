@@ -195,6 +195,11 @@ const Academy = () => {
         />
         <Route
           exact
+          path="/academy/:program/course-demo-playing/:id/:track?"
+          component={CourseContainer}
+        />
+        <Route
+          exact
           path="/academy/:program/course-playing/:id/:track?"
           component={CourseContainer}
         />

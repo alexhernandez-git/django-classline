@@ -22,16 +22,13 @@ import {
   MdModeEdit,
 } from "react-icons/md";
 import { SiAddthis } from "react-icons/si";
-import {
-  GrCirclePlay,
-  GrDocumentText,
-  GrFormAdd,
-  GrTextAlignFull,
-} from "react-icons/gr";
+import { GrCirclePlay, GrTextAlignFull } from "react-icons/gr";
 import { ButtonCustom } from "../ui/ButtonCustom";
 import { AdminForm } from "../ui/AdminForm";
 import CardItemContent from "./CardItemContent";
-import { uploadItemFile } from "../../redux/actions/courses/items";
+
+import { useDispatch } from "react-redux";
+import { setIsItemFree } from "src/redux/actions/courses/items";
 
 // import VideoList from "./VideoList";
 const CardItemDrag = ({
@@ -47,6 +44,7 @@ const CardItemDrag = ({
   itemCards,
   handleEditItem,
 }) => {
+  const dispatch = useDispatch();
   const ref = useRef(null);
   const [, drop] = useDrop({
     accept: ItemTypes.CARD,
@@ -128,7 +126,12 @@ const CardItemDrag = ({
     e.preventDefault();
     handleEditItem(id, name);
   };
-
+  const [isFree, setIsFree] = useState(item.is_free ? item.is_free : false);
+  const handleChangeIsItemFree = (e) => {
+    e.preventDefault();
+    dispatch(setIsItemFree(item.code, e.target.checked));
+    setIsFree(e.target.checked);
+  };
   return (
     <PlaylistVideo style={{ opacity }} ref={ref} moveCard={moveCard}>
       {card?.is_new ? (
@@ -223,64 +226,79 @@ const CardItemDrag = ({
           ) : (
             <>
               <div className="d-sm-flex justify-content-between align-items-center">
-                <div className="d-flex align-items-center">
-                  {item.type_choices == "LE" && "Lección"} {index + 1}:{" "}
-                  {item.type_choices == "LE" &&
-                    item?.content?.type_choices == "VI" && (
-                      <IconContext.Provider
-                        value={{
-                          size: 14,
-                          className: "global-class-name mx-2 cursor-pointer",
-                        }}
-                      >
-                        <GrCirclePlay />
-                      </IconContext.Provider>
-                    )}
-                  {item.type_choices == "LE" &&
-                    item?.content?.type_choices == "TX" && (
-                      <IconContext.Provider
-                        value={{
-                          size: 14,
-                          className: "global-class-name mx-2 cursor-pointer",
-                        }}
-                      >
-                        <GrTextAlignFull />
-                      </IconContext.Provider>
-                    )}
-                  {/* {item.type_choices == "LE" &&
+                <div className="d-flex justify-content-between">
+                  <div className="d-flex align-items-center">
+                    {item.type_choices == "LE" && "Lección"} {index + 1}:{" "}
+                    {item.type_choices == "LE" &&
+                      item?.content?.type_choices == "VI" && (
+                        <IconContext.Provider
+                          value={{
+                            size: 14,
+                            className: "global-class-name mx-2 cursor-pointer",
+                          }}
+                        >
+                          <GrCirclePlay />
+                        </IconContext.Provider>
+                      )}
+                    {item.type_choices == "LE" &&
+                      item?.content?.type_choices == "TX" && (
+                        <IconContext.Provider
+                          value={{
+                            size: 14,
+                            className: "global-class-name mx-2 cursor-pointer",
+                          }}
+                        >
+                          <GrTextAlignFull />
+                        </IconContext.Provider>
+                      )}
+                    {/* {item.type_choices == "LE" &&
                     item?.content?.type_choices == "FI" && (
                       <IconContext.Provider
-                        value={{
-                          size: 14,
-                          className: "global-class-name mx-2 cursor-pointer",
-                        }}
+                      value={{
+                        size: 14,
+                        className: "global-class-name mx-2 cursor-pointer",
+                      }}
                       >
-                        <GrDocumentText />
+                      <GrDocumentText />
                       </IconContext.Provider>
                     )} */}
-                  {item.name}
-                  <div className="item-actions">
-                    <IconContext.Provider
-                      value={{
-                        size: 14,
-                        className: "global-class-name ml-4 cursor-pointer",
-                      }}
-                    >
-                      {" "}
-                      <FaEdit onClick={() => setIsNameEdit(true)} />
-                    </IconContext.Provider>
-                    <IconContext.Provider
-                      value={{
-                        size: 14,
-                        className: "global-class-name ml-4 cursor-pointer",
-                      }}
-                    >
-                      {" "}
-                      <FaTrash
-                        onClick={(e) => handleRemoveItem(e, item.code)}
-                      />
-                    </IconContext.Provider>
+                    {item.name}
+                    <div className="item-actions">
+                      <IconContext.Provider
+                        value={{
+                          size: 14,
+                          className: "global-class-name ml-4 cursor-pointer",
+                        }}
+                      >
+                        {" "}
+                        <FaEdit onClick={() => setIsNameEdit(true)} />
+                      </IconContext.Provider>
+                      <IconContext.Provider
+                        value={{
+                          size: 14,
+                          className: "global-class-name ml-4 cursor-pointer",
+                        }}
+                      >
+                        {" "}
+                        <FaTrash
+                          onClick={(e) => handleRemoveItem(e, item.code)}
+                        />
+                      </IconContext.Provider>
+                    </div>
                   </div>
+                  <IconContext.Provider
+                    value={{
+                      size: 22,
+                      className:
+                        "global-class-name mr-3 cursor-pointer d-block d-sm-none",
+                    }}
+                  >
+                    {isOpen ? (
+                      <MdKeyboardArrowUp onClick={handleToggleOpen} />
+                    ) : (
+                      <MdKeyboardArrowDown onClick={handleToggleOpen} />
+                    )}
+                  </IconContext.Provider>
                 </div>
                 <div className="d-flex align-items-center">
                   {item?.content?.type_choices != "VI" &&
@@ -328,10 +346,27 @@ const CardItemDrag = ({
                     </div>
                   ) : (
                     <>
+                      <div className="d-flex justify-content-center align-items-center mr-3">
+                        <CheckboxCustom>
+                          <input
+                            name={`free-content-${item.id}`}
+                            id={`free-content-${item.id}`}
+                            type="checkbox"
+                            checked={isFree}
+                            onChange={(e) => handleChangeIsItemFree(e)}
+                          />
+                          <span className="checkmark"></span>
+                        </CheckboxCustom>
+                        <label htmlFor={`free-content-${item.id}`}>
+                          <small>Contenido gratuito</small>
+                        </label>
+                      </div>
+
                       <IconContext.Provider
                         value={{
                           size: 22,
-                          className: "global-class-name mr-3 cursor-pointer",
+                          className:
+                            "global-class-name mr-3 cursor-pointer d-none d-sm-block",
                         }}
                       >
                         {isOpen ? (
@@ -392,6 +427,61 @@ const PlaylistVideo = styled.div`
       min-width: 140px;
       margin-bottom: 0;
     }
+  }
+`;
+export const CheckboxCustom = styled.label`
+  display: block;
+  position: relative;
+  top: -7.7px;
+  padding-left: 26px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border-radius: 0.5rem;
+  }
+  &:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+  input:checked ~ .checkmark {
+    background-color: #000;
+  }
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  input:checked ~ .checkmark:after {
+    display: block;
+  }
+  .checkmark:after {
+    left: 6px;
+    top: 4.5px;
+    width: 8px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
   }
 `;
 export default CardItemDrag;

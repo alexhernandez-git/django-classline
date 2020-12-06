@@ -36,7 +36,7 @@ import {
   updateItemFile,
   uploadItemFile,
   uploadItemMaterial,
-} from "../../redux/actions/courses/items";
+} from "src/redux/actions/courses/items";
 import EditContentDescription from "../ui/EditContentDescription";
 import MyCKEditor from "../ui/MyCKEditor";
 import itemsReducer from "../../redux/reducers/courses/itemsReducer";

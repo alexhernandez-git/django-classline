@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { textEllipsis } from "src/components/ui/TextEllipsis";
 import QuestionsLecture from "./QuestionsLecture";
 
-const CourseSwitch = ({ itemPlaying }) => {
+const CourseSwitch = ({ itemPlaying, isDemo }) => {
   const [key, setKey] = useState(0);
   const playingCourseReducer = useSelector(
     (state) => state.playingCourseReducer
@@ -47,7 +47,7 @@ const CourseSwitch = ({ itemPlaying }) => {
         <div>
           <Tab.Content>
             <Tab.Pane eventKey={0}>
-              <QuestionsLecture itemPlaying={itemPlaying} />
+              <QuestionsLecture itemPlaying={itemPlaying} isDemo={isDemo} />
             </Tab.Pane>
             <Tab.Pane eventKey={1}>
               <AboutContainer>

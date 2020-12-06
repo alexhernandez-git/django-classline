@@ -23,7 +23,7 @@ import { login, registerCheckoutClass } from "src/redux/actions/auth";
 import { Field, Form, Formik } from "formik";
 const CourseBuyContainer = () => {
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { id, program } = useParams();
   const programReducer = useSelector((state) => state.programReducer);
   const authReducer = useSelector((state) => state.authReducer);
   const buyCoursesReducer = useSelector((state) => state.buyCoursesReducer);
@@ -379,17 +379,29 @@ const CourseBuyContainer = () => {
                     ) : (
                       <>
                         {(!authReducer.isAuthenticated || !isStudent) && (
-                          <button
-                            className="buy-now-btn"
-                            onClick={handleOpenBuyNow}
-                          >
-                            Comprar ahora
-                          </button>
+                          <>
+                            <button
+                              className="buy-now-btn"
+                              onClick={handleOpenBuyNow}
+                            >
+                              Comprar ahora
+                            </button>
+                            <Link
+                              target="_blank"
+                              to={`/academy/${program}/course-demo-playing/${buyCoursesReducer.course.code}/`}
+                            >
+                              <button className="try-demo-btn">
+                                Acceder al contenido gratuito
+                              </button>
+                            </Link>
+                          </>
                         )}
                       </>
                     )}
                     {authReducer.isAuthenticated && isStudent && (
-                      <Link to="/academy/EyeelknHcN/course-playing/XSvYM8Q9ES/">
+                      <Link
+                        to={`/academy/${program}/course-playing/${buyCoursesReducer.course.code}/`}
+                      >
                         <button className="buy-now-btn">
                           Acceder al curso
                         </button>
@@ -1079,6 +1091,20 @@ const CourseContainer = styled.div`
                 background: ${(props) => props.color};
                 border: none;
                 font-weight: bold;
+              }
+              .try-demo-btn {
+                width: 100%;
+                border-radius: 0.4rem;
+
+                padding: 0.9rem;
+                /* border: 1px solid ${(props) => props.color};
+                color: ${(props) => props.color} !important;
+                background: #fff; */
+                background: #fff;
+                color: ${(props) => props.color};
+                border: 1px solid ${(props) => props.color};
+                font-weight: bold;
+                margin-top: 1rem;
               }
               .link-identify {
                 cursor: pointer;

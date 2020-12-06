@@ -38,7 +38,8 @@ class CourseItemModelSerializer(serializers.ModelSerializer):
             'is_private',
             'content',
             'item_viewed',
-            'materials'
+            'materials',
+            'is_free'
 
         )
         # extra_kwargs = {'end': {'required': False}}

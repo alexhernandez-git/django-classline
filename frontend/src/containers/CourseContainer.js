@@ -8,9 +8,10 @@ import { IconContext } from "react-icons";
 import { IoIosShareAlt } from "react-icons/io";
 import { MdEmail, MdShare } from "react-icons/md";
 import { Modal, Overlay, Tooltip } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const CourseContainer = () => {
+  const { pathname } = useLocation();
   const authReducer = useSelector((state) => state.authReducer);
   const [show, setShow] = useState(false);
 
@@ -38,6 +39,7 @@ const CourseContainer = () => {
     setShowTooltip(true);
   }
 
+  const isDemo = /\/course-demo-playing\/?/.test(pathname);
   return (
     <>
       <Global
@@ -190,7 +192,7 @@ const CourseContainer = () => {
           </div>
         </div>
         <div className="course-div">
-          <CourseLayout isAcademy={false} />
+          <CourseLayout isAcademy={false} isDemo={isDemo} />
         </div>
       </Layout>
 

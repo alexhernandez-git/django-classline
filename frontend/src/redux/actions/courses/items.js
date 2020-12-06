@@ -351,11 +351,30 @@ export const saveItem = (id, name) => (dispatch, getState) => {
       tokenConfig(getState)
     )
     .then((res) => {
-      Swal.fire({
-        title: "Guardado!",
-        icon: "success",
-        confirmButtonText: "Ok",
+      dispatch({
+        type: ITEM_SAVE_SUCCESS,
+        payload: res.data,
       });
+    })
+    .catch((err) => {
+      dispatch({
+        type: ITEM_SAVE_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
+export const setIsItemFree = (id, is_free) => (dispatch, getState) => {
+  dispatch({ type: ITEM_SAVE });
+
+  axios
+    .patch(
+      `/api/programs/${getState().programReducer.program.code}/courses/${
+        getState().courseReducer.course.code
+      }/blocks/${getState().blockReducer.block.code}/items/${id}/`,
+      { is_free: is_free },
+      tokenConfig(getState)
+    )
+    .then((res) => {
       dispatch({
         type: ITEM_SAVE_SUCCESS,
         payload: res.data,

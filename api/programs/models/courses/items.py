@@ -26,6 +26,7 @@ class CourseItem(CLineModel):
         choices=TYPE_CHOICES,
     )
     is_private = models.BooleanField(default=False)
+    is_free  = models.BooleanField(default=False)
 
     def __str__(self):
         """Return description."""
