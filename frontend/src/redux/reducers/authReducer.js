@@ -79,6 +79,7 @@ export default function (state = initialState, action) {
       };
     case LOGIN_SUCCESS:
       localStorage.setItem("auth_token", action.payload.access_token);
+      localStorage.setItem("access_token", action.payload.access_token);
       return {
         ...state,
         user: action.payload.user,
@@ -93,6 +94,8 @@ export default function (state = initialState, action) {
       };
     case REGISTER_WITH_TOKEN_SUCCESS:
       localStorage.setItem("auth_token", action.payload.access_token);
+      localStorage.setItem("access_token", action.payload.access_token);
+
       return {
         ...state,
         user: action.payload.user,
@@ -105,6 +108,7 @@ export default function (state = initialState, action) {
     case LOGIN_FAIL:
     case LOGOUT_SUCCESS:
       localStorage.removeItem("auth_token");
+      localStorage.removeItem("access_token");
       return {
         ...state,
         auth_token: null,

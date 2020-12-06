@@ -291,7 +291,16 @@ export const resetAuthErrors = () => (dispatch, getState) => {
 // Setup config with token - helper function
 export const tokenConfig = (getState) => {
   // Get token from state
-  let token = getState().authReducer.auth_token;
+  const current_token = localStorage.getItem("access_token");
+  let token;
+  if (current_token) {
+    token = current_token;
+    localStorage.setItem("auth_token", current_token);
+  } else {
+    localStorage.setItem("access_token", getState().authReducer.auth_token);
+    token = getState().authReducer.auth_token;
+  }
+
   // Headers
   const config = {
     headers: {

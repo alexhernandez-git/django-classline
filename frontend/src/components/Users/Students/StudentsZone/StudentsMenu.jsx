@@ -126,23 +126,21 @@ export default function StudentsMenu() {
                     </small>
                 </div>
             </Link> */}
-      {/* <Link to="/myzone/instructor">
-                <div className="seccion">
-                    <div className="div-icon bg-gradient-green rounded-circle bg-white">
-
-                        <IconContext.Provider
-                            value={{
-                                className: "global-class-name text-white",
-                                size: '20px'
-                            }}>
-                            <FaChalkboardTeacher />
-                        </IconContext.Provider>
-                    </div>
-                    <small className="">
-                        Instructor
-                    </small>
-                </div>
-            </Link> */}
+      <Link to="/myzone/instructor">
+        <div className="seccion">
+          <div className="div-icon bg-gradient-green rounded-circle bg-white">
+            <IconContext.Provider
+              value={{
+                className: "global-class-name text-white",
+                size: "20px",
+              }}
+            >
+              <FaChalkboardTeacher />
+            </IconContext.Provider>
+          </div>
+          <small className="">Instructor</small>
+        </div>
+      </Link>
     </div>
   );
 }
