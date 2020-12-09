@@ -36,12 +36,13 @@ export default function (state = initialState, action) {
       return {
         ...state,
         course_buying: false,
-        courses: {
-          ...state.courses,
-          results: state.courses.results.map((course) =>
-            course.id === action.payload.id ? (course = action.payload) : course
-          ),
-        },
+        // courses: {
+        //   ...state.courses,
+        //   results: state.courses.results.map((course) =>
+        //     course.id === action.payload.id ? (course = action.payload) : course
+        //   ),
+        // },
+        course: action.payload
       };
     case BUY_COURSE_FAIL:
       return {

@@ -379,7 +379,8 @@ class CourseViewSet(mixins.CreateModelMixin,
 
         serializer.is_valid(raise_exception=True)
         course = serializer.save()
-        data = CourseModelSerializer(course, many=False).data
+
+        data = CourseContentModelSerializer(course, many=False).data
 
         return Response(data, status=status.HTTP_200_OK)
 

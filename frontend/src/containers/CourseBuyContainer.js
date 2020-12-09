@@ -17,7 +17,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPublishedCourse } from "../redux/actions/courses/buyCourses";
+import { buyCourse, fetchPublishedCourse } from "../redux/actions/courses/buyCourses";
 import moment from "moment";
 import { login, registerCheckoutClass } from "src/redux/actions/auth";
 import { Field, Form, Formik } from "formik";
@@ -115,6 +115,7 @@ const CourseBuyContainer = () => {
   const elements = useElements();
 
   const handleSubmit = async (e) => {
+    if(buyCoursesReducer.course_buying) return; 
     // Block native form submission.
     e.preventDefault();
 
@@ -127,8 +128,8 @@ const CourseBuyContainer = () => {
     // Get a reference to a mounted CardElement. Elements knows how
     // to find your CardElement because there can only ever be one of
     // each type of element.
-    const cardElement = elements.getElement(CardElement);
-
+    const cardElement = elements.getElement(CardNumberElement);
+    console.log(cardElement)
     // Use your card Element with other Stripe.js APIs
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
@@ -139,10 +140,11 @@ const CourseBuyContainer = () => {
       console.log("[error]", error);
     } else {
       console.log("[PaymentMethod]", paymentMethod);
-      // dispatch(buyPack(buyPacksReducer.selected_pack, paymentMethod.id));
+
+      dispatch(buyCourse(course, paymentMethod.id));
     }
   };
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   const [isStudent, setIsStudent] = useState(false);
   const [isIdentifying, setIsIdentifying] = useState(false);
   const hanldeOpenIsIdentifying = () => {
@@ -153,10 +155,17 @@ const CourseBuyContainer = () => {
   };
 
   useEffect(() => {
-    if (isAuthenticated && isStudent) {
+    if (authReducer.isAuthenticated && isStudent) {
       setBuyNow(false);
     }
-  }, [isAuthenticated]);
+  }, [authReducer.isAuthenticated, isStudent]);
+  useEffect(() => {
+    if (!buyCoursesReducer.isLoadingCourse && authReducer.isAuthenticated) {
+      const result = course.students.some(student => student == authReducer.user.id)
+      setIsStudent(result)
+    }
+  }, [buyCoursesReducer.isLoadingCourse, authReducer.isAuthenticated, course])
+
   return buyCoursesReducer.isLoadingCourse ? (
     "Cargando..."
   ) : (
@@ -370,11 +379,17 @@ const CourseBuyContainer = () => {
                                 ? "buy-now-btn"
                                 : "buy-now-btn btn-disabled"
                             }
-                            onClick={handleOpenBuyNow}
+                            onClick={handleSubmit}
                           >
                             Realizar pago
                           </button>
+                          
                         )}
+                          {buyCoursesReducer.course_buying &&
+                            <small className="d-block text-center mt-2">
+                              Adquiriendo el curso... espere a que finalize la transacción
+                            </small>
+                          }
                       </>
                     ) : (
                       <>
@@ -438,12 +453,15 @@ const CourseBuyContainer = () => {
                               return (
                                 <>
                                   <Form className="w-100">
-                                    {authReducer.error &&
+                                  {authReducer.error &&
                                       authReducer.error.data.detail && (
                                         <small className="d-block text-red text-center mb-2">
-                                          {authReducer.error.data.detail}
+                                          {authReducer.error.data.detail !=
+                                            "Token inválido." &&
+                                            authReducer.error.data.detail}
                                         </small>
                                       )}
+                                  
                                     <Field
                                       name="email"
                                       type="text"
@@ -655,13 +673,14 @@ const CourseBuyContainer = () => {
                                 return (
                                   <>
                                     <Form className="w-100">
-                                      {authReducer.error &&
-                                        authReducer.error.data.detail && (
-                                          <small className="d-block text-red text-center mb-2">
-                                            {authReducer.error.data.detail}
-                                          </small>
-                                        )}
-
+                                    {authReducer.error &&
+                                      authReducer.error.data.detail && (
+                                        <small className="d-block text-red text-center mb-2">
+                                          {authReducer.error.data.detail !=
+                                            "Token inválido." &&
+                                            authReducer.error.data.detail}
+                                        </small>
+                                      )}
                                       {authReducer.error &&
                                         authReducer.error.data
                                           .non_field_errors &&

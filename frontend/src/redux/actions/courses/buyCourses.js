@@ -48,7 +48,7 @@ export const buyCourse = (
       });
 
       Swal.fire({
-        title: "Course Adquirido!",
+        title: "Curso Adquirido!",
         icon: "success",
         confirmButtonText: "Ok",
       });
