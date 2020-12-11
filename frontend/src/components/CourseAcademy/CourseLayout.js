@@ -33,6 +33,7 @@ const CourseLayout = (props) => {
   const location = useLocation();
   const router = useParams();
   const programReducer = useSelector((state) => state.programReducer);
+  const authReducer = useSelector((state) => state.authReducer);
   const courseId = router.id;
   const programId = router.program;
   const trackCode = router.track ? router.track : null;
@@ -156,10 +157,16 @@ const CourseLayout = (props) => {
       }
     }
   }, [itemPlaying]);
-
-  return playingCourseReducer.isLoading ? (
+  const isStudent = () =>{
+    if (isDemo) {
+      return true
+      
+    }
+    return playingCourseReducer.course.students.some(studentId=> studentId == authReducer.user.id)
+  }
+  return playingCourseReducer.isLoading && authReducer.isLoading ? (
     <span>Cargando...</span>
-  ) : playingCourseReducer.error ? (
+  ) : playingCourseReducer.error || (authReducer.isAuthenticated && !isStudent()) ? (
     <Redirect
       to={`/academy/${programReducer.program.code}/course-info/${courseId}/`}
     />
