@@ -364,7 +364,9 @@ class CoursePlayingModelSerializer(serializers.ModelSerializer):
 
         blocks = CourseBlockTrack.objects.filter(course=obj.id)
         request = self.context.get('request', None)
-        if request: 
+        
+        if request and request.user and request.user.id:
+
             return CourseBlockTrackPlayingModelSerializer(blocks,user=request.user, many=True).data
         else:
             return CourseBlockTrackPlayingModelSerializer(blocks,user=None, many=True).data
@@ -381,9 +383,16 @@ class CoursePlayingModelSerializer(serializers.ModelSerializer):
 
     def get_current_item_watching(self, obj):
         from api.programs.serializers import CourseUserDataModelSerializer
-        course_user_data = CourseUserData.objects.filter(course=obj.id, user=self.context['request'].user)
-        if len(course_user_data) > 0:
-            return CourseUserDataModelSerializer(course_user_data[0], many=False).data['current_item_watching']
+        
+        request = self.context.get('request', None)
+        
+        if request and request.user and request.user.id:
+
+            course_user_data = CourseUserData.objects.filter(course=obj.id, user=self.context['request'].user)
+            if len(course_user_data) > 0:
+                return CourseUserDataModelSerializer(course_user_data[0], many=False).data['current_item_watching']
+            else: 
+                return None
         else: 
             return None
 

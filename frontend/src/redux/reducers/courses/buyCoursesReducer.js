@@ -95,7 +95,7 @@ export default function (state = initialState, action) {
     case FETCH_COURSE_FAIL:
       return {
         ...state,
-        course: null,
+        // course: null,
         isLoadingCourse: false,
         error_course: action.payload,
       };

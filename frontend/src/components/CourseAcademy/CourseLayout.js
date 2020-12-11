@@ -39,8 +39,11 @@ const CourseLayout = (props) => {
 
   useEffect(() => {
     if (courseId && !programReducer.isLoading) {
-      const dispatchFetchPlayingCourse = (id) =>
-        dispatch(fetchPlayingCourse(id));
+      const dispatchFetchPlayingCourse = (id) =>{
+          
+
+          dispatch(fetchPlayingCourse(id,isDemo));
+      }
       dispatchFetchPlayingCourse(courseId);
     }
   }, [courseId, programReducer.isLoading]);

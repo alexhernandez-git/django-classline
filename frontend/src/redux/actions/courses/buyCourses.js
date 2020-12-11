@@ -141,8 +141,7 @@ export const fetchPublishedCourse = (courseId) => (dispatch, getState) => {
     .get(
       `/api/programs/${
         getState().programReducer.program.code
-      }/courses/${courseId}/retrieve_content/`,
-      tokenConfig(getState)
+      }/courses/${courseId}/retrieve_content/`
     )
     .then((res) => {
       dispatch({

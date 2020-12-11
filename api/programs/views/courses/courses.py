@@ -80,6 +80,8 @@ class CourseViewSet(mixins.CreateModelMixin,
         """Return serializer based on action."""
         if self.action == 'retrieve_playing':
             return CoursePlayingModelSerializer
+        if self.action == 'retrieve_demo_playing':
+            return CoursePlayingModelSerializer
         elif self.action == 'retrieve_content':
             return CourseContentModelSerializer
         elif self.action == 'create':
@@ -101,7 +103,7 @@ class CourseViewSet(mixins.CreateModelMixin,
     def get_permissions(self):
         """Assign permissions based on action."""
         permissions = []
-        if self.action in ['update', 'partial_update', 'delete', 'list_my_courses']:
+        if self.action in ['update', 'partial_update', 'delete', 'list_my_courses','retrieve_playing']:
             permissions.append(IsAuthenticated)
         return [permission() for permission in permissions]
 
@@ -145,13 +147,12 @@ class CourseViewSet(mixins.CreateModelMixin,
 
     @action(detail=True, methods=['get'])
     def retrieve_playing(self, request, *args, **kwargs):
-        user = None
-        if request:
-            user = request.user
-        
-        if user.id == None:
-            return Response({'message': 'No estas logueado'}, status=status.HTTP_400_BAD_REQUEST)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
+    @action(detail=True, methods=['get'])
+    def retrieve_demo_playing(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
