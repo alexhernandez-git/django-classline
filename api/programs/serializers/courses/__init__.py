@@ -11,3 +11,4 @@ from .item_answers import *
 from .items_viewed import *
 from .materials import *
 from .course_users_data import *
+from .students import *

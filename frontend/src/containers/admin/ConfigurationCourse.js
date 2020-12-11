@@ -20,6 +20,7 @@ import CourseBenefitsForm from "../../components/CourseAcademy/CourseBenefitsFor
 import CoursePresentation from "../../components/CourseAcademy/CoursePresentation";
 import CourseConfiguration from "../../components/CourseAcademy/CourseConfiguration";
 import BlocksCourse from "../../components/CourseAcademy/BlocksCourse";
+import CourseStudentsList from "./course/CourseStudentsList";
 
 const ConfigurationCourse = (props) => {
   const [key, setKey] = useState(0);
@@ -141,6 +142,11 @@ const ConfigurationCourse = (props) => {
                             <span>CONTENIDO</span>
                           </Nav.Link>
                         </Nav.Item>
+                        <Nav.Item>
+                          <Nav.Link eventKey={3} className="text-grey">
+                            <span>ALUMNOS</span>
+                          </Nav.Link>
+                        </Nav.Item>
                       </Nav>
                     </Col>
                   </Row>
@@ -169,6 +175,9 @@ const ConfigurationCourse = (props) => {
                             values={props.values}
                             setFieldValue={props.setFieldValue}
                           />
+                        </Tab.Pane>
+                        <Tab.Pane eventKey={3} className="text-grey">
+                         <CourseStudentsList/>
                         </Tab.Pane>
                       </Tab.Content>
                     </Col>

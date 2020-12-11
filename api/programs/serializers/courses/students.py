@@ -13,7 +13,7 @@ from api.users.models import User
 from datetime import timedelta
 
 
-class StudentModelSerializer(serializers.ModelSerializer):
+class CourseStudentModelSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -36,7 +36,7 @@ class StudentModelSerializer(serializers.ModelSerializer):
         return UserWithoutTeacherModelSerializer(user, many=False).data
 
 
-class StudentListModelSerializer(serializers.ModelSerializer):
+class CourseStudentListModelSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField(read_only=True)
 
     class Meta:

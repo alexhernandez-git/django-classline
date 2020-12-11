@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 # Models
-from api.programs.models import (Program, Student, Instructor, AllowedProgram, EventStudent, VideoPack, StudentPack, Video,CourseBlock,CourseBlockTrack, CourseItem)
+from api.programs.models import (Program, Student, Instructor, AllowedProgram, EventStudent, VideoPack, StudentPack, Video,CourseBlock,CourseBlockTrack, CourseItem,CourseStudent)
 
 
 @admin.register(Program)
@@ -73,3 +73,8 @@ class CourseBlockTrack(admin.ModelAdmin):
 class CourseItem(admin.ModelAdmin):
     """Profile model admin."""
     list_display = ('id',)
+
+@admin.register(CourseStudent)
+class CourseStudent(admin.ModelAdmin):
+    """Profile model admin."""
+    list_display = ('id', 'user')

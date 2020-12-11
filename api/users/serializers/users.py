@@ -879,8 +879,8 @@ class ForgetPasswordSerializer(serializers.Serializer):
 
         user = User.objects.filter(email=email).first()
         token = Token.objects.get(user=user)
-
-        send_reset_password(user, token[0].key)
+        
+        send_reset_password(user, token.key)
         return {'email': email, 'user': user}
 
 
