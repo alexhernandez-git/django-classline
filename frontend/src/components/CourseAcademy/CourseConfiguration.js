@@ -28,9 +28,11 @@ import { Field } from "formik";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import styled from "@emotion/styled";
 import { SketchPicker } from "react-color";
+import Slider, { Range } from "rc-slider";
+import "rc-slider/assets/index.css";
 
 const CourseConfiguration = (props) => {
-  const { color } = props.values;
+  const { color, offer_persentage } = props.values;
   const { setFieldValue } = props;
 
   const MySwal = withReactContent(Swal);
@@ -116,6 +118,9 @@ const CourseConfiguration = (props) => {
       handleCloseColor(false);
     }
   });
+  const handleChangeSlider = (value) => {
+    setFieldValue("offer_persentage", value);
+  };
   return (
     <>
       {/* <div className="bg-white border p-3 rounded my-2 mb-4 pb-5">
@@ -204,6 +209,44 @@ const CourseConfiguration = (props) => {
           </Col>
         </Row>
       </div>
+      {!courseReducer.isLoading && courseReducer.course.course_price && (
+        <div className="bg-white border p-3 rounded my-2 mb-4">
+          <span className="d-none d-md-block">Pon el curso en oferta</span>
+
+          <Row className="">
+            <Col
+              lg={{ span: 4 }}
+              className="text-center d-lg-flex justify-content-end align-items-center"
+            >
+              <span className="m-0 font-weight-normal">Descuento en %</span>
+            </Col>
+
+            <Col lg={{ offset: 1, span: 6 }}>
+              <span className="mb-2 d-block text-right">
+                {offer_persentage}%
+              </span>
+              <div className="mb-2">
+                <Slider
+                  value={offer_persentage}
+                  onChange={handleChangeSlider}
+                  max={90}
+                  handleStyle={{ background: "#000" }}
+                  trackStyle={{ background: "#000" }}
+                />
+              </div>
+              <span>
+                Precio final:{" "}
+                {(
+                  courseReducer.course.course_price.value -
+                  (courseReducer.course.course_price.value / 100) *
+                    offer_persentage
+                ).toFixed(2)}
+                €
+              </span>
+            </Col>
+          </Row>
+        </div>
+      )}
       <div className="bg-white border p-3 rounded my-2 mb-4">
         <span className="d-none d-md-block">Conectar con stripe</span>
 

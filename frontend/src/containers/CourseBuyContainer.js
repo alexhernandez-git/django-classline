@@ -17,7 +17,10 @@ import {
 } from "@stripe/react-stripe-js";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { buyCourse, fetchPublishedCourse } from "../redux/actions/courses/buyCourses";
+import {
+  buyCourse,
+  fetchPublishedCourse,
+} from "../redux/actions/courses/buyCourses";
 import moment from "moment";
 import { login, registerCheckoutClass } from "src/redux/actions/auth";
 import { Field, Form, Formik } from "formik";
@@ -115,7 +118,7 @@ const CourseBuyContainer = () => {
   const elements = useElements();
 
   const handleSubmit = async (e) => {
-    if(buyCoursesReducer.course_buying) return; 
+    if (buyCoursesReducer.course_buying) return;
     // Block native form submission.
     e.preventDefault();
 
@@ -129,7 +132,7 @@ const CourseBuyContainer = () => {
     // to find your CardElement because there can only ever be one of
     // each type of element.
     const cardElement = elements.getElement(CardNumberElement);
-    console.log(cardElement)
+    console.log(cardElement);
     // Use your card Element with other Stripe.js APIs
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
@@ -161,10 +164,12 @@ const CourseBuyContainer = () => {
   }, [authReducer.isAuthenticated, isStudent]);
   useEffect(() => {
     if (!buyCoursesReducer.isLoadingCourse && authReducer.isAuthenticated) {
-      const result = course.students.some(student => student == authReducer.user.id)
-      setIsStudent(result)
+      const result = course.students.some(
+        (student) => student == authReducer.user.id
+      );
+      setIsStudent(result);
     }
-  }, [buyCoursesReducer.isLoadingCourse, authReducer.isAuthenticated, course])
+  }, [buyCoursesReducer.isLoadingCourse, authReducer.isAuthenticated, course]);
 
   return buyCoursesReducer.isLoadingCourse ? (
     "Cargando..."
@@ -359,7 +364,23 @@ const CourseBuyContainer = () => {
                 )}
                 <div className="cta-info">
                   <div className="course-price">
-                    <span>{course.course_price.value} €</span>
+                    {course.offer_persentage > 0 ? (
+                      <div className="course-price-offer">
+                        <span className="new-price">
+                          {(
+                            course.course_price.value -
+                            (course.course_price.value / 100) *
+                              course.offer_persentage
+                          ).toFixed(2)}{" "}
+                          €
+                        </span>
+                        <span className="original-price">
+                          {course.course_price.value} €
+                        </span>
+                      </div>
+                    ) : (
+                      <span>{course.course_price.value} €</span>
+                    )}
                     {/* <small></small> */}
                   </div>
                   <div className="course-buttons">
@@ -383,13 +404,13 @@ const CourseBuyContainer = () => {
                           >
                             Realizar pago
                           </button>
-                          
                         )}
-                          {buyCoursesReducer.course_buying &&
-                            <small className="d-block text-center mt-2">
-                              Adquiriendo el curso... espere a que finalize la transacción
-                            </small>
-                          }
+                        {buyCoursesReducer.course_buying && (
+                          <small className="d-block text-center mt-2">
+                            Adquiriendo el curso... espere a que finalize la
+                            transacción
+                          </small>
+                        )}
                       </>
                     ) : (
                       <>
@@ -453,7 +474,7 @@ const CourseBuyContainer = () => {
                               return (
                                 <>
                                   <Form className="w-100">
-                                  {authReducer.error &&
+                                    {authReducer.error &&
                                       authReducer.error.data.detail && (
                                         <small className="d-block text-red text-center mb-2">
                                           {authReducer.error.data.detail !=
@@ -461,7 +482,7 @@ const CourseBuyContainer = () => {
                                             authReducer.error.data.detail}
                                         </small>
                                       )}
-                                  
+
                                     <Field
                                       name="email"
                                       type="text"
@@ -673,14 +694,14 @@ const CourseBuyContainer = () => {
                                 return (
                                   <>
                                     <Form className="w-100">
-                                    {authReducer.error &&
-                                      authReducer.error.data.detail && (
-                                        <small className="d-block text-red text-center mb-2">
-                                          {authReducer.error.data.detail !=
-                                            "Token inválido." &&
-                                            authReducer.error.data.detail}
-                                        </small>
-                                      )}
+                                      {authReducer.error &&
+                                        authReducer.error.data.detail && (
+                                          <small className="d-block text-red text-center mb-2">
+                                            {authReducer.error.data.detail !=
+                                              "Token inválido." &&
+                                              authReducer.error.data.detail}
+                                          </small>
+                                        )}
                                       {authReducer.error &&
                                         authReducer.error.data
                                           .non_field_errors &&
@@ -875,7 +896,23 @@ const CourseBuyContainer = () => {
                         <small>{course.title}</small>
                       </div>
                       <div className="cci-price">
-                        <small>{course.course_price.value} €</small>
+                        {course.offer_persentage > 0 ? (
+                          <div className="cci-price-offer">
+                            <span className="cci-new-price">
+                              {(
+                                course.course_price.value -
+                                (course.course_price.value / 100) *
+                                  course.offer_persentage
+                              ).toFixed(2)}{" "}
+                              €
+                            </span>
+                            <span className="cci-original-price">
+                              {course.course_price.value} €
+                            </span>
+                          </div>
+                        ) : (
+                          <span>{course.course_price.value} €</span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1091,6 +1128,17 @@ const CourseContainer = styled.div`
               span {
                 font-size: 3rem;
                 font-weight: 700;
+              }
+              .course-price-offer {
+                .new-price {
+                }
+                .original-price {
+                  font-size: 1.5rem;
+                  margin-left: 1rem;
+                  text-decoration: line-through;
+                }
+                span {
+                }
               }
             }
             .course-buttons {
@@ -1377,6 +1425,11 @@ const CourseContainer = styled.div`
               }
             }
             .cci-price {
+              .cci-original-price {
+                font-size: 1.2rem;
+                margin-left: 0.9rem;
+                text-decoration: line-through;
+              }
             }
           }
         }

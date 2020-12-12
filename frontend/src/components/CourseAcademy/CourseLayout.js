@@ -40,11 +40,9 @@ const CourseLayout = (props) => {
 
   useEffect(() => {
     if (courseId && !programReducer.isLoading) {
-      const dispatchFetchPlayingCourse = (id) =>{
-          
-
-          dispatch(fetchPlayingCourse(id,isDemo));
-      }
+      const dispatchFetchPlayingCourse = (id) => {
+        dispatch(fetchPlayingCourse(id, isDemo));
+      };
       dispatchFetchPlayingCourse(courseId);
     }
   }, [courseId, programReducer.isLoading]);
@@ -157,16 +155,20 @@ const CourseLayout = (props) => {
       }
     }
   }, [itemPlaying]);
-  const isStudent = () =>{
+  const isStudent = () => {
     if (isDemo || isAcademy) {
-      return true
-      
+      return true;
     }
-    return playingCourseReducer.course.students.some(studentId=> studentId == authReducer.user.id)
-  }
+    return playingCourseReducer.course.students.some(
+      (studentId) => studentId == authReducer.user.id
+    );
+  };
   return playingCourseReducer.isLoading && authReducer.isLoading ? (
     <span>Cargando...</span>
-  ) : playingCourseReducer.error || (authReducer.isAuthenticated && !isStudent()) ? (
+  ) : playingCourseReducer.error ||
+    (authReducer.isAuthenticated &&
+      !playingCourseReducer.isLoading &&
+      !isStudent()) ? (
     <Redirect
       to={`/academy/${programReducer.program.code}/course-info/${courseId}/`}
     />

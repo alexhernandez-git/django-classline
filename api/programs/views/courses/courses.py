@@ -302,12 +302,18 @@ class CourseViewSet(mixins.CreateModelMixin,
 
         purchased_product = stripe.Product.create(
             name=serialised_course.get('title'))
+        
+        # (
+        #     course.course_price.value -
+        #     (course.course_price.value / 100) *
+        #         course.offer_persentage
+        #     )
+        current_course_price = serialised_course['course_price']['value'] - (serialised_course['course_price']['value'] / 100) * serialised_course['offer_persentage']
         price = stripe.Price.create(
             currency=serialised_course.get('course_price').get('type'),
             product=purchased_product.get('id'),
             nickname=serialised_course.get('description'),
-            unit_amount=int(serialised_course.get(
-                'course_price').get('value')*100),
+            unit_amount=int(current_course_price*100),
         )
         if profile.stripe_customer_id == None or profile.stripe_customer_id == '':
             newCustomer = stripe.Customer.create(

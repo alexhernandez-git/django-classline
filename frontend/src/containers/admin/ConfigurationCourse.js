@@ -57,6 +57,7 @@ const ConfigurationCourse = (props) => {
     course_language: "",
     instructor: {},
     published: false,
+    offer_persentage: 0,
 
     color: null,
   });
@@ -74,6 +75,8 @@ const ConfigurationCourse = (props) => {
           : "",
         benefits: courseReducer.course.benefits,
         students: courseReducer.course.students,
+        offer_persentage: courseReducer.course.offer_persentage,
+
         course_price: courseReducer.course.course_price,
         course_language: courseReducer.course.course_language,
         instructor: courseReducer.course.instructor,
@@ -177,7 +180,7 @@ const ConfigurationCourse = (props) => {
                           />
                         </Tab.Pane>
                         <Tab.Pane eventKey={3} className="text-grey">
-                         <CourseStudentsList/>
+                          <CourseStudentsList />
                         </Tab.Pane>
                       </Tab.Content>
                     </Col>

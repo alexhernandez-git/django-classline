@@ -43,6 +43,8 @@ class Course(CLineModel):
 
     rating = models.FloatField(default=0)
 
+    offer_persentage = models.IntegerField(default=0)
+
     students = models.ManyToManyField(
         'users.User',
         through='programs.CourseStudent'
