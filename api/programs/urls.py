@@ -41,6 +41,7 @@ from api.programs.views.courses.materials import LectureMaterialViewSet
 from api.programs.views.courses.item_questions import ItemQuestionViewSet
 from api.programs.views.courses.item_answers import ItemAnswerViewSet
 from api.programs.views.courses.items_viewed import ItemViewedViewSet
+from api.programs.views.courses.students import CourseStudentViewSet
 
 router = DefaultRouter()
 
@@ -230,6 +231,11 @@ router.register(
     r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/courses/(?P<course_id>[-a-zA-Z0-9_]+)/items/(?P<item_id>[-a-zA-Z0-9_]+)/items-viewed',
     ItemViewedViewSet,
     basename='items-viewed'
+)
+router.register(
+    r'programs/(?P<slug_id>[-a-zA-Z0-9_]+)/courses/(?P<course_id>[-a-zA-Z0-9_]+)/course-students',
+    CourseStudentViewSet,
+    basename='course-student'
 )
 urlpatterns = [
     path('', include(router.urls))

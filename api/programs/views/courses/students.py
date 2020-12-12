@@ -17,11 +17,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 # Models
-from api.programs.models import Program, CourseBlock
+from api.programs.models import Program, CourseBlock, CourseStudent
 from api.users.models import User, PurchasedItem
 
 # Serializers
-from api.programs.serializers import CourseBlockModelSerializer,CourseStudentModelSerializer
+from api.programs.serializers import CourseStudentModelSerializer,CourseStudentListModelSerializer
 from api.users.serializers import ProfileModelSerializer
 
 # Utils
@@ -29,7 +29,6 @@ from api.utils.permissions import AddCourseMixin
 
 from datetime import datetime, timedelta
 import pytz
-
 
 class CourseStudentViewSet(mixins.CreateModelMixin,
                           mixins.ListModelMixin,
@@ -41,7 +40,7 @@ class CourseStudentViewSet(mixins.CreateModelMixin,
 
     serializer_class = CourseStudentModelSerializer
     lookup_field = 'pk'
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [SearchFilter]
     search_fields = ['user__first_name', 'user__username',
                      'user__email', 'user__last_name']
 
@@ -53,8 +52,9 @@ class CourseStudentViewSet(mixins.CreateModelMixin,
 
     def get_queryset(self):
         program = self.program
+        course = self.course
 
-        queryset = Student.objects.filter(program=program)
+        queryset = CourseStudent.objects.filter(course=course)
 
         return queryset
 

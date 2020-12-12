@@ -1,35 +1,35 @@
 import {
-  STUDENT_PACK_FETCH,
-  STUDENT_PACK_SUCCESS,
-  STUDENT_PACK_FAIL,
+  COURSE_STUDENTS_FETCH,
+  COURSE_STUDENTS_SUCCESS,
+  COURSE_STUDENTS_FAIL,
   
 } from "../../types";
 
 const initialState = {
   isLoading: true,
-  pack: null,
+  students: null,
   error: null,
 
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case STUDENT_PACK_FETCH:
+    case COURSE_STUDENTS_FETCH:
       return {
         ...state,
         isLoading: true,
       };
-    case STUDENT_PACK_SUCCESS:
+    case COURSE_STUDENTS_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        pack: action.payload,
+        students: action.payload,
       };
 
-    case STUDENT_PACK_FAIL:
+    case COURSE_STUDENTS_FAIL:
       return {
         ...state,
-        pack: null,
+        students: null,
         isLoading: false,
         error: action.payload,
       };

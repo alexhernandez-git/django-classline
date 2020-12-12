@@ -18,61 +18,43 @@ import {
   fetchAccountsPagination,
 } from "src/redux/actions/accounts";
 import { Formik, Form as FormFormik } from "formik";
-import accountsReducer from "src/redux/reducers/accountsReducer";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { fetchCourseStudents, fetchCourseStudentsPagination } from "../../../redux/actions/courses/courseStudents";
 
 const CourseStudentsList = ({ main }) => {
-  const MySwal = withReactContent(Swal);
+
   const dispatch = useDispatch();
   const programReducer = useSelector((state) => state.programReducer);
+  const courseReducer = useSelector((state) => state.courseReducer);
   useEffect(() => {
-    if (!programReducer.isLoading) {
-      const dispatchFetchAccount = () => dispatch(fetchAccounts());
-      dispatchFetchAccount();
+    if (!courseReducer.isLoading) {
+      const dispatchFetchCourseStudents = () => dispatch(fetchCourseStudents());
+      dispatchFetchCourseStudents();
     }
-  }, [programReducer.isLoading]);
-  const accountsReducer = useSelector((state) => state.accountsReducer);
+  }, [courseReducer.isLoading]);
+  const courseStudentsReducer = useSelector((state) => state.courseStudentsReducer);
 
   const [show, setShow] = useState(false);
 
-  const handleClose = () => {
-    setShow(false);
-    const dispatchResetAccountCreate = () => dispatch(resetAccountCreate());
-    dispatchResetAccountCreate();
-  };
+ 
   const handleShow = () => setShow(true);
-  const handleDeleteAccount = (id) => {
-    MySwal.fire({
-      title: "Estas seguro?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Eliminar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.value) {
-        const dispatchDeleteAccount = (id) => dispatch(deleteAccount(id));
-        dispatchDeleteAccount(id);
-      }
-    });
-  };
+
   const [search, setSearch] = useState("");
 
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    const dispatchFetchAccount = (search) => dispatch(fetchAccounts(search));
-    dispatchFetchAccount(search);
+    const dispatchFetchCourseStudents = (search) => dispatch(fetchCourseStudents(search));
+    dispatchFetchCourseStudents(search);
   };
   const handleChangePage = (url) => {
     main.current.scrollTo(0, 0);
 
-    const dispatchFetchAccountsPagination = (url) =>
-      dispatch(fetchAccountsPagination(url));
-    dispatchFetchAccountsPagination(url);
+    const dispatchFetchCourseStudentssPagination = (url) =>
+      dispatch(fetchCourseStudentsPagination(url));
+    dispatchFetchCourseStudentssPagination(url);
   };
   return (
     <div>
@@ -89,9 +71,7 @@ const CourseStudentsList = ({ main }) => {
               <th scope="col" style={{ width: "20%" }}>
                 Nombre de Usuario
               </th>
-              <th scope="col" style={{ width: "20%" }}>
-                Contraseña
-              </th>
+ 
               <th scope="col">
                 Nombre completo
               </th>
@@ -99,23 +79,21 @@ const CourseStudentsList = ({ main }) => {
             </tr>
           </thead>
           <tbody>
-            {accountsReducer.accounts &&
-              accountsReducer.accounts.results.map((account) => (
+            {courseStudentsReducer.students &&
+              courseStudentsReducer.students.results.map((student) => (
                 <CourseStudentRow
-                  handleShow={handleShow}
-                  account={account}
-                  key={account.id}
-                  handleDeleteAccount={handleDeleteAccount}
+                  student={student}
+                  key={student.id}
                 />
               ))}
           </tbody>
         </table>
-        {accountsReducer.isLoading && <span>Cargando...</span>}
-        {accountsReducer.accounts &&
-          (accountsReducer.accounts.previous ||
-            accountsReducer.accounts.next) && (
+        {courseStudentsReducer.isLoading && <span>Cargando...</span>}
+        {courseStudentsReducer.students &&
+          (courseStudentsReducer.students.previous ||
+            courseStudentsReducer.students.next) && (
             <div className="d-flex justify-content-center my-5">
-              {accountsReducer.accounts.previous ? (
+              {courseStudentsReducer.students.previous ? (
                 <IconContext.Provider
                   value={{
                     size: 50,
@@ -124,7 +102,7 @@ const CourseStudentsList = ({ main }) => {
                 >
                   <IoIosArrowDropleft
                     onClick={() =>
-                      handleChangePage(accountsReducer.accounts.previous)
+                      handleChangePage(courseStudentsReducer.students.previous)
                     }
                   />
                 </IconContext.Provider>
@@ -138,7 +116,7 @@ const CourseStudentsList = ({ main }) => {
                   <IoIosArrowDropleft />
                 </IconContext.Provider>
               )}
-              {accountsReducer.accounts.next ? (
+              {courseStudentsReducer.students.next ? (
                 <IconContext.Provider
                   value={{
                     size: 50,
@@ -147,7 +125,7 @@ const CourseStudentsList = ({ main }) => {
                 >
                   <IoIosArrowDropright
                     onClick={() =>
-                      handleChangePage(accountsReducer.accounts.next)
+                      handleChangePage(courseStudentsReducer.students.next)
                     }
                   />
                 </IconContext.Provider>
