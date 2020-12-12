@@ -244,7 +244,23 @@ const CoursesListContainer = () => {
                           </div>
                         </div>
                         <div className="cc-price">
-                          {course.course_price.value} €
+                          {course.offer_persentage > 0 ? (
+                            <div className="cc-price-offer">
+                              <span className="cc-new-price">
+                                {(
+                                  course.course_price.value -
+                                  (course.course_price.value / 100) *
+                                    course.offer_persentage
+                                ).toFixed(2)}{" "}
+                                €
+                              </span>
+                              <span className="cc-original-price">
+                                {course.course_price.value} €
+                              </span>
+                            </div>
+                          ) : (
+                            <span>{course.course_price.value} €</span>
+                          )}
                         </div>
                       </CourseCard>
                     ))}
@@ -373,6 +389,12 @@ const CourseCard = styled.div`
   }
   .cc-price {
     font-weight: bold;
+    .cc-original-price {
+      display: block;
+      font-size: 1.2rem;
+      margin-left: 0.9rem;
+      text-decoration: line-through;
+    }
   }
 `;
 export default CoursesListContainer;
