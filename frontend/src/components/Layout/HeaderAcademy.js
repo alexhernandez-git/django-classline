@@ -24,6 +24,7 @@ import { AdminForm } from "src/components/ui/AdminForm";
 import { createRating } from "../../redux/actions/rating";
 
 const Header = (props) => {
+
   const dispatch = useDispatch();
   const profileDiv = useRef();
   const avatarRef = useRef();
@@ -84,6 +85,9 @@ const Header = (props) => {
       setRating(authReducer.rating.rating);
     }
   }, [authReducer]);
+  useEffect(() => {
+    setProfileDivOpen(false)
+  }, [pathname])
   return (
     <>
       <ContainerHeader>
