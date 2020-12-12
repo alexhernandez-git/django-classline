@@ -158,7 +158,7 @@ const CourseLayout = (props) => {
     }
   }, [itemPlaying]);
   const isStudent = () =>{
-    if (isDemo) {
+    if (isDemo || isAcademy) {
       return true
       
     }
