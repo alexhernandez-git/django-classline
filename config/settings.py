@@ -95,24 +95,24 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-if 'RDS_DB_NAME' in os.environ:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
-        }
+# if 'RDS_DB_NAME' in os.environ:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#             'NAME': os.environ['RDS_DB_NAME'],
+#             'USER': os.environ['RDS_USERNAME'],
+#             'PASSWORD': os.environ['RDS_PASSWORD'],
+#             'HOST': os.environ['RDS_HOSTNAME'],
+#             'PORT': os.environ['RDS_PORT'],
+#         }
+#     }
+# else:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
+}
 
 
 # Password validation
@@ -153,23 +153,23 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-if 'STORAGE_BUCKET_NAME' in os.environ:
-    AWS_STORAGE_BUCKET_NAME = os.environ['STORAGE_BUCKET_NAME']
-    # STORAGES
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-    AWS_REGION = "eu-west-3"
-    AWS_S3_ADDRESSING_STYLE = "auto"
-    AWS_QUERYSTRING_AUTH = False
+# if 'STORAGE_BUCKET_NAME' in os.environ:
+#     AWS_STORAGE_BUCKET_NAME = os.environ['STORAGE_BUCKET_NAME']
+#     # STORAGES
+#     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#     AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+#     AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+#     AWS_REGION = "eu-west-3"
+#     AWS_S3_ADDRESSING_STYLE = "auto"
+#     AWS_QUERYSTRING_AUTH = False
 
-    _AWS_EXPIRY = 60 * 60 * 24 * 7
-    AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl': f'max-age={_AWS_EXPIRY}, s-maxage={_AWS_EXPIRY}, must-revalidate',
-    }
-    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
-else:
-    MEDIA_URL = '/media/'
+#     _AWS_EXPIRY = 60 * 60 * 24 * 7
+#     AWS_S3_OBJECT_PARAMETERS = {
+#         'CacheControl': f'max-age={_AWS_EXPIRY}, s-maxage={_AWS_EXPIRY}, must-revalidate',
+#     }
+#     MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
+# else:
+MEDIA_URL = '/media/'
 
 # Static  files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -237,24 +237,24 @@ REST_FRAMEWORK = {
 
 
 # Cache
-if 'REDIS_URL' in os.environ:
-    CACHES = {
-        'default': {
-            'BACKEND': 'django_redis.cache.RedisCache',
-            'LOCATION': os.environ['REDIS_URL'],
-            'OPTIONS': {
-                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-                'IGNORE_EXCEPTIONS': True
-            }
-        }
+# if 'REDIS_URL' in os.environ:
+#     CACHES = {
+#         'default': {
+#             'BACKEND': 'django_redis.cache.RedisCache',
+#             'LOCATION': os.environ['REDIS_URL'],
+#             'OPTIONS': {
+#                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#                 'IGNORE_EXCEPTIONS': True
+#             }
+#         }
+#     }
+# else:
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': ''
     }
-else:
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-            'LOCATION': ''
-        }
-    }
+}
 
 
 # Templates
@@ -283,23 +283,23 @@ PASSWORD_HASHERS = [
 # Admin
 ADMIN_URL = '/classline-admin'
 
-if 'SENDGRID_API_KEY' in os.environ:
-    # Email
-    DEFAULT_FROM_EMAIL = 'Classline Academy <no-reply@classlineacademy.com>'
-    SERVER_EMAIL = DEFAULT_FROM_EMAIL
-    EMAIL_SUBJECT_PREFIX = 'DJANGO_EMAIL_SUBJECT_PREFIX'
+# if 'SENDGRID_API_KEY' in os.environ:
+#     # Email
+#     DEFAULT_FROM_EMAIL = 'Classline Academy <no-reply@classlineacademy.com>'
+#     SERVER_EMAIL = DEFAULT_FROM_EMAIL
+#     EMAIL_SUBJECT_PREFIX = 'DJANGO_EMAIL_SUBJECT_PREFIX'
 
-    # Anymail (Sendgrid)
+#     # Anymail (Sendgrid)
 
-    EMAIL_BACKEND = 'anymail.backends.sendgrid.EmailBackend'
-    ANYMAIL = {
-        "SENDGRID_API_KEY": os.environ['SENDGRID_API_KEY']
-    }
-else:
-    # Email
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    EMAIL_HOST = 'localhost'
-    EMAIL_PORT = 1025
+#     EMAIL_BACKEND = 'anymail.backends.sendgrid.EmailBackend'
+#     ANYMAIL = {
+#         "SENDGRID_API_KEY": os.environ['SENDGRID_API_KEY']
+#     }
+# else:
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
 # Logging
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

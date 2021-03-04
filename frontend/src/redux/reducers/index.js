@@ -114,7 +114,6 @@ export default combineReducers({
   buyCoursesReducer,
   courseStudentsReducer,
 
-  
   // Commercials reducers
   authCommercialsReducer,
   costumersReducer,
