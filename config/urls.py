@@ -9,5 +9,5 @@ urlpatterns = [
     path('api/', include(('api.users.urls', 'users'), namespace='users')),
     path('api/', include(('api.programs.urls', 'programs'), namespace='programs')),
     re_path(r'academy/.*', academy, name='academy'),
-    re_path(r'^(?!media/)(?!api/)(?!academy/.*).*', include('frontend.urls')),
+    # re_path(r'^(?!media/)(?!api/)(?!academy/.*).*', include('frontend.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

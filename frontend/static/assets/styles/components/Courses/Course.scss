@@ -1,83 +1,83 @@
 .course {
+  overflow: hidden;
+  .card-img-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 1:1 Aspect Ratio */
     overflow: hidden;
-    .card-img-container {
-        position: relative;
-        width: 100%;
-        padding-top: 56.25%; /* 1:1 Aspect Ratio */
-        overflow: hidden;
-        height: 0;
+    height: 0;
+  }
+  .img-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .course-card-content {
+    margin: 0;
+  }
+  .course-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+  .course-score small {
+    margin: 0 !important;
+  }
+  .punctuation {
+    display: block;
+  }
+
+  @media only screen and (min-width: 340px) {
+    .course-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 5;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
     }
-    .img-card {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+  }
+  @media only screen and (min-width: 768px) {
+    .course-card {
+      width: 300px;
     }
-    .course-card-content {
-        margin: 0;
+  }
+  @media only screen and (min-width: 1992px) {
+    .course-card {
+      position: fixed;
+      width: 300px;
+    }
+  }
+  @media only screen and (min-width: 1024px) {
+    .punctuation {
+      display: flex;
+      align-items: center;
+    }
+
+    .punctuation div {
+      align-self: start;
+      margin-top: 0;
     }
     .course-text {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        -webkit-line-clamp: 3;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
     }
-    .course-score small {
-        margin: 0 !important;
+  }
+  @media only screen and (min-width: 1200px) {
+    .course-card {
+      position: fixed;
+      width: 360px;
     }
-    .punctuation {
-        display: block;
+  }
+  @media screen and (max-width: 1199px), screen and (max-height: 700px) {
+    .enterprices-card {
+      display: none;
     }
-
-    @media only screen and (min-width: 340px) {
-        .course-text {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            -webkit-line-clamp: 5;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-        }
-    }
-    @media only screen and (min-width: 768px) {
-        .course-card {
-            width: 300px;
-        }
-    }
-    @media only screen and (min-width: 1992px) {
-        .course-card {
-            position: fixed;
-            width: 300px;
-        }
-    }
-    @media only screen and (min-width: 1024px) {
-        .punctuation {
-            display: flex;
-            align-items: center;
-        }
-
-        .punctuation div {
-            align-self: start;
-            margin-top: 0;
-        }
-        .course-text {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            -webkit-line-clamp: 2;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-        }
-    }
-    @media only screen and (min-width: 1200px) {
-        .course-card {
-            position: fixed;
-            width: 360px;
-        }
-    }
-    @media screen and (max-width: 1199px), screen and (max-height: 700px) {
-        .enterprices-card {
-            display: none;
-        }
-    }
+  }
 }
